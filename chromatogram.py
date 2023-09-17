@@ -8,14 +8,12 @@ from scipy.signal import savgol_filter
 import math
 ## Create Baseline with noise
 
-gradient_table = pd.read_csv("./gradients.csv")
-gradient_table.head()
-
 ### Create Baseline
 
-max_time = gradient_table.time.max()
+max_time = sg.RUN_LENGTH
 
 samples_per_minute = 60 * sg.SAMPLE_RATE
+
 
 times = np.arange(0, max_time, 1./samples_per_minute)
 signal = np.random.normal(loc = 0, scale = sg.BASELINE_NOISE, size = times.shape)
@@ -107,9 +105,9 @@ dt = times[1:-1]
 
 height_param = 20
 
-min_t = 11
-max_t = 12
-signals_in_range = d2_signal[round(min_t * samples_per_minute):round(max_t * samples_per_minute)]
+min_t = 11 * samples_per_minute
+max_t = 12 * samples_per_minute
+signals_in_range = d2_signal[min_t:max_t]
 noise_sd = np.std(signals_in_range)
 
 threshhold = 5*noise_sd
@@ -121,29 +119,77 @@ for i in range(int(samples_per_minute/60),len(d2_signal)-int(samples_per_minute/
         crossings.append((i/samples_per_minute, 1))
     if (d2_signal[i] > -threshhold and d2_signal[i-1] <= -threshhold) or (d2_signal[i] < -threshhold and d2_signal[i-1] >= -threshhold):
         crossings.append((i/samples_per_minute, -1))
-        
-print(crossings)
-        
-crossing_count = 0
-cleaned_crossings  = []
-ind = 0
-while ind < len(crossings):
-    crossing = crossings[ind]
-    crossing_type = crossing[1]
-    if crossing_count == 2 and crossing_type == 1:
-        #count ones ahead
-        ahead_count = 0
-        ahead_ind = ind + 1
-        while ahead_ind < length(crossings):
-            if crossings[ahead_ind][1] == 1:
-                ahead_ind += 1
-                ahead_count += 1
+
+def filter_tuples(input_list):
+    results = []
+    series = []
+    encountered_1 = False
+
+    for tup in input_list:
+        _, b = tup
+
+        if not series:
+            # If series is empty, add the tuple with b == 1 to the series
+            if b == 1:
+                series.append(tup)
+                encountered_1 = True
+            continue
+
+        # Check if the current tuple breaks the series
+        if (b == 1 and series[-1][1] == -1) or (b == -1 and series[-1][1] == 1):
+            if not encountered_1:
+                # If we haven't encountered 1 yet, omit the series
+                series = []
             else:
-                break 
-        if ahead_count > 2:
-            ind = ahead_ind - 2
-    else:
-        ind += 1
-    cleaned_crossings.append(crossing)
-        
-cleaned_crossings    
+                # Otherwise, apply the rules and add to results
+                if len(series) > 4 and series[0][1] == 1:
+                    results.extend(series[:2] + series[-2:])
+                else:
+                    results.extend(series)
+                series = []
+
+        series.append(tup)
+
+    # Handle the last series
+    if series:
+        if len(series) > 4 and series[0][1] == 1:
+            results.extend(series[:2] + series[-2:])
+        else:
+            results.extend(series)
+
+    # Handle the case where the list starts with a series of b == 1 
+    initial_ones_count = 0 
+    for tup in input_list:
+        _, b = tup
+        if b == 1:
+            initial_ones_count += 1
+        else: break
+    if initial_ones_count > 2:
+        results = results[initial_ones_count - 2:]
+
+    return results
+
+
+# Test cases
+input1 = [(0.022, 1), (0.023, 1), (0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1)]
+output1 = filter_tuples(input1)
+assert(output1 == [ (0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1)])
+
+input2 = [(0.022, -1), (0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1)]
+output2 = filter_tuples(input2)
+assert(output2 == [ (0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1)])
+
+input3 = [(0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1),
+          (1.487, 1), (1.497, 1), (1.513, 1), (1.707, 1), (1.71, -1), (1.883, -1), (1.89, 1), (2.403, 1),
+          (2.405, -1), (2.583, -1), (2.585, 1), (2.962, 1), (2.988, 1), (3.002, 1), (4.81, 1), (5.045, 1),
+          (5.047, -1), (5.228, -1), (5.23, 1), (5.477, 1), (5.478, -1), (5.657, -1), (5.658, 1), (5.952, 1),
+          (6.028, -1), (6.157, -1), (6.442, 1), (6.455, 1), (8.853, 1), (9.06, 1), (9.067, -1), (9.252, -1),
+          (9.26, 1), (9.54, 1)]
+output3 = filter_tuples(input3)
+assert(output3 == [(0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1),
+          (1.513, 1), (1.707, 1), (1.71, -1), (1.883, -1), (1.89, 1), (2.403, 1),
+          (2.405, -1), (2.583, -1), (2.585, 1), (2.962, 1), (4.81, 1), (5.045, 1),
+          (5.047, -1), (5.228, -1), (5.23, 1), (5.477, 1), (5.478, -1), (5.657, -1), (5.658, 1), (5.952, 1),
+          (6.028, -1), (6.157, -1), (6.442, 1), (6.455, 1), (8.853, 1), (9.06, 1), (9.067, -1), (9.252, -1),
+          (9.26, 1), (9.54, 1)])
+
