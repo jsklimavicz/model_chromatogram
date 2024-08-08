@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 from scipy.stats import exponnorm
-from general_parameters import signal_globals as sg
+from user_parameters import *
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 import math
@@ -10,15 +10,11 @@ from peak_finding import *
 
 ## Create Baseline with noise
 
-### Create Baseline
+# Create Baseline
+samples_per_minute = 60 * SAMPLE_RATE
 
-max_time = sg.RUN_LENGTH
-
-samples_per_minute = 60 * sg.SAMPLE_RATE
-
-
-times = np.arange(0, max_time, 1./samples_per_minute)
-signal = np.random.normal(loc = 0, scale = sg.BASELINE_NOISE, size = times.shape)
+times = np.arange(0, RUN_LENGTH, 1./samples_per_minute)
+signal = np.random.normal(loc = 0, scale = BASELINE_NOISE, size = times.shape)
 signal = savgol_filter(signal, 15, 3)
 ## Load peaks table
 from peaks import peaks as peaks_list
@@ -31,7 +27,7 @@ for peak in peaks_list:
 # plt.show()
 
 from scipy.signal import find_peaks, peak_widths
-peaks, _ = find_peaks(signal, height=signal.max()/100, prominence = signal.max()/200, distance = sg.SAMPLE_RATE * 10)
+peaks, _ = find_peaks(signal, height=signal.max()/100, prominence = signal.max()/200, distance = SAMPLE_RATE * 10)
 # plt.plot(times, signal)
 
 # plt.plot(times[peaks], signal[peaks], "x")
@@ -49,7 +45,7 @@ results_full = peak_widths(signal, peaks, rel_height=1)
 
 # plt.plot(times[peaks], signal[peaks], "x")
 
-num_points = sg.SAMPLE_RATE * 60
+num_points = SAMPLE_RATE * 60
 
 # plt.hlines(results_half[1], results_half[2]/num_points, results_half[3]/num_points, color="C2")
 
@@ -63,7 +59,7 @@ inv_signal = signal.max() - signal
 minima, _ = find_peaks(inv_signal, 
                       height=signal.max()/100, 
                       prominence = signal.max()/1000, 
-                      distance = sg.SAMPLE_RATE * 10)
+                      distance = SAMPLE_RATE * 10)
 # plt.plot(times, signal)
 
 # plt.plot(times[minima], signal[minima], "x")
