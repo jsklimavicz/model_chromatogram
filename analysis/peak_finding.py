@@ -1,4 +1,3 @@
-
 def filter_tuples(input_list):
     results = []
     series = []
@@ -36,17 +35,19 @@ def filter_tuples(input_list):
         else:
             results.extend(series)
 
-    # Handle the case where the list starts with a series of b == 1 
-    initial_ones_count = 0 
+    # Handle the case where the list starts with a series of b == 1
+    initial_ones_count = 0
     for tup in input_list:
         _, b = tup
         if b == 1:
             initial_ones_count += 1
-        else: break
+        else:
+            break
     if initial_ones_count > 2:
-        results = results[initial_ones_count - 2:]
+        results = results[initial_ones_count - 2 :]
 
     return results
+
 
 # # Test cases
 # input1 = [(0.022, 1), (0.023, 1), (0.73, 1), (0.908, 1), (0.917, -1), (1.085, -1), (1.1, 1), (1.313, 1)]
