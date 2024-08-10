@@ -1,44 +1,62 @@
-﻿compound,nickname,cas,formula,MW,james_note,default_CV,SMILES,jdx_file
-guanosine,,118-00-3,C10H13N5O2,235.2425,bimolecule,1.6,NC1=Nc2c(ncn2[C@@H]3O[C@H](CO)[C@@H](O)[C@H]3O)C(=O)N1,118-00-3-UVVis.jdx
-cytidine,,65-46-3,C9H13N3O5,243.2166,bimolecule,1.67,,65-46-3-UVVis.jdx
-"2,4-imidazolidinedione",hydantoin,461-72-3,C3H4N2O2,100.0761,small molecule,2.02,,461-72-3-UVVis.jdx
-cystine,,56-89-3,C6H12N2O4S2,240.3,bimolecule,2.26,,56-89-3-UVVis.jdx
-tryptophan,,54-12-6,C11H12N2O2,204.2252,bimolecule,2.34,,54-12-6-UVVis.jdx
-sulfisoxazole,,127-69-5,C11H13N3O3S,267.304,drug,2.55,,127-69-5-UVVis.jdx
-acetaminophen,,103-90-2,C8H9NO2,151.1626,drug,2.83,CC(=O)Nc1ccc(O)cc1,103-90-2-UVVis.jdx
-piperonal,,120-57-0,C8H6O3,150.1314,small molecule,2.9,[H]C(=O)c1ccc2OCOc2c1,120-57-0-UVVis.jdx
-tyrosine,,60-18-4,C9H11NO3,181.1885,bimolecule,2.96,,60-18-4-UVVis.jdx
-nordazepam,,1088-11-5,C15H11ClN2O,270.714,drug,3.21,Clc1ccc2NC(=O)CN=C(c3ccccc3)c2c1,1088-11-5-UVVis.jdx
-sulfanilamide,,63-74-1,C6H8N2O2S,172.205,drug,3.29,,63-74-1-UVVis.jdx
-phenacetin,,62-44-2,C10H13NO2,179.2157,drug,3.46,,62-44-2-UVVis.jdx
-caffeine,,58-08-2,C8H10N4O2,194.1906,drug,3.61,,58-08-2-UVVis.jdx
-"2-bromo-N,N-dimethylbenzenamine",,698-00-0,C8H10BrN,200.076,small molecule,3.79,,698-00-0-UVVis.jdx
-kinetin,,525-79-1,C10H9N5O,215.2114,drug,4.01,C(Nc1ncnc2nc[nH]c12)c1ccco1,525-79-1-UVVis.jdx
-N-phenyl-2-thiophenesulfonamide,,39810-46-3,C10H9NO2S2,239.314,small molecule,3.97,,39810-46-3-UVVis.jdx
-chloroxine,,773-76-2,C9H5Cl2NO,214.048,small molecule,4.19,Oc1c(Cl)cc(Cl)c2cccnc12,773-76-2-UVVis.jdx
-pyridine-4-thiol,,4556-23-4,C5H5NS,111.165,small molecule,4.47,,4556-23-4-UVVis.jdx
-"1-(4-methoxyphenyl)-3,5-diphenylformazan",formazan_1,20648-42-4,C20H18N4O,330.3831,dye,4.53,,20648-42-4-UVVis.jdx
-coumarin,,531-59-9,C10H8O3,176.1687,drug,4.71,,531-59-9-UVVis.jdx
-"2,2'-bipyridine",bipyridine,366-18-7,C10H8N2,156.1839,ligand,4.82,,366-18-7-UVVis.jdx
-5-methoxyflavone,,42079-78-7,C16H12O3,252.27,drug,4.98,,42079-78-7-UVVis.jdx
-mepacrine HCl,,69-05-6,C23H32Cl3N3O ,472.88,drug,5.2,CCN(CC)CCCC(C)Nc1c2ccc(cc2nc3c1cc(cc3)OC)Cl,69-05-6-UVVis.jdx
-"1,3-bis(4-methoxyphenyl)-5-(4-nitrophenyl)formazan",formazan_2,53451-83-5,C21H19N5O4,405.4067,dye,5.28,,53451-83-5-UVVis.jdx
-chloroquine,,54-05-7,C18H26ClN3,319.872,drug,5.36,Clc1cc2nccc(c2cc1)NC(C)CCCN(CC)CC,54-05-7-UVVis.jdx
-3-iodopyridine,,1120-90-7,C5H4IN,205,small molecule,5.4,Ic1cccnc1,1120-90-7-UVVis.jdx
-"1,3-diphenylurea",DPU,102-07-8,C13H12N2O,212.2472,ligand,5.57,O=C(Nc1ccccc1)Nc2ccccc2,102-07-8-UVVis.jdx
-2-acetylbenzofuran,,1646-26-0,C10H8O2,160.1693,small molecule,5.92,,1646-26-0-UVVis.jdx
-triphenylphosphine oxide,TPO,791-28-6,C18H15OP,278.2849,ligand,6.07,,791-28-6-UVVis.jdx
-1-methyl-2-(phenylthio)benzene,,13963-35-4,C13H12S,200.299,small molecule,6.1,,13963-35-4-UVVis.jdx
-3-(trifluoromethyl)benzenamine,,98-16-8,C7H6F3N,161.1244,small molecule,6.12,,98-16-8-UVVis.jdx
-"5,5-dimethyl-2,4-dithiohydantoin",DMDTH,20513-25-1,C5H8N2S2,160.26,small molecule,5.34,,20513-25-1-UVVis.jdx
-eugenol,,97-53-0,C10H12O2,164.2011,small molecule,6.37,,97-53-0-UVVis.jdx
-"3-methyl-2-(methylthio)-6,7-diphenyl-4(3H)-pteridinone",TS-881,50996-35-5,C20H16N4OS,360.432,small molecule,6.71,,50996-35-5-UVVis.jdx
-safrole,,94-59-7,C10H10O2,162.1852,small molecule,6.82,,94-59-7-UVVis.jdx
-vincamine,,1617-90-9,C21H26N2O3,354.4427,drug,7.11,,1617-90-9-UVVis.jdx
-"2,3-dihydro-4-methyl-7-nitro-1H-1,5-benzodiazepin-2-one",TS-129,37546-86-4,C10H9N3O3,219.1968,drug,7.21,,37546-86-4-UVVis.jdx
-tris(4-methoxyphenyl)phosphine,,855-38-9,C21H21O3P,352.3634,ligand,7.45,,855-38-9-UVVis.jdx
-triphenyl phosphine,TPP,603-35-0,C18H15P,262.2855,ligand,7.91,,603-35-0-UVVis.jdx
-p-bromofluorobenzene,,460-00-4,C6H4BrF,174.998,small molecule,8.13,,460-00-4-UVVis.jdx
-hydrocortisone,,50-23-7,C21H30O5,362.4599,drug,8.22,,50-23-7-UVVis.jdx
-amitriptyline,,50-48-6,C20H23N,277.4033,drug,8.49,CN(C)CC\C=C1\c2ccccc2CCc3ccccc13,50-48-6-UVVis.jdx
-"1,2-ethanediylbis[diphenylphosphine]",DPPE,1663-45-2,C26H24P2,398.4163,ligand,8.8,,1663-45-2-UVVis.jdx
+﻿compound,nickname,cas,formula,mw,class,base_cv,SMILES,logp,asymmetry_addition,jdx_file
+guanosine,,118-00-3,C10H13N5O2,235.2425,biomolecule,1.6,NC1=Nc2c(ncn2[C@@H]3O[C@H](CO)[C@@H](O)[C@H]3O)C(=O)N1,-1.9,0,118-00-3-UVVis.jdx
+cytidine,,65-46-3,C9H13N3O5,243.2166,biomolecule,1.54,,-2.5,0,65-46-3-UVVis.jdx
+"2,4-imidazolidinedione",hydantoin,461-72-3,C3H4N2O2,100.0761,small molecule,2.02,,-1.7,0,461-72-3-UVVis.jdx
+cystine,,56-89-3,C6H12N2O4S2,240.3,biomolecule,1.14,,-5.08,0,56-89-3-UVVis.jdx
+tryptophan,,54-12-6,C11H12N2O2,204.2252,biomolecule,2.34,,-1.1,0.1,54-12-6-UVVis.jdx
+sulfisoxazole,,127-69-5,C11H13N3O3S,267.304,drug,2.55,,1,0,127-69-5-UVVis.jdx
+acetaminophen,,103-90-2,C8H9NO2,151.1626,drug,2.83,CC(=O)Nc1ccc(O)cc1,0.5,0.04,103-90-2-UVVis.jdx
+piperonal,,120-57-0,C8H6O3,150.1314,small molecule,2.9,[H]C(=O)c1ccc2OCOc2c1,1.05,0,120-57-0-UVVis.jdx
+tyrosine,,60-18-4,C9H11NO3,181.1885,biomolecule,1.69,,-2.3,0.1,60-18-4-UVVis.jdx
+nordazepam,,1088-11-5,C15H11ClN2O,270.714,drug,3.21,Clc1ccc2NC(=O)CN=C(c3ccccc3)c2c1,3.21,0,1088-11-5-UVVis.jdx
+sulfanilamide,,63-74-1,C6H8N2O2S,172.205,drug,3.29,,-0.62,0,63-74-1-UVVis.jdx
+phenacetin,,62-44-2,C10H13NO2,179.2157,drug,3.46,,1.6,0,62-44-2-UVVis.jdx
+caffeine,,58-08-2,C8H10N4O2,194.1906,drug,3.61,,-0.07,0,58-08-2-UVVis.jdx
+"2-bromo-N,N-dimethylaniline",,698-00-0,C8H10BrN,200.076,small molecule,3.79,,2.4,",09",698-00-0-UVVis.jdx
+kinetin,,525-79-1,C10H9N5O,215.2114,drug,4.01,C(Nc1ncnc2nc[nH]c12)c1ccco1,1.2,0,525-79-1-UVVis.jdx
+N-phenyl-2-thiophenesulfonamide,,39810-46-3,C10H9NO2S2,239.314,small molecule,3.97,,2.46,0,39810-46-3-UVVis.jdx
+chloroxine,,773-76-2,C9H5Cl2NO,214.048,small molecule,4.19,Oc1c(Cl)cc(Cl)c2cccnc12,3.5,0.05,773-76-2-UVVis.jdx
+pyridine-4-thiol,,4556-23-4,C5H5NS,111.165,small molecule,4.47,,1.03,0.11,4556-23-4-UVVis.jdx
+"1-(4-methoxyphenyl)-3,5-diphenylformazan",formazan_1,20648-42-4,C20H18N4O,330.3831,dye,5.53,,5.7,0,20648-42-4-UVVis.jdx
+coumarin,,531-59-9,C10H8O3,176.1687,drug,4.66,,1.4,0,531-59-9-UVVis.jdx
+"2,2'-bipyridine",bipyridine,366-18-7,C10H8N2,156.1839,ligand,4.82,,1.7,0,366-18-7-UVVis.jdx
+5-methoxyflavone,,42079-78-7,C16H12O3,252.27,drug,4.98,,3.5,0,42079-78-7-UVVis.jdx
+mepacrine HCl,,69-05-6,C23H32Cl3N3O ,472.88,drug,7.2,CCN(CC)CCCC(C)Nc1c2ccc(cc2nc3c1cc(cc3)OC)Cl,6,0,69-05-6-UVVis.jdx
+"1,3-bis(4-methoxyphenyl)-5-(4-nitrophenyl)formazan",formazan_2,53451-83-5,C21H19N5O4,405.4067,dye,6.28,,6.1,0,53451-83-5-UVVis.jdx
+chloroquine,,54-05-7,C18H26ClN3,319.872,drug,5.36,Clc1cc2nccc(c2cc1)NC(C)CCCN(CC)CC,4.6,0.25,54-05-7-UVVis.jdx
+3-iodopyridine,,1120-90-7,C5H4IN,205,small molecule,2.35,Ic1cccnc1,1.8,0.13,1120-90-7-UVVis.jdx
+"1,3-diphenylurea",DPU,102-07-8,C13H12N2O,212.2472,ligand,5.57,O=C(Nc1ccccc1)Nc2ccccc2,3.12,0,102-07-8-UVVis.jdx
+2-acetylbenzofuran,,1646-26-0,C10H8O2,160.1693,small molecule,2.61,,1.75,0,1646-26-0-UVVis.jdx
+triphenylphosphine oxide,TPO,791-28-6,C18H15OP,278.2849,ligand,3.01,,2.8,0,791-28-6-UVVis.jdx
+1-methyl-2-(phenylthio)benzene,,13963-35-4,C13H12S,200.299,small molecule,6.1,,4.4,0,13963-35-4-UVVis.jdx
+3-(trifluoromethyl)aniline,,98-16-8,C7H6F3N,161.1244,small molecule,4.19,,2.3,0.14,98-16-8-UVVis.jdx
+"5,5-dimethyl-2,4-dithiohydantoin",DMDTH,20513-25-1,C5H8N2S2,160.26,small molecule,2.74,,0.7,0,20513-25-1-UVVis.jdx
+eugenol,,97-53-0,C10H12O2,164.2011,small molecule,6.37,,2.1,0,97-53-0-UVVis.jdx
+"3-methyl-2-(methylthio)-6,7-diphenyl-4(3H)-pteridinone",TS-881,50996-35-5,C20H16N4OS,360.432,small molecule,6.71,,3.67,0,50996-35-5-UVVis.jdx
+safrole,,94-59-7,C10H10O2,162.1852,small molecule,6.82,,3.1,0,94-59-7-UVVis.jdx
+vincamine,,1617-90-9,C21H26N2O3,354.4427,drug,6.6,,3.39,0.05,1617-90-9-UVVis.jdx
+"2,3-dihydro-4-methyl-7-nitro-1H-1,5-benzodiazepin-2-one",TS-129,37546-86-4,C10H9N3O3,219.1968,drug,5.01,,2.3,0,37546-86-4-UVVis.jdx
+tris(4-methoxyphenyl)phosphine,,855-38-9,C21H21O3P,352.3634,ligand,7.45,,4.5,0,855-38-9-UVVis.jdx
+triphenyl phosphine,TPP,603-35-0,C18H15P,262.2855,ligand,7.91,,4.61,0,603-35-0-UVVis.jdx
+p-bromofluorobenzene,,460-00-4,C6H4BrF,174.998,small molecule,6.75,,3.14,0,460-00-4-UVVis.jdx
+hydrocortisone,,50-23-7,C21H30O5,362.4599,drug,4.92,,1.61,0,50-23-7-UVVis.jdx
+amitriptyline,,50-48-6,C20H23N,277.4033,drug,8.49,CN(C)CC\C=C1\c2ccccc2CCc3ccccc13,3.02,0.15,50-48-6-UVVis.jdx
+"1,2-ethanediylbis[diphenylphosphine]",DPPE,1663-45-2,C26H24P2,398.4163,ligand,8.8,,3.58,0,1663-45-2-UVVis.jdx
+cinnoline,,253-66-7,C8H6N2,130.1466,small molecule,5.67,,0.9,0.05,253-66-7-UVVis.jdx
+riboflavin tetraacetate,,752-13-6,C25H28N4O10,544.5106,biomolecule,3.72,,0.98,0,752-13-6-UVVis.jdx
+6-Chloronicotinic acid,,5326-23-8,C6H4ClNO2,157.554,small molecule,2.68,,2.7,0,5326-23-8-UVVis.jdx
+"1-Acetyl-4-(acetyloxy)-1,2-dihydro-2-oxoazuleno[2,1-b]pyridine-10-carbonitrile",TS-8830,53299-95-9,C18H12N2O4,320.2989,drug,6.86,,2.47,0,53299-95-9-UVVis.jdx
+Uracil,,66-22-8,C4H4N2O2,112.0868,biomolecule,1.32,,-1.07,0,66-22-8-UVVis.jdx
+Theophylline,,58-55-9,C7H8N4O2,180.164,drug,4.69,,0.12,0,58-55-9-UVVis.jdx
+Antipyrine,,60-80-0,C11H12N2O,188.2258,drug,5.03,,0.38,0.1,60-80-0-UVVis.jdx
+Mephenesin,,59-47-2,C10H14O3,182.2164,drug,4.39,,1.4,0.1,59-47-2-UVVis.jdx
+Guanine,,73-40-5,C5H5N5O,151.1261,biomolecule,2.1,,-0.91,0,73-40-5-UVVis.jdx
+2-Methoxyacetophenone,,579-74-8,C9H10O2,150.1745,small molecule,3.42,,1.8,0,579-74-8-UVVis.jdx
+camphor,,464-48-2,C10H16O,152.2334,small molecule,7.03,,2.2,0,464-48-2-UVVis.jdx
+Acepromazine,,61-00-7,C19H22N2OS,326.456,drug,8.01,,4.2,0,61-00-7-UVVis.jdx
+Testosterone,,58-22-0,C19H28O2,288.4244,biomolecule,7.51,,3.37,0,58-22-0-UVVis.jdx
+Dehydroacetic Acid,,520-45-6,C8H8O4,168.1467,small molecule,3.05,,0.3,0.03,520-45-6-UVVis.jdx
+4-Quinazolinone,,491-36-1,C8H6N2O,146.146,small molecule,4.89,,1.29,0,491-36-1-UVVis.jdx
+1-nitroso-1-phenylhydrazine,,614-01-7,C6H7N3O,137.1393,small molecule,4.16,,1,0.2,614-01-7-UVVis.jdx
+pulegone,,89-82-7,C10H16O,152.2334,small molecule,6.6,,2.8,0,89-82-7-UVVis.jdx
+phenethyl alcohol,,60-12-8,C8H10O,122.1644,small molecule,2.41,,1.36,0,60-12-8-UVVis.jdx
