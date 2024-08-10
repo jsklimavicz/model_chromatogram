@@ -30,11 +30,15 @@ class Sample:
             )
 
         self.compounds = [*self.compounds, *random_peaks]
+        self.compounds.sort(key=lambda x: x.retention)
 
     def print_compound_list(self):
+        print(
+            f'{"compound name": <20}{" "}{"CAS ":<12}\t{"RT "}\t{"MW ":<8}\t{"Conc. "}\t{"mM"}'
+        )
         for compound in self.compounds:
             print(
-                f"{compound.id} ({compound.cas}) -- MW: {compound.mw}; concentration: {compound.concentration}, molarity: {compound.m_molarity}"
+                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.retention,3):0.2f}\t{round(compound.mw,3):0.3f}  \t{round(compound.concentration,3):0.3f}\t{round(compound.m_molarity,3):0.3f}'
             )
 
 
