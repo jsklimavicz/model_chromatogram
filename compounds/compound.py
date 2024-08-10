@@ -3,26 +3,17 @@ import numpy as np
 
 
 class Compound:
-    def __init__(
-        self,
-        name,
-        cas,
-        mw,
-        concentration=0,
-        retention=1.5,
-        formula=None,
-        smiles=None,
-        nickname=None,
-    ) -> None:
-        self.name = name
-        self.cas = cas
-        self.mw = mw
-        self.concentration = concentration
-        self.mmolar = 1000 * concentration / mw
-        self.retention = retention
-        self.formula = formula
-        self.smiles = smiles
-        self.nickname = nickname
+    def __init__(self, **kwargs) -> None:
+        # if None in [compound, cas, mw, concentration, base_cv]:
+        #     raise ValueError(
+        #         "Please make sure each compound has a compound name, cas, and mw."
+        #     )
+
+        self.name = kwargs["compound"]
+        self.cas = kwargs["cas"]
+        self.mw = kwargs["mw"]
+        self.retention = kwargs["base_cv"]
+        self.kwargs = kwargs
         self.set_uv_spectrum()
 
     def set_uv_spectrum(self):
@@ -36,6 +27,10 @@ class Compound:
         absorbance = self.spectrum.get_epsilon(wavelength) * pathlength
         absorbance *= concentration if concentration is not None else self.mmolar
         return absorbance
+
+    def set_concentration(self, concentration):
+        self.concentration = concentration
+        self.m_molarity = 1000 * self.concentration / self.mw
 
 
 class UVSpectrum:
