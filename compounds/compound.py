@@ -4,15 +4,13 @@ import numpy as np
 
 class Compound:
     def __init__(self, **kwargs) -> None:
-        # if None in [compound, cas, mw, concentration, base_cv]:
-        #     raise ValueError(
-        #         "Please make sure each compound has a compound name, cas, and mw."
-        #     )
-
-        self.name = kwargs["compound"]
+        self.name = kwargs["name"]
+        self.id = kwargs["id"]
         self.cas = kwargs["cas"]
-        self.mw = kwargs["mw"]
-        self.retention = kwargs["base_cv"]
+        self.mw = float(kwargs["mw"])
+        self.retention = float(kwargs["default_CV"])
+        self.logp = float(kwargs["logp"])
+        self.asymmetry_addition = float(kwargs["asymmetry_addition"])
         self.kwargs = kwargs
         self.set_uv_spectrum()
 
@@ -93,22 +91,22 @@ class UVSpectrum:
             return 10 ** self.spline(wavelength)
 
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-cas = "42079-78-7"
+# cas = "42079-78-7"
 
-spectrum = UVSpectrum(cas)
-min_val = min(spectrum.wavelengths)
-max_val = max(spectrum.wavelengths)
-wave = np.linspace(min_val - 10, max_val + 100, 300)
-values = spectrum.get_epsilon(wave)
-plt.plot(wave, values, c="red")
+# spectrum = UVSpectrum(cas)
+# min_val = min(spectrum.wavelengths)
+# max_val = max(spectrum.wavelengths)
+# wave = np.linspace(min_val - 10, max_val + 100, 300)
+# values = spectrum.get_epsilon(wave)
+# plt.plot(wave, values, c="red")
 
-wave = np.linspace(min_val, max_val, 100)
-values = spectrum.get_epsilon(wave)
+# wave = np.linspace(min_val, max_val, 100)
+# values = spectrum.get_epsilon(wave)
 
-plt.plot(wave, values, c="blue")
+# plt.plot(wave, values, c="blue")
 
-plt.show()
+# plt.show()
 
-print("t")
+# print("t")
