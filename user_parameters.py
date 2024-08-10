@@ -23,3 +23,8 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = 0.001
 BACKGROUND_MEAN = 0
 BACKGROUND_NOISE = None
 BACKGROUND_SMOOTHING = 21  # points for smoothing
+
+# Peak Naming Parameters
+ID_PEAK_PREFIX = "JSK"
+IMP_PEAK_PREFIX = "IMP"
+RANDOM_PEAK_ID_DIGITS = 4  # number of digits to put into to a random peak id
