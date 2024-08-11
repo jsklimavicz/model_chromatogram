@@ -1,5 +1,13 @@
 import numpy.random as random
 import numpy as np
+from user_parameters import *
+import sys, os
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
+import numpy as np
 
 
 class Baseline:
@@ -27,7 +35,11 @@ class Baseline:
         return signal
 
     def create_background(
-        self, n_points, noise_level=1, mean=1, autocorrelation_parameter=0.7
+        self,
+        n_points,
+        noise_level=1,
+        mean=1,
+        autocorrelation_parameter=BASELINE_AUTOCORRELATION_PARAMETER,
     ):
         """
         For generating 1-D backgrounds

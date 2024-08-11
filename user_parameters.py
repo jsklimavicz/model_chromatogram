@@ -1,7 +1,7 @@
-# Common User Parameters
-SAMPLE_RATE = 10  # Hz
-BASELINE_NOISE = 0.2
-RUN_LENGTH = 15  # minutes
+# Method Parameters
+SAMPLE_RATE = 10  # in Hz; default if not specified in method
+RUN_LENGTH = 15  # in minutes; default if not specified in method
+FLOW_RATE = 5  # in ml/minutes; default if not specified in method
 
 # Peak shape parameters
 DEFAULT_PEAK_WIDTH = 0.18
@@ -21,8 +21,13 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = 0.001
 
 # Background Noise Parameters
 BACKGROUND_MEAN = 0
+BASELINE_NOISE = 0.2
+BASELINE_AUTOCORRELATION_PARAMETER = 0.7
 BACKGROUND_NOISE = None
 BACKGROUND_SMOOTHING = 21  # points for smoothing
+
+# Method Paramters
+SOLVENT_PROFILE_CONVOLUTION_WIDTH = 1
 
 # Peak Naming Parameters
 ID_PEAK_PREFIX = "JSK"

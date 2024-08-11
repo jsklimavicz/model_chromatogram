@@ -24,7 +24,7 @@ class Compound:
 
     def get_absorbance(self, wavelength, concentration=None, pathlength=1):
         absorbance = self.spectrum.get_epsilon(wavelength) * pathlength
-        absorbance *= concentration if concentration is not None else self.mmolar
+        absorbance *= concentration if concentration is not None else self.m_molarity
         return absorbance
 
     def set_concentration(self, concentration):
@@ -70,20 +70,23 @@ class UVSpectrum:
         )
 
     def extrapolate_lower_end(self) -> None:
-        min_wave = int(np.floor(min(self.wavelengths)))
-        addition_wavelengths = np.arange(180, min_wave)
+        min_wave = int(np.floor(min(self.wavelengths) - 0.1))
+        if min_wave > 185:
+            addition_wavelengths = np.arange(180, min_wave)
+        else:
+            addition_wavelengths = np.arange(min_wave - 10, min_wave)
         addition_eps = np.ones_like(addition_wavelengths) * self.log_epsilon[0]
         addition_eps += 0.01 * np.sqrt(np.arange(len(addition_eps), 0, -1))
-        self.wavelengths = np.concatenate([addition_wavelengths, self.wavelengths])
-        self.log_epsilon = np.concatenate([addition_eps, self.log_epsilon])
+        self.wavelengths = [*addition_wavelengths, *self.wavelengths]
+        self.log_epsilon = [*addition_eps, *self.log_epsilon]
 
     def extrapolate_upper_end(self) -> None:
-        max_wave = int(np.ceil(max(self.wavelengths)))
+        max_wave = int(np.ceil(max(self.wavelengths) + 0.1))
         addition_wavelengths = np.arange(max_wave, max_wave + 5)
         addition_eps = np.ones_like(addition_wavelengths) * self.log_epsilon[-1]
         addition_eps -= 0.01 * (np.arange(0, len(addition_eps)))
-        self.wavelengths = np.concatenate([self.wavelengths, addition_wavelengths])
-        self.log_epsilon = np.concatenate([self.log_epsilon, addition_eps])
+        self.wavelengths = [*self.wavelengths, *addition_wavelengths]
+        self.log_epsilon = [*self.log_epsilon, *addition_eps]
 
     def get_epsilon(self, wavelength: np.array, log=False) -> None:
         if log:
@@ -94,16 +97,16 @@ class UVSpectrum:
 
 # import matplotlib.pyplot as plt
 
-# cas = "42079-78-7"
+# cas = "7732-18-5"
 
 # spectrum = UVSpectrum(cas)
 # min_val = min(spectrum.wavelengths)
 # max_val = max(spectrum.wavelengths)
-# wave = np.linspace(min_val - 10, max_val + 100, 300)
+# wave = np.linspace(190, max_val + 100, 300)
 # values = spectrum.get_epsilon(wave)
 # plt.plot(wave, values, c="red")
 
-# wave = np.linspace(min_val, max_val, 100)
+# wave = np.linspace(190, max_val, 100)
 # values = spectrum.get_epsilon(wave)
 
 # plt.plot(wave, values, c="blue")

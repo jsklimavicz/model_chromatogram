@@ -2,6 +2,7 @@
     {
         "name": "test-1",
         "run_time": 30,
+        "sample_rate": 5,
         "mobile_phases": [
             {
                 "name": "water",

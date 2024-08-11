@@ -10,13 +10,13 @@ from compounds.compound import Compound
 
 class SolventLibrary(CompoundLibrary):
     def __init__(self) -> None:
-        self.solvents: list[Solvent] = []
+        self.compounds: list[Solvent] = []
         with open("./compounds/solvents.csv", mode="r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             rows = list(reader)
 
         for row in rows:
-            self.solvents.append(Solvent(**row))
+            self.compounds.append(Solvent(**row))
 
 
 class Solvent(Compound):
@@ -28,6 +28,7 @@ class Solvent(Compound):
         self.dipolarity = float(_get(kwargs, "dipolarity"))
         self.polarity = float(_get(kwargs, "polarity"))
         self.dielelectric = float(_get(kwargs, "dielelectric"))
+        self.set_concentration(float(_get(kwargs, "density")))
 
 
 solvent_library = SolventLibrary()

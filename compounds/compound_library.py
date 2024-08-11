@@ -23,7 +23,10 @@ class CompoundLibrary:
 
     def __lookup(self, id: str, field: str):
         for compound in self.compounds:
-            if compound.kwargs[field] == id:
+            if isinstance(compound.kwargs[field], list):
+                if id in compound.kwargs[field]:
+                    return compound
+            elif compound.kwargs[field] == id:
                 return compound
         return None  # no matching ID found
 
