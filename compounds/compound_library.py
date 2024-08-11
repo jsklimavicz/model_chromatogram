@@ -1,4 +1,3 @@
-from compound import Compound
 import csv
 from random import randrange, shuffle
 import sys
@@ -8,6 +7,7 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 
+from compounds.compound import Compound
 from user_parameters import RANDOM_PEAK_ID_DIGITS, IMP_PEAK_PREFIX
 
 

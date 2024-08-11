@@ -1,12 +1,13 @@
 from scipy.interpolate import CubicSpline
 import numpy as np
+from pydash import get as _get
 
 
 class Compound:
     def __init__(self, **kwargs) -> None:
-        self.name = kwargs["name"]
-        self.id = kwargs["id"]
-        self.cas = kwargs["cas"]
+        self.name = _get(kwargs, "name").strip()
+        self.id = _get(kwargs, "id")
+        self.cas = _get(kwargs, "cas").strip()
         self.mw = float(kwargs["mw"])
         self.retention = float(kwargs["default_CV"])
         self.logp = float(kwargs["logp"])
@@ -16,7 +17,7 @@ class Compound:
 
     def set_uv_spectrum(self):
         try:
-            self.spectrum = UVSpectrum(cas)
+            self.spectrum = UVSpectrum(self.cas)
         except:
             # default UV spectrum
             self.spectrum = UVSpectrum("63-74-1")
@@ -57,7 +58,7 @@ class UVSpectrum:
             self.wavelengths = np.array(self.wavelengths)
             self.log_epsilon = np.array(self.log_epsilon)
         except FileNotFoundError as e:
-            print("Check if the jdx file is in this directory.")
+            print(f"Check if the jdx file for CAS {self.cas} is in this directory.")
             raise
 
     def create_spline(self) -> None:

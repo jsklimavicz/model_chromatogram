@@ -42,21 +42,21 @@ class Sample:
             )
 
 
-sample_dict = {
-    "sample_name": "test-1",
-    "location": "R:A1",
-    "compound_list": "guanosine, chloroquine, DPU, coumarin",
-    "concentration_list": "2.1, 3.2, 1.3, 2.4",
-    "num_random_peaks": 5,
-    "max_random_concentration": 0.5,
-}
+# sample_dict = {
+#     "sample_name": "test-1",
+#     "location": "R:A1",
+#     "compound_list": "guanosine, chloroquine, DPU, coumarin",
+#     "concentration_list": "2.1, 3.2, 1.3, 2.4",
+#     "num_random_peaks": 5,
+#     "max_random_concentration": 0.5,
+# }
 
-sample_dict["compound_list"] = [
-    a.strip() for a in sample_dict["compound_list"].split(",")
-]
-sample_dict["concentration_list"] = [
-    float(a) for a in sample_dict["concentration_list"].split(",")
-]
+# sample_dict["compound_list"] = [
+#     a.strip() for a in sample_dict["compound_list"].split(",")
+# ]
+# sample_dict["concentration_list"] = [
+#     float(a) for a in sample_dict["concentration_list"].split(",")
+# ]
 
-my_sample = Sample(**sample_dict)
-my_sample.print_compound_list()
+# my_sample = Sample(**sample_dict)
+# my_sample.print_compound_list()
