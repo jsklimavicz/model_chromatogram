@@ -8,6 +8,10 @@ from pydash import get as _get
 from injection import Injection
 from system import *
 
+import random
+
+random.seed(10)
+
 sample_dict = {
     "sample_name": "test-1",
     "location": "R:A1",
@@ -39,14 +43,8 @@ my_sample.print_compound_list()
 
 with open("./methods/instrument_methods.json") as f:
     method_list = json.load(f)
-method_json = _get(method_list, "0")
+method_json = _get(method_list, "1")
 method = Method(**method_json)
-# times, values = method.get_uv_background(230)
-# plt.plot(times, values, c="red")
-# times, values = method.get_uv_background(250)
-# plt.plot(times, values, c="blue")
-# plt.show()
-# print(method)
 
 injection = Injection(sample=my_sample, method=method, system=system)
 injection.plot_chromatogram("UV_VIS_1", c="red")

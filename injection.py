@@ -55,8 +55,8 @@ class Injection:
         # get flow integral, and interpolate until we find the right volume.
         return np.interp(
             retention_volume,
-            self.method.get_times(),
             self.method.get_profile("flow", order=1),
+            self.method.get_times(),
         )
 
     def plot_chromatogram(self, channel_name, **kwargs):

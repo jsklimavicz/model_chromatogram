@@ -157,8 +157,17 @@
                 "curve": 5
             },
             {
+                "time": 5.0,
+                "flow": 0.5,
+                "percent_a": 40.0,
+                "percent_b": 60.0,
+                "percent_c": 0.0,
+                "percent_d": 0.0,
+                "curve": 5
+            },
+            {
                 "time": 10.0,
-                "flow": 1.0,
+                "flow": 0.5,
                 "percent_a": 80.0,
                 "percent_b": 20.0,
                 "percent_c": 0.0,

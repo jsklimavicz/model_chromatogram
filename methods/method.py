@@ -115,13 +115,10 @@ class Method:
         Returns:
             y (np.array): The array of signal values
 
-        TODO: Implement integral and derivative methods
         TODO: Curve parameter input
         TODO: Handling for repeated x-values.
 
         """
-        print(grad_x)
-        print(grad_y)
         y = np.interp(interp_times, grad_x, grad_y)
         if convolve:
             y = self.__convolve_profile(y)
@@ -193,6 +190,12 @@ class Method:
         return self.profile_table["time"], background
 
     def get_times(self):
+        """
+        Aliased function specifically to return a list of times in the profile table.
+
+        Returns:
+            np.array of time values.
+        """
         return self.get_profile("time")
 
     def get_profile(self, profile_name, order=0):
