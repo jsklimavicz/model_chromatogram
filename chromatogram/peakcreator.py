@@ -15,13 +15,25 @@ from user_parameters import *
 
 class PeakCreator:
 
-    def __init__(self):
+    def __init__(self, times):
         self.retention_time_offset = uniform(
             -RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX
         )
         self.height_modifier = uniform(
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE
         )
+
+    def __find_exponnorm_mode(self, sigma, asymmetry):
+        exponnorm_dist = exponnorm(scale=sigma, K=asymmetry)
+
+        # Find the mode
+        # Define a function that returns the negative PDF (to maximize)
+        def neg_pdf(x):
+            return -exponnorm_dist.pdf(x)
+
+        # Use optimization to find the mode
+        result = minimize_scalar(neg_pdf)
+        return result.x
 
     def peak(
         self,
@@ -61,19 +73,9 @@ class PeakCreator:
             )
         )
 
-        def find_exponnorm_mode():
-            exponnorm_dist = exponnorm(scale=sigma, K=asymmetry)
-
-            # Find the mode
-            # Define a function that returns the negative PDF (to maximize)
-            def neg_pdf(x):
-                return -exponnorm_dist.pdf(x)
-
-            # Use optimization to find the mode
-            result = minimize_scalar(neg_pdf)
-            return result.x
-
-        exponentially_modified_gaussian_mean = desired_mode - find_exponnorm_mode()
+        exponentially_modified_gaussian_mean = (
+            desired_mode - self.__find_exponnorm_mode(sigma, asymmetry)
+        )
 
         return dict(
             name=name,

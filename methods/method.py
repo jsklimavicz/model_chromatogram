@@ -4,7 +4,7 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 
-from solvent_library import solvent_library
+from methods.solvent_library import solvent_library
 from pydash import get as _get
 from user_parameters import *
 import numpy as np
@@ -23,7 +23,7 @@ class Method:
     ) -> None:
         self.name: str = name
         self.run_time: float = run_time
-        self.detection_dict: dict = detection
+        self.detection: dict = detection
         self.mobile_phases: list = mobile_phases
         self.update_mobile_phase_dictionary()
         self.mobile_phase_gradient_steps: list = mobile_phase_gradient_steps
@@ -137,14 +137,14 @@ class Profile:
         return times, y
 
 
-import json
-import matplotlib.pyplot as plt
+# import json
+# import matplotlib.pyplot as plt
 
-with open("./methods/instrument_methods.json") as f:
-    method_list = json.load(f)
-method_json = _get(method_list, "0")
-method = Method(**method_json)
-times, values = method.get_uv_background(230)
-plt.plot(times, values, c="red")
-plt.show()
-print(method)
+# with open("./methods/instrument_methods.json") as f:
+#     method_list = json.load(f)
+# method_json = _get(method_list, "0")
+# method = Method(**method_json)
+# times, values = method.get_uv_background(230)
+# plt.plot(times, values, c="red")
+# plt.show()
+# print(method)

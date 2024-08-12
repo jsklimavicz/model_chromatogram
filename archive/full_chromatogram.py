@@ -6,7 +6,7 @@ from scipy.stats import exponnorm
 import math
 
 from user_parameters import *
-from peaks import peaks as peaks_list
+from archive.peaks import peaks as peaks_list
 from analysis.peak_finding import *
 from analysis.EMG_curvefit import expmodgauss_pdf, gaussian_pdf
 

@@ -1,5 +1,5 @@
-from compound import Compound
-from compound_library import compound_library
+from compounds.compound import Compound
+from compounds.compound_library import compound_library
 from random import uniform
 
 
@@ -40,23 +40,3 @@ class Sample:
             print(
                 f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.retention,3):0.2f}\t{round(compound.mw,3):0.3f}  \t{round(compound.concentration,3):0.3f}\t{round(compound.m_molarity,3):0.3f}'
             )
-
-
-# sample_dict = {
-#     "sample_name": "test-1",
-#     "location": "R:A1",
-#     "compound_list": "guanosine, chloroquine, DPU, coumarin",
-#     "concentration_list": "2.1, 3.2, 1.3, 2.4",
-#     "num_random_peaks": 5,
-#     "max_random_concentration": 0.5,
-# }
-
-# sample_dict["compound_list"] = [
-#     a.strip() for a in sample_dict["compound_list"].split(",")
-# ]
-# sample_dict["concentration_list"] = [
-#     float(a) for a in sample_dict["concentration_list"].split(",")
-# ]
-
-# my_sample = Sample(**sample_dict)
-# my_sample.print_compound_list()
