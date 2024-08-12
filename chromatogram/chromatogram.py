@@ -18,14 +18,14 @@ class Chromatogram:
         self.times = times
         self.signal = inital_values
         self.mean_values = inital_values
-        self.peak_creator = PeakCreator(times)
 
-    def plot(self):
-        plt.plot(self.times, self.signal)
-        plt.show()
+    def plot(self, **kwargs):
+        plt.plot(self.times, self.signal, **kwargs)
 
-    def add_compound_peak(self, compound: Compound):
-        pass
+    def add_compound_peak(
+        self, peak_creator: PeakCreator, compound: Compound, absorbance: float
+    ):
+        self.signal += peak_creator.compound_peak(compound, absorbance, self.times)
 
 
 class Baseline(Chromatogram):

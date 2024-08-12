@@ -2,6 +2,7 @@ from numpy.random import uniform
 import math
 from scipy.stats import exponnorm
 from scipy.optimize import minimize_scalar
+from compounds.compound import Compound
 
 import sys
 import os
@@ -15,7 +16,7 @@ from user_parameters import *
 
 class PeakCreator:
 
-    def __init__(self, times):
+    def __init__(self):
         self.retention_time_offset = uniform(
             -RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX
         )
@@ -34,6 +35,15 @@ class PeakCreator:
         # Use optimization to find the mode
         result = minimize_scalar(neg_pdf)
         return result.x
+
+    def compound_peak(self, compound: Compound, absorbance: float, times):
+        peak_dict = self.peak(retention_time=compound.retention, height=absorbance)
+        return peak_dict["height"] * exponnorm.pdf(
+            times,
+            K=peak_dict["asymmetry"],
+            loc=peak_dict["time"],
+            scale=peak_dict["width"],
+        )
 
     def peak(
         self,

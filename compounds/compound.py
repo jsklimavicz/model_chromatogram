@@ -24,7 +24,9 @@ class Compound:
 
     def get_absorbance(self, wavelength, concentration=None, pathlength=1):
         absorbance = self.spectrum.get_epsilon(wavelength) * pathlength
-        absorbance *= concentration if concentration is not None else self.m_molarity
+        absorbance *= (
+            concentration if concentration is not None else self.m_molarity / 1000
+        )
         return absorbance
 
     def set_concentration(self, concentration):

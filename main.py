@@ -39,3 +39,9 @@ method = Method(**method_json)
 # print(method)
 
 injection = Injection(sample=my_sample, method=method)
+injection.plot_chromatogram("UV_VIS_1", c="red")
+injection.plot_chromatogram("UV_VIS_2", c="blue")
+injection.plot_chromatogram("UV_VIS_3", c="black")
+injection.plot_chromatogram("UV_VIS_4", c="green")
+
+plt.show()
