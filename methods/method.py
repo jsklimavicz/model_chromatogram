@@ -4,21 +4,26 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 
-from methods.solvent_library import solvent_library
+from methods.solvent_library import solvent_library, Solvent
 from pydash import get as _get
 from user_parameters import *
 import numpy as np
 from compounds.compound import Compound
 from scipy import signal
+import pandas as pd
 
 
 class Method:
+    __solvent_ids = ["a", "b", "c", "d"]
+    __solvent_percents = [f"percent_{lett}" for lett in __solvent_ids]
+
     def __init__(
         self,
         name,
         mobile_phases,
         mobile_phase_gradient_steps,
         detection,
+        sample_rate=SAMPLE_RATE,
         run_time=RUN_LENGTH,
         **kwargs,
     ) -> None:
@@ -38,14 +43,18 @@ class Method:
                 "curve": int (1-9)
             where `time`, `flow`, and `percent_b` are mandatory; `percent_a` is determined by subtracting the other percentages from 100, and the `curve` parameter (default: 5) describes the interpolation method between two time points.
             detection: A dictionary containing detection parameters. Current supported is the `uv_vis_parameters` key, where the value is a `list` of `dict`s, where each dict has a `channel_name` (str) and a `wavelength` (float).
-            run_time: Length of the run (in minutes)
+            sample_rate (float): Number of samples per second. Default global SAMPLE_RATE.
+            run_time (float): Length of the run (in minutes). Default global RUN_LENGTH.
         """
         self.name: str = name
         self.run_time: float = run_time
+        self.sample_rate: float = sample_rate
         self.detection: dict = detection
         self.mobile_phases: list = mobile_phases
         self.__update_mobile_phase_dictionary()
-        self.gradient_steps: list = mobile_phase_gradient_steps
+        self.gradient_steps: pd.DataFrame = pd.DataFrame.from_dict(
+            mobile_phase_gradient_steps
+        )
         self.__create_gradient_profile()
         self.__create_composite_profiles()
         self.__dict__ = {**self.__dict__, **kwargs}
@@ -58,126 +67,9 @@ class Method:
             solvent: Compound = solvent_library.lookup(mobile_phase["name"])
             self.mobile_phases[ind]["solvent"] = solvent
 
-    def __create_gradient_profile(self):
-        """
-        Helper function to make gradient profiles from the method input in dict format from the method json.
-        """
-
-        def get_solvent_percents(step, solvent_letter):
-            """
-            Internal function to extract solvent percentages from a step.
-
-            Args:
-                step (dict): mobile phase gradient steps item from method dictionary
-                solvent_letter (str): sovent to retrieve percentage for. Should be 'a', 'b', 'c', or 'd'.
-
-            Returns:
-                percentage (float): The retrieved percentage. Set to 0 if percentage could not be retrieved.
-            """
-            percentage = _get(step, f"percent_{solvent_letter}")
-            return percentage if percentage is not None else 0
-
-        for ind, step in enumerate(self.gradient_steps):
-            # retrieve percentages for each solvent in the step.
-            a: float = get_solvent_percents(step, "a")
-            b: float = get_solvent_percents(step, "b")
-            c: float = get_solvent_percents(step, "c")
-            d: float = get_solvent_percents(step, "d")
-            assert 0.2 > abs(
-                100 - (a + b + c + d)
-            ), f"Please make sure that the percentages in step {ind} add up to 100%."  # some slack (0.2) allowed for rounding.
-
-        # create the times for the profiles. Times for a-d are identicle so just use a.
-        self.profile_times = np.array([step["time"] for step in self.gradient_steps])
-
-        # use submitted values for b-d to set these arrays, and create a dict to hold them
-        raw_profiles: dict = {}
-        for solv_letter in ["b", "c", "d"]:
-            raw_profiles[solv_letter] = np.array(
-                [step[f"percent_{solv_letter}"] for step in self.gradient_steps]
-            )
-        # calculate solvent 'a' by subtraction to ensure the sum is 100 and avoid potential rounding error.
-        raw_profiles["a"] = np.array(
-            [
-                100 - (b + c + d)
-                for b, c, d in zip(
-                    raw_profiles["b"], raw_profiles["c"], raw_profiles["d"]
-                )
-            ]
-        )
-
-        # set actual profiles for solvent percentages a-d
-        self.profiles = {}
-        for solv_letter in ["a", "b", "c", "d"]:
-            self.profiles[solv_letter] = Profile(
-                self.profile_times, raw_profiles[solv_letter], self.run_time
-            )
-
-        # create profile for flow
-        self.profiles["flow"] = Profile(
-            self.profile_times,
-            np.array([step["flow"] for step in self.gradient_steps]),
-            self.run_time,
-        )
-
-    def __create_composite_profiles(self):
-        """
-        Helper function to create profiles for the solvent parameters "hb_acidity", "hb_basicity", "dipolarity", "polarity", and "dielelectric", which affect how quickly compounds elute from the column. This function assumes that there is a linear relation between these parameters and the percentage of solvent, which is unlikely to be true in the real world, but is still a useful approximation here.
-        """
-        for comp_property in [
-            "hb_acidity",
-            "hb_basicity",
-            "dipolarity",
-            "polarity",
-            "dielelectric",
-        ]:
-            composite = np.zeros_like(self.profile_times)
-            for solvent in zip(self.mobile_phases):
-                solvent = _get(solvent, "0")
-                profile = self.profiles[_get(solvent, "id").lower()]
-                composite += solvent["solvent"].__dict__[comp_property] * profile.y
-            self.profiles[comp_property] = Profile(
-                self.profile_times, composite, self.run_time
-            )
-
-    def get_uv_background(
-        self, wavelength, sample_rate=SAMPLE_RATE, set_zero_time=True
-    ):
-        composite = np.zeros_like(self.profile_times)
-        for solvent in self.mobile_phases:
-            solvent = _get(solvent, "0")
-            profile = self.profiles[_get(solvent, "id").lower()]
-            composite += (
-                solvent["solvent"].get_absorbance(wavelength, concentration=1)
-                * profile.y
-            )
-        profile = Profile(self.profile_times, composite, self.run_time)
-        return profile.create_profile(sample_rate, set_zero_time=set_zero_time)
-
-
-class Profile:
-    """
-    Handles creation of profiles for solvent gradient composition, flow, and composite pramteers with respect to time.
-    """
-
-    def __init__(self, x: np.array, y: np.array, max_time: float) -> None:
-        """
-        Creates a profile object with time values and paired y values describing the profile.
-
-        Args:
-            x (np.array): Array of non-decreasing x values (time in minutes)
-            y (np.array): Array of corresponding profile values for each x
-            max_time (float): Length of the run (in minutes)
-        """
-        assert len(x) == len(y), "x and y must be the same length."
-        self.x = x
-        self.y = y
-        self.max_time = max_time
-
-    def __convolve(
+    def __convolve_profile(
         self,
         y: np.array,
-        sample_rate: float = SAMPLE_RATE,
         convolution_width: float = SOLVENT_PROFILE_CONVOLUTION_WIDTH,
     ):
         """
@@ -191,7 +83,7 @@ class Profile:
         Returns:
             filtered (np.array): The convolved signal values
         """
-        window_size = int(round(sample_rate * 60 * convolution_width))
+        window_size = int(round(self.sample_rate * 60 * convolution_width))
         window = signal.windows.tukey(window_size)
         y = np.pad(
             y,
@@ -202,21 +94,25 @@ class Profile:
         filtered = signal.convolve(y, window, mode="valid") / sum(window)
         return filtered
 
-    def create_profile(
-        self, sample_rate=SAMPLE_RATE, order: int = 0, convolve=True, set_zero_time=True
+    def __create_profile(
+        self,
+        interp_times,
+        grad_x,
+        grad_y,
+        convolve=True,
+        set_zero_time=False,
     ):
         """
         Creates an array of time points and corresponding profile of a solvent or parameter.
 
         Args:
-            sample_rate (float): Number of samples per second. Default global SAMPLE_RATE.
-            order (int): Profile curve type to return. Permitted values are:
-                1  -- Calculates the profile curve integral
-                0  -- Calculates the base profile curve
-                -1 -- Calculates the profile curve derivative
+            interp_times (np.array): array of times to interpolate on.
+            grad_x (np.array): array of grandient table time values
+            grad_y (np.array): array of grandient table y values
+            convolve (bool): Specifies whether to convolve the profile (True) or not (False)
+            set_zero_time (bool): Specifies whether to set the start point of the profile to the initial value (True) or not (False)
 
         Returns:
-            times (np.array): The array of times
             y (np.array): The array of signal values
 
         TODO: Implement integral and derivative methods
@@ -224,26 +120,108 @@ class Profile:
         TODO: Handling for repeated x-values.
 
         """
-        n_points = round(self.max_time * 60 * sample_rate)
-        # account for max time not being a multiple of frequency:
-        max_time = n_points / (sample_rate * 60)
-        times = np.linspace(0, max_time, n_points)
-        y = np.interp(times, self.x, self.y)
+        print(grad_x)
+        print(grad_y)
+        y = np.interp(interp_times, grad_x, grad_y)
         if convolve:
-            y = self.__convolve(y, sample_rate)
+            y = self.__convolve_profile(y)
         if set_zero_time:
             y = y - y[0]
-        return times, y
+        return y
 
+    def __create_gradient_profile(self):
+        """
+        Helper function to make gradient profiles from the method input in dict format from the method json.
+        """
 
-# import json
-# import matplotlib.pyplot as plt
+        n_points = round(self.run_time * 60 * self.sample_rate)
+        # account for max time not being a multiple of frequency:
+        max_time = n_points / (self.sample_rate * 60)
+        times = np.linspace(0, max_time, n_points)
 
-# with open("./methods/instrument_methods.json") as f:
-#     method_list = json.load(f)
-# method_json = _get(method_list, "0")
-# method = Method(**method_json)
-# times, values = method.get_uv_background(230)
-# plt.plot(times, values, c="red")
-# plt.show()
-# print(method)
+        self.profile_table = pd.DataFrame({"time": times})
+
+        keys = ["flow", *self.__solvent_percents]
+        for name in keys:
+            self.profile_table[name] = self.__create_profile(
+                times, self.gradient_steps["time"], self.gradient_steps[name]
+            )
+
+    def __create_composite_profiles(self):
+        """
+        Helper function to create profiles for the solvent parameters "hb_acidity", "hb_basicity", "dipolarity", "polarity", and "dielelectric", which affect how quickly compounds elute from the column. This function assumes that there is a linear relation between these parameters and the percentage of solvent, which is unlikely to be true in the real world, but is still a useful approximation here.
+        """
+
+        solvents = [_get(solvent, "solvent") for solvent in self.mobile_phases]
+
+        for comp_property in [
+            "hb_acidity",
+            "hb_basicity",
+            "dipolarity",
+            "polarity",
+            "dielelectric",
+        ]:
+            comp_values = [s.__dict__[comp_property] for s in solvents]
+            self.profile_table[comp_property] = 0
+            for mult, name in zip(comp_values, self.__solvent_percents):
+                self.profile_table[comp_property] += mult * self.profile_table[name]
+
+    def get_uv_background(self, wavelength, set_zero_time=True):
+        """
+        Calculates the UV background spectrum based on solvent composition.
+
+        Args:
+            wavelength (float): Wavelength at which background should be calculated.
+            set_zero_time (bool): Determines whether the background is zeroed to t=0 (default: True),
+
+        Returns:
+            time (np.array): Array of time values
+            background (np.array): Array of background values at the requested wavelength.
+        """
+
+        solvents: list[Solvent] = [
+            _get(solvent, "solvent") for solvent in self.mobile_phases
+        ]
+        comp_values = [s.get_absorbance(wavelength, concentration=1) for s in solvents]
+        background = np.zeros_like(self.profile_table["time"])
+        for mult, name in zip(comp_values, self.__solvent_percents):
+            background += mult * self.profile_table[name]
+
+        if set_zero_time:
+            background -= background[0]
+
+        return self.profile_table["time"], background
+
+    def get_times(self):
+        return self.get_profile("time")
+
+    def get_profile(self, profile_name, order=0):
+        """
+        Returns values of a profile from the profile_table.
+
+        Args:
+            profile_name (str): Name of profile to retrieve.
+            order (int): Profile curve type to return. Permitted values are:
+                1  -- Calculates the profile curve integral
+                0  -- Calculates the base profile curve
+                -1 -- Calculates the profile curve derivative
+
+        Returns:
+            np.array containing the requested profile.
+        """
+        try:
+            if order == 0:
+                return self.profile_table[profile_name]
+            elif order == 1:  # integral
+                vals = np.cumsum(self.profile_table[profile_name])
+                dt = 1.0 / (60 * self.sample_rate)
+                return vals * dt
+            elif order == -1:  # derivative
+                vals = np.diff(self.profile_table[profile_name])
+                vals = (np.pad(vals, (0, 1), "constant"),)  # pad to same size
+                dt = 1.0 / (60 * self.sample_rate)
+                return vals / dt
+        except Exception:
+            columns = "\n".join(self.profile_table.columns)
+            print(f"Column not found. Available columnes are {columns}")
+            raise

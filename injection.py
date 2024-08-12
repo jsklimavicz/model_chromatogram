@@ -2,9 +2,11 @@ from pydash import get as _get
 
 from methods.method import Method
 from compounds.sample import Sample
+from compounds.compound import Compound
 from chromatogram.chromatogram import Baseline
 from chromatogram.peakcreator import PeakCreator
 from system import System
+import numpy as np
 
 
 class Injection:
@@ -35,10 +37,8 @@ class Injection:
 
             # TODO: add method to modify default retention CV based on solvent and parameters
             # TODO: add method to convert cv to tr based on flow integral.
-            compound.default_retention_time = (
-                compound.default_retention_CV
-                / self.method.gradient_steps[0]["flow"]
-                * self.system.get_column_volume()
+            compound.default_retention_time = self.__find_default_retention_time(
+                compound
             )
 
             max_absobances = compound.get_absorbance(self.uv_wavelengths)
@@ -46,6 +46,18 @@ class Injection:
                 self.chromatograms[name].add_compound_peak(
                     self.peak_creator, compound, absorbance
                 )
+
+    def __find_default_retention_time(self, compound: Compound):
+        # retention time is based on retention volume (column volume * retention in CV) and flow integral
+        retention_volume = (
+            compound.default_retention_CV * self.system.get_column_volume()
+        )
+        # get flow integral, and interpolate until we find the right volume.
+        return np.interp(
+            retention_volume,
+            self.method.get_times(),
+            self.method.get_profile("flow", order=1),
+        )
 
     def plot_chromatogram(self, channel_name, **kwargs):
         self.chromatograms[channel_name].plot(**kwargs)
