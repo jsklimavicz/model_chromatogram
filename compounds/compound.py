@@ -9,10 +9,11 @@ class Compound:
         self.id = _get(kwargs, "id")
         self.cas = _get(kwargs, "cas").strip()
         self.mw = float(kwargs["mw"])
-        self.retention = float(kwargs["default_CV"])
+        self.default_retention_CV = float(kwargs["default_CV"])
         self.logp = float(kwargs["logp"])
         self.asymmetry_addition = float(kwargs["asymmetry_addition"])
         self.kwargs = kwargs
+        self.default_retention_time = None
         self.set_uv_spectrum()
 
     def set_uv_spectrum(self):

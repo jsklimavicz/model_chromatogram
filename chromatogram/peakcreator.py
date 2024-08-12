@@ -37,7 +37,9 @@ class PeakCreator:
         return result.x
 
     def compound_peak(self, compound: Compound, absorbance: float, times):
-        peak_dict = self.peak(retention_time=compound.retention, height=absorbance)
+        peak_dict = self.peak(
+            retention_time=compound.default_retention_time, height=absorbance
+        )
         return peak_dict["height"] * exponnorm.pdf(
             times,
             K=peak_dict["asymmetry"],

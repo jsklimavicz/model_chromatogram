@@ -19,8 +19,13 @@ class Chromatogram:
         self.signal = inital_values
         self.mean_values = inital_values
 
-    def plot(self, **kwargs):
-        plt.plot(self.times, self.signal, **kwargs)
+    def plot(
+        self, offset: float = 0, v_offset: float = 0, h_offset: float = 0, **kwargs
+    ):
+        if offset != 0:
+            plt.plot(self.times + offset / (60), self.signal + offset, **kwargs)
+        else:
+            plt.plot(self.times + h_offset, self.signal + v_offset, **kwargs)
 
     def add_compound_peak(
         self, peak_creator: PeakCreator, compound: Compound, absorbance: float

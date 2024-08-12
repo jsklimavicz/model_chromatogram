@@ -9,7 +9,7 @@ DEFAULT_PEAK_WIDTH = 0.08
 SIGNAL_MULIPLIER = 1  # multipier for signal
 DEFAULT_BASE_ASYMMETRY = 1.03
 ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = 1.004
-WIDENING_CONSTANT = 1.01
+WIDENING_CONSTANT = 1.03
 LINEAR_LIMIT = (
     2500  # mAU after which peak height is no longer linear with concentration
 )

@@ -4,12 +4,15 @@ from methods.method import Method
 from compounds.sample import Sample
 from chromatogram.chromatogram import Baseline
 from chromatogram.peakcreator import PeakCreator
+from system import System
 
 
 class Injection:
-    def __init__(self, sample: Sample, method: Method) -> None:
+    def __init__(self, sample: Sample, method: Method, system: System) -> None:
         self.sample: Sample = sample
         self.method: Method = method
+        self.system: System = system
+        self.system.inject()
         self.peak_creator = PeakCreator()
         self.uv_wavelengths = []
         self.uv_channel_names = []
@@ -29,6 +32,15 @@ class Injection:
 
     def __add_compounds(self):
         for compound in self.sample.compounds:
+
+            # TODO: add method to modify default retention CV based on solvent and parameters
+            # TODO: add method to convert cv to tr based on flow integral.
+            compound.default_retention_time = (
+                compound.default_retention_CV
+                / self.method.mobile_phase_gradient_steps[0]["flow"]
+                * self.system.get_column_volume()
+            )
+
             max_absobances = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absobances):
                 self.chromatograms[name].add_compound_peak(
