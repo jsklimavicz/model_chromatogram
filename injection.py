@@ -37,7 +37,7 @@ class Injection:
             # TODO: add method to convert cv to tr based on flow integral.
             compound.default_retention_time = (
                 compound.default_retention_CV
-                / self.method.mobile_phase_gradient_steps[0]["flow"]
+                / self.method.gradient_steps[0]["flow"]
                 * self.system.get_column_volume()
             )
 
