@@ -1,4 +1,4 @@
-﻿name,id_list,cas,formula,mw,density,class,hb_acidity,hb_basicity,dipolarity,polarity,dielelectric
+﻿name,id_list,cas,formula,mw,density,class,hb_acidity,hb_basicity,dipolarity,polarity,dielectric
 water,water,7732-18-5,H2O,18.02,1000,solvent,0.43,0.18,0.45,10.2,80
 acetonitrile,"ACN, MeCN",75-05-8,C2H3N,41.05,786,solvent,0.06,0.38,0.56,5.1,20.7
 tetrahydrofuran,THF,109-99-9,C4H8O,72.11,881,solvent,0,0.84,0.16,1.9,2.4
