@@ -18,10 +18,12 @@ class Chromatogram:
         self.times = times
         self.signal = inital_values
         self.mean_values = inital_values
+        self.saturation_filter = False
 
     def plot(
         self, offset: float = 0, v_offset: float = 0, h_offset: float = 0, **kwargs
     ):
+        self.__detector_saturation()
         if offset != 0:
             plt.plot(self.times + offset / (60), self.signal + offset, **kwargs)
         else:
@@ -31,6 +33,24 @@ class Chromatogram:
         self, peak_creator: PeakCreator, compound: Compound, absorbance: float
     ):
         self.signal += peak_creator.compound_peak(compound, absorbance, self.times)
+
+    def __detector_saturation(self):
+        if self.saturation_filter:
+            return
+
+        def _adjust_saturation(x):
+            if x < LINEAR_LIMIT:
+                return x
+            else:
+                val = LINEAR_LIMIT
+                diff_x = x - val
+                diff = SATURATION_SCALE * (
+                    1 - np.exp(-(diff_x / SATURATION_SCALE)) ** np.log(2)
+                )
+                return val + diff
+
+        self.signal = np.array([_adjust_saturation(x) for x in self.signal])
+        self.saturation_filter = True
 
 
 class Baseline(Chromatogram):
