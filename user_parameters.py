@@ -13,6 +13,7 @@ WIDENING_CONSTANT = 1.03
 LINEAR_LIMIT = (
     2500  # mAU after which peak height is no longer linear with concentration
 )
+SATURATION_SCALE = LINEAR_LIMIT / 10  # range over which saturation occurs
 
 # Peak Noise Parameters
 OVERALL_HEIGHT_RANDOM_NOISE = 0.007  # relative size of noise variation in peak height
@@ -24,8 +25,8 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = 0.001
 BACKGROUND_MEAN = 0
 BASELINE_NOISE = 1
 BASELINE_AUTOCORRELATION_PARAMETER = 0.9
-BACKGROUND_NOISE = None
-BACKGROUND_SMOOTHING = 21  # points for smoothing
+# BACKGROUND_NOISE = None
+# BACKGROUND_SMOOTHING = 21  # points for smoothing
 
 # Method Paramters
 SOLVENT_PROFILE_CONVOLUTION_WIDTH = 1

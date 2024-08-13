@@ -10,8 +10,8 @@ class Sample:
         location: str,
         compound_list: list[str],
         concentration_list: list[float],
-        num_random_peaks: int,
-        max_random_concentration: float,
+        num_random_peaks: int = 0,
+        max_random_concentration: float = 0,
     ) -> None:
         self.name: str = sample_name
         self.location: str = location
@@ -21,15 +21,16 @@ class Sample:
         for conc, compound in zip(concentration_list, self.compounds):
             compound.set_concentration(conc)
         exclude_cas = [a.cas for a in self.compounds]
-        random_peaks = compound_library.fetch_random_compounds(
-            num_random_peaks, exclude_cas, replace_names=True
-        )
-        for compound in random_peaks:
-            compound.set_concentration(
-                uniform(max_random_concentration / 10, max_random_concentration)
+        if num_random_peaks > 0:
+            random_peaks = compound_library.fetch_random_compounds(
+                num_random_peaks, exclude_cas, replace_names=True
             )
+            for compound in random_peaks:
+                compound.set_concentration(
+                    uniform(max_random_concentration / 10, max_random_concentration)
+                )
 
-        self.compounds = [*self.compounds, *random_peaks]
+            self.compounds = [*self.compounds, *random_peaks]
         self.compounds.sort(key=lambda x: x.default_retention_CV)
 
     def print_compound_list(self):

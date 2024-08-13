@@ -8,7 +8,6 @@ from methods.solvent_library import solvent_library, Solvent
 from pydash import get as _get
 from user_parameters import *
 import numpy as np
-from compounds.compound import Compound
 from scipy import signal
 import pandas as pd
 
@@ -61,10 +60,10 @@ class Method:
 
     def __update_mobile_phase_dictionary(self):
         """
-        Helper function to add a solvent library Compound for each item in the solvent library.
+        Helper function to add a solvent library Solvent for each item in the solvent library.
         """
         for ind, mobile_phase in enumerate(self.mobile_phases):
-            solvent: Compound = solvent_library.lookup(mobile_phase["name"])
+            solvent: Solvent = solvent_library.lookup(mobile_phase["name"])
             self.mobile_phases[ind]["solvent"] = solvent
 
     def __convolve_profile(
@@ -150,18 +149,22 @@ class Method:
         """
 
         solvents = [_get(solvent, "solvent") for solvent in self.mobile_phases]
+        # value are normalized by subtracting from the water-only value
+        water = solvent_library.lookup("water")
 
         for comp_property in [
             "hb_acidity",
             "hb_basicity",
             "dipolarity",
             "polarity",
-            "dielelectric",
+            "dielectric",
         ]:
             comp_values = [s.__dict__[comp_property] for s in solvents]
-            self.profile_table[comp_property] = 0
+            self.profile_table[comp_property] = -water.__dict__[comp_property]
             for mult, name in zip(comp_values, self.__solvent_percents):
-                self.profile_table[comp_property] += mult * self.profile_table[name]
+                self.profile_table[comp_property] += (
+                    mult / 100 * self.profile_table[name]
+                )
 
     def get_uv_background(self, wavelength, set_zero_time=True):
         """
