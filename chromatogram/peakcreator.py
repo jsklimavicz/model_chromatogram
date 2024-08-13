@@ -24,7 +24,7 @@ class PeakCreator:
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE
         )
 
-    def __find_exponnorm_mode(self, sigma, asymmetry):
+    def __find_exponnorm_mode(self, sigma, asymmetry, return_fun=False):
         exponnorm_dist = exponnorm(scale=sigma, K=asymmetry)
 
         # Find the mode
@@ -34,11 +34,17 @@ class PeakCreator:
 
         # Use optimization to find the mode
         result = minimize_scalar(neg_pdf)
-        return result.x
+        if return_fun:
+            return result.x, -result.fun
+        else:
+            return result.x
 
     def compound_peak(self, compound: Compound, absorbance: float, times):
+        peak_asymmetry = (1 + compound.asymmetry_addition) * DEFAULT_BASE_ASYMMETRY
         peak_dict = self.peak(
-            retention_time=compound.default_retention_time, height=absorbance
+            retention_time=compound.retention_time,
+            height=absorbance,
+            base_asymmetry=peak_asymmetry,
         )
         return peak_dict["height"] * exponnorm.pdf(
             times,
@@ -56,19 +62,31 @@ class PeakCreator:
         base_asymmetry: float = DEFAULT_BASE_ASYMMETRY,
     ) -> dict:
 
-        sigma = (
-            base_width
-            * math.pow(WIDENING_CONSTANT, retention_time)
-            / (2 * math.sqrt(2 * math.log(2)))
-        )
+        def height_change_for_broadening(
+            base_sigma, curr_sigma, base_asymmetry, curr_asymmetry
+        ):
+            _, curr_fun = self.__find_exponnorm_mode(
+                curr_sigma, curr_asymmetry, return_fun=True
+            )
+            _, base_fun = self.__find_exponnorm_mode(
+                base_sigma, base_asymmetry, return_fun=True
+            )
+            return curr_fun / base_fun
+
+        base_sigma = base_width / (2 * math.sqrt(2 * math.log(2)))
+        curr_sigma = base_sigma * math.pow(WIDENING_CONSTANT, retention_time)
 
         asymmetry = 1.0 / (
             base_asymmetry
             * math.pow(ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME, retention_time)
         )
+        peak_broadening_height_factor = height_change_for_broadening(
+            base_sigma, curr_sigma, base_asymmetry, asymmetry
+        )
 
         mod_height = (
             height
+            * peak_broadening_height_factor
             * self.height_modifier
             * SIGNAL_MULIPLIER
             * uniform(
@@ -86,13 +104,13 @@ class PeakCreator:
         )
 
         exponentially_modified_gaussian_mean = (
-            desired_mode - self.__find_exponnorm_mode(sigma, asymmetry)
+            desired_mode - self.__find_exponnorm_mode(curr_sigma, asymmetry)
         )
 
         return dict(
             name=name,
             time=exponentially_modified_gaussian_mean,
             height=mod_height,
-            width=sigma,
+            width=curr_sigma,
             asymmetry=asymmetry,
         )

@@ -1,20 +1,36 @@
 from scipy.interpolate import CubicSpline
 import numpy as np
 from pydash import get as _get
+import pandas as pd
+from scipy.optimize import fsolve
+
+import matplotlib.pyplot as plt
+from scipy.stats import norm
 
 
 class Compound:
     def __init__(self, **kwargs) -> None:
+        self.kwargs = kwargs
         self.name = _get(kwargs, "name").strip()
         self.id = _get(kwargs, "id")
         self.cas = _get(kwargs, "cas").strip()
         self.mw = float(kwargs["mw"])
         self.default_retention_CV = float(kwargs["default_CV"])
-        self.logp = float(kwargs["logp"])
-        self.asymmetry_addition = float(kwargs["asymmetry_addition"])
-        self.kwargs = kwargs
+        self.log_p = float(kwargs["logp"])
+        self.asymmetry_addition = self.__set_initial_float("asymmetry_addition")
+        self.h_donors: float = self.__set_initial_float("H_donor")
+        self.h_acceptors: float = self.__set_initial_float("H_acceptor")
+        self.refractivity: float = self.__set_initial_float("refractivity")
+        self.log_s: float = self.__set_initial_float("log_s")
+        self.tpsa: float = self.__set_initial_float("tpsa")
         self.default_retention_time = None
         self.set_uv_spectrum()
+
+    def __set_initial_float(self, key, default=0):
+        try:
+            return float(_get(self.kwargs, key))
+        except:
+            return default
 
     def set_uv_spectrum(self):
         try:
@@ -33,6 +49,72 @@ class Compound:
     def set_concentration(self, concentration):
         self.concentration = concentration
         self.m_molarity = 1000 * self.concentration / self.mw
+
+    def set_retention_time(self, column_volume: float, solvent_profiles: pd.DataFrame):
+        """
+        Calculates the retention time of a compound based on column volume, solvent properties, and compound properties.
+
+        Args:
+            column_volume (float): volume of column
+            solvent_profiles (pd.DataFrame): dataframe containing corrsponding values for:
+                time
+                hydrogen bond acidity (hb_acidity)
+                hydrogen bond basicity (hb_basicity)
+                polarity
+                dielectric
+
+        Returns:
+            retention_time (float): Value of retention time.
+
+        """
+
+        # first calculate constants a, b, c, and d:
+        t_0 = self.default_retention_CV
+        a = 2 * (3 - self.log_p) + self.tpsa / self.mw
+        b = 600 / self.mw * (np.sqrt(self.h_donors) - 1)
+        c = 600 / self.mw * (np.sqrt(self.h_acceptors) - 1)
+        d = (1 - self.log_s) / 5
+
+        flow = solvent_profiles["flow"]
+
+        objective = a * (solvent_profiles["polarity"] - 0.15)
+        objective -= b * (solvent_profiles["hb_basicity"] + 0.05)
+        objective -= c * (solvent_profiles["hb_acidity"] + 0.05)
+        objective -= d * (solvent_profiles["dielectric"] + 0.050)
+        objective /= 120
+
+        objective *= flow
+
+        dt = solvent_profiles["time"][1] - solvent_profiles["time"][0]
+        integral_function = np.cumsum(objective) * dt
+
+        spline = CubicSpline(
+            solvent_profiles["time"],
+            integral_function,
+            extrapolate=False,
+        )
+
+        def objective_function(t):
+            return t - (t_0 - spline(t))
+
+        v = fsolve(objective_function, t_0 + 1, xtol=1e-05, maxfev=500)
+        adjusted_retention_volume = v[0]
+        # Note: Total volume cannot be less than one column volume...
+        # Let's modify with 1+norm.cdf to prevent this.
+        adjusted_retention_volume = max(
+            1 + norm.cdf(adjusted_retention_volume), adjusted_retention_volume
+        )
+        cumulative_volume = np.cumsum(flow) * dt
+        cumulative_volume /= column_volume
+        spline = CubicSpline(
+            cumulative_volume,
+            solvent_profiles["time"],
+            extrapolate=False,
+        )
+
+        self.retention_time = spline(adjusted_retention_volume)
+
+        return self.retention_time
 
 
 class UVSpectrum:
@@ -96,24 +178,3 @@ class UVSpectrum:
             return self.spline(wavelength)
         else:
             return 10 ** self.spline(wavelength)
-
-
-# import matplotlib.pyplot as plt
-
-# cas = "7732-18-5"
-
-# spectrum = UVSpectrum(cas)
-# min_val = min(spectrum.wavelengths)
-# max_val = max(spectrum.wavelengths)
-# wave = np.linspace(190, max_val + 100, 300)
-# values = spectrum.get_epsilon(wave)
-# plt.plot(wave, values, c="red")
-
-# wave = np.linspace(190, max_val, 100)
-# values = spectrum.get_epsilon(wave)
-
-# plt.plot(wave, values, c="blue")
-
-# plt.show()
-
-# print("t")
