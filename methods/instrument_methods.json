@@ -1,5 +1,221 @@
 [
     {
+        "name": "constant_water",
+        "run_time": 30,
+        "sample_rate": 5,
+        "mobile_phases": [
+            {
+                "name": "water",
+                "id": "A"
+            },
+            {
+                "name": "methanol",
+                "id": "B"
+            },
+            {
+                "name": "acetonitrile",
+                "id": "C"
+            },
+            {
+                "name": "THF",
+                "id": "D"
+            }
+        ],
+        "mobile_phase_gradient_steps": [
+            {
+                "time": 0.0,
+                "flow": 1.0,
+                "percent_a": 100.0,
+                "percent_b": 0.0,
+                "percent_c": 0.0,
+                "percent_d": 0.0,
+                "curve": 5
+            }
+        ],
+        "detection": {
+            "uv_vis_parameters": [
+                {
+                    "name": "UV_VIS_1",
+                    "wavelength": 230
+                },
+                {
+                    "name": "UV_VIS_2",
+                    "wavelength": 250
+                },
+                {
+                    "name": "UV_VIS_3",
+                    "wavelength": 270
+                },
+                {
+                    "name": "UV_VIS_4",
+                    "wavelength": 300
+                }
+            ]
+        }
+    },
+    {
+        "name": "60:40 water:MeOH",
+        "run_time": 30,
+        "sample_rate": 5,
+        "mobile_phases": [
+            {
+                "name": "water",
+                "id": "A"
+            },
+            {
+                "name": "methanol",
+                "id": "B"
+            },
+            {
+                "name": "acetonitrile",
+                "id": "C"
+            },
+            {
+                "name": "THF",
+                "id": "D"
+            }
+        ],
+        "mobile_phase_gradient_steps": [
+            {
+                "time": 0.0,
+                "flow": 1.0,
+                "percent_a": 60.0,
+                "percent_b": 40.0,
+                "percent_c": 0.0,
+                "percent_d": 0.0,
+                "curve": 5
+            }
+        ],
+        "detection": {
+            "uv_vis_parameters": [
+                {
+                    "name": "UV_VIS_1",
+                    "wavelength": 230
+                },
+                {
+                    "name": "UV_VIS_2",
+                    "wavelength": 250
+                },
+                {
+                    "name": "UV_VIS_3",
+                    "wavelength": 270
+                },
+                {
+                    "name": "UV_VIS_4",
+                    "wavelength": 300
+                }
+            ]
+        }
+    },
+    {
+        "name": "60:40 water:MeCN",
+        "run_time": 30,
+        "sample_rate": 5,
+        "mobile_phases": [
+            {
+                "name": "water",
+                "id": "A"
+            },
+            {
+                "name": "methanol",
+                "id": "B"
+            },
+            {
+                "name": "acetonitrile",
+                "id": "C"
+            },
+            {
+                "name": "THF",
+                "id": "D"
+            }
+        ],
+        "mobile_phase_gradient_steps": [
+            {
+                "time": 0.0,
+                "flow": 1.0,
+                "percent_a": 60.0,
+                "percent_b": 0.0,
+                "percent_c": 40.0,
+                "percent_d": 0.0,
+                "curve": 5
+            }
+        ],
+        "detection": {
+            "uv_vis_parameters": [
+                {
+                    "name": "UV_VIS_1",
+                    "wavelength": 230
+                },
+                {
+                    "name": "UV_VIS_2",
+                    "wavelength": 250
+                },
+                {
+                    "name": "UV_VIS_3",
+                    "wavelength": 270
+                },
+                {
+                    "name": "UV_VIS_4",
+                    "wavelength": 300
+                }
+            ]
+        }
+    },
+    {
+        "name": "60:40 water:THF",
+        "run_time": 30,
+        "sample_rate": 5,
+        "mobile_phases": [
+            {
+                "name": "water",
+                "id": "A"
+            },
+            {
+                "name": "methanol",
+                "id": "B"
+            },
+            {
+                "name": "acetonitrile",
+                "id": "C"
+            },
+            {
+                "name": "THF",
+                "id": "D"
+            }
+        ],
+        "mobile_phase_gradient_steps": [
+            {
+                "time": 0.0,
+                "flow": 1.0,
+                "percent_a": 40.0,
+                "percent_b": 0.0,
+                "percent_c": 0.0,
+                "percent_d": 60.0,
+                "curve": 5
+            }
+        ],
+        "detection": {
+            "uv_vis_parameters": [
+                {
+                    "name": "UV_VIS_1",
+                    "wavelength": 230
+                },
+                {
+                    "name": "UV_VIS_2",
+                    "wavelength": 250
+                },
+                {
+                    "name": "UV_VIS_3",
+                    "wavelength": 270
+                },
+                {
+                    "name": "UV_VIS_4",
+                    "wavelength": 300
+                }
+            ]
+        }
+    },
+    {
         "name": "test-1",
         "run_time": 30,
         "sample_rate": 5,
@@ -141,8 +357,8 @@
             {
                 "time": 1.0,
                 "flow": 1.0,
-                "percent_a": 100.0,
-                "percent_b": 0.0,
+                "percent_a": 95.0,
+                "percent_b": 5.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
@@ -159,8 +375,8 @@
             {
                 "time": 5.0,
                 "flow": 0.5,
-                "percent_a": 40.0,
-                "percent_b": 60.0,
+                "percent_a": 85.0,
+                "percent_b": 15.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
