@@ -23,7 +23,6 @@ class Compound:
         self.refractivity: float = self.__set_initial_float("refractivity")
         self.log_s: float = self.__set_initial_float("log_s")
         self.tpsa: float = self.__set_initial_float("tpsa")
-        self.default_retention_time = None
         self.set_uv_spectrum()
 
     def __set_initial_float(self, key, default=0):

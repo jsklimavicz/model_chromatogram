@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from chromatogram.peakcreator import PeakCreator
 from compounds.compound import Compound
+import pandas as pd
 
 
 class Chromatogram:
@@ -20,24 +21,12 @@ class Chromatogram:
         self.mean_values = inital_values
         self.saturation_filter = False
 
-    def plot(
-        self, offset: float = 0, v_offset: float = 0, h_offset: float = 0, **kwargs
-    ):
-        self.__detector_saturation()
-        if offset != 0:
-            plt.plot(self.times + offset / (60), self.signal + offset, **kwargs)
-        else:
-            plt.plot(self.times + h_offset, self.signal + v_offset, **kwargs)
-
     def add_compound_peak(
         self, peak_creator: PeakCreator, compound: Compound, absorbance: float
     ):
         self.signal += peak_creator.compound_peak(compound, absorbance, self.times)
 
-    def __detector_saturation(self):
-        if self.saturation_filter:
-            return
-
+    def _detector_saturation(func):
         def _adjust_saturation(x):
             if x < LINEAR_LIMIT:
                 return x
@@ -49,8 +38,27 @@ class Chromatogram:
                 )
                 return val + diff
 
-        self.signal = np.array([_adjust_saturation(x) for x in self.signal])
-        self.saturation_filter = True
+        def adjust_signal(self, *args, **kwargs):
+            if not self.saturation_filter:
+                self.signal = np.array([_adjust_saturation(x) for x in self.signal])
+                self.saturation_filter = True
+            return func(self, *args, **kwargs)
+
+        return adjust_signal
+
+    @_detector_saturation
+    def plot(
+        self, offset: float = 0, v_offset: float = 0, h_offset: float = 0, **kwargs
+    ):
+        if offset != 0:
+            plt.plot(self.times + offset / (60), self.signal + offset, **kwargs)
+        else:
+            plt.plot(self.times + h_offset, self.signal + v_offset, **kwargs)
+
+    @_detector_saturation
+    def get_chromatogram_data(self):
+        df = pd.DataFrame({"x": self.times, "y": self.signal})
+        return df
 
 
 class Baseline(Chromatogram):
