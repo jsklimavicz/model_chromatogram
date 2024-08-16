@@ -4,6 +4,7 @@ from pydash import get as _get
 import pandas as pd
 from scipy.optimize import fsolve
 
+
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
@@ -96,7 +97,7 @@ class Compound:
         def objective_function(t):
             return t - (t_0 - spline(t))
 
-        v = fsolve(objective_function, t_0 + 1, xtol=1e-05, maxfev=500)
+        v = fsolve(objective_function, t_0 + 0.2, xtol=1e-04, maxfev=50)
         adjusted_retention_volume = v[0]
         # Note: Total volume cannot be less than one column volume...
         # Let's modify with 1+norm.cdf to prevent this.
@@ -105,13 +106,17 @@ class Compound:
         )
         cumulative_volume = np.cumsum(flow) * dt
         cumulative_volume /= column_volume
-        spline = CubicSpline(
-            cumulative_volume,
-            solvent_profiles["time"],
-            extrapolate=False,
-        )
+        # spline = CubicSpline(
+        #     cumulative_volume,
+        #     solvent_profiles["time"],
+        #     extrapolate=False,
+        # )
 
-        self.retention_time = spline(adjusted_retention_volume)
+        # self.retention_time = spline(adjusted_retention_volume)
+
+        self.retention_time = np.interp(
+            adjusted_retention_volume, cumulative_volume, solvent_profiles["time"]
+        )
 
         return self.retention_time
 

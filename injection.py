@@ -40,13 +40,6 @@ class Injection:
         self.times = times
 
     def __add_compounds(self):
-        # for compound in self.sample.compounds:
-        #     max_absobances = compound.get_absorbance(self.uv_wavelengths)
-        #     for name, absorbance in zip(self.uv_channel_names, max_absobances):
-        #         self.chromatograms[name].add_compound_peak(
-        #             self.peak_creator, compound, absorbance
-        #         )
-
         for compound in self.sample.compounds:
             compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
             max_absobances = compound.get_absorbance(self.uv_wavelengths)

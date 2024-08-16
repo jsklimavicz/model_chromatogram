@@ -33,7 +33,7 @@ class PeakCreator:
             return -exponnorm_dist.pdf(x)
 
         # Use optimization to find the mode
-        result = minimize_scalar(neg_pdf)
+        result = minimize_scalar(neg_pdf, tol=1e-4)
         if return_fun:
             return result.x, -result.fun
         else:
@@ -52,20 +52,6 @@ class PeakCreator:
             scale=peak_dict["width"],
         )
 
-    # def compound_peak(self, compound: Compound, absorbance: float, times):
-    #     peak_asymmetry = (1 + compound.asymmetry_addition) * DEFAULT_BASE_ASYMMETRY
-    #     peak_dict = self.peak(
-    #         retention_time=compound.retention_time,
-    #         height=absorbance,
-    #         base_asymmetry=peak_asymmetry,
-    #     )
-    #     return peak_dict["height"] * exponnorm.pdf(
-    #         times,
-    #         K=peak_dict["asymmetry"],
-    #         loc=peak_dict["time"],
-    #         scale=peak_dict["width"],
-    #     )
-
     def peak(
         self,
         retention_time: float,
@@ -78,13 +64,13 @@ class PeakCreator:
         def height_change_for_broadening(
             base_sigma, curr_sigma, base_asymmetry, curr_asymmetry
         ):
-            _, curr_fun = self.__find_exponnorm_mode(
+            mode, curr_fun = self.__find_exponnorm_mode(
                 curr_sigma, curr_asymmetry, return_fun=True
             )
             _, base_fun = self.__find_exponnorm_mode(
                 base_sigma, base_asymmetry, return_fun=True
             )
-            return curr_fun / base_fun
+            return curr_fun / base_fun, mode
 
         base_sigma = base_width / (2 * math.sqrt(2 * math.log(2)))
         curr_sigma = base_sigma * math.pow(WIDENING_CONSTANT, retention_time)
@@ -93,7 +79,7 @@ class PeakCreator:
             base_asymmetry
             * math.pow(ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME, retention_time)
         )
-        peak_broadening_height_factor = height_change_for_broadening(
+        peak_broadening_height_factor, mode = height_change_for_broadening(
             base_sigma, curr_sigma, base_asymmetry, asymmetry
         )
 
@@ -116,9 +102,7 @@ class PeakCreator:
             )
         )
 
-        exponentially_modified_gaussian_mean = (
-            desired_mode - self.__find_exponnorm_mode(curr_sigma, asymmetry)
-        )
+        exponentially_modified_gaussian_mean = desired_mode - mode
 
         return dict(
             name=name,

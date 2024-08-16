@@ -14,11 +14,6 @@ import random
 random.seed(10)
 
 
-from cProfile import Profile
-from pstats import SortKey, Stats
-
-# with Profile() as profile:
-
 sample_dict = {
     "sample_name": "test-1",
     "location": "R:A1",
