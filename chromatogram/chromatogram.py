@@ -9,8 +9,6 @@ sys.path.append(parent)
 
 import numpy as np
 import matplotlib.pyplot as plt
-from chromatogram.peakcreator import PeakCreator
-from compounds.compound import Compound
 import pandas as pd
 
 

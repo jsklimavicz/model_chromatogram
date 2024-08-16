@@ -2,7 +2,6 @@ from compounds.sample import Sample
 import json
 import matplotlib.pyplot as plt
 from methods.method import Method
-from chromatogram.chromatogram import Baseline
 
 from pydash import get as _get
 from injection import Injection
@@ -12,6 +11,9 @@ import pandas as pd
 import random
 
 random.seed(10)
+
+from cProfile import Profile
+from pstats import Stats
 
 
 sample_dict = {
@@ -57,8 +59,8 @@ injection1 = Injection(sample=my_sample, method=method_1, system=system)
 # injection4 = Injection(sample=my_sample, method=method_4, system=system)
 
 injection1.plot_chromatogram("UV_VIS_1", c="red")
-data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1")
-data.to_parquet("./data_processing/test.parquet")
+# data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1")
+# data.to_parquet("./data_processing/test.parquet")
 # injection2.plot_chromatogram("UV_VIS_1", h_offset=0, c="blue")
 # injection3.plot_chromatogram("UV_VIS_1", h_offset=0, c="black")
 # injection4.plot_chromatogram("UV_VIS_1", h_offset=0, c="green")
@@ -70,5 +72,34 @@ data.to_parquet("./data_processing/test.parquet")
 
 plt.show()
 
-# f = open("stats.prof", "a")
-# Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()
+
+# with Profile() as profile:
+#     for i in range(1):
+#         sample_dict = {
+#             "sample_name": "test-1",
+#             "location": "R:A1",
+#             "compound_list": "cystine, guanosine, chloroquine, DPU, coumarin",
+#             "concentration_list": "0.5, 2.1, 3.2, 1.3, 2.4",
+#             "num_random_peaks": 10,
+#             "max_random_concentration": 1,
+#         }
+#         sample_dict["compound_list"] = [
+#             a.strip() for a in sample_dict["compound_list"].split(",")
+#         ]
+#         sample_dict["concentration_list"] = [
+#             float(a) for a in sample_dict["concentration_list"].split(",")
+#         ]
+#         column = Column(
+#             inner_diameter=6,
+#             length=100,
+#             type="C18",
+#             serial_number="1995032",
+#             injection_count=0,
+#         )
+#         system = System(name="James Test", column=column)
+#         method = Method(**_get(method_list, i % len(method_list)))
+#         my_sample = Sample(**sample_dict)
+#         injection = Injection(sample=my_sample, method=method_1, system=system)
+
+#     f = open("stats.prof", "a")
+#     Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()

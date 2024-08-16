@@ -1,8 +1,9 @@
 from numpy.random import uniform
 import math
 from scipy.stats import exponnorm
-from scipy.optimize import minimize_scalar
+from scipy.optimize import minimize_scalar, minimize
 from compounds.compound import Compound
+import numpy as np
 
 import sys
 import os
@@ -25,10 +26,12 @@ class PeakCreator:
         )
 
     def __find_exponnorm_mode(self, sigma, asymmetry, return_fun=False):
+
         exponnorm_dist = exponnorm(scale=sigma, K=asymmetry)
 
         # Find the mode
         # Define a function that returns the negative PDF (to maximize)
+
         def neg_pdf(x):
             return -exponnorm_dist.pdf(x)
 
