@@ -286,8 +286,8 @@
             {
                 "time": 20.0,
                 "flow": 1.0,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
+                "percent_a": 80.0,
+                "percent_b": 20.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
@@ -295,10 +295,10 @@
             {
                 "time": 30.0,
                 "flow": 1.0,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
+                "percent_a": 50.0,
+                "percent_b": 40.0,
+                "percent_c": 5.0,
+                "percent_d": 5.0,
                 "curve": 5
             }
         ],

@@ -21,26 +21,25 @@ class Chromatogram:
         self.mean_values = inital_values
         self.saturation_filter = False
 
-    def add_compound_peak(
-        self, peak_creator: PeakCreator, compound: Compound, absorbance: float
-    ):
-        self.signal += peak_creator.compound_peak(compound, absorbance, self.times)
+    def add_compound_peak(self, absorbance, signal):
+        self.signal += absorbance * signal
 
     def _detector_saturation(func):
         def _adjust_saturation(x):
-            if x < LINEAR_LIMIT:
-                return x
-            else:
-                val = LINEAR_LIMIT
-                diff_x = x - val
-                diff = SATURATION_SCALE * (
-                    1 - np.exp(-(diff_x / SATURATION_SCALE)) ** np.log(2)
-                )
-                return val + diff
+            val = LINEAR_LIMIT
+            diff_x = x - val
+            diff = SATURATION_SCALE * (
+                1 - np.exp(-(diff_x / SATURATION_SCALE)) ** np.log(2)
+            )
+            return val + diff
 
         def adjust_signal(self, *args, **kwargs):
             if not self.saturation_filter:
-                self.signal = np.array([_adjust_saturation(x) for x in self.signal])
+                self.signal = np.where(
+                    self.signal < LINEAR_LIMIT,
+                    self.signal,
+                    _adjust_saturation(self.signal),
+                )
                 self.saturation_filter = True
             return func(self, *args, **kwargs)
 
@@ -75,12 +74,12 @@ class Baseline(Chromatogram):
         assert (
             0 < corr < 1
         ), f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {BASELINE_AUTOCORRELATION_PARAMETER}"
-        c = self.mean_values * (1 - corr)
+
+        c: np.array = self.mean_values * (1 - corr)
         eps = np.sqrt((sigma**2) * (1 - corr**2))
-        signal = np.zeros_like(self.mean_values)
-        signal[0] = c[0] + random.normal(0, eps)
+        signal = c + random.normal(loc=0, scale=eps, size=np.shape(c))
         for ind in range(1, len(signal)):
-            signal[ind] = c[ind] + corr * signal[ind - 1] + random.normal(0, eps)
+            signal[ind] += corr * signal[ind - 1]
         return signal
 
     def create_background(self):

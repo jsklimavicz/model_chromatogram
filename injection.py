@@ -5,7 +5,7 @@ from compounds.sample import Sample
 from chromatogram.chromatogram import Chromatogram, Baseline
 from chromatogram.peakcreator import PeakCreator
 from system import System
-import typing
+import numpy as np
 
 
 class Injection:
@@ -35,15 +35,24 @@ class Injection:
         # uv_channels
         for wavelength, name in zip(self.uv_wavelengths, self.uv_channel_names):
             times, signals = self.method.get_uv_background(wavelength)
-            baseline = Baseline(times, signals)
+            baseline = Baseline(np.array(times), np.array(signals))
             self.chromatograms[name] = baseline
+        self.times = times
 
     def __add_compounds(self):
+        # for compound in self.sample.compounds:
+        #     max_absobances = compound.get_absorbance(self.uv_wavelengths)
+        #     for name, absorbance in zip(self.uv_channel_names, max_absobances):
+        #         self.chromatograms[name].add_compound_peak(
+        #             self.peak_creator, compound, absorbance
+        #         )
+
         for compound in self.sample.compounds:
+            compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
             max_absobances = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absobances):
                 self.chromatograms[name].add_compound_peak(
-                    self.peak_creator, compound, absorbance
+                    absorbance, compound_peak_signal
                 )
 
     def plot_chromatogram(self, channel_name, **kwargs):

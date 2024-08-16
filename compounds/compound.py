@@ -122,6 +122,7 @@ class UVSpectrum:
         self.fetch_spectrum()
         self.extrapolate_lower_end()
         self.extrapolate_upper_end()
+        self.spline = None
         self.create_spline()
 
     def fetch_spectrum(self) -> None:
@@ -173,6 +174,8 @@ class UVSpectrum:
         self.log_epsilon = [*self.log_epsilon, *addition_eps]
 
     def get_epsilon(self, wavelength: np.array, log=False) -> None:
+        if self.spline is None:
+            self.create_spline()
         if log:
             return self.spline(wavelength)
         else:
