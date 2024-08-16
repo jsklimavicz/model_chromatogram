@@ -4,12 +4,11 @@ RUN_LENGTH = 15  # in minutes; default if not specified in method
 FLOW_RATE = 5  # in ml/minutes; default if not specified in method
 
 # Peak shape parameters
-# DEFAULT_PEAK_WIDTH = 0.18
 DEFAULT_PEAK_WIDTH = 0.08
 SIGNAL_MULIPLIER = 1  # multipier for signal
-DEFAULT_BASE_ASYMMETRY = 1.03
-ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = 1.004
-WIDENING_CONSTANT = 1.03
+DEFAULT_BASE_ASYMMETRY = 1.04
+ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = 1.005
+WIDENING_CONSTANT = 1.035
 LINEAR_LIMIT = (
     2500  # mAU after which peak height is no longer linear with concentration
 )
@@ -23,9 +22,9 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = 0.001
 
 # Background Noise Parameters
 BACKGROUND_MEAN = 0
-BASELINE_NOISE = 1
-BASELINE_AUTOCORRELATION_PARAMETER = 0.7
-# BACKGROUND_NOISE = None
+BASELINE_NOISE = 0.8
+BASELINE_AUTOCORRELATION_PARAMETER = 0.8
+BASELINE_MULTIPLIER = 2
 # BACKGROUND_SMOOTHING = 21  # points for smoothing
 
 # Method Paramters

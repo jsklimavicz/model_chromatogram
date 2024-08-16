@@ -190,7 +190,7 @@ class Method:
         if set_zero_time:
             background -= background[0]
 
-        return self.profile_table["time"], background
+        return self.profile_table["time"], background * BASELINE_MULTIPLIER
 
     def get_times(self):
         """
