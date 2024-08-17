@@ -20,8 +20,8 @@ sample_dict = {
     "sample_name": "test-1",
     "location": "R:A1",
     "compound_list": "cystine, guanosine, chloroquine, DPU, coumarin",
-    "concentration_list": "0.3, .6, .42, 0.4, 0.3",
-    "num_random_peaks": 10,
+    "concentration_list": "1.3, 2.6, 3.42, 2.4, 6.3",
+    "num_random_peaks": 20,
     "max_random_concentration": 0.6,
 }
 
@@ -59,8 +59,8 @@ injection1 = Injection(sample=my_sample, method=method_1, system=system)
 # injection4 = Injection(sample=my_sample, method=method_4, system=system)
 
 injection1.plot_chromatogram("UV_VIS_1", c="red")
-# data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1")
-# data.to_parquet("./data_processing/test.parquet")
+data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1")
+data.to_parquet("./data_processing/test.parquet")
 # injection2.plot_chromatogram("UV_VIS_1", h_offset=0, c="blue")
 # injection3.plot_chromatogram("UV_VIS_1", h_offset=0, c="black")
 # injection4.plot_chromatogram("UV_VIS_1", h_offset=0, c="green")

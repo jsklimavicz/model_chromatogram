@@ -10,7 +10,7 @@ DEFAULT_BASE_ASYMMETRY = 1.04
 ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = 1.005
 WIDENING_CONSTANT = 1.035
 LINEAR_LIMIT = (
-    2500  # mAU after which peak height is no longer linear with concentration
+    4000  # mAU after which peak height is no longer linear with concentration
 )
 SATURATION_SCALE = LINEAR_LIMIT / 10  # range over which saturation occurs
 
@@ -23,9 +23,8 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = 0.001
 # Background Noise Parameters
 BACKGROUND_MEAN = 0
 BASELINE_NOISE = 0.8
-BASELINE_AUTOCORRELATION_PARAMETER = 0.8
+BASELINE_AUTOCORRELATION_PARAMETER = 0.1
 BASELINE_MULTIPLIER = 2
-# BACKGROUND_SMOOTHING = 21  # points for smoothing
 
 # Method Paramters
 SOLVENT_PROFILE_CONVOLUTION_WIDTH = 1
