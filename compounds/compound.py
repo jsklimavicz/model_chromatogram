@@ -168,8 +168,9 @@ class UVSpectrum:
 
     def extrapolate_upper_end(self) -> None:
         max_wave = int(np.ceil(max(self.wavelengths) + 0.1))
-        addition_wavelengths = np.arange(max_wave, max_wave + 5)
+        addition_wavelengths = np.arange(max_wave, max_wave + 10)
         addition_eps = np.ones_like(addition_wavelengths) * self.log_epsilon[-1]
+        # TODO: replace decrease with slope if negative
         addition_eps -= 0.01 * (np.arange(0, len(addition_eps)))
         self.wavelengths = [*self.wavelengths, *addition_wavelengths]
         self.log_epsilon = [*self.log_epsilon, *addition_eps]
