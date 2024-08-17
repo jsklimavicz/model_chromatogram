@@ -95,108 +95,146 @@ class PeakFinder:
         """
         self.d2_sigma = noise_multiplier * self.d2_ave_noise
         self.signal_sigma = noise_multiplier * self.signal_noise
-        self.d2_upper = 2 * self.d2_sigma
-        self.d2_lower = -3.5 * self.d2_sigma
+        low_cutoff = -3.5
+        high_cutoff = 2
         n = len(self.d2_signal)
 
-        # Step 1: Find all contiguous regions where self.d2_signal < self.d2_lower
+        # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
         regions = []
         i = 0
         while i < n:
-            if self.d2_signal[i] < self.d2_lower:
+            if self.d2_signal[i] < low_cutoff * self.d2_sigma:
                 start = i
-                while i < n and self.d2_signal[i] < self.d2_upper:
+                while i < n and self.d2_signal[i] < high_cutoff * self.d2_sigma:
                     i += 1
                 regions.append((start, i - 1))
             i += 1
 
-        # Step 2: Expand each region to the left and right to where self.d2_signal > self.d2_upper and then back down to self.d2_upper
-        def step_2_compare(side, sign):
-            return sign(self.d2_signal[side], self.d2_upper) or sign(
-                self.d2_signal[side - 1], self.d2_upper
-            )
+        def expand_region(regions, signal, noise_level, offset):
+            nonlocal high_cutoff
 
-        def expand_region(side, comp_func, comp_value, addn_value):
-            while comp_func(side, comp_value) and step_2_compare(side, lt):
-                side += addn_value
-            else:
-                while comp_func(side, comp_value) and step_2_compare(side, gt):
-                    side += addn_value
-            return side
+            def compare_to_noise(side, sign):
+                v1 = signal[side + offset]
+                v0 = signal[side - 1 + offset]
+                s = high_cutoff * noise_level
+                return sign(v1, s) or sign(v0, s)
 
-        expanded_regions = []
-        for start, end in regions:
-            left = expand_region(start, gt, 0, -1)  # Expand left
-            right = expand_region(end, lt, n - 1, 1)  # Expand right
-            expanded_regions.append((left, right))
-
-        # Step 3: Expand each region to the left and right to where self.processed_signal > self.signal_sigma
-        def step_3_compare(side, sign):
-            return sign(self.smoothed_signal[side + 1], 3 * self.signal_sigma) or sign(
-                self.smoothed_signal[side], 3 * self.signal_sigma
-            )
-
-        def expand_3_region(side, comp_func, comp_value, addn_value):
-            min_val = self.smoothed_signal[side + 1]
-            while comp_func(side, comp_value) and step_3_compare(side, gt):
-                side += addn_value
-                curr_signal = self.smoothed_signal[side + 1]
-                if curr_signal < min_val:
-                    min_val = curr_signal
+            def expand(side, comp_func, limit, addn_value):
+                if offset == 0:
+                    while comp_func(side, limit) and compare_to_noise(side, lt):
+                        side += addn_value
+                    else:
+                        while comp_func(side, limit) and compare_to_noise(side, gt):
+                            side += addn_value
                 else:
-                    break
-            return side
+                    initial_val = signal[side]
+                    while comp_func(side, limit) and compare_to_noise(side, gt):
+                        side += addn_value
+                        curr_signal = signal[side]
+                        if curr_signal > initial_val:
+                            break
+                        initial_val = curr_signal
+                return side
 
-        regions = expanded_regions
-        expanded_regions = []
-        for start, end in regions:
-            left = expand_3_region(start, gt, 0, -1)  # Expand left
-            right = expand_3_region(end, lt, n - 1, 1)  # Expand right
-            expanded_regions.append((left, right))
+            expanded_regions = []
+            for start, end in regions:
+                left = expand(start, gt, 0, -1)  # Expand left
+                right = expand(end, lt, n - 1, 1)  # Expand right
+                expanded_regions.append((left, right))
 
-        # Step 4: Trim overlapping regions at local minima
-        trimmed_regions = []
-        expanded_regions.sort()  # Sort by start time
-        current_start, current_end = expanded_regions[0]
+            return expanded_regions
 
-        def get_extrema(function, start, end, order=10):
-            return (
-                function(self.d2_signal[start : end + 1], order=order)[0] + next_start
-            )
-
-        def update_start_end(new_end):
-            nonlocal trimmed_regions, current_start, current_end
-            trimmed_regions.append([current_start, new_end])
-            current_start, current_end = new_end, next_end
-
-        for next_start, next_end in expanded_regions[1:]:
-            if next_start <= current_end:  # Overlapping regions
-                # two possible cases: poorly resolved shoulder with only a local max, or a better resolved shoulter, with a local min, still above threshold
-
-                rel_min = get_extrema(argrelmin, next_start, current_end + 1)
-                if len(rel_min) == 1:
-                    update_start_end(rel_min[0])
-                    continue
-                elif len(rel_min) > 1:
-                    ave = np.int32(np.mean(rel_min))
-                    update_start_end(ave)
-                    continue
-
-                rel_max = get_extrema(argrelmax, next_start, current_end + 1)
-                if len(rel_max) == 1:
-                    update_start_end(rel_max[0])
-                else:
-                    max_idx = (
-                        np.argmax(self.d2_signal[next_start : current_end + 1])
+        def trim_regions(regions, signal, offset):
+            def get_extrema(function, start, end, **kwargs):
+                nonlocal offset
+                try:
+                    return (
+                        function(signal[start : end + 1], **kwargs)[0]
                         + next_start
+                        + offset
                     )
-                    update_start_end(max_idx)
-            else:
-                trimmed_regions.append([current_start, current_end])
-                current_start, current_end = next_start, next_end
+                except:
+                    return (
+                        function(signal[start : end + 1], **kwargs)
+                        + next_start
+                        + offset
+                    )
 
-        # Add the last region
-        trimmed_regions.append([current_start, current_end])
+            def update_start_end(new_end):
+                nonlocal trimmed_regions, current_start, current_end
+                trimmed_regions.append([current_start, new_end])
+                current_start, current_end = new_end, next_end
+
+            regions = [[start + offset, end + offset] for start, end in regions]
+            trimmed_regions = []
+            regions.sort()  # Sort by start time
+            current_start, current_end = regions[0]
+
+            for next_start, next_end in regions[1:]:
+                if next_start <= current_end:  # Overlapping regions
+                    # two possible cases: poorly resolved shoulder with only a local max, or a better resolved shoulter, with a local min, still above threshold
+
+                    rel_min = get_extrema(
+                        argrelmin, next_start, current_end + 1, order=10
+                    )
+                    if len(rel_min) == 1:
+                        update_start_end(rel_min[0])
+                        continue
+                    elif offset == 1:
+                        update_start_end(
+                            get_extrema(np.argmin, next_start, current_end + 1)
+                        )
+                        continue
+                    elif offset == 0:
+                        if len(rel_min) > 1:
+                            ave = np.int32(np.mean(rel_min))
+                            update_start_end(ave)
+                            continue
+                        rel_max = get_extrema(
+                            argrelmax, next_start, current_end + 1, order=10
+                        )
+                        if len(rel_max) == 1:
+                            update_start_end(rel_max[0])
+                        else:
+                            max_idx = (
+                                np.argmax(signal[next_start : current_end + 1])
+                                + next_start
+                            )
+                            update_start_end(max_idx)
+                else:
+                    trimmed_regions.append([current_start, current_end])
+                    current_start, current_end = next_start, next_end
+
+            trimmed_regions.append([current_start, current_end])  # add last region
+            return trimmed_regions
+
+        # Step 2: Expand each region to the left and right to where self.d2_signal > 2 * self.d2_sigma and then back down to 2 * self.d2_sigma
+        expanded_regions_d2 = expand_region(
+            regions, signal=self.d2_signal, noise_level=self.d2_sigma, offset=0
+        )
+
+        # Step 3: Trim overlapping regions at local minima
+        trimmed_regions_d2 = trim_regions(expanded_regions_d2, self.d2_signal, offset=0)
+
+        # Step 4: Expand each region to the left and right to where self.processed_signal > self.signal_sigma
+        expanded_regions = expand_region(
+            trimmed_regions_d2,
+            signal=self.smoothed_signal,
+            noise_level=self.signal_noise,
+            offset=1,
+        )
+        prev_peak = expanded_regions[0]
+        filtered_peaks = [prev_peak]
+        for curr_peak in expanded_regions[1:]:
+            if prev_peak == curr_peak:
+                continue
+            else:
+                filtered_peaks.append(curr_peak)
+            prev_peak = curr_peak
+        expanded_regions = filtered_peaks
+
+        # Step 5: Trim overlapping regions at local minima
+        trimmed_regions = trim_regions(expanded_regions, self.smoothed_signal, offset=1)
 
         self.peaks: list[Peak] = []
         for start, end in trimmed_regions:
