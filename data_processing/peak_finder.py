@@ -13,8 +13,6 @@ from user_parameters import (
     MINIMUM_HEIGHT,
     MINIMUM_AREA,
     BACKGROUND_NOISE_RANGE,
-    LINEAR_LIMIT,
-    PEAK_LIMIT,
 )
 
 import matplotlib.pyplot as plt
@@ -46,12 +44,12 @@ class PeakFinder:
         self.refine_peaks()
 
     def __smooth_signal(self):
-        sos = butter(1, (BUTTER_FILTER_SIZE) * self.dt, output="sos")
-        self.smoothed_signal = sosfiltfilt(sos, self.processed_signal)
-        for i in range(3):
-            self.smoothed_signal = savgol_filter(
-                self.smoothed_signal, SG_FILTER_SIZE + 15 * i, 7
-            )
+        signal = savgol_filter(self.processed_signal, int(round(SG_FILTER_SIZE / 2)), 7)
+        signal = savgol_filter(signal, SG_FILTER_SIZE, 4)
+        signal = savgol_filter(signal, SG_FILTER_SIZE, 4)
+
+        sos = butter(1, BUTTER_FILTER_SIZE * self.dt, output="sos")
+        self.smoothed_signal = sosfiltfilt(sos, signal)
 
     def __find_baseline(self):
         baseline, baseline_time = als_psalsa(
@@ -97,57 +95,46 @@ class PeakFinder:
         """
         self.d2_sigma = noise_multiplier * self.d2_ave_noise
         self.signal_sigma = noise_multiplier * self.signal_noise
-        low_cutoff = -PEAK_LIMIT
+        low_cutoff = -3.5
         high_cutoff = 2
         n = len(self.d2_signal)
 
         # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
-        initial_regions = []
+        regions = []
         i = 0
-        # TODO: split peak if 2nd derivative rises and goes back down while signal is less than LINEAR_LIMIT
         while i < n:
-            if (
-                self.d2_signal[i] < low_cutoff * self.d2_sigma
-                or self.processed_signal[i + 1] > LINEAR_LIMIT
-            ):
+            if self.d2_signal[i] < low_cutoff * self.d2_sigma:
                 start = i
-                while i < n and (
-                    self.d2_signal[i] < 0 or self.processed_signal[i + 1] > LINEAR_LIMIT
-                ):
+                while i < n and self.d2_signal[i] < high_cutoff * self.d2_sigma:
                     i += 1
-                initial_regions.append((start, i - 1))
+                regions.append((start, i - 1))
             i += 1
 
-        def expand_region(regions):
-            nonlocal high_cutoff, low_cutoff
+        def expand_region(regions, signal, noise_level, offset):
+            nonlocal high_cutoff
 
-            def compare_d2_to_noise(index, sign):
-                d2_0 = self.d2_signal[index]
-                d2_1 = self.d2_signal[index - 1]
-                d2_n = high_cutoff * self.d2_sigma
-                return sign(d2_1, d2_n) or sign(d2_0, d2_n)
+            def compare_to_noise(side, sign):
+                v1 = signal[side + offset]
+                v0 = signal[side - 1 + offset]
+                s = high_cutoff * noise_level
+                return sign(v1, s) or sign(v0, s)
 
-            def compare_signal_to_noise(index):
-                s_0 = self.smoothed_signal[index + 1]
-                s_1 = self.smoothed_signal[index]
-                n = high_cutoff * self.signal_sigma
-                return s_0 > n or s_1 > n
-
-            def expand(index, comp_func, x_limit, addn_value):
-                while (
-                    comp_func(index, x_limit)
-                    and compare_d2_to_noise(index, lt)
-                    and compare_signal_to_noise(index)
-                ):
-                    index += addn_value
+            def expand(side, comp_func, limit, addn_value):
+                if offset == 0:
+                    while comp_func(side, limit) and compare_to_noise(side, lt):
+                        side += addn_value
+                    else:
+                        while comp_func(side, limit) and compare_to_noise(side, gt):
+                            side += addn_value
                 else:
-                    while (
-                        comp_func(index, x_limit)
-                        and compare_d2_to_noise(index, gt)
-                        and compare_signal_to_noise(index)
-                    ):
-                        index += addn_value
-                return index
+                    initial_val = signal[side]
+                    while comp_func(side, limit) and compare_to_noise(side, gt):
+                        side += addn_value
+                        curr_signal = signal[side]
+                        if curr_signal > initial_val:
+                            break
+                        initial_val = curr_signal
+                return side
 
             expanded_regions = []
             for start, end in regions:
@@ -157,93 +144,63 @@ class PeakFinder:
 
             return expanded_regions
 
-        def remove_dupulicate_regions(regions):
-            current_start, current_end = regions[0]
-            filtered_regions = [[current_start, current_end]]
-            for region in regions[1:]:
-                next_start, next_end = region
-                if next_start == current_start and current_end == next_end:
-                    continue
-                else:
-                    filtered_regions.append([next_start, next_end])
-                    current_start = next_start
-                    current_end = next_end
-            return filtered_regions
-
-        def trim_regions(regions):
-            def get_extrema(function, signal, start, end, offset=0, **kwargs):
-                vals = function(signal[start + offset : end + offset + 1], **kwargs)
+        def trim_regions(regions, signal, offset):
+            def get_extrema(function, start, end, **kwargs):
+                nonlocal offset
                 try:
-                    return vals[0] + next_start + offset
+                    return (
+                        function(signal[start : end + 1], **kwargs)[0]
+                        + next_start
+                        + offset
+                    )
                 except:
-                    return vals + next_start + offset
+                    return (
+                        function(signal[start : end + 1], **kwargs)
+                        + next_start
+                        + offset
+                    )
 
             def update_start_end(new_end):
                 nonlocal trimmed_regions, current_start, current_end
                 trimmed_regions.append([current_start, new_end])
                 current_start, current_end = new_end, next_end
 
-            regions = [[start, end] for start, end in regions]
+            regions = [[start + offset, end + offset] for start, end in regions]
             trimmed_regions = []
             regions.sort()  # Sort by start time
             current_start, current_end = regions[0]
 
             for next_start, next_end in regions[1:]:
-                if abs(next_start - 6255) < 2:
-                    pass
                 if next_start <= current_end:  # Overlapping regions
                     # two possible cases: poorly resolved shoulder with only a local max, or a better resolved shoulter, with a local min, still above threshold
 
-                    rel_min_signal = get_extrema(
-                        argrelmin,
-                        self.processed_signal,
-                        next_start,
-                        current_end + 1,
-                        offset=1,
-                        order=10,
+                    rel_min = get_extrema(
+                        argrelmin, next_start, current_end + 1, order=10
                     )
-                    rel_min_d2 = get_extrema(
-                        argrelmin,
-                        self.d2_signal,
-                        next_start,
-                        current_end + 1,
-                        order=10,
-                    )
-                    rel_max_d2 = get_extrema(
-                        argrelmax,
-                        self.d2_signal,
-                        next_start,
-                        current_end + 1,
-                        order=10,
-                    )
-                    if len(rel_min_signal) == 1:
-                        update_start_end(rel_min_signal[0])
+                    if len(rel_min) == 1:
+                        update_start_end(rel_min[0])
                         continue
-                    elif len(rel_max_d2) == 3 and len(rel_min_d2) == 2:
-                        update_start_end(rel_max_d2[1])
-                        continue
-                    elif len(rel_min_d2) == 1:
-                        update_start_end(rel_min_d2[0])
-                        continue
-                    elif len(rel_min_signal) > 1:
+                    elif offset == 1:
                         update_start_end(
-                            get_extrema(
-                                np.argmin,
-                                self.processed_signal,
-                                next_start,
-                                current_end,
-                                offset=1,
-                            )
-                        )
-                        update_start_end(rel_min_signal[0])
-                        continue
-                    else:
-                        update_start_end(
-                            get_extrema(
-                                np.argmin, self.d2_signal, next_start, current_end
-                            )
+                            get_extrema(np.argmin, next_start, current_end + 1)
                         )
                         continue
+                    elif offset == 0:
+                        if len(rel_min) > 1:
+                            ave = np.int32(np.mean(rel_min))
+                            update_start_end(ave)
+                            continue
+                        rel_max = get_extrema(
+                            argrelmax, next_start, current_end + 1, order=10
+                        )
+                        if len(rel_max) == 1:
+                            update_start_end(rel_max[0])
+                        else:
+                            max_idx = (
+                                np.argmax(signal[next_start : current_end + 1])
+                                + next_start
+                            )
+                            update_start_end(max_idx)
                 else:
                     trimmed_regions.append([current_start, current_end])
                     current_start, current_end = next_start, next_end
@@ -251,14 +208,37 @@ class PeakFinder:
             trimmed_regions.append([current_start, current_end])  # add last region
             return trimmed_regions
 
-        expanded_regions = expand_region(initial_regions)
+        # Step 2: Expand each region to the left and right to where self.d2_signal > 2 * self.d2_sigma and then back down to 2 * self.d2_sigma
+        expanded_regions_d2 = expand_region(
+            regions, signal=self.d2_signal, noise_level=self.d2_sigma, offset=0
+        )
 
         # Step 3: Trim overlapping regions at local minima
-        trimmed_regions = trim_regions(expanded_regions)
+        trimmed_regions_d2 = trim_regions(expanded_regions_d2, self.d2_signal, offset=0)
+
+        # Step 4: Expand each region to the left and right to where self.processed_signal > self.signal_sigma
+        expanded_regions = expand_region(
+            trimmed_regions_d2,
+            signal=self.smoothed_signal,
+            noise_level=self.signal_noise,
+            offset=1,
+        )
+        prev_peak = expanded_regions[0]
+        filtered_peaks = [prev_peak]
+        for curr_peak in expanded_regions[1:]:
+            if prev_peak == curr_peak:
+                continue
+            else:
+                filtered_peaks.append(curr_peak)
+            prev_peak = curr_peak
+        expanded_regions = filtered_peaks
+
+        # Step 5: Trim overlapping regions at local minima
+        trimmed_regions = trim_regions(expanded_regions, self.smoothed_signal, offset=1)
 
         self.peaks: list[Peak] = []
         for start, end in trimmed_regions:
-            if end - start < 2:
+            if start == end:
                 continue
             self.peaks.append(
                 Peak(
@@ -282,19 +262,15 @@ class PeakFinder:
         # Plot the final result
         plt.figure(figsize=(14, 8))
         plt.plot(self.timepoints, self.processed_signal, color="black")
-        plt.hlines(
-            -PEAK_LIMIT * NOISE_THRESHOLD_MULTIPLIER * self.d2_ave_noise / self.dt,
-            0,
-            self.timepoints[-1],
-            color="gray",
-        )
+        plt.plot(self.timepoints, self.smoothed_signal, color="slategray")
+        plt.plot(self.timepoints[1:-1], self.d2_signal / self.dt, color="gray")
 
         # Colors for adjacent peaks
         for idx, peak in enumerate(self.peaks):
             color = "orange" if idx % 2 == 0 else "blue"
             # plt.axvspan(start, end, color=color, alpha=0.5, label=f"Peak {idx + 1}")
 
-            plt.axvspan(peak.start_time, peak.end_time, color=color, alpha=0.2)
+            plt.axvspan(peak.start_time, peak.end_time, color=color, alpha=0.5)
 
         plt.xlabel("Time")
         plt.ylabel("Second Derivative")
@@ -310,8 +286,6 @@ class PeakFinder:
                 "index": idx + 1,
                 **peak_dict,
                 "relative_area": np.round(100 * peak.area / total_area, 2),
-                "start_ind": peak.start_index,
-                "end_ind": peak.end_index,
             }
             peak_list.append(peak_dict)
         peak_df = pd.DataFrame.from_dict(peak_list)
