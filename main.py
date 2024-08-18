@@ -20,9 +20,9 @@ sample_dict = {
     "sample_name": "test-1",
     "location": "R:A1",
     "compound_list": "cystine, guanosine, chloroquine, DPU, coumarin",
-    "concentration_list": "1.3, 2.6, 3.42, 2.4, 6.3",
+    "concentration_list": "0.1, 0.2, 0.12, 0.13, 0.6",
     "num_random_peaks": 20,
-    "max_random_concentration": 0.6,
+    "max_random_concentration": 0.3,
 }
 
 sample_dict["compound_list"] = [
