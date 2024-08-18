@@ -76,6 +76,7 @@ class Baseline(Chromatogram):
         c: np.array = self.mean_values * (1 - corr)
         eps = np.sqrt((sigma**2) * (1 - corr**2))
         signal = c + random.normal(loc=0, scale=eps, size=np.shape(c))
+        signal[0] += -c[0] + self.mean_values[0]
         for ind in range(1, len(signal)):
             signal[ind] += corr * signal[ind - 1]
         return signal
