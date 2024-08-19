@@ -33,7 +33,8 @@ from operator import lt, gt
 class PeakFinder:
     def __init__(self, timepoints: np.array, signal: np.array) -> None:
         self.timepoints = timepoints
-        self.raw_signal = self.processed_signal = signal
+        self.raw_signal = signal
+        self.processed_signal = np.copy(signal)
         self.dt = (timepoints[-1] - timepoints[0]) / len(timepoints)
         self.__initial_peak_finding()
 
@@ -50,7 +51,7 @@ class PeakFinder:
         self.smoothed_signal = sosfiltfilt(sos, self.processed_signal)
         for i in range(3):
             self.smoothed_signal = savgol_filter(
-                self.smoothed_signal, SG_FILTER_SIZE + 15 * i, 7
+                self.smoothed_signal, SG_FILTER_SIZE + 15 * i, 5
             )
 
     def __find_baseline(self):
@@ -103,9 +104,9 @@ class PeakFinder:
 
         # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
         initial_regions = []
-        i = 0
+        i = 3
         # TODO: split peak if 2nd derivative rises and goes back down while signal is less than LINEAR_LIMIT
-        while i < n:
+        while i < n - 3:
             if (
                 self.d2_signal[i] < low_cutoff * self.d2_sigma
                 or self.processed_signal[i + 1] > LINEAR_LIMIT
@@ -128,6 +129,7 @@ class PeakFinder:
                 return sign(d2_1, d2_n) or sign(d2_0, d2_n)
 
             def compare_signal_to_noise(index):
+                # TODO expand to range of 3 with np.any
                 s_0 = self.smoothed_signal[index + 1]
                 s_1 = self.smoothed_signal[index]
                 n = high_cutoff * self.signal_sigma
@@ -157,6 +159,7 @@ class PeakFinder:
 
             return expanded_regions
 
+        # TODO optimize this and use it
         def remove_dupulicate_regions(regions):
             current_start, current_end = regions[0]
             filtered_regions = [[current_start, current_end]]
@@ -281,13 +284,8 @@ class PeakFinder:
     def plot_peaks(self):
         # Plot the final result
         plt.figure(figsize=(14, 8))
-        plt.plot(self.timepoints, self.processed_signal, color="black")
-        plt.hlines(
-            -PEAK_LIMIT * NOISE_THRESHOLD_MULTIPLIER * self.d2_ave_noise / self.dt,
-            0,
-            self.timepoints[-1],
-            color="gray",
-        )
+        plt.plot(self.timepoints, self.raw_signal, color="black")
+        plt.plot(self.timepoints, self.baseline_spline(self.timepoints), color="grey")
 
         # Colors for adjacent peaks
         for idx, peak in enumerate(self.peaks):
@@ -316,6 +314,25 @@ class PeakFinder:
             peak_list.append(peak_dict)
         peak_df = pd.DataFrame.from_dict(peak_list)
         print(peak_df)
+
+
+class PeakList:
+    def __init__(self, times, chromatogram) -> None:
+        self.peaks: list[Peak] = []
+        self.signal = chromatogram
+        self.times = times
+
+    # TODO implement sorting for peaks after each addition
+    # TODO class methods for percent height and area
+    # TODO peak width methods; undefined for some peak types
+    # TODO resolution methods
+    # TODO asymmetry methods
+    # TODO plate count methods
+    # TODO peak baseline type: baseline, adjacent peak, etc
+
+    def add_peak(self, start_index, end_index) -> None:
+
+        peak = Peak()
 
 
 class Peak:

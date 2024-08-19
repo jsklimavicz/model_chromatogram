@@ -58,7 +58,7 @@ injection1 = Injection(sample=my_sample, method=method_1, system=system)
 # injection3 = Injection(sample=my_sample, method=method_3, system=system)
 # injection4 = Injection(sample=my_sample, method=method_4, system=system)
 
-injection1.plot_chromatogram("UV_VIS_1", c="red")
+# injection1.plot_chromatogram("UV_VIS_1", c="red")
 data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1")
 data.to_parquet("./data_processing/test.parquet")
 # injection2.plot_chromatogram("UV_VIS_1", h_offset=0, c="blue")
@@ -70,7 +70,7 @@ data.to_parquet("./data_processing/test.parquet")
 # injection.plot_chromatogram("UV_VIS_3", h_offset=0.6, v_offset=60, c="black")
 # injection.plot_chromatogram("UV_VIS_4", h_offset=0.9, v_offset=90, c="green")
 
-plt.show()
+# plt.show()
 
 
 # with Profile() as profile:

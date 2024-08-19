@@ -73,6 +73,7 @@ class Baseline(Chromatogram):
             0 < corr < 1
         ), f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {BASELINE_AUTOCORRELATION_PARAMETER}"
 
+        # TODO update to add c at end
         c: np.array = self.mean_values * (1 - corr)
         eps = np.sqrt((sigma**2) * (1 - corr**2))
         signal = c + random.normal(loc=0, scale=eps, size=np.shape(c))

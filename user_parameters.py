@@ -1,7 +1,7 @@
 import math
 
 # Method Parameters
-SAMPLE_RATE = 5  # in Hz; default if not specified in method
+SAMPLE_RATE = 10  # in Hz; default if not specified in method
 RUN_LENGTH = 15  # in min; default if not specified in method
 FLOW_RATE = 5  # in ml/min; default if not specified in method
 SOLVENT_PROFILE_CONVOLUTION_WIDTH = (
@@ -11,12 +11,12 @@ SOLVENT_PROFILE_CONVOLUTION_WIDTH = (
 # Chromatogram creation filterss
 ## Peak shape parameters
 DEFAULT_PEAK_WIDTH = (
-    0.08  # default peak width for peak eluting at t = 0, in units of min
+    0.07  # default peak width for peak eluting at t = 0, in units of min
 )
 SIGNAL_MULIPLIER = 1  # multipier for signal
 DEFAULT_BASE_ASYMMETRY = 1.03  # default peak asymmetry
 ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = (
-    1.005  # how much peaks become more asymmetric over time, in units of min^-1
+    1.003  # how much peaks become more asymmetric over time, in units of min^-1
 )
 WIDENING_CONSTANT = 1.025  # how much peaks widen over time, in units of min^-1
 LINEAR_LIMIT = (
@@ -42,7 +42,7 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = (
 
 ## Background Noise Parameters
 BACKGROUND_MEAN = 0  #
-BASELINE_NOISE = 0.8  # Standard deviation of background noise
+BASELINE_NOISE = 0.9  # Standard deviation of background noise
 BASELINE_AUTOCORRELATION_PARAMETER = math.sqrt(1 / SAMPLE_RATE)
 BASELINE_MULTIPLIER = 2  # multiplier for amplitude of background
 
