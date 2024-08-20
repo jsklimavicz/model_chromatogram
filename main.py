@@ -1,7 +1,7 @@
-from compounds.sample import Sample
+from compounds import Sample
 import json
 import matplotlib.pyplot as plt
-from methods.method import Method
+from methods import Method
 
 from pydash import get as _get
 from injection import Injection

@@ -1,10 +1,4 @@
-import sys, os
-
-current = os.path.dirname(os.path.realpath(__file__))
-parent = os.path.dirname(current)
-sys.path.append(parent)
-
-from methods.solvent_library import solvent_library, Solvent
+from compounds import SOLVENT_LIBRARY, Solvent
 from pydash import get as _get
 from user_parameters import *
 import numpy as np
@@ -63,7 +57,7 @@ class Method:
         Helper function to add a solvent library Solvent for each item in the solvent library.
         """
         for ind, mobile_phase in enumerate(self.mobile_phases):
-            solvent: Solvent = solvent_library.lookup(mobile_phase["name"])
+            solvent: Solvent = SOLVENT_LIBRARY.lookup(mobile_phase["name"])
             self.mobile_phases[ind]["solvent"] = solvent
 
     def __convolve_profile(
@@ -150,7 +144,7 @@ class Method:
 
         solvents = [_get(solvent, "solvent") for solvent in self.mobile_phases]
         # value are normalized by subtracting from the water-only value
-        water = solvent_library.lookup("water")
+        water = SOLVENT_LIBRARY.lookup("water")
 
         for comp_property in [
             "hb_acidity",

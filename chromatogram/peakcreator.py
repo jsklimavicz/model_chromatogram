@@ -2,15 +2,8 @@ from numpy.random import uniform
 import math
 from scipy.stats import exponnorm
 from scipy.optimize import minimize_scalar, minimize
-from compounds.compound import Compound
+from compounds import Compound
 import numpy as np
-
-import sys
-import os
-
-current = os.path.dirname(os.path.realpath(__file__))
-parent = os.path.dirname(current)
-sys.path.append(parent)
 
 from user_parameters import *
 

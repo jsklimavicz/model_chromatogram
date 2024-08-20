@@ -1,11 +1,6 @@
 import numpy.random as random
 import numpy as np
 from user_parameters import *
-import sys, os
-
-current = os.path.dirname(os.path.realpath(__file__))
-parent = os.path.dirname(current)
-sys.path.append(parent)
 
 import numpy as np
 import matplotlib.pyplot as plt

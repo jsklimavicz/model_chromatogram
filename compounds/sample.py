@@ -1,5 +1,4 @@
-from compounds.compound import Compound
-from compounds.compound_library import COMPOUND_LIBRARY
+from compounds import Compound, COMPOUND_LIBRARY
 from random import uniform
 
 

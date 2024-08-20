@@ -1,9 +1,8 @@
 from pydash import get as _get
 
-from methods.method import Method
-from compounds.sample import Sample
-from chromatogram.chromatogram import Chromatogram, Baseline
-from chromatogram.peakcreator import PeakCreator
+from methods import Method
+from compounds import Sample
+from chromatogram import Chromatogram, Baseline, PeakCreator
 from system import System
 import numpy as np
 
