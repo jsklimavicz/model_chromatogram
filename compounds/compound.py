@@ -4,8 +4,6 @@ from pydash import get as _get
 import pandas as pd
 from scipy.optimize import fsolve
 
-
-import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 
@@ -75,21 +73,25 @@ class Compound:
         c = 600 / self.mw * (np.sqrt(self.h_acceptors) - 1)
         d = (1 - self.log_s) / 5
 
-        flow = solvent_profiles["flow"]
+        time = solvent_profiles["time"].to_numpy()
 
-        objective = a * (solvent_profiles["polarity"] - 0.15)
-        objective -= b * (solvent_profiles["hb_basicity"] + 0.05)
-        objective -= c * (solvent_profiles["hb_acidity"] + 0.05)
-        objective -= d * (solvent_profiles["dielectric"] + 0.050)
+        flow = solvent_profiles["flow"].to_numpy()
+
+        objective = a * (solvent_profiles["polarity"].to_numpy())
+        objective -= b * (solvent_profiles["hb_basicity"].to_numpy())
+        objective -= c * (solvent_profiles["hb_acidity"].to_numpy())
+        objective -= d * (solvent_profiles["dielectric"].to_numpy())
+        linear_component = a * -0.15 + (b + c + d) * -0.05
+        objective += linear_component
         objective /= 120
 
         objective *= flow
 
-        dt = solvent_profiles["time"][1] - solvent_profiles["time"][0]
+        dt = time[1] - time[0]
         integral_function = np.cumsum(objective) * dt
 
         spline = CubicSpline(
-            solvent_profiles["time"],
+            time,
             integral_function,
             extrapolate=False,
         )
@@ -102,20 +104,14 @@ class Compound:
         # Note: Total volume cannot be less than one column volume...
         # Let's modify with 1+norm.cdf to prevent this.
         adjusted_retention_volume = max(
-            1 + norm.cdf(adjusted_retention_volume), adjusted_retention_volume
+            1 + norm.cdf(adjusted_retention_volume) / 2,
+            adjusted_retention_volume,
         )
         cumulative_volume = np.cumsum(flow) * dt
         cumulative_volume /= column_volume
-        # spline = CubicSpline(
-        #     cumulative_volume,
-        #     solvent_profiles["time"],
-        #     extrapolate=False,
-        # )
-
-        # self.retention_time = spline(adjusted_retention_volume)
 
         self.retention_time = np.interp(
-            adjusted_retention_volume, cumulative_volume, solvent_profiles["time"]
+            adjusted_retention_volume, cumulative_volume, time
         )
 
         return self.retention_time
@@ -172,8 +168,9 @@ class UVSpectrum:
 
     def extrapolate_upper_end(self) -> None:
         max_wave = int(np.ceil(max(self.wavelengths) + 0.1))
-        addition_wavelengths = np.arange(max_wave, max_wave + 5)
+        addition_wavelengths = np.arange(max_wave, max_wave + 10)
         addition_eps = np.ones_like(addition_wavelengths) * self.log_epsilon[-1]
+        # TODO: replace decrease with slope if negative
         addition_eps -= 0.01 * (np.arange(0, len(addition_eps)))
         self.wavelengths = [*self.wavelengths, *addition_wavelengths]
         self.log_epsilon = [*self.log_epsilon, *addition_eps]
