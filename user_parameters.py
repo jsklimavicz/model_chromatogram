@@ -13,7 +13,7 @@ SOLVENT_PROFILE_CONVOLUTION_WIDTH = (
 DEFAULT_PEAK_WIDTH = (
     0.07  # default peak width for peak eluting at t = 0, in units of min
 )
-SIGNAL_MULIPLIER = 1  # multipier for signal
+SIGNAL_MULTIPLIER = 1  # multipier for signal
 DEFAULT_BASE_ASYMMETRY = 1.03  # default peak asymmetry
 ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = (
     1.003  # how much peaks become more asymmetric over time, in units of min^-1
@@ -42,7 +42,7 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = (
 
 ## Background Noise Parameters
 BACKGROUND_MEAN = 0  #
-BASELINE_NOISE = 0.9  # Standard deviation of background noise
+BASELINE_NOISE = 0.3 * math.sqrt(SAMPLE_RATE)  # Standard deviation of background noise
 BASELINE_AUTOCORRELATION_PARAMETER = math.sqrt(1 / SAMPLE_RATE)
 BASELINE_MULTIPLIER = 2  # multiplier for amplitude of background
 

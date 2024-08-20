@@ -45,7 +45,7 @@ class Injection:
             max_absobances = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absobances):
                 self.chromatograms[name].add_compound_peak(
-                    absorbance, compound_peak_signal
+                    absorbance=absorbance, signal=compound_peak_signal
                 )
 
     def plot_chromatogram(self, channel_name, **kwargs):

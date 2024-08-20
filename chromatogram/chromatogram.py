@@ -13,85 +13,139 @@ import pandas as pd
 
 
 class Chromatogram:
-    def __init__(self, times, inital_values) -> None:
-        self.times = times
-        self.signal = inital_values
-        self.mean_values = inital_values
-        self.saturation_filter = False
+    """
+    Creates and stores time and signal data for chromatograms.
+    """
 
-    def add_compound_peak(self, absorbance, signal):
+    def __init__(self, times: np.array, initial_values: np.array) -> None:
+        """
+        Creates a new Chromatogram.
+
+        Args:
+            times (np.array): array of times in minutes at which to generate chromatogram data.
+            initial_values (np.array): array of initial signal values to add peaks to.
+        """
+        self.times: np.array = times
+        self.signal: np.array = initial_values
+        self.saturated_signal: np.array = self.signal
+        self.saturation_up_to_date = False
+
+    def add_compound_peak(self, signal: np.array, absorbance: float = 1) -> None:
+        """
+        Adds a compound peak to the chromatogram.
+
+        Args:
+            absorbance (float): Absorbance value for the peak. Acts as a multiplier for the signal. Default = 1.0
+            signal (np.array):
+
+        """
+        if len(signal) != len(self.signal):
+            raise ChromatogramError(
+                "The provided signal does not match the length of the current chromatogram."
+            )
         self.signal += absorbance * signal
+        self.saturation_up_to_date = False
 
     def _detector_saturation(func):
+        """
+        Decorator function to create/update a saturated chromatogram signal. Detectors only have a linear relation between amount of analyte and peak area for a finite linear range, and at some point, the detector saturates. This decorator creates this saturation effect using the user-defined `LINEAR_LIMIT` and `SATURATION_SCALE`.
+        """
+
         def _adjust_saturation(x):
-            val = LINEAR_LIMIT
-            diff_x = x - val
+            diff_x = x - LINEAR_LIMIT
             diff = SATURATION_SCALE * (
                 1 - np.exp(-(diff_x / SATURATION_SCALE)) ** np.log(2)
             )
-            return val + diff
+            return LINEAR_LIMIT + diff
 
         def adjust_signal(self, *args, **kwargs):
-            if not self.saturation_filter:
-                self.signal = np.where(
+            if not self.saturation_up_to_date:
+                self.saturated_signal = np.where(
                     self.signal < LINEAR_LIMIT,
                     self.signal,
                     _adjust_saturation(self.signal),
                 )
-                self.saturation_filter = True
+                self.saturation_up_to_date = True
             return func(self, *args, **kwargs)
 
         return adjust_signal
 
     @_detector_saturation
-    def plot(
-        self, offset: float = 0, v_offset: float = 0, h_offset: float = 0, **kwargs
-    ):
-        if offset != 0:
-            plt.plot(self.times + offset / (60), self.signal + offset, **kwargs)
-        else:
-            plt.plot(self.times + h_offset, self.signal + v_offset, **kwargs)
+    def plot(self, v_offset: float = 0, h_offset: float = 0, **kwargs):
+        """
+        Plots the chromatogram. When plotting multiple chromatograms on the same figure, it may be beneficial to use offsets so that baselines/peaks do not overlap.
+
+        Args:
+            v_offset (float): Amount to shift the chromatogram vertically, in the units of the y-axis (milli-arbitrary units).
+            h_offset (float): Amount to shift the chromatogram horizontally, in the units of the x-axis (minutes).
+        """
+        plt.plot(self.times + h_offset, self.saturated_signal + v_offset, **kwargs)
 
     @_detector_saturation
     def get_chromatogram_data(self):
-        df = pd.DataFrame({"x": self.times, "y": self.signal})
+        """
+        Returns a pandas DataFrame of the chromatogram data with column `"x"` as the x-axis and column `"y"` as the y-axis.
+
+        Returns:
+            out (pd.DataFrame): DataFrame containing the chromatogram data.
+        """
+        df = pd.DataFrame({"x": self.times, "y": self.saturated_signal})
         return df
 
 
 class Baseline(Chromatogram):
-    def __init__(self, times, inital_values, noise_level=BASELINE_NOISE) -> None:
-        super().__init__(times, inital_values)
+    """
+    Class for creating a baseline.
+    """
+
+    def __init__(self, times, initial_values, noise_level=BASELINE_NOISE) -> None:
+        """
+        Creates a new baseline chromatogram.
+
+        Args:
+            times (np.array): array of times in minutes at which to generate chromatogram data.
+            initial_values (np.array): array of initial signal values to add peaks to.
+            noise_level (float): value specifying the noise level of the baseline. Roughly 95% of baseline values will be in the interval [`initial_values - noise_level`, `initial_values + noise_level`].
+        """
+        super().__init__(times, initial_values)
         self.noise_level = noise_level
-        self.create_background()
+        self.create_baseline()
 
-    def __create_autocorrelated_data(self, sigma):
+    def __create_autocorrelated_data(
+        self, sigma, corr=BASELINE_AUTOCORRELATION_PARAMETER
+    ):
         """
-        adapted from https://stackoverflow.com/a/33904277
-        """
-        corr = BASELINE_AUTOCORRELATION_PARAMETER
-        assert (
-            0 < corr < 1
-        ), f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {BASELINE_AUTOCORRELATION_PARAMETER}"
+        Method for generating baseline noise using an AR(1) model (1-parameter autoregressive model).
 
-        # TODO update to add c at end
-        c: np.array = self.mean_values * (1 - corr)
+        Args:
+            sigma (float): Standard deviation of the gaussian noise in the baseline.
+            corr (float): Correlation parameter for the AR(1) model. Defines how much the current noise value depends on the previous noise value in the baseline. Must satisfy 0 < corr < 1.
+        """
+        if not (0 < corr < 1):
+            raise ChromatogramError(
+                f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {corr}."
+            )
+
+        s0 = self.signal[0]
+        self.signal *= 1 - corr
+        self.signal[0] = s0
         eps = np.sqrt((sigma**2) * (1 - corr**2))
-        signal = c + random.normal(loc=0, scale=eps, size=np.shape(c))
-        signal[0] += -c[0] + self.mean_values[0]
-        for ind in range(1, len(signal)):
-            signal[ind] += corr * signal[ind - 1]
-        return signal
+        self.signal += random.normal(loc=0, scale=eps, size=np.shape(self.signal))
+        for ind in range(1, len(self.signal)):
+            self.signal[ind] += corr * self.signal[ind - 1]
 
-    def create_background(self):
+    def create_baseline(self):
         """
-        For generating 1-D backgrounds
-        x_points: numpy array of time values
-        noise_level: non-negative value for 95% confidence interval of noise level. If noise_level == 0, then no noise is added.
-        mean_value: level around which noise will vary.
-        autocorrelation_parameter: parameter for autocorrelation of background data. In reality, signal data from detectors is often autocorrelated.
+        Creates the baseline.
         """
-        # to account for fact 95% of samples from normal distribution are within 2 std
-        sigma = self.noise_level / 2
-        self.signal = self.__create_autocorrelated_data(sigma)
+        # to account for fact 95% of samples from normal distribution are within 1.96 std
+        sigma = self.noise_level / 1.96
+        self.__create_autocorrelated_data(sigma)
 
-        return self.signal
+
+class ChromatogramError(ValueError):
+    """
+    ValueError specifically for the Chromatogram Class.
+    """
+
+    pass

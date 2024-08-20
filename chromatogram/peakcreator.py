@@ -16,24 +16,41 @@ from user_parameters import *
 
 
 class PeakCreator:
+    """
+    Class designed to create peak signals based on peak-specific information and user-defined parameters. Generated peaks have an exponentially-modified gaussian shape to mimic peak asymmetry. Only one PeakCreator should be used per injection to ensure that injection-specific variations in retention time and peak height/area remain constant within an injection.
+    """
 
-    def __init__(self):
-        self.retention_time_offset = uniform(
+    def __init__(self) -> None:
+        """
+        Class designed to create peak signals based on peak-specific information and user-defined parameters. Sets the injection-specific parameters.
+        """
+        self.injection_specific_retention_time_offset = uniform(
             -RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX
         )
-        self.height_modifier = uniform(
+        self.injection_specific_heigh_modifier = uniform(
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE
         )
 
-    def __find_exponnorm_mode(self, sigma, asymmetry, return_fun=False):
+    def __find_exponnorm_mode(
+        self, sigma: float, asymmetry: float, return_fun: bool = False
+    ) -> None:
+        """
+        Finds the mode/peak of an exponentially-modified gaussian.
 
-        exponnorm_dist = exponnorm(scale=sigma, K=asymmetry)
+        Args:
+            sigma (float): the standard deviation of the base gaussian curve
+            asymmetry (float): the factor provided to exponnorm to make asymmetric peaks.
+            return_fun (bool): If `True`, returns both the x-value and function value of the mode; otherwise, returns only the x-value.
 
-        # Find the mode
+        Returns:
+            x (float): The x-value of the distribution maximum
+
+            fun (float): Optional when `return_fun == True`, the distribution value at `x`.
+        """
+
         # Define a function that returns the negative PDF (to maximize)
-
         def neg_pdf(x):
-            return -exponnorm_dist.pdf(x)
+            return -exponnorm.pdf(x, scale=sigma, K=asymmetry)
 
         # Use optimization to find the mode
         result = minimize_scalar(neg_pdf, tol=1e-4)
@@ -42,12 +59,28 @@ class PeakCreator:
         else:
             return result.x
 
-    def compound_peak(self, compound: Compound, times):
+    def compound_peak(self, compound: Compound, times: np.array) -> np.array:
+        """
+        Creates the signal for a compound peak.
+
+        Args:
+            compound (Compound): the compound from the compound library generate a peak signal for.
+            times (np.array): The time points at which to calculate the signal.
+
+        Returns:
+            out (np.array): The signal values for the peak.
+        """
+
+        # set initial asymmetry
         peak_asymmetry = (1 + compound.asymmetry_addition) * DEFAULT_BASE_ASYMMETRY
+
+        # get all parameters for the peak
         peak_dict = self.peak(
             retention_time=compound.retention_time,
             base_asymmetry=peak_asymmetry,
         )
+
+        # return signal array
         return exponnorm.pdf(
             times,
             K=peak_dict["asymmetry"],
@@ -63,6 +96,12 @@ class PeakCreator:
         base_width: float = DEFAULT_PEAK_WIDTH,
         base_asymmetry: float = DEFAULT_BASE_ASYMMETRY,
     ) -> dict:
+        """
+        Calculates proper height, width, and asymmetry for a peak given initial values and a retention time.
+
+        Args:
+            retention_time (float): The re
+        """
 
         def height_change_for_broadening(
             base_sigma, curr_sigma, base_asymmetry, curr_asymmetry
@@ -82,15 +121,18 @@ class PeakCreator:
             base_asymmetry
             * math.pow(ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME, retention_time)
         )
+
+        # determine how much the heigh of a peak changes based on its broadening
         peak_broadening_height_factor, mode = height_change_for_broadening(
             base_sigma, curr_sigma, base_asymmetry, asymmetry
         )
 
+        # calculate a modified height based on original height, the peak broadening factor, the injection-specific height modifier, the user-defined signal multiplier, and a random number close to 1 for variation in peak height within a run.
         mod_height = (
             height
             * peak_broadening_height_factor
-            * self.height_modifier
-            * SIGNAL_MULIPLIER
+            * self.injection_specific_heigh_modifier
+            * SIGNAL_MULTIPLIER
             * uniform(
                 1 - INDIVIDUAL_HEIGHT_RANDOM_NOISE, 1 + INDIVIDUAL_HEIGHT_RANDOM_NOISE
             )
@@ -98,7 +140,7 @@ class PeakCreator:
 
         desired_mode = (
             retention_time
-            + self.retention_time_offset
+            + self.injection_specific_retention_time_offset
             + uniform(
                 -INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE,
                 INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE,
