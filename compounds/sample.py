@@ -1,5 +1,5 @@
 from compounds.compound import Compound
-from compounds.compound_library import compound_library
+from compounds.compound_library import COMPOUND_LIBRARY
 from random import uniform
 
 
@@ -16,13 +16,13 @@ class Sample:
         self.name: str = sample_name
         self.location: str = location
         self.compounds: list[Compound] = [
-            compound_library.lookup(id) for id in compound_list
+            COMPOUND_LIBRARY.lookup(id) for id in compound_list
         ]
         for conc, compound in zip(concentration_list, self.compounds):
             compound.set_concentration(conc)
         exclude_cas = [a.cas for a in self.compounds]
         if num_random_peaks > 0:
-            random_peaks = compound_library.fetch_random_compounds(
+            random_peaks = COMPOUND_LIBRARY.fetch_random_compounds(
                 num_random_peaks, exclude_cas, replace_names=True
             )
             for compound in random_peaks:
