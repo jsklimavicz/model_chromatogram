@@ -1,11 +1,17 @@
 import numpy as np
 from scipy.interpolate import CubicSpline
-import sys, os
 import pandas as pd
+from operator import lt, gt
+import matplotlib.pyplot as plt
+from scipy.signal import (
+    savgol_filter,
+    sosfiltfilt,
+    butter,
+    argrelmin,
+    argrelmax,
+)
+from data_processing import PeakList, als_psalsa
 
-current = os.path.dirname(os.path.realpath(__file__))
-parent = os.path.dirname(current)
-sys.path.append(parent)
 from user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
     SG_FILTER_SIZE,
@@ -17,21 +23,30 @@ from user_parameters import (
     PEAK_LIMIT,
 )
 
-import matplotlib.pyplot as plt
-from scipy.signal import (
-    savgol_filter,
-    sosfiltfilt,
-    butter,
-    argrelmin,
-    argrelmax,
-)
-
-from data_processing.baseline import als_psalsa
-from operator import lt, gt
-
 
 class PeakFinder:
+    """
+    Class to find peaks in a noisy spectrum. Peaks are located using a smoothed spectrum and its second derivative.
+    """
+
     def __init__(self, timepoints: np.array, signal: np.array) -> None:
+        """
+        Initiates the PeakFinder. Instantiating this performs the following tasks:
+            1. smoothing the signal using Savitzky-Golay smoothing and a Butterworth filter
+            2. finding the baseline using asymmetric least squares fitting
+            3. subtracting this baseline from the processes signal
+            4. calculating the second derivative of the smoothed, baselined signal
+            5. finding the peaks in the spectrum:
+            a. calculate background noise in the second derivative
+            b. determine when the second derivative crosses below a threshold multiple of the noise
+            c. expanding the above range until the second derivative crosses above a positive threshold and back down.
+            d. removing any duplicate peaks
+            6. refining peaks to remove those with areas or heights that are too small.
+
+        Args:
+            timepoints (np.array): Array of times.
+            signal (np.array): The raw signal.
+        """
         self.timepoints = timepoints
         self.raw_signal = signal
         self.processed_signal = np.copy(signal)
@@ -39,6 +54,9 @@ class PeakFinder:
         self.__initial_peak_finding()
 
     def __initial_peak_finding(self):
+        """
+        Internal method to drive the functions outlined in __init__.
+        """
         self.__smooth_signal()
         self.__find_baseline()
         self.__apply_baseline()
@@ -47,6 +65,11 @@ class PeakFinder:
         self.refine_peaks()
 
     def __smooth_signal(self):
+        """
+        Smooths the raw signal using:
+        1. a Butterworth filter with size specified by user
+        2. Three sequential Savitzky-Golay smoothing steps with increasing filter size
+        """
         sos = butter(1, (BUTTER_FILTER_SIZE) * self.dt, output="sos")
         self.smoothed_signal = sosfiltfilt(sos, self.processed_signal)
         for i in range(3):
@@ -55,12 +78,19 @@ class PeakFinder:
             )
 
     def __find_baseline(self):
-        baseline, baseline_time = als_psalsa(
+        """
+        Calculates a baseline approximation using the psalsa asymmetric least squares algorithm, and stores a cubic spline of the baseline.
+        """
+
+        baseline_time, baseline_vals = als_psalsa(
             self.timepoints, self.smoothed_signal, sr=5
         )
-        self.baseline_spline = CubicSpline(baseline_time, baseline)
+        self.baseline_spline = CubicSpline(baseline_time, baseline_vals)
 
     def __apply_baseline(self):
+        """
+        Applies the als-psalsa baseline to the processed and smoothed signals.
+        """
         self.processed_signal -= self.baseline_spline(self.timepoints)
         self.smoothed_signal -= self.baseline_spline(self.timepoints)
         self.signal_noise = np.mean(
@@ -72,6 +102,9 @@ class PeakFinder:
         )
 
     def __get_second_derivative(self):
+        """
+        Calculates the second derivative of the smoothed signal via finite differences.
+        """
         d1 = self.smoothed_signal - self.baseline_spline(self.timepoints)
         d_signal1 = d1[:-2] - d1[1:-1]
         d_signal2 = d1[1:-1] - d1[2:]
@@ -84,12 +117,10 @@ class PeakFinder:
 
     def find_peaks(self, noise_multiplier: float = NOISE_THRESHOLD_MULTIPLIER):
         """
-        Works in five steps:
-            1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple of thenoise in the second derivative
+        Works in three steps:
+            1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple of the noise in the second derivative
             2. expand these regions to where the second derivative goes above positive multiple of the threshold and back down again
             3. contract overlapping regions to a local max or min in the second derivative
-            4. expand these regions to a local min in the processed signal, if it exists
-            5. contract overlapping regions to a local max or min in the second derivative
         This function populates the `self.peaks` array.
 
         Args:
@@ -105,7 +136,6 @@ class PeakFinder:
         # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
         initial_regions = []
         i = 3
-        # TODO: split peak if 2nd derivative rises and goes back down while signal is less than LINEAR_LIMIT
         while i < n - 3:
             if (
                 self.d2_signal[i] < low_cutoff * self.d2_sigma
@@ -120,22 +150,42 @@ class PeakFinder:
             i += 1
 
         def expand_region(regions):
+            """
+            Method for expanding regions as found above.
+            """
             nonlocal high_cutoff, low_cutoff
 
             def compare_d2_to_noise(index, sign):
+                """
+                Compares 2nd derivative to multiple of 2nd derivative noise.
+
+                Args:
+                    sign (func): lt or gt operator
+
+                Returns:
+                    (bool): returns True if either the current, previous, or next signal index is (sign) the noise threshold.
+                """
+                d2_1 = self.d2_signal[index + 1]
                 d2_0 = self.d2_signal[index]
-                d2_1 = self.d2_signal[index - 1]
+                d2_T = self.d2_signal[index - 1]
                 d2_n = high_cutoff * self.d2_sigma
-                return sign(d2_1, d2_n) or sign(d2_0, d2_n)
+                return sign(d2_1, d2_n) or sign(d2_0, d2_n) or sign(d2_T, d2_n)
 
             def compare_signal_to_noise(index):
-                # TODO expand to range of 3 with np.any
-                s_0 = self.smoothed_signal[index + 1]
-                s_1 = self.smoothed_signal[index]
+                """
+                Compares signal values to multiple of signal noise.
+
+                Returns:
+                    (bool): returns True if any of the n-2, n-1, n, n+1, or n+2 values are greater than the noise threshold.
+                """
+                s_0 = self.smoothed_signal[index - 2 : index + 3]
                 n = high_cutoff * self.signal_sigma
-                return s_0 > n or s_1 > n
+                return np.any(s_0 > n)
 
             def expand(index, comp_func, x_limit, addn_value):
+                """
+                expands regions while the second derivative and signal meet the requirements
+                """
                 while (
                     comp_func(index, x_limit)
                     and compare_d2_to_noise(index, lt)
@@ -153,6 +203,7 @@ class PeakFinder:
 
             expanded_regions = []
             for start, end in regions:
+                # expand left and right bounds
                 left = expand(start, gt, 0, -1)  # Expand left
                 right = expand(end, lt, n - 1, 1)  # Expand right
                 expanded_regions.append((left, right))
@@ -259,27 +310,20 @@ class PeakFinder:
         # Step 3: Trim overlapping regions at local minima
         trimmed_regions = trim_regions(expanded_regions)
 
-        self.peaks: list[Peak] = []
+        regions = []
         for start, end in trimmed_regions:
             if end - start < 2:
                 continue
-            self.peaks.append(
-                Peak(
-                    start_time=self.timepoints[start + 1],
-                    end_time=self.timepoints[end + 1],
-                    start_index=start + 1,
-                    end_index=end + 1,
-                    chromatogram_times=self.timepoints,
-                    chromatogram_signal=self.processed_signal,
-                )
-            )
+            else:
+                regions.append([start + 1, end + 1])
+
+        self.peaks: PeakList = PeakList(
+            self.timepoints, self.raw_signal, self.smoothed_signal, self.baseline_spline
+        )
+        self.peaks.add_peaks(regions)
 
     def refine_peaks(self, height_cutoff=MINIMUM_HEIGHT, area_cutoff=MINIMUM_AREA):
-        peaks: list[Peak] = []
-        for peak in self.peaks:
-            if peak.area >= area_cutoff and peak.height >= height_cutoff:
-                peaks.append(peak)
-        self.peaks = peaks
+        self.peaks.refine_peaks(height_cutoff, area_cutoff)
 
     def plot_peaks(self):
         # Plot the final result
@@ -314,66 +358,3 @@ class PeakFinder:
             peak_list.append(peak_dict)
         peak_df = pd.DataFrame.from_dict(peak_list)
         print(peak_df)
-
-
-class PeakList:
-    def __init__(self, times, chromatogram) -> None:
-        self.peaks: list[Peak] = []
-        self.signal = chromatogram
-        self.times = times
-
-    # TODO implement sorting for peaks after each addition
-    # TODO class methods for percent height and area
-    # TODO peak width methods; undefined for some peak types
-    # TODO resolution methods
-    # TODO asymmetry methods
-    # TODO plate count methods
-    # TODO peak baseline type: baseline, adjacent peak, etc
-
-    def add_peak(self, start_index, end_index) -> None:
-
-        peak = Peak()
-
-
-class Peak:
-    def __init__(
-        self,
-        start_time,
-        end_time,
-        start_index,
-        end_index,
-        chromatogram_times,
-        chromatogram_signal,
-    ) -> None:
-        self.start_time: float = start_time
-        self.end_time: float = end_time
-        self.start_index: int = start_index
-        self.end_index: int = end_index
-        self.time_array: np.array = chromatogram_times[start_index:end_index]
-        self.signal_array: np.array = chromatogram_signal[start_index:end_index]
-        self.__initiate_values()
-
-    def __initiate_values(self):
-        self.get_area()
-        self.get_height()
-
-    def get_area(self):
-        self.area = np.sum(self.signal_array) * (
-            self.time_array[1] - self.time_array[0]
-        )
-        return self.area
-
-    def get_height(self):
-        self.height = np.max(self.signal_array)
-        self.retention_time = self.time_array[np.argmax(self.signal_array)]
-        return self.height
-
-    def get_peak_dict(self):
-        this_dict = {
-            "retention_time": self.retention_time,
-            "start_time": self.start_time,
-            "end_time": self.end_time,
-            "area": self.area,
-            "height": self.height,
-        }
-        return this_dict

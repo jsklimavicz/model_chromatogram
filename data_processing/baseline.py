@@ -4,16 +4,28 @@ import numpy as np
 def als_psalsa(
     raw_time: np.array,
     raw_signal: np.array,
-    sr=10,
-    p=0.01,
-    smoothness=10,
-    k=2,
-    rel_tol=1e-6,
+    sr: int = 10,
+    p: float = 0.01,
+    smoothness: float = 10,
+    k: float = 2,
+    rel_tol: float = 1e-6,
 ):
     """
-    Based on
+    Algorithm for finding a baseline of a chromatogram based on the method outlined in:
     S. Oller-Moreno, A. Pardo, J. M. Jiménez-Soto, J. Samitier and S. Marco, "Adaptive Asymmetric Least Squares baseline estimation for analytical instruments," 2014 IEEE 11th International Multi-Conference on Systems, Signals & Devices (SSD14), Barcelona, Spain, 2014, pp. 1-5, doi: 10.1109/SSD.2014.6808837.
     https://diposit.ub.edu/dspace/bitstream/2445/188026/1/2014_IEEE_Adaptive_MarcoS_postprint.pdf
+
+    Args:
+        raw_time (np.array): chromatogram time values
+        raw_signal (np.array): chromatogram signal values
+        sr (int): sampling rate to downsample the raw time and raw signal. Every `sr`th raw signal and time are kept. Setting to 1 keeps everything; this is not recommended due to long compute times. Default = 10
+        p (float): weight parameter for the asymmetric least square algorithm. Must be between 0 and 1; typically 0.001 <= p <= 0.1.
+        smoothness (float): multiplicative factor for cost function. Higher values force penalize "wavier" baselines.
+        k (float): adaptive value for controlling the exponential decay of weight for peak regions
+
+    Returns:
+        out (tuple(np.array, np.array)): Tuple containing the time and signal values of the baseline.
+
     """
     # select a subset of points
     interval = sr / (60 * (raw_time[1] - raw_time[0]))
@@ -54,6 +66,8 @@ def als_psalsa(
         return S
 
     prev_loss = 0  # intial loss
+
+    # iterate z = (W + smoothness * D'D)^-1 W y until solved
     while not converged and iterations < 20:
         iterations += 1
         W = np.diag(weights)
@@ -67,4 +81,4 @@ def als_psalsa(
         prev_loss = curr_loss
         weights = get_weights(residuals)
 
-    return z, time
+    return time, z
