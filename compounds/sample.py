@@ -7,13 +7,17 @@ class Sample:
         self,
         sample_name: str,
         location: str,
-        compound_list: list[str],
-        concentration_list: list[float],
+        compound_list: list[str] | None,
+        concentration_list: list[float] | None,
         num_random_peaks: int = 0,
         max_random_concentration: float = 0,
     ) -> None:
         self.name: str = sample_name
         self.location: str = location
+        if compound_list is None:
+            compound_list = []
+        if concentration_list is None:
+            concentration_list = []
         self.compounds: list[Compound] = [
             COMPOUND_LIBRARY.lookup(id) for id in compound_list
         ]
