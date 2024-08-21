@@ -20,10 +20,10 @@ ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = (
 )
 WIDENING_CONSTANT = 1.025  # how much peaks widen over time, in units of min^-1
 LINEAR_LIMIT = (
-    4500  # mAU after which peak height is no longer linear with concentration
+    2000  # mAU after which peak height is no longer linear with concentration
 )
 SATURATION_SCALE = (
-    LINEAR_LIMIT / 10
+    LINEAR_LIMIT / 5
 )  # range over LINEAR_LIMIT in which saturation occurs
 
 ## Peak Noise Parameters
@@ -54,14 +54,10 @@ RANDOM_PEAK_ID_DIGITS = 4  # number of digits to put into to a random peak id
 
 # Analysis Parameters
 BACKGROUND_NOISE_RANGE = [0, 100]  # indices of background noise signal
-NOISE_THRESHOLD_MULTIPLIER = 2  # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
-PEAK_LIMIT = 2  # sets value to be able to find peaks. Higher values result in fewer peaks being found; lower values may produce false positive peaks.
-SG_FILTER_SIZE = (
-    SAMPLE_RATE
-    * 3  # Parameter for size of Savitzky-Golay smoothing in chromatograpm to find peaks
-)
+NOISE_THRESHOLD_MULTIPLIER = 1.2  # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
+PEAK_LIMIT = 1  # sets value to be able to find peaks. Higher values result in fewer peaks being found; lower values may produce false positive peaks.
 BUTTER_FILTER_SIZE = 40  # Parameter for size of Butterworth filter to remove noise in chromatograpm to find peaks
 MINIMUM_HEIGHT = (
-    BASELINE_NOISE * 2
+    BASELINE_NOISE * 1.1
 )  # Minimum height for a peak to be kept in peak finding algorithm
 MINIMUM_AREA = 0.05  # Minimum area for a peak to be kept in peak finding algorithm

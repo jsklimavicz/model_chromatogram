@@ -50,5 +50,5 @@ class Injection:
     def plot_chromatogram(self, channel_name, **kwargs):
         return self.chromatograms[channel_name].plot(**kwargs)
 
-    def get_chromatogram_data(self, channel_name):
-        return self.chromatograms[channel_name].get_chromatogram_data()
+    def get_chromatogram_data(self, channel_name, **kwargs):
+        return self.chromatograms[channel_name].get_chromatogram_data(**kwargs)

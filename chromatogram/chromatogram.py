@@ -77,15 +77,22 @@ class Chromatogram:
         plt.plot(self.times + h_offset, self.saturated_signal + v_offset, **kwargs)
 
     @_detector_saturation
-    def get_chromatogram_data(self):
+    def get_chromatogram_data(self, pandas=False):
         """
         Returns a pandas DataFrame of the chromatogram data with column `"x"` as the x-axis and column `"y"` as the y-axis.
 
+        Args:
+            pandas (bool): If true, returns a pandas datatrame of x and y values. If false, returns a tuple with x and y np.arrays.
+
         Returns:
-            out (pd.DataFrame): DataFrame containing the chromatogram data.
+            out (pd.DataFrame|tuple(np.array)): DataFrame containing the chromatogram data.
+
         """
-        df = pd.DataFrame({"x": self.times, "y": self.saturated_signal})
-        return df
+        if pandas:
+            df = pd.DataFrame({"x": self.times, "y": self.saturated_signal})
+            return df
+        else:
+            return self.times, self.saturated_signal
 
 
 class Baseline(Chromatogram):

@@ -1,4 +1,4 @@
-import numpy as np
+import math
 
 
 class Column:
@@ -18,23 +18,8 @@ class Column:
         self.injection_count = injection_count
 
     def find_volume(self):
-        self.volume = (self.inner_diameter / 2) ** 2 * np.pi * self.length
+        self.volume = (self.inner_diameter / 2) ** 2 * math.pi * self.length
         self.volume /= 1000  # mm^3 to mL conversion
 
     def inject(self):
         self.injection_count += 1
-
-
-class System:
-    def __init__(self, name, column=None) -> None:
-        self.name = name
-        self.column = column
-
-    def set_column(self, column: Column):
-        self.column = column
-
-    def get_column_volume(self):
-        return self.column.volume
-
-    def inject(self):
-        self.column.inject()

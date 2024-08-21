@@ -65,6 +65,7 @@ class PeakList:
             self.peaks.loc[self.peaks["peak_type"] == "BB", "peak_type"] = "BMB"
             self.peaks.loc[self.peaks["peak_type"] == "bB", "peak_type"] = "bMB"
             self.peaks.loc[self.peaks["peak_type"] == "Bb", "peak_type"] = "BMb"
+            self.peaks.loc[self.peaks["peak_type"] == "bb", "peak_type"] = "bMb"
             self.peaks.loc[self.peaks["peak_type"] == "MM", "peak_type"] = "M"
 
         def recalculate_globals(self, *args, **kwargs):
@@ -73,7 +74,7 @@ class PeakList:
             self.peaks = self.peaks.sort_values(by="index_start").reset_index(drop=True)
             _determine_peak_types(self, *args, **kwargs)
 
-            def calculate_areas(row):
+            def _get_baselined_signal(row):
                 start = row["index_start"]
                 end = row["index_end"] + 1
                 signals = self.signal[start:end]
@@ -92,6 +93,10 @@ class PeakList:
                     [self.times[start], self.times[end]],
                     [baseline_start, baseline_end],
                 )
+                return baselined_signal
+
+            def calculate_areas(row):
+                baselined_signal = _get_baselined_signal(row)
                 return np.sum(baselined_signal) * self.dt
 
             self.peaks["area"] = self.peaks.apply(calculate_areas, axis=1)
@@ -102,20 +107,81 @@ class PeakList:
                 100 * self.peaks["area"] / np.sum(self.peaks["area"])
             )
 
+            def calculate_widths(row):
+                baselined_signal = _get_baselined_signal(row)
+                start = row["index_start"]
+                peak_max = row["retention_index"]
+                retention_time = row["time_retention"]
+                fields = ["width_50", "width_10", "width_5"]
+                vals = np.array([0.5, 0.1, 0.05])
+                vals *= row["height"]
+                return_dict = {}
+                for val, field in zip(vals, fields):
+                    try:
+                        left_indices = (
+                            np.where(baselined_signal[: peak_max - start] <= val)[0]
+                            + start
+                        )
+                        y0 = self.signal[left_indices[-1]]
+                        y1 = self.signal[left_indices[-1] + 1]
+                        x0 = self.times[left_indices[-1]]
+                        left_time = self.dt / (y1 - y0) * (val - y0) + x0
+                        right_indices = (
+                            np.where(baselined_signal[peak_max - start :] <= val)[0]
+                            + peak_max
+                        )
+                        y0 = self.signal[right_indices[0] - 1]
+                        y1 = self.signal[right_indices[0]]
+                        x0 = self.times[right_indices[0] - 1]
+                        right_time = self.dt / (y1 - y0) * (val - y0) + x0
+                        left = retention_time - left_time
+                        right = right_time - retention_time
+                        total = right_time - left_time
+                        return_dict[f"{field}_left"] = left
+                        return_dict[f"{field}_right"] = right
+                        return_dict[f"{field}_full"] = total
+                    except IndexError as e:
+                        for x in ["left", "right", "full"]:
+                            return_dict[f"{field}_{x}"] = None
+                return pd.Series(return_dict)
+
+            new_columns: pd.Series = self.peaks.apply(calculate_widths, axis=1)
+            print(new_columns)
+            # Concatenate the new columns to the original DataFrame
+            self.peaks = pd.concat(
+                [self.peaks.drop(new_columns.columns, axis=1), new_columns], axis=1
+            )
+
+            def calculate_asymmetry(row, method="USP"):
+                try:
+                    if method == "USP":
+                        return row["width_5_full"] / (2 * row["width_5_left"])
+
+                    elif method == "AIA":
+                        return row["width_10_right"] / row["width_10_left"]
+                except:
+                    return None
+
+            self.peaks["asymmetry_USP"] = self.peaks.apply(calculate_asymmetry, axis=1)
+            self.peaks["asymmetry_AIA"] = self.peaks.apply(
+                calculate_asymmetry, method="AIA", axis=1
+            )
+
         return recalculate_globals
 
-    @_recalculate_overall_peak_values
+    # @_recalculate_overall_peak_values
     def add_peaks(self, peak_indices_list: list[list[int]]) -> None:
         curr_peaks = []
         for peak_indices in peak_indices_list:
             start_ind, end_ind = peak_indices
-            rt, peak_height, signal_height = self.__get_retention_time_and_height(
-                start_ind, end_ind
+            rt_ind, rt, peak_height, signal_height = (
+                self.__get_retention_time_and_height(start_ind, end_ind)
             )
             base_val_start = self.baseline(self.times[start_ind])
             base_val_end = self.baseline(self.times[end_ind])
             peak_dict = {
                 "index_start": start_ind,
+                "retention_index": rt_ind,
                 "index_end": end_ind,
                 "time_start": self.times[start_ind],
                 "time_retention": rt,
@@ -133,11 +199,15 @@ class PeakList:
                 "peak_type_start": "",
                 "peak_type_end": "",
                 "peak_type": "",
-                "width_50": None,
-                "width_10": None,
-                "width_5": None,
-                "asymmetry_10": None,
-                "asymmetry_5": None,
+                "width_50_full": None,
+                "width_10_full": None,
+                "width_5_full": None,
+                "width_50_right": None,
+                "width_10_right": None,
+                "width_5_right": None,
+                "width_50_left": None,
+                "width_10_left": None,
+                "width_5_left": None,
                 "resolution": None,
                 "plates": None,
             }
@@ -161,7 +231,7 @@ class PeakList:
         rt_ind = np.argmax(self.smoothed[start_ind:end_ind]) + start_ind
         peak_height = self.smoothed[rt_ind]
         signal_height = self.signal[rt_ind]
-        return self.times[rt_ind], peak_height, signal_height
+        return rt_ind, self.times[rt_ind], peak_height, signal_height
 
     def get_peaklist(self):
         return self.peaks

@@ -7,6 +7,7 @@ from pydash import get as _get
 from injection import Injection
 from system import *
 import pandas as pd
+from data_processing import PeakFinder
 
 import random
 
@@ -23,8 +24,8 @@ sample_dict = {
     # "concentration_list": "2.1, 2.2, 14.12, 2.13, 1.6",
     "compound_list": None,
     "concentration_list": None,
-    "num_random_peaks": 20,
-    "max_random_concentration": 1.3,
+    "num_random_peaks": 40,
+    "max_random_concentration": 0.3,
 }
 
 # sample_dict["compound_list"] = [
@@ -60,9 +61,9 @@ injection1 = Injection(sample=my_sample, method=method_1, system=system)
 # injection3 = Injection(sample=my_sample, method=method_3, system=system)
 # injection4 = Injection(sample=my_sample, method=method_4, system=system)
 
-injection1.plot_chromatogram("UV_VIS_1", c="red")
-data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1")
-data.to_parquet("./data_processing/test.parquet")
+# injection1.plot_chromatogram("UV_VIS_1", c="red")
+# data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1", pandas=True)
+# data.to_parquet("./data_processing/test.parquet")
 # injection2.plot_chromatogram("UV_VIS_1", h_offset=0, c="blue")
 # injection3.plot_chromatogram("UV_VIS_1", h_offset=0, c="black")
 # injection4.plot_chromatogram("UV_VIS_1", h_offset=0, c="green")
@@ -71,8 +72,17 @@ data.to_parquet("./data_processing/test.parquet")
 # injection.plot_chromatogram("UV_VIS_2", h_offset=0.3, v_offset=30, c="blue")
 # injection.plot_chromatogram("UV_VIS_3", h_offset=0.6, v_offset=60, c="black")
 # injection.plot_chromatogram("UV_VIS_4", h_offset=0.9, v_offset=90, c="green")
+# plt.show()
 
-plt.show()
+# df = pd.read_parquet("./data_processing/test.parquet")
+
+
+times, raw_signal = injection1.get_chromatogram_data("UV_VIS_1", pandas=False)
+peak_finder = PeakFinder(times, raw_signal)
+
+peak_finder.print_peaks()
+peak_finder.save_peaks("./output.csv")
+peak_finder.plot_peaks()
 
 
 # with Profile() as profile:

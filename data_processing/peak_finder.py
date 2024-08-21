@@ -15,7 +15,6 @@ from data_processing import PeakList, als_psalsa
 
 from user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
-    SG_FILTER_SIZE,
     BUTTER_FILTER_SIZE,
     MINIMUM_HEIGHT,
     MINIMUM_AREA,
@@ -78,12 +77,12 @@ class PeakFinder:
         self.smoothed_signal = savgol_filter(
             self.smoothed_signal, 3 * sample_rate + 10, 3
         )
-        self.smoothed_signal = savgol_filter(
-            self.smoothed_signal, 5 * sample_rate + 10, 5
-        )
+        # self.smoothed_signal = savgol_filter(
+        #     self.smoothed_signal, 5 * sample_rate + 10, 5
+        # )
         half_size = int(round(sample_rate * 5 / 2))
         window_size = 2 * half_size
-        window = signal.windows.tukey(window_size)
+        window = signal.windows.gaussian(window_size, std=2 * sample_rate)
 
         self.smoothed_signal = np.pad(
             self.smoothed_signal,
@@ -148,7 +147,7 @@ class PeakFinder:
         self.d2_sigma = noise_multiplier * self.d2_ave_noise
         self.signal_sigma = noise_multiplier * self.signal_noise * 1.5
         low_cutoff = -PEAK_LIMIT
-        high_cutoff = 2
+        high_cutoff = 1.5
         n = len(self.d2_signal)
 
         # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
@@ -194,11 +193,11 @@ class PeakFinder:
                 Compares signal values to multiple of signal noise.
 
                 Returns:
-                    (bool): returns True if any of the n-2, n-1, n, n+1, or n+2 values are greater than the noise threshold.
+                    (bool): returns True if at least two of the n-4 to n+4 values are greater than the noise threshold.
                 """
-                s_0 = self.smoothed_signal[index - 2 : index + 3]
+                s_0 = self.smoothed_signal[index - 4 : index + 5]
                 n = high_cutoff * self.signal_sigma
-                return np.any(s_0 > n)
+                return sum(s_0 > n) >= 2
 
             def expand(index, comp_func, x_limit, addn_value):
                 """
@@ -474,38 +473,41 @@ class PeakFinder:
     def get_peaks(self) -> pd.DataFrame:
         return self.peaks.get_peaklist()
 
-    def plot_peaks(self):
+    def plot_peaks(self, smoothed=False, second_derivative=False, noise=False):
         # Plot the final result
         plt.figure(figsize=(14, 8))
         plt.plot(self.timepoints, self.raw_signal, color="black")
         plt.plot(self.timepoints, self.baseline_spline(self.timepoints), color="grey")
 
-        # plt.plot(
-        #     self.timepoints,
-        #     self.smoothed_signal + self.baseline_spline(self.timepoints),
-        #     color="limegreen",
-        # )
+        if smoothed:
+            plt.plot(
+                self.timepoints,
+                self.smoothed_signal + self.baseline_spline(self.timepoints),
+                color="limegreen",
+            )
 
-        # d2_times = self.timepoints[1:-1]
-        # plt.plot(
-        #     d2_times,
-        #     self.d2_signal / self.dt + self.baseline_spline(d2_times),
-        #     color="blue",
-        # )
+        if second_derivative:
+            d2_times = self.timepoints[1:-1]
+            plt.plot(
+                d2_times,
+                self.d2_signal / self.dt + self.baseline_spline(d2_times),
+                color="blue",
+            )
 
-        # plt.plot(
-        #     self.timepoints,
-        #     2 * self.d2_sigma / self.dt * np.ones_like(self.timepoints)
-        #     + self.baseline_spline(self.timepoints),
-        #     color="green",
-        # )
+        if noise:
+            plt.plot(
+                self.timepoints,
+                2 * self.d2_sigma / self.dt * np.ones_like(self.timepoints)
+                + self.baseline_spline(self.timepoints),
+                color="green",
+            )
 
-        # plt.plot(
-        #     self.timepoints,
-        #     2 * self.signal_sigma * np.ones_like(self.timepoints)
-        #     + self.baseline_spline(self.timepoints),
-        #     color="red",
-        # )
+            plt.plot(
+                self.timepoints,
+                2 * self.signal_sigma * np.ones_like(self.timepoints)
+                + self.baseline_spline(self.timepoints),
+                color="red",
+            )
 
         # Colors for adjacent peaks
         for idx, row in enumerate(self.get_peaks().iterrows()):
