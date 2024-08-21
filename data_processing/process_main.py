@@ -15,4 +15,5 @@ times = df["x"].to_numpy()
 peak_finder = PeakFinder(times, raw_signal)
 
 peak_finder.print_peaks()
+# peak_finder.save_peaks()
 peak_finder.plot_peaks()

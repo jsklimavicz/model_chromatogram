@@ -347,7 +347,7 @@
         "mobile_phase_gradient_steps": [
             {
                 "time": 0.0,
-                "flow": 1.0,
+                "flow": 5.0,
                 "percent_a": 100.0,
                 "percent_b": 0.0,
                 "percent_c": 0.0,
@@ -356,7 +356,7 @@
             },
             {
                 "time": 1.0,
-                "flow": 1.0,
+                "flow": 5.0,
                 "percent_a": 95.0,
                 "percent_b": 5.0,
                 "percent_c": 0.0,
@@ -365,7 +365,7 @@
             },
             {
                 "time": 5.0,
-                "flow": 1.0,
+                "flow": 5.0,
                 "percent_a": 90.0,
                 "percent_b": 10.0,
                 "percent_c": 0.0,
@@ -374,7 +374,7 @@
             },
             {
                 "time": 5.0,
-                "flow": 0.5,
+                "flow": 5,
                 "percent_a": 85.0,
                 "percent_b": 15.0,
                 "percent_c": 0.0,
@@ -383,7 +383,7 @@
             },
             {
                 "time": 10.0,
-                "flow": 0.5,
+                "flow": 5,
                 "percent_a": 80.0,
                 "percent_b": 20.0,
                 "percent_c": 0.0,
@@ -392,7 +392,7 @@
             },
             {
                 "time": 15.0,
-                "flow": 1.0,
+                "flow": 5,
                 "percent_a": 70.0,
                 "percent_b": 30.0,
                 "percent_c": 0.0,
@@ -401,7 +401,7 @@
             },
             {
                 "time": 20.0,
-                "flow": 1.0,
+                "flow": 5,
                 "percent_a": 50.0,
                 "percent_b": 50.0,
                 "percent_c": 0.0,
@@ -410,7 +410,7 @@
             },
             {
                 "time": 25.0,
-                "flow": 1.0,
+                "flow": 5,
                 "percent_a": 40.0,
                 "percent_b": 60.0,
                 "percent_c": 0.0,

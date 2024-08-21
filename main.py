@@ -10,7 +10,7 @@ import pandas as pd
 
 import random
 
-random.seed(10)
+random.seed(9)
 
 from cProfile import Profile
 from pstats import Stats
@@ -19,22 +19,24 @@ from pstats import Stats
 sample_dict = {
     "sample_name": "test-1",
     "location": "R:A1",
-    "compound_list": "cystine, guanosine, chloroquine, DPU, coumarin",
-    "concentration_list": "0.1, 0.2, 0.12, 0.13, 0.6",
+    # "compound_list": "61530-11-8, 614-47-1, 7364-19-4, 10541-56-7, coumarin",
+    # "concentration_list": "2.1, 2.2, 14.12, 2.13, 1.6",
+    "compound_list": None,
+    "concentration_list": None,
     "num_random_peaks": 20,
-    "max_random_concentration": 0.3,
+    "max_random_concentration": 1.3,
 }
 
-sample_dict["compound_list"] = [
-    a.strip() for a in sample_dict["compound_list"].split(",")
-]
-sample_dict["concentration_list"] = [
-    float(a) for a in sample_dict["concentration_list"].split(",")
-]
+# sample_dict["compound_list"] = [
+#     a.strip() for a in sample_dict["compound_list"].split(",")
+# ]
+# sample_dict["concentration_list"] = [
+#     float(a) for a in sample_dict["concentration_list"].split(",")
+# ]
 
 column = Column(
-    inner_diameter=6,
-    length=100,
+    inner_diameter=10,
+    length=150,
     type="C18",
     serial_number="1995032",
     injection_count=0,

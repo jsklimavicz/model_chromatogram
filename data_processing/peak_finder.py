@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import CubicSpline
+from scipy import signal
 import pandas as pd
 from operator import lt, gt
 import matplotlib.pyplot as plt
@@ -70,12 +71,29 @@ class PeakFinder:
         1. a Butterworth filter with size specified by user
         2. Three sequential Savitzky-Golay smoothing steps with increasing filter size
         """
+
+        sample_rate = int(round((1 / self.dt) / 60))
         sos = butter(1, (BUTTER_FILTER_SIZE) * self.dt, output="sos")
         self.smoothed_signal = sosfiltfilt(sos, self.processed_signal)
-        for i in range(3):
-            self.smoothed_signal = savgol_filter(
-                self.smoothed_signal, SG_FILTER_SIZE + 15 * i, 5
-            )
+        self.smoothed_signal = savgol_filter(
+            self.smoothed_signal, 3 * sample_rate + 10, 3
+        )
+        self.smoothed_signal = savgol_filter(
+            self.smoothed_signal, 5 * sample_rate + 10, 5
+        )
+        half_size = int(round(sample_rate * 5 / 2))
+        window_size = 2 * half_size
+        window = signal.windows.tukey(window_size)
+
+        self.smoothed_signal = np.pad(
+            self.smoothed_signal,
+            (half_size, half_size - 1),
+            "constant",
+            constant_values=(self.smoothed_signal[0], self.smoothed_signal[-1]),
+        )
+        self.smoothed_signal = signal.convolve(
+            self.smoothed_signal, window, mode="valid"
+        ) / sum(window)
 
     def __find_baseline(self):
         """
@@ -128,7 +146,7 @@ class PeakFinder:
 
         """
         self.d2_sigma = noise_multiplier * self.d2_ave_noise
-        self.signal_sigma = noise_multiplier * self.signal_noise
+        self.signal_sigma = noise_multiplier * self.signal_noise * 1.5
         low_cutoff = -PEAK_LIMIT
         high_cutoff = 2
         n = len(self.d2_signal)
@@ -187,15 +205,14 @@ class PeakFinder:
                 expands regions while the second derivative and signal meet the requirements
                 """
                 while (
-                    comp_func(index, x_limit)
-                    and compare_d2_to_noise(index, lt)
-                    and compare_signal_to_noise(index)
+                    comp_func(index, x_limit)  # index in bounds
+                    and compare_d2_to_noise(index, lt)  # d2 < noise cutoff
+                    and compare_signal_to_noise(index)  # signal > noise cutoff
                 ):
                     index += addn_value
                 else:
-                    while (
-                        comp_func(index, x_limit)
-                        and compare_d2_to_noise(index, gt)
+                    while comp_func(index, x_limit) and (
+                        compare_d2_to_noise(index, gt)
                         and compare_signal_to_noise(index)
                     ):
                         index += addn_value
@@ -210,21 +227,147 @@ class PeakFinder:
 
             return expanded_regions
 
-        # TODO optimize this and use it
-        def remove_dupulicate_regions(regions):
-            current_start, current_end = regions[0]
-            filtered_regions = [[current_start, current_end]]
-            for region in regions[1:]:
-                next_start, next_end = region
-                if next_start == current_start and current_end == next_end:
-                    continue
-                else:
-                    filtered_regions.append([next_start, next_end])
-                    current_start = next_start
-                    current_end = next_end
-            return filtered_regions
-
         def trim_regions(regions):
+            def split_regions(start, end, split_points):
+                sub_regions = [(start, split_points[0])]
+                for i in range(len(split_points) - 1):
+                    sub_regions.append((split_points[i], split_points[i + 1]))
+                sub_regions.append((split_points[-1], end))
+                return sub_regions
+
+            # Step 1: Get unique regions along with their multiplicity
+            unique_regions = {}
+            for region in regions:
+                region_tuple = tuple(region)
+                if region_tuple in unique_regions:
+                    unique_regions[region_tuple] += 1
+                else:
+                    unique_regions[region_tuple] = 1
+
+            # Step 2: Process each region-multiplicity pair
+            final_regions = []
+            for region, k in unique_regions.items():
+                start, end = region
+
+                if abs(start - 5955) < 5:
+                    pass
+
+                if k == 1:
+                    # If multiplicity is 1, just add the region as is
+                    final_regions.append((start, end))
+                    continue
+
+                # Find local minima in D2
+                local_minima = (
+                    argrelmin(self.d2_signal[start : end + 1], order=10)[0] + start
+                )
+
+                # Step 2a: If the number of D2 local minima is equal to multiplicity k: k peaks
+                if len(local_minima) == k:
+                    # Split the region into k sub-regions at each local maximum between minima
+                    split_points = []
+                    for i in range(len(local_minima) - 1):
+                        min_idx = argrelmin(
+                            self.smoothed_signal[
+                                local_minima[i] : local_minima[i + 1] + 1
+                            ],
+                            order=10,
+                        )[0]
+                        if len(min_idx) == 1:
+                            split_points.append(local_minima[i] + min_idx[0])
+                        elif len(min_idx) == 0:
+                            # we have a shoulder with no local min. Split based on d2:
+                            max_idx = np.argmax(
+                                self.d2_signal[
+                                    local_minima[i] : local_minima[i + 1] + 1
+                                ]
+                            )
+                            split_points.append(local_minima[i] + max_idx)
+                        else:
+                            min_idx = np.argmin(
+                                self.smoothed_signal[
+                                    local_minima[i] : local_minima[i + 1] + 1
+                                ]
+                            )
+                            split_points.append(local_minima[i] + min_idx)
+
+                    # Create sub-regions
+                    sub_regions = split_regions(start, end, split_points)
+                    final_regions.extend(sub_regions)
+
+                # Step 2b: Raise an exception if the number of minima doesn't match k
+                else:
+                    # Step 2.b.1: Handle case where multiplicity is k and exactly k maxima exist
+                    local_maxima = (
+                        argrelmax(self.smoothed_signal[start : end + 1], order=10)[0]
+                        + start
+                    )
+                    if len(local_maxima) == k:
+                        split_points = []
+                        for i in range(len(local_maxima) - 1):
+                            # Split at the minimum value between each consecutive maxima
+                            min_idx = (
+                                np.argmin(
+                                    self.smoothed_signal[
+                                        local_maxima[i] : local_maxima[i + 1] + 1
+                                    ]
+                                )
+                                + local_maxima[i]
+                            )
+                            split_points.append(min_idx)
+
+                        # Create sub-regions
+                        sub_regions = split_regions(start, end, split_points)
+                        final_regions.extend(sub_regions)
+
+                    # Step 2.b.2: Handle shoulder case where len(local_maxima) < k
+                    elif len(local_maxima) < k:
+                        split_points = []
+                        for i in range(len(local_maxima) - 1):
+                            min_idx = (
+                                np.argmin(
+                                    self.processed_signal[
+                                        local_maxima[i] : local_maxima[i + 1] + 1
+                                    ]
+                                )
+                                + local_maxima[i]
+                            )
+                            split_points.append(min_idx)
+
+                        # Create sub-regions for len(local_maxima)
+                        shoulder_regions = split_regions(start, end, split_points)
+
+                        # Step 2.b.2: Further split regions if conditions are met
+                        for region_start, region_end in shoulder_regions:
+                            d2_maxima = (
+                                argrelmax(
+                                    self.d2_signal[region_start : region_end + 1],
+                                    order=10,
+                                )[0]
+                                + region_start
+                            )
+                            d2_minima = (
+                                argrelmin(
+                                    self.d2_signal[region_start : region_end + 1],
+                                    order=10,
+                                )[0]
+                                + region_start
+                            )
+
+                            if len(d2_maxima) == 3 and len(d2_minima) >= 2:
+                                # Split at the middle maximum
+                                middle_max_idx = d2_maxima[1]
+                                final_regions.append((region_start, middle_max_idx))
+                                final_regions.append((middle_max_idx, region_end))
+                            else:
+                                final_regions.append((region_start, region_end))
+                    else:
+                        raise ValueError(
+                            f"Region {region} has {len(local_minima)} local minima, but expected {k - 1}."
+                        )
+
+            # prev_start, prev_end = final_regions[0]
+
             def get_extrema(function, signal, start, end, offset=0, **kwargs):
                 vals = function(signal[start + offset : end + offset + 1], **kwargs)
                 try:
@@ -237,20 +380,13 @@ class PeakFinder:
                 trimmed_regions.append([current_start, new_end])
                 current_start, current_end = new_end, next_end
 
-            regions = [[start, end] for start, end in regions]
             trimmed_regions = []
-            regions.sort()  # Sort by start time
-            current_start, current_end = regions[0]
-
+            current_start, current_end = final_regions[0]
             for next_start, next_end in regions[1:]:
-                if abs(next_start - 6255) < 2:
-                    pass
                 if next_start <= current_end:  # Overlapping regions
-                    # two possible cases: poorly resolved shoulder with only a local max, or a better resolved shoulter, with a local min, still above threshold
-
                     rel_min_signal = get_extrema(
                         argrelmin,
-                        self.processed_signal,
+                        self.smoothed_signal,
                         next_start,
                         current_end + 1,
                         offset=1,
@@ -273,23 +409,14 @@ class PeakFinder:
                     if len(rel_min_signal) == 1:
                         update_start_end(rel_min_signal[0])
                         continue
+                    elif len(rel_max_d2) == 1:
+                        update_start_end(rel_max_d2[0])
+                        continue
                     elif len(rel_max_d2) == 3 and len(rel_min_d2) == 2:
                         update_start_end(rel_max_d2[1])
                         continue
                     elif len(rel_min_d2) == 1:
                         update_start_end(rel_min_d2[0])
-                        continue
-                    elif len(rel_min_signal) > 1:
-                        update_start_end(
-                            get_extrema(
-                                np.argmin,
-                                self.processed_signal,
-                                next_start,
-                                current_end,
-                                offset=1,
-                            )
-                        )
-                        update_start_end(rel_min_signal[0])
                         continue
                     else:
                         update_start_end(
@@ -301,8 +428,23 @@ class PeakFinder:
                 else:
                     trimmed_regions.append([current_start, current_end])
                     current_start, current_end = next_start, next_end
+            trimmed_regions.append([current_start, current_end])
 
-            trimmed_regions.append([current_start, current_end])  # add last region
+            # for region in final_regions[1:]:
+            #     curr_start, curr_end = region
+            #     if curr_start < prev_end:
+            #         local_max = (
+            #             argrelmax(self.d2_signal[curr_start : prev_end + 1], order=10)[
+            #                 0
+            #             ]
+            #             + curr_start
+            #         )[0]
+            #         trimmed_regions.append([prev_start, local_max])
+            #         prev_start, prev_end = prev_start, local_max
+            #         continue
+            #     prev_start, prev_end = curr_start, curr_end
+            #     trimmed_regions.append([prev_start, prev_end])
+
             return trimmed_regions
 
         expanded_regions = expand_region(initial_regions)
@@ -318,12 +460,19 @@ class PeakFinder:
                 regions.append([start + 1, end + 1])
 
         self.peaks: PeakList = PeakList(
-            self.timepoints, self.raw_signal, self.smoothed_signal, self.baseline_spline
+            self.timepoints,
+            self.raw_signal,
+            self.smoothed_signal,
+            self.baseline_spline,
+            self.signal_sigma,
         )
         self.peaks.add_peaks(regions)
 
     def refine_peaks(self, height_cutoff=MINIMUM_HEIGHT, area_cutoff=MINIMUM_AREA):
         self.peaks.refine_peaks(height_cutoff, area_cutoff)
+
+    def get_peaks(self) -> pd.DataFrame:
+        return self.peaks.get_peaklist()
 
     def plot_peaks(self):
         # Plot the final result
@@ -331,12 +480,41 @@ class PeakFinder:
         plt.plot(self.timepoints, self.raw_signal, color="black")
         plt.plot(self.timepoints, self.baseline_spline(self.timepoints), color="grey")
 
+        # plt.plot(
+        #     self.timepoints,
+        #     self.smoothed_signal + self.baseline_spline(self.timepoints),
+        #     color="limegreen",
+        # )
+
+        # d2_times = self.timepoints[1:-1]
+        # plt.plot(
+        #     d2_times,
+        #     self.d2_signal / self.dt + self.baseline_spline(d2_times),
+        #     color="blue",
+        # )
+
+        # plt.plot(
+        #     self.timepoints,
+        #     2 * self.d2_sigma / self.dt * np.ones_like(self.timepoints)
+        #     + self.baseline_spline(self.timepoints),
+        #     color="green",
+        # )
+
+        # plt.plot(
+        #     self.timepoints,
+        #     2 * self.signal_sigma * np.ones_like(self.timepoints)
+        #     + self.baseline_spline(self.timepoints),
+        #     color="red",
+        # )
+
         # Colors for adjacent peaks
-        for idx, peak in enumerate(self.peaks):
+        for idx, row in enumerate(self.get_peaks().iterrows()):
             color = "orange" if idx % 2 == 0 else "blue"
             # plt.axvspan(start, end, color=color, alpha=0.5, label=f"Peak {idx + 1}")
 
-            plt.axvspan(peak.start_time, peak.end_time, color=color, alpha=0.2)
+            plt.axvspan(
+                row[1]["time_start"], row[1]["time_end"], color=color, alpha=0.2
+            )
 
         plt.xlabel("Time")
         plt.ylabel("Second Derivative")
@@ -344,17 +522,7 @@ class PeakFinder:
         plt.show()
 
     def print_peaks(self):
-        peak_list = []
-        total_area = np.sum([peak.area for peak in self.peaks])
-        for idx, peak in enumerate(self.peaks):
-            peak_dict = peak.get_peak_dict()
-            peak_dict = {
-                "index": idx + 1,
-                **peak_dict,
-                "relative_area": np.round(100 * peak.area / total_area, 2),
-                "start_ind": peak.start_index,
-                "end_ind": peak.end_index,
-            }
-            peak_list.append(peak_dict)
-        peak_df = pd.DataFrame.from_dict(peak_list)
-        print(peak_df)
+        print(self.get_peaks())
+
+    def save_peaks(self, filename="output.csv"):
+        self.get_peaks().to_csv(filename, index=False)
