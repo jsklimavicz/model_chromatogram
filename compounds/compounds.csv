@@ -1,201 +1,303 @@
-﻿name,id,cas,formula,mw,class,default_CV,SMILES,logp,log_s,H_acceptor,H_donor,refractivity,tpsa,asymmetry_addition,MS
-cystine,cystine,56-89-3,C6H12N2O4S2,240.3,natural product,1.33,C(C(C(=O)O)N)SSCC(C(=O)O)N,-2.476,1.76,6,4,55.1,177.24,0,done
-guanosine,guanosine,118-00-3,C10H13N5O5,283.24,natural product,2.179,NC1=Nc2c(ncn2[C@@H]3O[C@H](CO)[C@@H](O)[C@H]3O)C(=O)N1,-1.938,-0.347,7,5,65.5,159.51,0,done
-cytidine,cytidine,65-46-3,C9H13N3O5,243.22,natural product,1.915,C1=CN(C(=O)N=C1N)C2C(C(C(O2)CO)O)O ,-1.846,0.26,6,4,55.85,130.83,0,done
-"2-beta-d-ribofuranosyl-2h-pyrazolo[3,4-b]pyrazine",JSK-7558,53226-33-8,C10H12N4O4,252.23,drug,2.068,OC[C@H]3O[C@@H](n2cc1nccnc1n2)[C@H](O)[C@@H]3O,-1.178,-0.197,7,3,58.27,113.52,0.03,
-"2,4-imidazolidinedione",hydantoin,461-72-3,C3H4N2O2,100.08,impurity,2.922,C1C(=O)NC(=O)N1,-0.924,0.357,2,2,28.64,58.2,0,done
-"3-beta-d-ribofuranosyl-3himidazo[4,5-g]quinazolin-8-amine",JSK-7554,60189-62-0,C14H15N5O4,317.3,drug,2.089,C1=C2C(=CC3=C1N=CN3[C@H]4[C@@H]([C@@H]([C@H](O4)CO)O)O)N=CN=C2N ,-0.722,-1.233,7,4,80.18,139.54,0.06,
-guanine,guanine,73-40-5,C5H5N5O,151.13,natural product,3.16,C1=NC2=C(N1)C(=O)NC(=N2)N ,-0.606,-0.987,3,3,38.91,100.45,0,
-tyrosine,tyrosine,60-18-4,C9H11NO3,181.19,natural product,2.315,C1=CC(=CC=C1CC(C(=O)O)N)O ,-0.486,0.023,4,3,47.52,83.55,0.1,
-pyrazinamide,pyrazinamide,98-96-4,C5H5N3O,123.11,drug,1.444,NC(=O)c1cnccn1,-0.372,-0.74,3,1,30.13,68.87,0.04,
-creatinine,creatinine,60-27-5,C4H7N3O,113.12,natural product,1.563,CN1CC(=NC1=N)O,-0.23,-0.157,3,2,38.21,59.68,0.12,
-uracil,uracil,66-22-8,C4H4N2O2,112.09,natural product,1.54,C1=CNC(=O)NC1=O  ,-0.188,-0.55,2,2,27.68,65.72,0,
-theophylline,theophylline,58-55-9,C7H8N4O2,180.16,drug,4.446,CN1C2=C(C(=O)N(C1=O)C)NC=N2,-0.186,-1.207,3,1,47.14,72.68,0,
-sulfanilamide,sulfanilamide,63-74-1,C6H8N2O2S,172.2,drug,5.93,C1=CC(=CC=C1N)S(=O)(=O)N,-0.008,-1.113,3,2,41.84,94.56,0,
-"1-[2-(acetyloxy)ethyl]-2,4(1h,3h)-pyrimidinedione",IMP-7905A-2,15765-13-6,C8H10N2O4,198.18,impurity,2.446,CC(=O)OCCN1C=CC(=O)NC1=O  ,0,-0.8,4,1,48.29,81.16,0,
-"6-hydroxy-2-phenyl-5,8-quinazolinedione",JSK-4112,36797-84-9,C14H16N2O3,260.29,drug,5.007,O=c2cc(O)c(=O)c3cnc(c1ccccc1)nc23,0.02,-1.667,5,3,75.82,78.43,0.02,
-sulfacetamide,sulfacetamide,144-80-9,C8H10N2O3S,214.24,drug,3.068,CC(=O)NS(=O)(=O)C1=CC=C(C=C1)N,0.028,-1.217,3,2,51.75,97.64,0.036,
-caffeine,caffeine,58-08-2,C8H10N4O2,194.19,drug,4.578,CN1C=NC2=C1C(=O)N(C(=O)N2C)C,0.082,-0.977,3,0,52.04,61.82,0,done
-Alpha-amino-2-oxo-(2h-1-benzopyran)-3-propanoic acid,,66127-87-5,C12H11NO4,233.22,,4.699,NC(CC1=Cc2ccccc2OC1=O)C(O)=O,0.14,-1.257,5,2,61.54,93.53,0.08,
-tryptophan,tryptophan,54-12-6,C11H12N2O2,204.23,natural product,3.609,C1=CC=C2C(=C1)C(=CN2)CC(C(=O)O)N ,0.174,-1.183,3,3,57.36,79.11,0.1,done
-"2-acetylamino-3-amino-1,4-naphthoquinone",IMP-0391,13755-96-9,C12H10N2O3,230.22,impurity,2.467,CC(=O)NC1=C(C(=O)C2=CC=CC=C2C1=O)N,0.186,-1.767,3,2,59.57,89.26,0.057,
-ninhydrin,ninhydrin,485-47-2,C9H6O4,178.14,impurity,3.151,C1=CC=C2C(=C1)C(=O)C(C2=O)(O)O,0.232,-1.787,4,2,42.27,74.6,0.06,
-3-methoxypyridine-1-oxide,,14906-61-7,C6H7NO2,125.13,,3.41,COc1ccc[n+]([O-])c1,0.29,-0.523,2,0,34.1,34.69,0,
-"ethyl 2,4-dioxovalerate",IMP-1942,615-79-2,C7H10O4,158.15,impurity,3.031,CCOC(=O)C(=O)CC(C)=O,0.376,-0.907,4,0,37.45,60.44,0,
-dehydroacetic acid,DHAA,520-45-6,C8H8O4,168.15,impurity,5.054,CC1=CC(=O)C(C(=O)O1)C(=O)C,0.44,-1.03,4,0,39.67,60.44,0.03,
-5-methoxy-3-nitrosalicylaldehyde,,34549-69-4,C8H7NO5,197.14,,5.751,COc1cc(C=O)c(O)c(c1)[N+]([O-])=O,0.52,-2.083,5,1,49.17,92.35,0,
-"2,3-dihydro-4-methyl-7-nitro-1H-1,5-benzodiazepin-2-one",JSK-0129,37546-86-4,C10H9N3O3,219.2,drug,7.951,CC1=NC2=C(C=CC(=C2)[N+](=O)[O-])NC(=O)C1,0.67,-2.25,4,1,67.74,87.28,0,
-"6,7-dihydro-2-methyl-5-oxo-5h-pyrrolo[3,4-b] pyridine-7-acetic acid",,60796-82-9,C10H10N2O3,206.2,,6.823,Cc1ccc2C(=NC(CC(O)=O)c2n1)O,0.74,-1.513,5,2,56.99,82.78,0.04,
-1-nitroso-1-phenylhydrazine,IMP-0819B,614-01-7,C6H7N3O,137.14,impurity,7.435,C1=CC=C(C=C1)N(N)N=O,0.79,-1.583,3,1,38.48,58.69,0.2,
-2-hydroximinoacetylaminobenzoic acid,IMP-0972,6579-46-0,C9H8N2O4,208.17,impurity,5.528,O=C(O)c1ccccc1NC(=O)C=NO,0.834,-2.8,5,3,52.13,98.99,0,
-kinetin,kinetin,525-79-1,C10H9N5O,215.21,drug,6.945,C(Nc1ncnc2nc[nH]c12)c1ccco1,0.898,-2.963,4,2,57.74,79.63,0,done
-acetaminophen,acetaminophen,103-90-2,C8H9NO2,151.16,drug,4.623,CC(=O)Nc1ccc(O)cc1,0.926,-1.53,2,2,42.78,49.33,0.04,
-2-methoxyquinoxaline-4-oxide,,18916-46-6,C9H8N2O2,176.17,,5.072,COc1c[n+]([O-])c2ccccc2n1,0.96,-1.637,3,0,49.4,47.58,0,
-vanillic acid,vanillic acid,121-34-6,C8H8O4,168.15,natural product,4.603,COc1ccc(C(=O)O)cc1O,0.978,-1.927,4,2,41.92,66.76,0.06,
-5-bromo-2-hydroxy-3-nitrobenzaldehyde,IMP-4508,16634-88-1,C7H4BrNO4,246.01,impurity,6.885,C1=C(C=C(C(=C1C=O)O)[N+](=O)[O-])Br,0.996,-2.797,4,1,50.37,83.12,0,
-2-(hydroxymethyl)-5-methoxy-1-methyl-4(1h)-pyridinethione,,65769-18-8,C8H11NO2S,185.24,,6.84,COC1=CN(C)C(=CC1=S)CO,1.02,-1.377,2,1,49.15,66.48,0,
-"5,5-dimethyl-2,4-dithiohydantoin",DMDTH,20513-25-1,C5H8N2S2,160.26,impurity,4.504,CC1(C(=S)NC(=S)N1)C,1.042,-1.747,0,2,53.09,88.24,0,
-4'-nitroacetophenone,,100-19-6,C8H7NO3,165.15,,7.262,CC(=O)c1ccc(cc1)[N+]([O-])=O,1.05,-2.213,3,0,45.46,62.89,0,
-sorbic acid,sorbic acid,110-44-1,C6H8O2,112.13,impurity,4.585,CC=CC=CC(=O)O,1.126,-0.903,2,1,31.78,37.3,0.11,
-ampyrone,ampyrone,83-07-8,C11H13N3O,203.24,drug,5.868,CN1N(c2ccccc2)C(=O)C(=C1C)N,1.13,-1.633,1,1,60.66,52.95,0.06,
-vanillin,vanillin,121-33-5,C8H8O3,152.15,natural product,5.503,COc1cc(C=O)ccc1O,1.2,-1.827,3,1,40.34,46.53,0,
-4-quinazolinone,IMP-2650,491-36-1,C8H6N2O,146.15,impurity,8.843,C1=CC=C2C(=C1)C(=O)NC=N2,1.212,-2.14,2,1,42.36,45.75,0,
-6-chloronicotinic acid,IMP-0416,5326-23-8,C6H4ClNO2,157.55,impurity,4.448,C1=CC(=NC=C1C(=O)O)Cl ,1.224,-2.747,3,1,36.21,50.19,0,
-sulfisoxazole,sulfisoxazole,127-69-5,C11H13N3O3S,267.3,drug,4.136,CC1=C(ON=C1C)NS(=O)(=O)C2=CC=C(C=C2)N,1.236,-3.127,4,2,67.95,106.6,0,
-"1,1,1-trifluoro-2,4-pentanedione",(trifluoroacetyl)acetone,367-57-7,C5H5F3O2,154.09,impurity,4.699,CC(=O)CC(=O)C(F)(F)F,1.28,-1.28,5,0,26.74,34.14,0,done
-aspirin,aspirin,50-78-2,C9H8O4,180.16,drug,4.066,CC(=O)OC1=CC=CC=C1C(=O)O,1.282,-1.94,4,1,44.9,63.6,0,
-piperonal,piperonal,120-57-0,C8H6O3,150.13,natural product,4.677,[H]C(=O)c1ccc2OCOc2c1,1.292,-1.747,3,0,37.89,35.53,0,
-phenylsilane,phenylsilane,694-53-1,C6H8Si,108.21,,5.25,[SiH3]c1ccccc1,1.3,-2.03,0,0,36.02,0,0,
-methyl phenyl sulfone,,3112-85-4,C7H8O2S,156.2,,4.819,C[S](=O)(=O)c1ccccc1,1.31,-1.717,2,0,39.54,42.52,0,
-4-dimethylaminobenzoic acid,IMP-2773,619-84-1,C9H11NO2,165.19,impurity,6.233,CN(C)c1ccc(C(=O)O)cc1,1.33,-1.837,2,1,47.61,40.54,0.03,
-pyridine-4-thiol,IMP-0029,4556-23-4,C5H5NS,111.16,impurity,8.017,C1=CNC=CC1=S,1.34,-1.373,0,1,31.63,47.88,0.11,
-4-acetylbenzoic acid,IMP-0182,586-89-0,C9H8O3,164.16,natural product,4.757,CC(=O)c1ccc(C(=O)O)cc1,1.358,-2.19,3,1,43.6,54.37,0.061,
-mephenesin,mephenesin,59-47-2,C10H14O3,182.22,drug,7.748,CC1=CC=CC=C1OCC(CO)O,1.366,-2.077,3,2,49.84,49.69,0.1,
-triacetonamine,triacetonamine,826-36-8,C9H17NO,155.24,impurity,4.112,CC1(CC(=O)CC(N1)(C)C)C,1.374,-1.5,2,1,50.26,29.1,0.06,
-"2,3-dimethoxybenzoic acid",IMP-0126,1521-38-6,C9H10O4,182.17,natural product,5.219,COc1cccc(C(=O)O)c1OC,1.38,-2.247,4,1,46.39,55.76,0.047,
-"4-nitro-5-hydroxy-1,2-dimethylindole",JSK-0912B,53918-86-8,C10H10N2O3,206.2,drug,9.257,Cc2cc1c(N(=O)=O)c(O)ccc1n2C,1.38,-3.037,3,1,59.01,70.98,0,
-"dimethyl bicyclo[2.2.1]-2,5-heptadiene-2,3-dicarboxylate",,947-57-9,C11H12O4,208.21,,7.68,COC(=O)C1=C(C2CC1C=C2)C(=O)OC,1.39,-1.52,4,0,52.38,52.6,0,
-(Z)-3-(2-cyano-4-methoxyphenyl)-2-propenoic acid,JSK-8201,65300-89-2,C11H9NO3,203.19,drug,5.456,COc1ccc(\C=C/C(O)=O)c(c1)C#N,1.5,-2.303,4,1,54.32,70.32,0.08,
-(E)-3-(2-cyano-4-methoxyphenyl)-2-propenoic acid,IMP-8202,65300-91-6,C11H9NO3,203.19,impurity,5.619,COc1ccc(\C=C\C(O)=O)c(c1)C#N,1.5,-2.303,4,1,54.32,70.32,0.08,
-indole-3-(4′-oxo)butyric acid,JSK-2145,835-45-0,C12H11NO3,217.22,impurity,4.769,O=C(O)CCC(=O)c1c[nH]c2ccccc12,1.508,-2.573,3,2,59.88,70.16,0.07,
-cinnoline,cinnoline,253-66-7,C8H6N2,130.15,impurity,10.281,C1=CC=C2C(=C1)C=CN=N2,1.514,-2.107,2,0,39.54,25.78,0.05,
-2-chloro-4-(methylsulfonyl)aniline,,13244-35-4,C7H8ClNO2S,205.66,,8.544,C[S](=O)(=O)c1ccc(N)c(Cl)c1,1.53,-2.64,2,1,48.95,68.54,0.03,
-"ethyl 4,5-dihydro-5-oxo-1-phenyl-1H-pyrazole-3-carboxylate",,89-33-8,C12H12N2O3,232.24,,8.148,CCOC(=O)C1=NN(C(=O)C1)c2ccccc2,1.53,-2.57,4,0,69.19,58.97,0,
-antipyrine,antipyrine,60-80-0,C11H12N2O,188.23,drug,9.122,CC1=CC(=O)N(N1C)C2=CC=CC=C2,1.57,-1.687,1,0,56.26,26.93,0.1,done
-N-(indol-3-yl)acetamide,3-acetamidoindole,51030-59-2,C10H10N2O,174.2,pesticide,4.115,CC(=O)NC1=CNC2=CC=CC=C21,1.58,-2.733,1,2,52.61,44.89,0.02,
-disperse yellow 1,disperse yellow 1,119-15-3,C9H14O2Si,182.29,,5.134,CO[Si](C)(OC)c1ccccc1,1.61,-2.73,2,0,51.59,18.46,0,
-dimethoxymethylphenylsilane,,3027-21-2,C9H14O2Si,182.29,,4.828,CO[Si](C)(OC)c1ccccc1,1.61,-2.73,2,0,51.59,18.46,0,
-phenethyl alcohol,phenethyl alcohol,60-12-8,C8H10O,122.16,natural product,3.856,C1=CC=C(C=C1)CCO,1.636,-1.93,1,1,37.38,20.23,0,
-ethyl a-oxophenylacetate,ethyl oxophenylacetate,1603-79-8,C10H10O3,178.18,,3.876,CCOC(=O)C(=O)c1ccccc1,1.67,-2.56,3,0,47.54,43.37,0.09,
-4-Acetamidoantipyrine,IMP-3483,83-15-8,C13H14N2O2,230.26,impurity,4.215,CC(=O)c2c(C)n(C)n(c1ccccc1)c2=O,1.67,-2.017,2,0,66.45,44,0,
-(methylsulfonyl)[(4-nitrophenyl)azo](phenylsulfonyl)acetonitrile,JSK-8100,56075-45-7,C15H12N4O6S2,408.41,drug,6.063,CS(=O)(=O)C(C#N)(/N=N/c1ccc(N(=O)=O)cc1)S(=O)(=O)c2ccccc2,1.682,-4.773,9,0,96.62,179.37,0.02,done
-"2,3-dimethoxycinnamic acid","2,3-MeO-cinnamic acid",7461-60-1,C11H12O4,208.21,natural product,6.896,COc1cccc(/C=C/C(=O)O)c1OC,1.714,-2.323,4,1,56.1,55.76,0.071,
-"1-phenyl-1,3-butanedione",,93-91-4,C10H10O2,162.19,,7.129,CC(=O)CC(=O)c1ccccc1,1.74,-2.33,2,0,46.45,34.14,0,
-phenacetin,phenacetin,62-44-2,C10H13NO2,179.22,drug,5.675,CCOC1=CC=C(C=C1)NC(=O)C,1.762,-2.447,2,1,52.05,38.33,0,
-atropic acid,atropic acid,492-38-6,C9H8O2,148.16,natural product,6.126,C=C(C(=O)O)c1ccccc1,1.776,-2.31,2,1,43.11,37.3,0.082,
-3-iodopyridine,IMP-7201,1120-90-7,C5H4IN,205,impurity,3.505,Ic1cccnc1,1.79,-2.517,1,0,36.95,12.89,0.13,
-tetramethylthiuram disulfide,thiram,137-26-8,C6H12N2S4,240.43,pesticide,5.99,CN(C)C(=S)SSC(=S)N(C)C,1.792,-2.203,0,0,67.51,121.26,0.04,
-"2,2'-bipyridine",bipyridine,366-18-7,C10H8N2,156.18,impurity,8.75,C1=CC=NC(=C1)C2=CC=CC=N2,1.806,-2.747,2,0,47.47,25.78,0,done
-2-methoxyacetophenone,2-MeO-acetophenone,579-74-8,C9H10O2,150.17,impurity,5.612,CC(=O)C1=CC=CC=C1OC,1.806,-2.34,2,0,43.13,26.3,0,
-"3,4-dimethoxyphenylacetone",,776-99-8,C11H14O3,194.23,,6.676,COc1ccc(CC(C)=O)cc1OC,1.82,-2.22,3,0,54.21,35.53,0,
-"3,4-dimethoxycinnamic acid","3,4-MeO-cinnamic acid",2316-26-9,C11H12O4,208.21,natural product,6.933,COc1ccc(\C=C\C(O)=O)cc1OC,1.826,-2.637,4,1,56.1,55.76,0.073,
-"Alpha,alpha,7-trimethylfuro[2,3-c]pyridine-2-methanol",,56914-80-8,C11H13NO2,191.23,,8.424,Cc1nccc2cc(oc12)C(C)(C)O,1.83,-2.617,3,1,54.6,46.26,0,
-N-[2-(aminosulfonyl)-4-chlorophenyl]-2-butenamide,,92629-15-7,C10H11ClN2O3S,274.72,,7.792,CC=CC(O)=Nc1ccc(Cl)cc1[S](N)(=O)=O,1.83,-2.863,5,2,67.17,101.13,0.02,
-"6-nitro-5-hydroxy-1,2-dimethylindole",JSK-0912A,53918-85-7,C11H14N2O3,222.24,drug,9.023,Cc2cc1cc(O)ccc1n2C.CN(=O)=O,1.836,-3.2,3,1,65.21,70.98,0,
-coumarin,coumarin,531-59-9,C10H8O3,176.17,drug,8.174,COC1=CC2=C(C=C1)C=CC(=O)O2,1.876,-2.82,3,0,48.98,39.44,0,done
-hydrocortisone,hydrocortisone,50-23-7,C21H30O5,362.46,drug,8.78,C[C@]12CCC(=O)C=C1CC[C@@H]3[C@@H]2[C@H](C[C@]4([C@H]3CC[C@@]4(C(=O)CO)O)C)O,1.89,-2.937,5,3,97.53,94.83,0,
-N-(3-methoxyphenyl)-2-furancarboxamide,,52109-84-9,C12H11NO3,217.22,,6.276,COc1cccc(NC(=O)c2occc2)c1,1.89,-3.29,3,1,59.41,51.47,0,
-methyl 4-(1H-indol-3-yl)-4-oxobutanoate,JSK-2146,13672-36-1,C13H13NO3,231.25,impurity,4.509,COC(=O)CCC(=O)c1c[nH]c2ccccc12,1.92,-2.91,3,1,64.2,59.16,0,
-N-[2-(1H-indol-3-yl)ethyl]-1h-purin-6-amine,JSK-6153,5779-22-6,C15H14N6,278.31,drug,9.478,C1=CC=C2C(=C1)C(=CN2)CCNC3=NC=NC4=C3NC=N4,1.924,-4.603,3,3,82.14,82.28,0.02,
-5-bromo-2-hydroxybenzoic acid,IMP-5201,89-55-4,C7H5BrO3,217.02,impurity,5.402,O=C(O)c1cc(Br)ccc1O,1.962,-3.243,3,2,43.12,57.53,0,
-"5-(Bromophenyl)-2,3-furandione",IMP-3209,55991-70-3,C10H5BrO3,253.05,impurity,6.671,C1=CC(=CC=C1C2=CC(=O)C(=O)O2)Br ,2.046,-3.14,3,0,53.22,43.37,0.01,
-2-amino-3h-phenothiazin-3-one,,21033-44-3,C12H8N2OS,228.27,,7.02,NC1=CC2=Nc3ccccc3SC2=CC1=O,2.06,-3.477,2,1,66.92,84.22,0,
-"8-acetyl-1,8-dihydropyrrolo[2,3-b] indole-3-carbonitrile",IMP-0894,63291-78-1,C13H9N3O,223.23,impurity,5.905,CC(=O)n3c1ccccc1c2c(C#N)c[nH]c23,2.112,-3.243,2,1,65,61.58,0,
-"4,5-dihydro-7-methoxynaphtho[2,1-b]furan-2(3ah)-one",,53264-19-0,C13H12O3,216.23,,7.714,COc1ccc2c(CCC3OC(=O)C=C23)c1,2.15,-2.67,3,0,59.47,35.53,0,
-triethoxyphenylsilane,triethoxyphenylsilane,780-69-8,C12H20O3Si,240.37,,9.386,CCO[Si](OCC)(OCC)c1ccccc1,2.18,-3.497,3,0,67.1,27.69,0,
-"1-acetyl-4-(acetyloxy)-1,2-dihydro-2-oxoazuleno[2,1-b]pyridine-10-carbonitrile",JSK-8830,53299-95-9,C18H12N2O4,320.3,drug,8.851,CC(=O)Oc2cc(=O)n(C(C)=O)c3c(C#N)c1cccccc1c23,2.198,-3.627,5,0,87.53,89.16,0,
-o-phenanthroline,o-phenanthroline,66-71-7,C12H8N2,180.21,,9.292,c1cnc2c(c1)ccc3cccnc23,2.21,-3.253,2,0,57.04,25.78,0.01,
-N-phenyl-2-thiophenesulfonamide,IMP-0239,39810-46-3,C10H9NO2S2,239.31,impurity,7.028,C1=CC=C(C=C1)NS(=O)(=O)C2=CC=CS2,2.226,-3.743,2,1,61.43,82.79,0,
-2-acetylbenzofuran,IMP-3667,1646-26-0,C10H8O2,160.17,impurity,6.24,CC(=O)C1=CC2=CC=CC=C2O1 ,2.244,-3.133,2,0,46.41,30.21,0,
-eugenol,eugenol,97-53-0,C10H12O2,164.2,natural product,7.422,COC1=C(C=CC(=C1)CC=C)O,2.252,-2.593,2,1,49.06,29.46,0,
-"4,5-dihydro-6-[2-(4-methoxyphenyl)ethenyl]-3(2h)-pyridazinone",,35990-93-3,C13H14N2O2,230.26,,6.967,COc1ccc(\C=C\C2=NN=C(O)CC2)cc1,2.26,-2.663,4,1,75.73,54.18,0,
-7-methoxy-2-naphthalenol,7-methoxy-2-naphthalenol,5060-82-2,C11H10O2,174.2,,7.228,COc1ccc2ccc(O)cc2c1,2.27,-2.977,2,1,52.46,29.46,0,
-6-methoxy-2-naphthalenol,6-methoxy-2-naphthalenol,5111-66-0,C11H10O2,174.2,,7.12,COc1ccc2cc(O)ccc2c1,2.28,-2.977,2,1,52.46,29.46,0,
-"1,3-diphenylurea",DPU,102-07-8,C13H12N2O,212.25,impurity,10.049,O=C(Nc1ccccc1)Nc2ccccc2,2.288,-3.15,1,2,65.16,41.13,0,done
-"2,4-dichlorophenoxyacetic acid","2,4-D",94-75-7,C8H6Cl2O3,221.04,pesticide,5.139,C1=CC(=C(C=C1Cl)Cl)OCC(=O)O,2.31,-3.24,3,1,49.53,46.53,0,
-"5H-pyrido[3,2-b]indol-2,4-diol, diacetate",JSK-3927,68835-04-1,C15H12N2O4,284.27,drug,7.35,CC(=O)Oc3cc(OC(C)=O)c2[nH]c1ccccc1c2n3,2.336,-3.843,5,1,76.6,81.28,0,
-4'-methylthioacetophenone,,1778-09-2,C9H10OS,166.24,,7.868,CSc1ccc(cc1)C(C)=O,2.35,-2.723,1,0,48.36,42.37,0,
-harmaline,harmaline,304-21-2,C13H14N2O,214.26,natural product,5.664,CC1=NCCC2=C1NC3=C2C=CC(=C3)OC,2.37,-3.323,2,1,69.23,37.38,0.03,done
-3-(trifluoromethyl)aniline,IMP-3670,98-16-8,C7H6F3N,161.12,impurity,7.47,C1=CC(=CC(=C1)N)C(F)(F)F,2.376,-2.667,3,1,35.85,26.02,0.14,
-camphor,camphor,464-48-2,C10H16O,152.23,natural product,9.21,C[C@]12CC[C@H](C1(C)C)CC2=O ,2.378,-2.313,1,0,45.64,17.07,0,
-a-santonin,a-santonin,481-06-1,C15H18O3,246.3,natural product,6.976,CC1C2CCC3(C=CC(=O)C(=C3C2OC1=O)C)C,2.378,-2.78,3,0,68.15,43.37,0,
-parathion,parathion,56-38-2,C10H14NO5PS,291.26,pesticide,8.049,CCOP(=S)(OCC)OC1=CC=C(C=C1)[N+](=O)[O-] ,2.42,-4.197,5,0,73.92,115.41,0,
-2-acetyl-5-bromothiophene,IMP-2002,5370-25-2,C6H5BrOS,205.07,impurity,7.187,CC(=O)c1ccc(Br)s1,2.484,-3.073,1,0,42.21,45.31,0,
-"2-bromo-N,N-dimethylaniline",IMP-6733,698-00-0,C8H10BrN,200.08,impurity,6.69,CN(C)C1=CC=CC=C1Br,2.492,-3.003,0,0,48.35,3.24,0.09,
-"4,4,4-trifluoro-1-phenyl-1,3-butanedione",,326-06-7,C10H7F3O2,216.16,,8.985,FC(F)(F)C(=O)CC(=O)c1ccccc1,2.5,-3.127,5,0,46.64,34.14,0,
-dimethoxydiphenylsilane,,6843-66-9,C14H16O2Si,244.36,,9.185,CO[Si](OC)(c1ccccc1)c2ccccc2,2.5,-4.32,2,0,71.8,18.46,0,
-"3-(4-chlorophenyl)-2,3-dihydro-3-hydroxy-1h-isoindol-1-one",JSK-1075,956-92-3,C14H10ClNO2,259.69,drug,8.563,C1=CC=C2C(=C1)C(=O)NC2(C3=CC=C(C=C3)Cl)O,2.502,-3.907,2,2,71.94,49.33,0,
-lidocaine,lidocaine,137-58-6,C14H22N2O,234.34,drug,6.557,CCN(CC)CC(=O)NC1=C(C=CC=C1C)C,2.506,-3.22,2,1,72.81,32.34,0.17,
-safrole,safrole,94-59-7,C10H10O2,162.19,natural product,10.619,C=CCC1=CC2=C(C=C1)OCO2 ,2.518,-2.983,2,0,46.61,18.46,0,
-"N-(4-ethyl-3,4-dimethyl-5-methylene-2-selenazolidinylidene)benzenamine",JSK-2911,67766-78-3,C15H19NSe,292.28,drug,7.074,C=C2[Se]/C(=C\c1ccccc1)N(C)C2(C)CC,2.52,-4.05,0,0,80.2,3.24,0.11,
-citronellic acid,citronellic acid,502-47-6,C10H18O2,170.25,natural product,8.55,CC(CCC=C(C)C)CC(=O)O,2.548,-2.567,2,1,51.48,37.3,0.09,
-cyclobutyl phenyl ketone,,5407-98-7,C11H12O,160.21,,9.523,O=C(C1CCC1)c2ccccc2,2.55,-2.843,1,0,48.94,17.07,0,
-[5-(2-furanyl)-3-isoxazolyl]phenylmethanone,JSK-0798,58144-72-2,C14H9NO3,239.23,,10.071,O=C(c1ccccc1)c2cc(on2)c3occc3,2.55,-4.213,4,0,64.08,56.24,0,
-methyleugenol,methyleugenol,93-15-2,C11H14O2,178.23,natural product,8.693,COc1ccc(CC=C)cc1OC,2.58,-2.887,2,0,53.53,18.46,0,
-vincamine,vincamine,1617-90-9,C21H26N2O3,354.44,drug,12.172,CC[C@@]12CCCN3[C@@H]1C4=C(CC3)C5=CC=CC=C5N4[C@](C2)(C(=O)OC)O,2.606,-3.95,4,1,103.74,54.7,0.05,done
-pulegone,pulegone,89-82-7,C10H16O,152.23,natural product,8.837,C[C@@H]1CCC(=C(C)C)C(=O)C1 ,2.614,-2.737,1,0,47.8,17.07,0,
-"3,9-dihydro-6,7-dimethyl-2-oxo-n-(phenylmethyl)oxazolo[4,5-b]quinoxaline-9a(2h)-carboxamide",,60735-47-9,C19H18N4O3,350.37,,9.248,Cc1cc2NC3(OC(=NC3=Nc2cc1C)O)C(O)=NCc4ccccc4,2.67,-5.08,6,3,110.79,98.8,0,
-"2,4-diacetoxy-10-cyanoazuleno(2,1-b)pyridine",JSK-8837,53299-93-7,C18H12N2O4,320.3,drug,8.885,CC(=O)Oc1cc(OC(C)=O)c3c(n1)c(C#N)c2cccccc23,2.742,-4.52,6,0,86.08,89.28,0,
-4'-hydroxyflavone,4'-hydroxyflavone,4143-63-9,C15H10O3,238.24,natural product,8.316,Oc1ccc(cc1)C2=CC(=O)c3ccccc3O2,2.75,-4.47,3,1,69.94,50.44,0,
-"1,2-dimethoxy-4-(1-propenyl)benzene",isoeugenol methyl ether,93-16-3,C11H14O2,178.23,natural product,5.437,COc1ccc(C=CC)cc1OC,2.78,-3.277,2,0,54.32,18.46,0,
-nordazepam,nordazepam,1088-11-5,C15H11ClN2O,270.71,drug,8.443,Clc1ccc2NC(=O)CN=C(c3ccccc3)c2c1,2.788,-4.52,2,1,83.05,41.46,0,done
-quinidine,quinidine,56-54-2,C20H24N2O2,324.42,drug,9.305,COC1=CC2=C(C=CN=C2C=C1)[C@@H]([C@H]3C[C@@H]4CCN3C[C@@H]4C=C)O ,2.8,-3.84,4,1,99.73,45.59,0.04,
-6-chloro-5-methoxy-7h-benzocyclohepten-7-one,IMP-4348,60683-54-7,C12H9ClO2,220.65,impurity,9.499,COC1=C(Cl)C(=O)C=Cc2ccccc12,2.8,-3.96,2,0,61.72,26.3,0,
-"8-chloro-6,7-dimethoxy-5h-benzocyclohepten-5-one",IMP-4352,60683-66-1,C13H11ClO3,250.68,impurity,9.673,COC1=C(OC)C(=O)c2ccccc2C=C1Cl,2.8,-4.07,3,0,68.21,35.53,0,
-"2,4,5-trichlorophenoxyacetic acid","2,4,5-T",93-76-5,C8H5Cl3O3,255.48,pesticide,6.781,C1=C(C(=CC(=C1Cl)Cl)Cl)OCC(=O)O,2.816,-3.787,3,1,54.54,46.53,0.12,
-3-hydroxyflavone,3-hydroxyflavone,577-85-5,C15H10O3,238.24,natural product,8.438,OC1=C(Oc2ccccc2C1=O)c3ccccc3,2.84,-4.583,3,1,69.94,50.44,0,
-8-chloro-1-methoxy-5h-benzocyclohepten-5-one,JSK-4349,60683-63-8,C12H9ClO2,220.65,drug,9.804,COc1cccc2C(=O)C=CC(=Cc12)Cl,2.84,-4.003,2,0,61.72,26.3,0,
-8-chloro-2-methoxy-5h-benzocyclohepten-5-one,IMP-4350,60683-64-9,C12H9ClO2,220.65,impurity,9.627,COc1ccc2C(=O)C=CC(=Cc2c1)Cl,2.84,-4.003,2,0,61.72,26.3,0,
-"1,2,4,10-tetrahydro-1,6-dimethyl-2-phenylpyrazolo[3,4-c][1,5]benzoxazepin-3-one",JSK-2441A,52043-95-5,C18H17N3O2,307.35,drug,8.459,Cc2ccc1OCc4c(Nc1c2)c(=O)n(c3ccccc3)n4C,2.844,-4.537,2,1,93.27,48.19,0,
-chloroxine,chloroxine,773-76-2,C9H5Cl2NO,214.05,drug,7.519,Oc1c(Cl)cc(Cl)c2cccnc12,2.864,-4.07,2,1,53.79,33.12,0.05,
-6-chloro-1-methoxy-7h-benzocyclohepten-7-one,IMP-4351,60683-65-0,C12H9ClO2,220.65,impurity,9.881,COc1cccc2C=C(Cl)C(=O)C=Cc12,2.87,-4.117,2,0,61.72,26.3,0,
-p-bromofluorobenzene,IMP-9053,460-00-4,C6H4BrF,175,impurity,12.361,C1=CC(=CC=C1F)Br,2.932,-3.23,1,0,34.1,0,0,
-clofibrate,clofibrate,637-07-0,C12H15ClO3,242.7,drug,9.121,CCOC(=O)C(C)(C)Oc1ccc(Cl)cc1,3.02,-3.697,3,0,63.3,35.53,0,
-neocuproine,neocuproine,484-11-7,C14H12N2,208.26,,9.796,Cc1ccc2ccc3ccc(C)nc3c2n1,3.04,-4.363,2,0,66.98,25.78,0.01,
-5-hydroxyflavone,5-hydroxyflavone,491-78-1,C15H10O3,238.24,natural product,8.8,Oc1cccc2OC(=CC(=O)c12)c3ccccc3,3.05,-5.083,3,1,69.94,50.44,0,
-"2-(4-methoxyphenyl)-5-phenyl-1,3,4-oxadiazole",,842-79-5,C15H12N2O2,252.27,,8.93,COc1ccc(cc1)c2oc(nn2)c3ccccc3,3.06,-4.517,4,0,71.66,48.15,0,
-naphthalene,IMP-0109,91-20-3,C10H8,128.17,impurity,9.973,c2ccc1ccccc1c2,3.1,-3.487,0,0,43.95,0,0,
-4-trimethylsilyloxybromobenzene,TMS 4-Bromophenol,17878-44-3,C9H13BrOSi,245.19,,10.708,C[Si](C)(C)Oc1ccc(Br)cc1,3.13,-4.097,1,0,58.12,9.23,0,
-flavone,flavone,525-82-6,C15H10O2,222.24,natural product,8.853,O=C1C=C(Oc2ccccc12)c3ccccc3,3.18,-4.7,2,0,67.92,30.21,0,
-3-methoxyflavone,3-methoxyflavone,7245-02-5,C16H12O3,252.26,natural product,9.003,COC1=C(Oc2ccccc2C1=O)c3ccccc3,3.19,-4.92,3,0,74.41,39.44,0,
-"2-acetyl-6,8-diethoxy-1-hydroxy-3-methylanthraquinone",JSK-6820,61530-11-8,C21H20O6,368.38,drug,11.512,CCOc3cc(OCC)c2c(=O)c1c(O)c(C(C)=O)c(C)cc1c(=O)c2c3,3.196,-5.427,6,1,99.53,89.9,0,
-5-methoxyflavone,5-methoxyflavone,42079-78-7,C16H12O3,252.26,natural product,10.786,COC1=CC=CC2=C1C(=O)C=C(O2)C3=CC=CC=C3,3.226,-5.113,3,0,74.41,39.44,0,
-2-cyclohexylphenol,,119-42-6,C12H16O,176.25,impurity,9.78,Oc1ccccc1C2CCCCC2,3.24,-3.757,1,1,55.35,20.23,0.02,
-2-phenyl-4-(phenylmethylene)-5(4H)-oxazolone,,17606-70-1,C16H11NO2,249.26,,10.696,O=C1OC(=NC1=Cc2ccccc2)c3ccccc3,3.27,-4.487,3,0,76.82,38.66,0,
-"1,3-diphenyl-2-propen-1-one",chalcone,614-47-1,C15H12O,208.26,,9.789,O=C(/C=C/c1ccccc1)c2ccccc2,3.29,-3.833,1,0,66.25,17.07,0,
-"7-difluoromethoxy-2,3-dihydro-5-phenyl-1H-1,4-benzodiazepin-2-one",,55384-53-7,C16H12F2N2O2,302.28,,10.989,OC1=Nc2ccc(OC(F)F)cc2C(=NC1)c3ccccc3,3.32,-4.763,6,1,86.3,54.18,0,
-"2,5-Dihydro-5-methoxy-2,2-dimethyl-4-phenyl-5-(trifluoromethyl)oxazole",,58913-92-1,C13H14F3NO2,273.25,,9.895,COC1(OC(C)(C)N=C1c2ccccc2)C(F)(F)F,3.33,-3.777,6,0,67.58,30.82,0,
-triphenylphosphine oxide,TPO,791-28-6,C18H15OP,278.28,impurity,9.013,C1=CC=C(C=C1)P(=O)(C2=CC=CC=C2)C3=CC=CC=C3,3.414,-4.773,1,0,85.83,26.88,0,done
-testosterone,testosterone,58-22-0,C19H28O2,288.42,natural product,12.152,C[C@]12CC[C@H]3[C@H]([C@@H]1CC[C@@H]2O)CCC4=CC(=O)CC[C@]34C,3.458,-3.66,2,1,85.36,37.3,0,
-"7H-benzimidazo[2,1-a]benz[de]isoquinolin-7-one",Luminophor 2,23749-58-8 ,C18H10N2O,270.28,dye,11.732,C1=CC=C2C(=C1)N=C3N2C(=O)C4=CC=CC5=C4C3=CC=C5,3.532,-5.237,2,0,85.17,34.37,0,
-(4-methylphenyl)(5-phenyl-3-isoxazolyl)methanone,JSK-0795,58144-64-2,C17H13NO2,263.29,,10.959,Cc1ccc(cc1)C(=O)c2cc(on2)c3ccccc3,3.56,-5.253,3,0,76.78,43.1,0,
-"octahydro-3,3-diphenyl-2hH-indol-2-one",JSK-4729,51945-45-0,C20H21NO,291.39,drug,12.515,O=C2NC1CCCCC1C2(c3ccccc3)c4ccccc4,3.624,-5.193,1,1,92.12,29.1,0,
-2-(phenylamino)-5-(phenylmethylene)-4(5h)-thiazolone,,38771-64-1,C16H12N2OS,280.34,,9.627,OC\1=NC(SC1=C/c2ccccc2)=Nc3ccccc3,3.66,-5.187,3,1,88.94,70.25,0,
-dibutyl phthalate,dibutyl phthalate,84-74-2,C16H22O4,278.34,impurity,11.825,CCCCOC(=O)C1=CC=CC=C1C(=O)OCCCC,3.694,-4.757,4,0,77.84,52.6,0,
-N-cyclohexyl-a-hydroxy-a-phenylbenzeneacetamide,,17003-65-5,C20H23NO2,309.4,drug,9.641,OC(=NC1CCCCC1)C(O)(c2ccccc2)c3ccccc3,3.75,-4.963,3,2,93.73,52.82,0,
-(4-chlorophenyl)(5-phenyl-3-isoxazolyl)methanone,JSK-0796,58144-67-5,C16H10ClNO2,283.71,,9.338,Clc1ccc(cc1)C(=O)c2cc(on2)c3ccccc3,3.76,-5.513,3,0,76.82,43.1,0,
-acepromazine,acepromazine,61-00-7,C19H22N2OS,326.46,drug,13.32,CC(=O)C1=CC2=C(C=C1)SC3=CC=CC=C3N2CCCN(C)C,3.766,-5.193,2,0,100.26,48.85,0,
-"4-(3,3-dimethyl-3H-indol-2-yl)-N,N-dimethylbenzenamine",JSK-6380,4203-57-0,C18H20N2,264.36,drug,11.106,CC1(C2=CC=CC=C2N=C1C3=CC=C(C=C3)N(C)C)C,3.778,-4.94,1,0,90.02,15.6,0,
-5-methoxy-4-phenyl-1-benzothiepin-3-ol acetate,,37014-56-5,C19H16O3S,324.39,,12.151,COC1=C(C(=CSc2ccccc12)OC(C)=O)c3ccccc3,3.82,-5.003,3,0,92.54,60.83,0,
-"3-methyl-2-(methylthio)-6,7-diphenyl-4(3H)-pteridinone",JSK-881,50996-35-5,C21H17N3OS,359.44,impurity,12.473,CSc4cc3nc(c1ccccc1)c(c2ccccc2)nc3c(=O)n4C,3.836,-5.937,3,0,107.65,73.08,0,
-(4-Bromophenyl)(5-phenyl-3-isoxazolyl)methanone,JSK-0797,58144-68-6,C16H10BrNO2,328.16,drug,11.181,O=C(c1ccc(Br)cc1)c3cc(c2ccccc2)on3,3.85,-5.717,3,0,79.51,43.1,0,
-N-(4-butylphenyl)-3-oxo-2-(phenylhedrazono)butanamide,,67058-87-1,C20H23N3O2,337.42,,11.412,CCCCc1ccc(NC(=O)C(=N/Nc2ccccc2)/C(C)=O)cc1,3.89,-6.567,3,2,102.47,70.56,0,
-1-methyl-2-(phenylthio)benzene,IMP-3668,13963-35-4,C13H12S,200.3,impurity,11.159,CC1=CC=CC=C1SC2=CC=CC=C2,4.006,-4.787,0,0,61.97,25.3,0,
-2-(4-nitrophenyl)-4-phenylbenzo[h]quinoline-10-sulfonic acid,,90094-11-4,C25H16N2O5S,456.47,drug,11.858,O[S](=O)(=O)c1cccc2ccc3c(cc(nc3c12)c4ccc(cc4)[N+]([O-])=O)c5ccccc5,4.02,-7.647,6,1,128.8,121.46,0.09,
-5-methoxy-4-phenyl-1-benzothiepin,,37014-57-6,C17H14OS,266.36,,12.952,COC1=C(C=CSc2ccccc12)c3ccccc3,4.06,-4.97,1,0,81.64,34.53,0,
-"1,3-bis(4-methoxyphenyl)-5-(4-nitrophenyl)formazan",formazan-2,53451-83-5,C21H19N5O4,405.41,dye,11.584,COc3ccc(N/N=C(/N=N/c1ccc(N(=O)=O)cc1)\c2ccc(OC)cc2)cc3,4.064,-7.033,7,1,115.63,113.39,0,
-"8-bromo-1,5-dihydro-[1,3]thiazino[5,4-b]indole-2,4-dithione",JSK-5913,69343-98-2,C10H5BrN2S3,329.26,drug,10.946,S=c3[nH]c2c1cc(Br)ccc1[nH]c2c(=S)s3,4.122,-5.493,0,2,77.4,124,0,
-chloroquine,chloroquine,54-05-7,C18H26ClN3,319.87,drug,9.749,Clc1cc2nccc(c2cc1)NC(C)CCCN(CC)CC,4.144,-5.473,2,1,97.41,28.16,0.25,done
-1-(t-butyl)-4-ethylbenzene,,7364-19-4,C12H18,162.27,,10.661,CCc1ccc(cc1)C(C)(C)C,4.18,-4.787,0,0,55.48,0,0,
-hexestrol,hexestrol,84-16-2,C18H22O2,270.37,drug,9.914,CC[C@H](C1=CC=C(C=C1)O)[C@@H](CC)C2=CC=C(C=C2)O,4.192,-5.37,2,2,83.98,40.46,0,
-5-[[4-(diethylamino)phenyl]methylene]-2-phenylamino-4(5H)-thiazolone,,56843-54-0,C20H21N3OS,351.47,,11.266,CCN(CC)c1ccc(cc1)\C=C\2SC(N=C2O)=Nc3ccccc3,4.21,-6.03,3,1,112.76,73.49,0,
-"(Z)-4-[4,4,4-tribromo-1-oxo-2-(trichloroethenyl)-2-butenyl]morpholine",IMP-0229,62398-55-4,C10H10Br3Cl3NO2+,522.26,impurity,12.012,O=[N+](/C(=C/C(Br)(Br)Br)/C(Cl)=C(Cl)/Cl)C1CCOCC1,4.244,-5.367,2,0,89.87,29.31,0,
-tris(4-methoxyphenyl)phosphine,4-MeO-TPP,855-38-9,C21H21O3P,352.36,impurity,14.001,COC1=CC=C(C=C1)P(C2=CC=C(C=C2)OC)C3=CC=C(C=C3)OC,4.294,-6,3,0,104.62,41.28,0,done
-riboflavin tetrabutyrate,riboflavin acetate,752-56-7,C33H44N4O10,656.72,natural product,11.219,CCCC(=O)OC[C@H]([C@H]([C@H](CN1C2=C(C=C(C(=C2)C)C)N=C3C1=NC(=O)NC3=O)OC(=O)CCC)OC(=O)CCC)OC(=O)CCC,4.31,-7.087,12,1,174.4,185.84,0,done
-chlorotriphenylsilane,TPS-Cl,76-86-8,C18H15ClSi,294.85,,11.919,Cl[Si](c1ccccc1)(c2ccccc2)c3ccccc3,4.32,-6.677,0,0,89.84,0,0,
-amitriptyline,amitriptyline,50-48-6,C20H23N,277.4,drug,12.048,CN(C)CC\C=C1\c2ccccc2CCc3ccccc13,4.362,-5.5,1,0,90.96,3.24,0.15,
-trifluoperazine,trifluoperazine,117-89-5,C21H24F3N3S,407.5,drug,14.066,CN1CCN(CCCN2c3ccccc3Sc4ccc(cc24)C(F)(F)F)CC1,4.53,-5.857,5,0,118.1,35.02,0,
-p-octylacetophenone,,10541-56-7,C16H24O,232.36,,12.653,CCCCCCCCc1ccc(cc1)C(C)=O,4.55,-5.22,1,0,75.25,17.07,0,
-butylated hydroxytoluene,BHT,128-37-0,C16H26O,234.38,impurity,13.707,CC1=CC(=C(C(=C1)C(C)(C)C)O)C(C)(C)C ,4.582,-5.26,1,1,76.78,20.23,0,
-triphenyl phosphine,TPP,603-35-0,C18H15P,262.29,impurity,14.972,C1=CC=C(C=C1)P(C2=CC=CC=C2)C3=CC=CC=C3,4.616,-6.277,0,0,85.15,13.59,0,done
-methoxychlor,methoxychlor,72-43-5,C16H15Cl3O2,345.65,pesticide,13.63,COC1=CC=C(C=C1)C(C2=CC=C(C=C2)OC)C(Cl)(Cl)Cl,4.64,-5.857,2,0,88.11,18.46,0,
-"1-(4-methoxyphenyl)-3,5-diphenylformazan",formazan-1,20648-42-4,C20H18N4O,330.38,dye,12.066,COC1=CC=C(C=C1)N=NC(=NNC2=CC=CC=C2)C3=CC=CC=C3,4.694,-6.693,4,1,100.31,58.34,0,
-"2,2'-(2-Butene-1,4-diylidene) bis [2,3-dihydro-3-methylbenzothiazole]",,54134-86-0,C20H18N2S2,350.5,,14.553,CN1\C(Sc2ccccc12)=C\C=C\C=C/3Sc4ccccc4N3C,4.82,-6.167,0,0,108.29,66.34,0,
-mepacrine,mepacrine,69-05-6,C23H30ClN3O,399.96,drug,13.341,CCN(CC)CCCC(C)Nc1c2ccc(cc2nc3c1cc(cc3)OC)Cl,5.084,-7.047,3,1,121.41,37.39,0,
-mesoporphyrin IX dimethyl ester,dimethoxymesoporphyrin IX,1263-63-4,C36H42N4O4,594.74,dye,15.01,CCC1=C(C2=CC3=C(C(=C(N3)C=C4C(=C(C(=N4)C=C5C(=C(C(=N5)C=C1N2)C)CCC(=O)OC)CCC(=O)OC)C)C)CC)C,5.47,-8.023,6,2,184.85,108.9,0,done
-(S)-4-chloro-2-[[(2-cyclohexyl-1-methylethyl)imino]phenylmethyl]phenol,,58292-23-2,C22H26ClNO,355.9,drug,15.2,C[C@H](CC1CCCCC1)N=C(c2ccccc2)c3cc(Cl)ccc3O,5.68,-7.173,2,1,107.76,32.59,0,
-"2,4,6-tri-tert-butylphenol","2,4,6-TTBP",732-26-3,C20H34O,290.48,impurity,15.908,CC(C)(C)C1=CC(=C(C(=C1)C(C)(C)C)O)C(C)(C)C  ,5.724,-6.557,1,1,95.89,20.23,0,
-"p,p'-DDT",DDT,50-29-3,C14H9Cl5,354.49,pesticide,15.739,C1=CC(=CC=C1C(C2=CC=C(C=C2)Cl)C(Cl)(Cl)Cl)Cl ,5.894,-7.143,0,0,85.15,0,0,done
-methyl 9-trans-octadecenoate,methyl elaidate,1937-62-8,C19H36O2,296.49,impurity,17.384,CCCCCCCC/C=C/CCCCCCCC(=O)OC,5.948,-6.413,2,0,94.26,26.3,0,
-"1,2-ethanediylbis[diphenylphosphine]",DPPE,1663-45-2,C26H24P2,398.42,impurity,14.61,C1=CC=C(C=C1)P(CCP(C2=CC=CC=C2)C3=CC=CC=C3)C4=CC=CC=C4,6.07,-7.763,0,0,127.76,27.18,0,done
-ergosterol,ergosterol,57-87-4,C28H44O,396.65,natural product,18.224,C[C@H](/C=C/[C@H](C)C(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3C2=CC=C4[C@@]3(CC[C@@H](C4)O)C)C ,6.468,-6.49,1,1,127.47,20.23,0,done
+﻿name,id,cas,formula,mw,class,default_CV,SMILES,logp,log_s,H_acceptor,H_donor,refractivity,tpsa,asymmetry_addition,MS,new_cv
+cystine,cystine,56-89-3,C6H12N2O4S2,240.3,natural product,1.125,C(C(C(=O)O)N)SSCC(C(=O)O)N,-2.476,1.76,6,4,55.1,177.24,0,done,1.151
+alanine,alanine,56-41-7,C3H7NO2,89.09,,1.351,CC([NH3+])C([O-])=O ,-2.1,1.47,2,1,20.33,67.77,0,,1.537
+guanosine,guanosine,118-00-3,C10H13N5O5,283.24,natural product,1.463,NC1=Nc2c(ncn2[C@@H]3O[C@H](CO)[C@@H](O)[C@H]3O)C(=O)N1,-1.938,-0.347,7,5,65.5,159.51,0,done,1.542
+cytidine,cytidine,65-46-3,C9H13N3O5,243.22,natural product,1.34,C1=CN(C(=O)N=C1N)C2C(C(C(O2)CO)O)O ,-1.846,0.26,6,4,55.85,130.83,0,done,1.51
+methionine,methionine,59-51-8,C5H11NO2S,149.21,,1.248,CSCCC([NH3+])C([O-])=O ,-1.3,0.293,2,1,37.53,93.07,0,,1.563
+nitroguanidine, nitroguanidine,556-88-7,CH4N4O2,104.07,,1.079,NC(N)=N[N+]([O-])=O ,-1.21,0.263,3,2,24.13,110.22,0.128,,1.118
+"2-beta-d-ribofuranosyl-2h-pyrazolo[3,4-b]pyrazine",JSK-7558,53226-33-8,C10H12N4O4,252.23,drug,1.403,OC[C@H]3O[C@@H](n2cc1nccnc1n2)[C@H](O)[C@@H]3O,-1.178,-0.197,7,3,58.27,113.52,0.03,,1.767
+urea,urea,57-13-6,CH4N2O,60.06,,1.563,NC(N)=O,-0.99,0.743,1,2,12.92,69.11,0,,1.35
+"2,4-imidazolidinedione",hydantoin,461-72-3,C3H4N2O2,100.08,impurity,1.622,C1C(=O)NC(=O)N1,-0.924,0.357,2,2,28.64,58.2,0,done,1.273
+oxalacetic acid,oxalacetic acid,328-42-7,C4H4O5,132.07,,1.72,OC(=O)CC(=O)C(O)=O,-0.88,0.057,5,2,25.09,91.67,0.093,,1.924
+oxalic acid,oxalic acid,144-62-7,C2H2O4,90.03,,2.266,OC(=O)C(O)=O,-0.79,0.147,4,2,15.27,74.6,0.066,,1.984
+"3-beta-d-ribofuranosyl-3himidazo[4,5-g]quinazolin-8-amine",JSK-7554,60189-62-0,C14H15N5O4,317.3,drug,2.908,C1=C2C(=CC3=C1N=CN3[C@H]4[C@@H]([C@@H]([C@H](O4)CO)O)O)N=CN=C2N ,-0.722,-1.233,7,4,80.18,139.54,0.06,,2.94
+uric acid,uric acid,69-93-2,C5H4N4O3,168.11,,2.736,O=C1NC(=O)C2=C(N1)NC(=O)N2,-0.72,-0.693,3,4,40.16,114.37,0,,2.884
+thymidine,thymidine,50-89-5,C10H14N2O5,242.23,,3.071,CC1=CN(C2CC(O)C(CO)O2)C(=O)NC1=O,-0.61,-0.57,5,3,58.07,104.55,0,,2.88
+guanine,guanine,73-40-5,C5H5N5O,151.13,natural product,3.368,C1=NC2=C(N1)C(=O)NC(=N2)N ,-0.606,-0.987,3,3,38.91,100.45,0,,3.087
+"dihydro-2-thioxo-4,6(1H,5H)-pyrimidinedione",2-thiobarbituric Acid,504-17-6,C4H4N2O2S,144.15,,3.31,O=C1CC(=O)NC(=S)N1,-0.51,-0.557,2,2,40.85,90.29,0,,3.572
+4-amino-2(1H)-pyrimidinone,cytosine,71-30-7,C4H5N3O,111.1,,2.904,NC1=CC=NC(=O)N1,-0.5,-0.13,2,2,29.26,71.77,0,,3.192
+tyrosine,tyrosine,60-18-4,C9H11NO3,181.19,natural product,3.061,C1=CC(=CC=C1CC(C(=O)O)N)O ,-0.486,0.023,4,3,47.52,83.55,0.1,,2.77
+pyrazinamide,pyrazinamide,98-96-4,C5H5N3O,123.11,drug,3.487,NC(=O)c1cnccn1,-0.372,-0.74,3,1,30.13,68.87,0.04,,3.687
+piperazine,piperazine,110-85-0,C4H10N2,86.14,,2.741,C1CNCCN1,-0.29,0.36,2,2,32.66,24.06,0.021,,2.727
+creatinine,creatinine,60-27-5,C4H7N3O,113.12,natural product,3.529,CN1CC(=NC1=N)O,-0.23,-0.157,3,2,38.21,59.68,0.12,,3.326
+uracil,uracil,66-22-8,C4H4N2O2,112.09,natural product,3.907,C1=CNC(=O)NC1=O  ,-0.188,-0.55,2,2,27.68,65.72,0,,3.929
+theophylline,theophylline,58-55-9,C7H8N4O2,180.16,drug,4.21,CN1C2=C(C(=O)N(C1=O)C)NC=N2,-0.186,-1.207,3,1,47.14,72.68,0,,4.327
+"1,3,6,7-tetramethyl-2,4(1H),3H-pteridinedione-5-oxide",,7348-39-2,C10H12N4O3,236.23,,4.337,CC1=C([N+](=C2C(=N1)N(C(=O)N(C2=O)C)C)[O-])C,-0.12,-0.833,4,0,63.88,82.35,0,,4.526
+acetic acid,acetic acid,64-19-7,C2H4O2,60.05,,3.901,CC(O)=O,-0.09,0.11,2,1,13.5,37.3,0,,3.789
+"1-Piperidinyloxy, 2,2,6,6-tetramethyl-4-oxo-",4-oxo-TEMPO,2896-70-0,C9H16NO2,170.23,,4.304,CC1(C)CC(=O)CC(C)(C)N1[O],-0.07,-0.837,3,0,49.98,20.31,0.046,,4.356
+aminopyrazine,aminopyrazine,5049-61-6,C4H5N3,95.1,,4.805,Nc1cnccn1,-0.03,-0.933,2,1,26.44,51.8,0.071,,4.696
+sulfanilamide,sulfanilamide,63-74-1,C6H8N2O2S,172.2,drug,4.836,C1=CC(=CC=C1N)S(=O)(=O)N,-0.008,-1.113,3,2,41.84,94.56,0,,5.133
+"1-[2-(acetyloxy)ethyl]-2,4(1h,3h)-pyrimidinedione",IMP-7905A-2,15765-13-6,C8H10N2O4,198.18,impurity,4.666,CC(=O)OCCN1C=CC(=O)NC1=O  ,0,-0.8,4,1,48.29,81.16,0,,4.799
+"6-hydroxy-2-phenyl-5,8-quinazolinedione",JSK-4112,36797-84-9,C14H16N2O3,260.29,drug,5.418,O=c2cc(O)c(=O)c3cnc(c1ccccc1)nc23,0.02,-1.667,5,3,75.82,78.43,0.02,,5.321
+sulfacetamide,sulfacetamide,144-80-9,C8H10N2O3S,214.24,drug,5.369,CC(=O)NS(=O)(=O)C1=CC=C(C=C1)N,0.028,-1.217,3,2,51.75,97.64,0.036,,5.172
+caffeine,caffeine,58-08-2,C8H10N4O2,194.19,drug,4.869,CN1C=NC2=C1C(=O)N(C(=O)N2C)C,0.082,-0.977,3,0,52.04,61.82,0,done,4.991
+Alpha-amino-2-oxo-(2h-1-benzopyran)-3-propanoic acid,,66127-87-5,C12H11NO4,233.22,,5.257,NC(CC1=Cc2ccccc2OC1=O)C(O)=O,0.14,-1.257,5,2,61.54,93.53,0.08,,5.056
+tryptophan,tryptophan,54-12-6,C11H12N2O2,204.23,natural product,5.281,C1=CC=C2C(=C1)C(=CN2)CC(C(=O)O)N ,0.174,-1.183,3,3,57.36,79.11,0.1,done,5.129
+1H-Imidazole,imidazole,288-32-4,C3H4N2,68.08,,4.927,[nH]1ccnc1,0.18,-0.78,1,1,18.59,28.68,0.018,,5.232
+"2-acetylamino-3-amino-1,4-naphthoquinone",IMP-0391,13755-96-9,C12H10N2O3,230.22,impurity,5.671,CC(=O)NC1=C(C(=O)C2=CC=CC=C2C1=O)N,0.186,-1.767,3,2,59.57,89.26,0.057,,5.77
+"4,5-dihydro-1-methyl-5-oxo-1H-pyrazole-3-carboxylic acid, ethyl ester",,60178-91-8,C7H10N2O3,170.17,,4.995,CCOC(=O)C1=NN(C)C(=O)C1 ,0.23,-0.793,4,0,48.96,58.97,0,,5.113
+ninhydrin,ninhydrin,485-47-2,C9H6O4,178.14,impurity,5.811,C1=CC=C2C(=C1)C(=O)C(C2=O)(O)O,0.232,-1.787,4,2,42.27,74.6,0.06,,5.849
+"4,5-dihydro-4-methyl-5-oxo-1H-pyrazole-3-carboxylic acid, ethyl ester",,60178-92-9,C7H10N2O3,170.17,,5.436,CCOC(=O)C1=NNC(=O)C1C ,0.26,-1.237,4,1,48.86,67.76,0,,5.455
+3-methoxypyridine-1-oxide,,14906-61-7,C6H7NO2,125.13,,5.353,COc1ccc[n+]([O-])c1,0.29,-0.523,2,0,34.1,34.69,0,,5.007
+chloroacetic acid,chloroacetic acid,79-11-8,C2H3ClO2,94.5,,5.144,OC(=O)CCl,0.29,-0.413,2,1,18.3,37.3,0,,5.214
+metanilic acid,metanilic acid,121-47-1,C6H7NO3S,173.19,,5.913,Nc1cccc(c1)[S](O)(=O)=O,0.31,-1.24,3,2,40.71,88.77,0.025,,5.645
+"ethyl 2,4-dioxovalerate",IMP-1942,615-79-2,C7H10O4,158.15,impurity,5.599,CCOC(=O)C(=O)CC(C)=O,0.376,-0.907,4,0,37.45,60.44,0,,5.504
+3-acetyldihydro-2(3H)-furanone,a-acetyl-a-methyl-gamma-butyrolactone,517-23-7,C6H8O3,128.13,,5.582,CC(=O)C1CCOC1=O,0.42,-0.643,3,0,30.33,43.37,0,,5.444
+dehydroacetic acid,DHAA,520-45-6,C8H8O4,168.15,impurity,5.986,CC1=CC(=O)C(C(=O)O1)C(=O)C,0.44,-1.03,4,0,39.67,60.44,0.03,,5.828
+"2,2-dimethyl-1,3-dioxolane-4-methanol",solketal,100-79-8,C6H12O3,132.16,,5.41,CC1(C)OCC(CO)O1,0.44,-0.383,3,1,32.21,38.69,0.01,,5.559
+5-methoxy-3-nitrosalicylaldehyde,,34549-69-4,C8H7NO5,197.14,,6.577,COc1cc(C=O)c(O)c(c1)[N+]([O-])=O,0.52,-2.083,5,1,49.17,92.35,0,,6.715
+3-methyl-2-(methylimino)-4-thiazolidinone,,1762-57-8,C5H8N2OS,144.19,,6.183,O=C1N(C)/C(SC1)=N\C,0.55,-1.013,2,0,42.32,57.97,0,,6.052
+crotonic acid,crotonic acid,107-93-7,C4H6O2,86.09,,5.847,C/C=C/C(O)=O,0.56,-0.487,2,1,22.64,37.3,0.121,,5.711
+ethyl acetoacetate,ethyl acetoacetate,141-97-9,C6H10O3,130.14,,6.437,CCOC(=O)CC(C)=O,0.62,-0.773,3,0,32.44,43.37,0,,6.341
+2-aminopyridine,2-aminopyridine,504-29-0,C5H6N2,94.11,,6.21,Nc1ccccn1,0.62,-1.277,1,1,28.64,38.91,0.06,,6.208
+furfuryl alcohol,furfuryl alcohol,98-00-0,C5H6O2,98.1,,6.305,OCc1occc1,0.62,-0.997,2,1,24.84,33.37,0,,6.304
+2-aminothiazole,2-aminothiazole,96-50-4,C3H4N2S,100.14,,6.374,Nc1sccn1,0.63,-1.18,1,1,26.52,67.15,0.041,,6.347
+"2,3-dihydro-4-methyl-7-nitro-1H-1,5-benzodiazepin-2-one",JSK-0129,37546-86-4,C10H9N3O3,219.2,drug,7.149,CC1=NC2=C(C=CC(=C2)[N+](=O)[O-])NC(=O)C1,0.67,-2.25,4,1,67.74,87.28,0,,7.036
+ 3-nitrobenzoic acid, 3-nitrobenzoic acid,121-92-6,C7H5NO4,167.12,,7.199,OC(=O)c1cccc(c1)[N+]([O-])=O,0.69,-2.207,4,1,42.22,83.12,0.034,,7.105
+2-furancarboxaldehyde,furfural,98-01-1,C5H4O2,96.08,,6.457,O=Cc1occc1,0.69,-1.08,2,0,24.1,30.21,0,,6.486
+2-aminobenzoic acid,anthranilic acid,118-92-3,C7H7NO2,137.14,,7.041,Nc1ccccc1C(O)=O,0.72,-1.783,2,2,37.81,63.32,0.12,,7.048
+4-nitrobenzoic acid,4-nitrobenzoic acid,62-23-7,C7H5NO4,167.12,,7.225,OC(=O)c1ccc(cc1)[N+]([O-])=O,0.73,-2.237,4,1,42.22,83.12,0.037,,7.243
+"6,7-dihydro-2-methyl-5-oxo-5h-pyrrolo[3,4-b] pyridine-7-acetic acid",,60796-82-9,C10H10N2O3,206.2,,6.698,Cc1ccc2C(=NC(CC(O)=O)c2n1)O,0.74,-1.513,5,2,56.99,82.78,0.04,,6.687
+pyrrolidine,pyrrolidine,123-75-1,C4H9N,71.12,,6.378,C1CCNC1,0.77,-0.583,1,1,25.94,12.03,0.045,,6.149
+benzhydroxamic acid,benzhydroxamic acid,495-18-1,C7H7NO2,137.14,,6.748,ONC(=O)c1ccccc1,0.77,-1.273,2,2,35.36,49.33,0.072,,6.69
+1-nitroso-1-phenylhydrazine,IMP-0819B,614-01-7,C6H7N3O,137.14,impurity,6.894,C1=CC=C(C=C1)N(N)N=O,0.79,-1.583,3,1,38.48,58.69,0.2,,7.059
+2-hydroximinoacetylaminobenzoic acid,IMP-0972,6579-46-0,C9H8N2O4,208.17,impurity,8.048,O=C(O)c1ccccc1NC(=O)C=NO,0.834,-2.8,5,3,52.13,98.99,0,,7.927
+"1,2-benzenedicarboxylic acid",phthalic acid,88-99-3,C8H6O4,166.13,,7.397,OC(=O)c1ccccc1C(O)=O,0.84,-1.53,4,2,40.36,74.6,0.072,,7.014
+4-hydroxybenzylalcohol,4-hydroxybenzylalcohol,623-05-2,C7H8O2,124.14,,7.173,OCc1ccc(O)cc1,0.87,-1.153,2,2,34.59,40.46,0.004,,6.957
+benzotriazole,benzotriazole,95-14-7,C6H5N3,119.12,,7.327,[nH]1nc2ccccc2n1,0.88,-1.977,2,1,33.89,41.57,0,,7.352
+kinetin,kinetin,525-79-1,C10H9N5O,215.21,drug,8.284,C(Nc1ncnc2nc[nH]c12)c1ccco1,0.898,-2.963,4,2,57.74,79.63,0,done,8.014
+acetaminophen,acetaminophen,103-90-2,C8H9NO2,151.16,drug,7.136,CC(=O)Nc1ccc(O)cc1,0.926,-1.53,2,2,42.78,49.33,0.04,,7.336
+benzofuroxan,benzofuroxan,480-96-6,C6H4N2O2,136.11,,7.435,[O-][n+]1onc2ccccc12,0.93,-1.827,3,0,35.17,51.49,0,,7.474
+"7-(methylthio)-1H-pyrazolo[4,3-d]pyrimidine",,60355-61-5,C6H6N4S,166.2,,7.718,CSC1=NC=NC2=C1NN=C2 ,0.94,-2.197,3,1,43.4,79.76,0,,7.777
+2-methoxyquinoxaline-4-oxide,,18916-46-6,C9H8N2O2,176.17,,7.252,COc1c[n+]([O-])c2ccccc2n1,0.96,-1.637,3,0,49.4,47.58,0,,7.329
+6-chloropurine,6-chloropurine,87-42-3,C5H3ClN4,154.56,,7.837,Clc1ncnc2nc[nH]c12,0.96,-2.32,3,1,36.69,54.46,0,,7.838
+catechol,catechol,120-80-9,C6H6O2,110.11,,7.194,Oc1ccccc1O,0.97,-1.373,2,2,30.49,40.46,0.085,,7.375
+vanillic acid,vanillic acid,121-34-6,C8H8O4,168.15,natural product,7.76,COc1ccc(C(=O)O)cc1O,0.978,-1.927,4,2,41.92,66.76,0.06,,7.71
+5-bromo-2-hydroxy-3-nitrobenzaldehyde,IMP-4508,16634-88-1,C7H4BrNO4,246.01,impurity,8.129,C1=C(C=C(C(=C1C=O)O)[N+](=O)[O-])Br,0.996,-2.797,4,1,50.37,83.12,0,,8.424
+1-(2-furanyl)ethanone,2-acetylfuran,1192-62-7,C6H6O2,110.11,,7.595,CC(=O)c1occc1,1.01,-1.287,2,0,28.9,30.21,0,,7.326
+2-(hydroxymethyl)-5-methoxy-1-methyl-4(1h)-pyridinethione,,65769-18-8,C8H11NO2S,185.24,,7.446,COC1=CN(C)C(=CC1=S)CO,1.02,-1.377,2,1,49.15,66.48,0,,7.385
+"5,5-dimethyl-2,4-dithiohydantoin",DMDTH,20513-25-1,C5H8N2S2,160.26,impurity,7.383,CC1(C(=S)NC(=S)N1)C,1.042,-1.747,0,2,53.09,88.24,0,,7.479
+4'-nitroacetophenone,,100-19-6,C8H7NO3,165.15,,8.033,CC(=O)c1ccc(cc1)[N+]([O-])=O,1.05,-2.213,3,0,45.46,62.89,0,,7.862
+p-hydroxybenzoic acid,4-hydroxybenzoic acid,99-96-7,C7H6O3,138.12,,7.712,OC(=O)c1ccc(O)cc1,1.05,-1.88,3,2,35.42,57.53,0.065,,7.725
+"1,3-benzenedicarboxylic acid",isophthalic acid,121-91-5,C8H6O4,166.13,,7.89,OC(=O)c1cccc(c1)C(O)=O,1.06,-2.043,4,2,40.36,74.6,0.082,,8.113
+sorbic acid,sorbic acid,110-44-1,C6H8O2,112.13,impurity,7.3,CC=CC=CC(=O)O,1.126,-0.903,2,1,31.78,37.3,0.11,,7.173
+ampyrone,ampyrone,83-07-8,C11H13N3O,203.24,drug,7.758,CN1N(c2ccccc2)C(=O)C(=C1C)N,1.13,-1.633,1,1,60.66,52.95,0.06,,7.793
+"1,4-benzenedicarboxylic acid",terephthalic acid,100-21-0,C8H6O4,166.13,,8.166,OC(=O)c1ccc(cc1)C(O)=O,1.13,-2.233,4,2,40.36,74.6,0.1,,8.454
+2-chloro-4-nitroaniline,,121-87-9,C6H5ClN2O2,172.57,,8.378,Nc1ccc(cc1Cl)[N+]([O-])=O,1.14,-2.637,2,1,44.68,71.84,0.028,,8.406
+hexobarbital,hexobarbital,56-29-1,C12H16N2O3,236.27,,8.439,CN1C(=O)NC(=O)C(C)(C1=O)C1=CCCCC1 ,1.15,-2.3,3,1,69.35,66.48,0,,8.099
+vanillin,vanillin,121-33-5,C8H8O3,152.15,natural product,8.099,COc1cc(C=O)ccc1O,1.2,-1.827,3,1,40.34,46.53,0,,7.931
+5-chloro-2-methoxypyrimidine,,38373-44-3,C5H5ClN2O,144.56,,8.047,COc1ncc(Cl)cn1,1.2,-1.907,3,0,33.53,35.01,0.044,,8.295
+4-quinazolinone,IMP-2650,491-36-1,C8H6N2O,146.15,impurity,8.332,C1=CC=C2C(=C1)C(=O)NC=N2,1.212,-2.14,2,1,42.36,45.75,0,,8.404
+6-chloronicotinic acid,IMP-0416,5326-23-8,C6H4ClNO2,157.55,impurity,8.581,C1=CC(=NC=C1C(=O)O)Cl ,1.224,-2.747,3,1,36.21,50.19,0,,8.541
+sulfisoxazole,sulfisoxazole,127-69-5,C11H13N3O3S,267.3,drug,8.781,CC1=C(ON=C1C)NS(=O)(=O)C2=CC=C(C=C2)N,1.236,-3.127,4,2,67.95,106.6,0,,9.006
+salicylic acid,salicylic Acid,69-72-7,C7H6O3,138.12,,8.519,OC(=O)c1ccccc1O,1.24,-2.257,3,2,35.42,57.53,0,,8.521
+"1,1,1-trifluoro-2,4-pentanedione",(trifluoroacetyl)acetone,367-57-7,C5H5F3O2,154.09,impurity,7.997,CC(=O)CC(=O)C(F)(F)F,1.28,-1.28,5,0,26.74,34.14,0,done,7.982
+benzofurazan,benzofurazan,273-09-6,C6H4N2O,120.11,,8.531,o1nc2ccccc2n1,1.28,-2.333,3,0,31.8,38.92,0,,8.536
+aspirin,aspirin,50-78-2,C9H8O4,180.16,drug,8.621,CC(=O)OC1=CC=CC=C1C(=O)O,1.282,-1.94,4,1,44.9,63.6,0,,8.446
+N-(3-nitrophenyl)-2-furancarboxamide,,52109-85-0,C11H8N2O4,232.19,,9.159,[O-][N+](=O)c1cccc(NC(=O)c2ccco2)c1 ,1.29,-3.24,4,1,61.74,88.06,0,,8.883
+piperonal,piperonal,120-57-0,C8H6O3,150.13,natural product,8.273,[H]C(=O)c1ccc2OCOc2c1,1.292,-1.747,3,0,37.89,35.53,0,,8.092
+phenylsilane,phenylsilane,694-53-1,C6H8Si,108.21,,8.153,[SiH3]c1ccccc1,1.3,-2.03,0,0,36.02,0,0,,8.153
+methyl phenyl sulfone,,3112-85-4,C7H8O2S,156.2,,8.361,C[S](=O)(=O)c1ccccc1,1.31,-1.717,2,0,39.54,42.52,0,,8.364
+4-dimethylaminobenzoic acid,IMP-2773,619-84-1,C9H11NO2,165.19,impurity,8.299,CN(C)c1ccc(C(=O)O)cc1,1.33,-1.837,2,1,47.61,40.54,0.03,,8.315
+pyridine-4-thiol,IMP-0029,4556-23-4,C5H5NS,111.16,impurity,8.232,C1=CNC=CC1=S,1.34,-1.373,0,1,31.63,47.88,0.11,,8.055
+4-acetylbenzoic acid,IMP-0182,586-89-0,C9H8O3,164.16,natural product,8.562,CC(=O)c1ccc(C(=O)O)cc1,1.358,-2.19,3,1,43.6,54.37,0.061,,8.62
+mephenesin,mephenesin,59-47-2,C10H14O3,182.22,drug,8.576,CC1=CC=CC=C1OCC(CO)O,1.366,-2.077,3,2,49.84,49.69,0.1,,8.506
+triacetonamine,triacetonamine,826-36-8,C9H17NO,155.24,impurity,8.213,CC1(CC(=O)CC(N1)(C)C)C,1.374,-1.5,2,1,50.26,29.1,0.06,,8.232
+"2,3-dimethoxybenzoic acid",IMP-0126,1521-38-6,C9H10O4,182.17,natural product,8.864,COc1cccc(C(=O)O)c1OC,1.38,-2.247,4,1,46.39,55.76,0.047,,8.862
+"4-nitro-5-hydroxy-1,2-dimethylindole",JSK-0912B,53918-86-8,C10H10N2O3,206.2,drug,9.036,Cc2cc1c(N(=O)=O)c(O)ccc1n2C,1.38,-3.037,3,1,59.01,70.98,0,,9.011
+"dimethyl bicyclo[2.2.1]-2,5-heptadiene-2,3-dicarboxylate",,947-57-9,C11H12O4,208.21,,8.636,COC(=O)C1=C(C2CC1C=C2)C(=O)OC,1.39,-1.52,4,0,52.38,52.6,0,,8.316
+cyclohexanone,cyclohexanone,108-94-1,C6H10O,98.14,,7.942,O=C1CCCCC1,1.41,-1.02,1,0,29.04,17.07,0,,8.036
+benzeneacetic acid,phenylacetic acid,103-82-2,C8H8O2,136.15,,8.588,OC(=O)Cc1ccccc1,1.43,-1.94,2,1,37.99,37.3,0.05,,8.727
+N-sulfinylaniline,N-thionylaniline,1122-83-4,C6H5NOS,139.17,,9.223,O=[S]=Nc1ccccc1,1.43,-2.837,2,0,36.81,61.52,0.048,,9.135
+2-methyl-8-nitroindolizine,,60891-78-3,C9H8N2O2,176.17,,9.202,CC1=CN2C=CC=C(C2=C1)[N+](=O)[O-],1.44,-2.897,2,0,51.18,50.23,0,,9.049
+benzoic acid,benzoic acid,65-85-0,C7H6O2,122.12,,8.772,OC(=O)c1ccccc1,1.44,-2.063,2,1,33.4,37.3,0.012,,8.776
+benzimidazole,benzimidazole,51-17-2,C7H6N2,118.14,,8.871,[nH]1cnc2ccccc12,1.48,-2.447,1,1,36.09,28.68,0.032,,8.85
+tetrafluorophthalic acid,tetrafluorophthalic acid,652-03-9,C8F4O4--,236.08,,9.225,[O-]C(=O)c1c(F)c(F)c(F)c(F)c1C([O-])=O,1.48,-2.42,8,0,36.31,80.26,0.009,,9.472
+(Z)-3-(2-cyano-4-methoxyphenyl)-2-propenoic acid,JSK-8201,65300-89-2,C11H9NO3,203.19,drug,9.115,COc1ccc(\C=C/C(O)=O)c(c1)C#N,1.5,-2.303,4,1,54.32,70.32,0.08,,8.919
+(E)-3-(2-cyano-4-methoxyphenyl)-2-propenoic acid,IMP-8202,65300-91-6,C11H9NO3,203.19,impurity,9.016,COc1ccc(\C=C\C(O)=O)c(c1)C#N,1.5,-2.303,4,1,54.32,70.32,0.08,,9.072
+indole-3-(4′-oxo)butyric acid,JSK-2145,835-45-0,C12H11NO3,217.22,impurity,9.208,O=C(O)CCC(=O)c1c[nH]c2ccccc12,1.508,-2.573,3,2,59.88,70.16,0.07,,9.165
+cinnoline,cinnoline,253-66-7,C8H6N2,130.15,impurity,8.879,C1=CC=C2C(=C1)C=CN=N2,1.514,-2.107,2,0,39.54,25.78,0.05,,9.091
+"ethyl 4,5-dihydro-5-oxo-1-phenyl-1H-pyrazole-3-carboxylate",,89-33-8,C12H12N2O3,232.24,,9.225,CCOC(=O)C1=NN(C(=O)C1)c2ccccc2,1.53,-2.57,4,0,69.19,58.97,0,,9.059
+2-chloro-4-(methylsulfonyl)aniline,,13244-35-4,C7H8ClNO2S,205.66,,9.264,C[S](=O)(=O)c1ccc(N)c(Cl)c1,1.53,-2.64,2,1,48.95,68.54,0.03,,9.381
+antipyrine,antipyrine,60-80-0,C11H12N2O,188.23,drug,8.955,CC1=CC(=O)N(N1C)C2=CC=CC=C2,1.57,-1.687,1,0,56.26,26.93,0.1,done,8.808
+N-(indol-3-yl)acetamide,3-acetamidoindole,51030-59-2,C10H10N2O,174.2,pesticide,9.262,CC(=O)NC1=CNC2=CC=CC=C21,1.58,-2.733,1,2,52.61,44.89,0.02,,9.607
+dimethoxymethylphenylsilane,,3027-21-2,C9H14O2Si,182.29,,9.43,CO[Si](C)(OC)c1ccccc1,1.61,-2.73,2,0,51.59,18.46,0,,9.549
+disperse yellow 1,disperse yellow 1,119-15-3,C9H14O2Si,182.29,,9.502,CO[Si](C)(OC)c1ccccc1,1.61,-2.73,2,0,51.59,18.46,0,,9.276
+"2,2'-dipyridylamine","2,2'-dipyridylamine",1202-34-2,C10H9N3,171.2,,9.716,N(c1ccccn1)c2ccccn2,1.62,-3.11,2,1,51.58,37.81,0.152,,9.79
+phenethyl alcohol,phenethyl alcohol,60-12-8,C8H10O,122.16,natural product,9.081,C1=CC=C(C=C1)CCO,1.636,-1.93,1,1,37.38,20.23,0,,9.137
+ethyl a-oxophenylacetate,ethyl oxophenylacetate,1603-79-8,C10H10O3,178.18,,9.557,CCOC(=O)C(=O)c1ccccc1,1.67,-2.56,3,0,47.54,43.37,0.09,,9.644
+4-Acetamidoantipyrine,IMP-3483,83-15-8,C13H14N2O2,230.26,impurity,9.236,CC(=O)c2c(C)n(C)n(c1ccccc1)c2=O,1.67,-2.017,2,0,66.45,44,0,,9.124
+tetrahydrothiophene,,110-01-0,C4H8S,88.17,,8.627,C1CCSC1,1.67,-1.243,0,0,26.82,25.3,0,,8.844
+(methylsulfonyl)[(4-nitrophenyl)azo](phenylsulfonyl)acetonitrile,JSK-8100,56075-45-7,C15H12N4O6S2,408.41,drug,10.62,CS(=O)(=O)C(C#N)(/N=N/c1ccc(N(=O)=O)cc1)S(=O)(=O)c2ccccc2,1.682,-4.773,9,0,96.62,179.37,0.02,done,10.591
+"2,3-dimethoxycinnamic acid","2,3-MeO-cinnamic acid",7461-60-1,C11H12O4,208.21,natural product,9.549,COc1cccc(/C=C/C(=O)O)c1OC,1.714,-2.323,4,1,56.1,55.76,0.071,,9.618
+"1-phenyl-1,3-butanedione",,93-91-4,C10H10O2,162.19,,9.57,CC(=O)CC(=O)c1ccccc1,1.74,-2.33,2,0,46.45,34.14,0,,9.573
+benzofuran-2-carboxylic acid,benzofuran-2-carboxylic acid,496-41-3,C9H6O3,162.14,,10.067,OC(=O)c1oc2ccccc2c1,1.75,-2.87,3,1,43.17,50.44,0.036,,9.849
+phenacetin,phenacetin,62-44-2,C10H13NO2,179.22,drug,9.583,CCOC1=CC=C(C=C1)NC(=O)C,1.762,-2.447,2,1,52.05,38.33,0,,9.686
+atropic acid,atropic acid,492-38-6,C9H8O2,148.16,natural product,9.506,C=C(C(=O)O)c1ccccc1,1.776,-2.31,2,1,43.11,37.3,0.082,,9.693
+3-iodopyridine,IMP-7201,1120-90-7,C5H4IN,205,impurity,9.963,Ic1cccnc1,1.79,-2.517,1,0,36.95,12.89,0.13,,9.857
+tetramethylthiuram disulfide,thiram,137-26-8,C6H12N2S4,240.43,pesticide,9.681,CN(C)C(=S)SSC(=S)N(C)C,1.792,-2.203,0,0,67.51,121.26,0.04,,9.629
+2-methoxyacetophenone,2-MeO-acetophenone,579-74-8,C9H10O2,150.17,impurity,9.706,CC(=O)C1=CC=CC=C1OC,1.806,-2.34,2,0,43.13,26.3,0,,9.777
+"2,2'-bipyridine",bipyridine,366-18-7,C10H8N2,156.18,impurity,9.784,C1=CC=NC(=C1)C2=CC=CC=N2,1.806,-2.747,2,0,47.47,25.78,0,done,9.82
+"3,4-dimethoxyphenylacetone",,776-99-8,C11H14O3,194.23,,9.633,COc1ccc(CC(C)=O)cc1OC,1.82,-2.22,3,0,54.21,35.53,0,,9.656
+"3,4-dimethoxycinnamic acid","3,4-MeO-cinnamic acid",2316-26-9,C11H12O4,208.21,natural product,9.995,COc1ccc(\C=C\C(O)=O)cc1OC,1.826,-2.637,4,1,56.1,55.76,0.073,,9.886
+N-[2-(aminosulfonyl)-4-chlorophenyl]-2-butenamide,,92629-15-7,C10H11ClN2O3S,274.72,,10.041,CC=CC(O)=Nc1ccc(Cl)cc1[S](N)(=O)=O,1.83,-2.863,5,2,67.17,101.13,0.02,,10.26
+"Alpha,alpha,7-trimethylfuro[2,3-c]pyridine-2-methanol",,56914-80-8,C11H13NO2,191.23,,9.772,Cc1nccc2cc(oc12)C(C)(C)O,1.83,-2.617,3,1,54.6,46.26,0,,9.947
+"6-nitro-5-hydroxy-1,2-dimethylindole",JSK-0912A,53918-85-7,C11H14N2O3,222.24,drug,10.056,Cc2cc1cc(O)ccc1n2C.CN(=O)=O,1.836,-3.2,3,1,65.21,70.98,0,,10.277
+coumarin,coumarin,531-59-9,C10H8O3,176.17,drug,10.089,COC1=CC2=C(C=C1)C=CC(=O)O2,1.876,-2.82,3,0,48.98,39.44,0,done,10.155
+N-(3-methoxyphenyl)-2-furancarboxamide,,52109-84-9,C12H11NO3,217.22,,10.57,COc1cccc(NC(=O)c2occc2)c1,1.89,-3.29,3,1,59.41,51.47,0,,10.546
+hydrocortisone,hydrocortisone,50-23-7,C21H30O5,362.46,drug,10.279,C[C@]12CCC(=O)C=C1CC[C@@H]3[C@@H]2[C@H](C[C@]4([C@H]3CC[C@@]4(C(=O)CO)O)C)O,1.89,-2.937,5,3,97.53,94.83,0,,10.124
+2-chlorobenzoic acid,2-chlorobenzoic acid,118-91-2,C7H5ClO2,156.57,,10.15,OC(=O)c1ccccc1Cl,1.9,-2.437,2,1,38.41,37.3,0.073,,10.082
+methyl 4-(1H-indol-3-yl)-4-oxobutanoate,JSK-2146,13672-36-1,C13H13NO3,231.25,impurity,10.313,COC(=O)CCC(=O)c1c[nH]c2ccccc12,1.92,-2.91,3,1,64.2,59.16,0,,10.263
+N-[2-(1H-indol-3-yl)ethyl]-1h-purin-6-amine,JSK-6153,5779-22-6,C15H14N6,278.31,drug,11.088,C1=CC=C2C(=C1)C(=CN2)CCNC3=NC=NC4=C3NC=N4,1.924,-4.603,3,3,82.14,82.28,0.02,,10.974
+ethyl 2-chloro-3-cyano-6-methylisonicotinate,,40108-12-1,C10H9ClN2O2,224.64,,10.506,CCOC(=O)c1cc(C)nc(Cl)c1C#N,1.93,-3.13,4,0,55.01,62.98,0,,10.471
+a-bromophenylacetic acid,a-bromophenylacetic acid,4870-65-9,C8H7BrO2,215.04,,10.363,OC(=O)C(Br)c1ccccc1,1.93,-2.753,2,1,45.86,37.3,0.058,,10.285
+5-bromo-2-hydroxybenzoic acid,IMP-5201,89-55-4,C7H5BrO3,217.02,impurity,10.568,O=C(O)c1cc(Br)ccc1O,1.962,-3.243,3,2,43.12,57.53,0,,10.936
+2-chlorophenol,2-chlorophenol,95-57-8,C6H5ClO,128.56,,10.253,Oc1ccccc1Cl,2.01,-2.387,1,1,33.48,20.23,0,,10.197
+"5-(Bromophenyl)-2,3-furandione",IMP-3209,55991-70-3,C10H5BrO3,253.05,impurity,10.73,C1=CC(=CC=C1C2=CC(=O)C(=O)O2)Br ,2.046,-3.14,3,0,53.22,43.37,0.01,,10.981
+2-amino-3h-phenothiazin-3-one,,21033-44-3,C12H8N2OS,228.27,,10.998,NC1=CC2=Nc3ccccc3SC2=CC1=O,2.06,-3.477,2,1,66.92,84.22,0,,10.8
+2-furanylphenylmethanone,2-benzoylfuran,2689-59-0,C11H8O2,172.18,,10.782,O=C(c1occc1)c2ccccc2,2.11,-3.1,2,0,48.58,30.21,0,,10.963
+"8-acetyl-1,8-dihydropyrrolo[2,3-b] indole-3-carbonitrile",IMP-0894,63291-78-1,C13H9N3O,223.23,impurity,10.714,CC(=O)n3c1ccccc1c2c(C#N)c[nH]c23,2.112,-3.243,2,1,65,61.58,0,,10.942
+"7-chloro-3-(1-propenyl)-2H-1,2,4-benzothiadiazine-1,1-dioxide",,92628-99-4,C10H9ClN2O2S,256.71,,10.833,C\C=C\C1=Nc2ccc(Cl)cc2[S](=O)(=O)N1,2.14,-3.25,3,1,70.82,66.91,0,,10.878
+"4,5-dihydro-7-methoxynaphtho[2,1-b]furan-2(3ah)-one",,53264-19-0,C13H12O3,216.23,,10.872,COc1ccc2c(CCC3OC(=O)C=C23)c1,2.15,-2.67,3,0,59.47,35.53,0,,10.891
+p-bromobenzoic acid,p-bromobenzoic acid,586-76-5,C7H5BrO2,201.02,,10.985,OC(=O)c1ccc(Br)cc1 ,2.16,-3.067,2,1,41.1,37.3,0.024,,10.949
+triethoxyphenylsilane,triethoxyphenylsilane,780-69-8,C12H20O3Si,240.37,,11.332,CCO[Si](OCC)(OCC)c1ccccc1,2.18,-3.497,3,0,67.1,27.69,0,,11.104
+"1-acetyl-4-(acetyloxy)-1,2-dihydro-2-oxoazuleno[2,1-b]pyridine-10-carbonitrile",JSK-8830,53299-95-9,C18H12N2O4,320.3,drug,11.321,CC(=O)Oc2cc(=O)n(C(C)=O)c3c(C#N)c1cccccc1c23,2.198,-3.627,5,0,87.53,89.16,0,,11.265
+o-phenanthroline,o-phenanthroline,66-71-7,C12H8N2,180.21,,10.911,c1cnc2c(c1)ccc3cccnc23,2.21,-3.253,2,0,57.04,25.78,0.01,,11.082
+N-phenyl-2-thiophenesulfonamide,IMP-0239,39810-46-3,C10H9NO2S2,239.31,impurity,11.349,C1=CC=C(C=C1)NS(=O)(=O)C2=CC=CS2,2.226,-3.743,2,1,61.43,82.79,0,,11.385
+2-acetylbenzofuran,IMP-3667,1646-26-0,C10H8O2,160.17,impurity,10.973,CC(=O)C1=CC2=CC=CC=C2O1 ,2.244,-3.133,2,0,46.41,30.21,0,,11.097
+eugenol,eugenol,97-53-0,C10H12O2,164.2,natural product,10.867,COC1=C(C=CC(=C1)CC=C)O,2.252,-2.593,2,1,49.06,29.46,0,,10.806
+"4,5-dihydro-6-[2-(4-methoxyphenyl)ethenyl]-3(2h)-pyridazinone",,35990-93-3,C13H14N2O2,230.26,,10.702,COc1ccc(\C=C\C2=NN=C(O)CC2)cc1,2.26,-2.663,4,1,75.73,54.18,0,,10.82
+7-methoxy-2-naphthalenol,7-methoxy-2-naphthalenol,5060-82-2,C11H10O2,174.2,,11.084,COc1ccc2ccc(O)cc2c1,2.27,-2.977,2,1,52.46,29.46,0,,11.027
+6-methoxy-2-naphthalenol,6-methoxy-2-naphthalenol,5111-66-0,C11H10O2,174.2,,10.858,COc1ccc2cc(O)ccc2c1,2.28,-2.977,2,1,52.46,29.46,0,,11.178
+"1,3-diphenylurea",DPU,102-07-8,C13H12N2O,212.25,impurity,11.151,O=C(Nc1ccccc1)Nc2ccccc2,2.288,-3.15,1,2,65.16,41.13,0,done,11.069
+"2,4-dichlorophenoxyacetic acid","2,4-D",94-75-7,C8H6Cl2O3,221.04,pesticide,11.321,C1=CC(=C(C=C1Cl)Cl)OCC(=O)O,2.31,-3.24,3,1,49.53,46.53,0,,11.558
+2-hydroxybenzaldehyde N-phenylimine,salicylideneaniline,779-84-0,C13H11NO,197.23,,11.244,O=C\1C=CC=CC1=C/Nc2ccccc2,2.33,-3.087,1,1,61.25,29.1,0.01,,11.402
+"5H-pyrido[3,2-b]indol-2,4-diol, diacetate",JSK-3927,68835-04-1,C15H12N2O4,284.27,drug,11.709,CC(=O)Oc3cc(OC(C)=O)c2[nH]c1ccccc1c2n3,2.336,-3.843,5,1,76.6,81.28,0,,11.709
+4'-methylthioacetophenone,,1778-09-2,C9H10OS,166.24,,11.047,CSc1ccc(cc1)C(C)=O,2.35,-2.723,1,0,48.36,42.37,0,,10.947
+harmaline,harmaline,304-21-2,C13H14N2O,214.26,natural product,11.307,CC1=NCCC2=C1NC3=C2C=CC(=C3)OC,2.37,-3.323,2,1,69.23,37.38,0.03,done,11.236
+3-(trifluoromethyl)aniline,IMP-3670,98-16-8,C7H6F3N,161.12,impurity,11.24,C1=CC(=CC(=C1)N)C(F)(F)F,2.376,-2.667,3,1,35.85,26.02,0.14,,11.211
+a-santonin,a-santonin,481-06-1,C15H18O3,246.3,natural product,11.238,CC1C2CCC3(C=CC(=O)C(=C3C2OC1=O)C)C,2.378,-2.78,3,0,68.15,43.37,0,,11.226
+camphor,camphor,464-48-2,C10H16O,152.23,natural product,10.917,C[C@]12CC[C@H](C1(C)C)CC2=O ,2.378,-2.313,1,0,45.64,17.07,0,,10.783
+2-(4-nitrophenyl)-4H-1-benzopyran-4-one,,19725-49-6,C15H9NO4,267.24,,12.426,O=c1cc(-c2ccc([N+](=O)[O-])cc2)oc2ccccc12,2.39,-4.753,4,0,76.74,76.03,0,,12.237
+parathion,parathion,56-38-2,C10H14NO5PS,291.26,pesticide,12.014,CCOP(=S)(OCC)OC1=CC=C(C=C1)[N+](=O)[O-] ,2.42,-4.197,5,0,73.92,115.41,0,,12.07
+2-chloro-3-methylnaphthoquinone,,17015-99-5,C11H7ClO2,206.63,,11.678,CC1=C(Cl)C(=O)c2ccccc2C1=O,2.43,-3.617,2,0,53.85,34.14,0,,11.794
+2-amino-6-chlorobenzothiazole,,95-24-9,C7H5ClN2S,184.65,,11.774,Nc1sc2cc(Cl)ccc2n1,2.43,-3.513,1,1,49.03,67.15,0.037,,11.675
+N-(4-chlorophenyl)-3-furancarboxamide,,52109-91-8,C11H8ClNO2,221.64,,11.701,Clc1ccc(NC(=O)c2cocc2)cc1,2.44,-3.653,2,1,57.93,42.24,0,,11.864
+4-[(4-chlorophenyl)azo]phenol,,2703-27-7,C12H9ClN2O,232.67,,11.616,Clc1ccc(NN=C2C=CC(=O)C=C2)cc1,2.45,-3.423,2,1,65.62,41.46,0,,11.807
+2-chlorophenazine-10-oxide,,1019-15-4,C12H7ClN2O,230.65,,11.708,[O-][n+]1c2ccccc2nc3ccc(Cl)cc13,2.46,-3.43,2,0,65.42,38.35,0,,11.696
+2-acetyl-5-bromothiophene,IMP-2002,5370-25-2,C6H5BrOS,205.07,impurity,11.677,CC(=O)c1ccc(Br)s1,2.484,-3.073,1,0,42.21,45.31,0,,12.052
+"2-bromo-N,N-dimethylaniline",IMP-6733,698-00-0,C8H10BrN,200.08,impurity,11.62,CN(C)C1=CC=CC=C1Br,2.492,-3.003,0,0,48.35,3.24,0.09,,11.638
+"4,4,4-trifluoro-1-phenyl-1,3-butanedione",,326-06-7,C10H7F3O2,216.16,,11.663,FC(F)(F)C(=O)CC(=O)c1ccccc1,2.5,-3.127,5,0,46.64,34.14,0,,11.674
+dimethoxydiphenylsilane,,6843-66-9,C14H16O2Si,244.36,,12.117,CO[Si](OC)(c1ccccc1)c2ccccc2,2.5,-4.32,2,0,71.8,18.46,0,,12.251
+"3-(4-chlorophenyl)-2,3-dihydro-3-hydroxy-1h-isoindol-1-one",JSK-1075,956-92-3,C14H10ClNO2,259.69,drug,12.216,C1=CC=C2C(=C1)C(=O)NC2(C3=CC=C(C=C3)Cl)O,2.502,-3.907,2,2,71.94,49.33,0,,12.066
+lidocaine,lidocaine,137-58-6,C14H22N2O,234.34,drug,11.638,CCN(CC)CC(=O)NC1=C(C=CC=C1C)C,2.506,-3.22,2,1,72.81,32.34,0.17,,11.701
+safrole,safrole,94-59-7,C10H10O2,162.19,natural product,11.761,C=CCC1=CC2=C(C=C1)OCO2 ,2.518,-2.983,2,0,46.61,18.46,0,,11.522
+"N-(4-ethyl-3,4-dimethyl-5-methylene-2-selenazolidinylidene)benzenamine",JSK-2911,67766-78-3,C15H19NSe,292.28,drug,12.238,C=C2[Se]/C(=C\c1ccccc1)N(C)C2(C)CC,2.52,-4.05,0,0,80.2,3.24,0.11,,12.14
+citronellic acid,citronellic acid,502-47-6,C10H18O2,170.25,natural product,11.42,CC(CCC=C(C)C)CC(=O)O,2.548,-2.567,2,1,51.48,37.3,0.09,,11.353
+cyclobutyl phenyl ketone,,5407-98-7,C11H12O,160.21,,11.525,O=C(C1CCC1)c2ccccc2,2.55,-2.843,1,0,48.94,17.07,0,,11.599
+[5-(2-furanyl)-3-isoxazolyl]phenylmethanone,JSK-0798,58144-72-2,C14H9NO3,239.23,,12.238,O=C(c1ccccc1)c2cc(on2)c3occc3,2.55,-4.213,4,0,64.08,56.24,0,,12.213
+"2,3-dichlorophenol","2,3-dichlorophenol",576-24-9,C6H4Cl2O,163,,11.848,Oc1cccc(Cl)c1Cl ,2.56,-3.03,1,1,38.48,20.23,0,,11.68
+methyleugenol,methyleugenol,93-15-2,C11H14O2,178.23,natural product,11.503,COc1ccc(CC=C)cc1OC,2.58,-2.887,2,0,53.53,18.46,0,,11.635
+"benzimidazo[1,2-a]quinoxaline",,26223-27-8,C14H9N3,219.24,,12.132,c1ccc4c(c1)ncc3nc2ccccc2n34,2.6,-3.917,2,0,68,30.19,0,,12.358
+vincamine,vincamine,1617-90-9,C21H26N2O3,354.44,drug,12.283,CC[C@@]12CCCN3[C@@H]1C4=C(CC3)C5=CC=CC=C5N4[C@](C2)(C(=O)OC)O,2.606,-3.95,4,1,103.74,54.7,0.05,done,12.229
+pulegone,pulegone,89-82-7,C10H16O,152.23,natural product,11.62,C[C@@H]1CCC(=C(C)C)C(=O)C1 ,2.614,-2.737,1,0,47.8,17.07,0,,11.599
+"3,9-dihydro-6,7-dimethyl-2-oxo-n-(phenylmethyl)oxazolo[4,5-b]quinoxaline-9a(2h)-carboxamide",,60735-47-9,C19H18N4O3,350.37,,12.88,Cc1cc2NC3(OC(=NC3=Nc2cc1C)O)C(O)=NCc4ccccc4,2.67,-5.08,6,3,110.79,98.8,0,,12.873
+bis[4-(dimethylamino)phenyl]methanol,"4,4'-bis(dimethylamino)benzhydrol",119-58-4,C17H22N2O,270.37,,12.535,CN(C)c1ccc(cc1)C(O)c2ccc(cc2)N(C)C,2.71,-3.793,1,1,85.47,26.71,0.042,,12.431
+"2,4-diacetoxy-10-cyanoazuleno(2,1-b)pyridine",JSK-8837,53299-93-7,C18H12N2O4,320.3,drug,13.044,CC(=O)Oc1cc(OC(C)=O)c3c(n1)c(C#N)c2cccccc23,2.742,-4.52,6,0,86.08,89.28,0,,12.839
+4'-hydroxyflavone,4'-hydroxyflavone,4143-63-9,C15H10O3,238.24,natural product,12.805,Oc1ccc(cc1)C2=CC(=O)c3ccccc3O2,2.75,-4.47,3,1,69.94,50.44,0,,12.671
+"1,9a-dihydro-1,6,9a-trimethyl-2-phenylpyrazolo[3,4-b][1,4]benzoxazin-3(2H)-one",,53857-11-7,C18H17N3O2,307.35,,12.955,CN1N(c2ccccc2)C(=O)C3=Nc4cc(C)ccc4OC13C,2.77,-4.403,4,0,99.53,45.14,0,,12.673
+"1,2-dimethoxy-4-(1-propenyl)benzene",isoeugenol methyl ether,93-16-3,C11H14O2,178.23,natural product,12.207,COc1ccc(C=CC)cc1OC,2.78,-3.277,2,0,54.32,18.46,0,,12.335
+nordazepam,nordazepam,1088-11-5,C15H11ClN2O,270.71,drug,13.011,Clc1ccc2NC(=O)CN=C(c3ccccc3)c2c1,2.788,-4.52,2,1,83.05,41.46,0,done,12.978
+quinidine,quinidine,56-54-2,C20H24N2O2,324.42,drug,12.794,COC1=CC2=C(C=CN=C2C=C1)[C@@H]([C@H]3C[C@@H]4CCN3C[C@@H]4C=C)O ,2.8,-3.84,4,1,99.73,45.59,0.04,,12.451
+6-chloro-5-methoxy-7h-benzocyclohepten-7-one,IMP-4348,60683-54-7,C12H9ClO2,220.65,impurity,12.8,COC1=C(Cl)C(=O)C=Cc2ccccc12,2.8,-3.96,2,0,61.72,26.3,0,,12.646
+"8-chloro-6,7-dimethoxy-5h-benzocyclohepten-5-one",IMP-4352,60683-66-1,C13H11ClO3,250.68,impurity,12.696,COC1=C(OC)C(=O)c2ccccc2C=C1Cl,2.8,-4.07,3,0,68.21,35.53,0,,12.649
+"2,4,5-trichlorophenoxyacetic acid","2,4,5-T",93-76-5,C8H5Cl3O3,255.48,pesticide,12.802,C1=C(C(=CC(=C1Cl)Cl)Cl)OCC(=O)O,2.816,-3.787,3,1,54.54,46.53,0.12,,12.696
+3-hydroxyflavone,3-hydroxyflavone,577-85-5,C15H10O3,238.24,natural product,13.259,OC1=C(Oc2ccccc2C1=O)c3ccccc3,2.84,-4.583,3,1,69.94,50.44,0,,12.951
+8-chloro-2-methoxy-5h-benzocyclohepten-5-one,IMP-4350,60683-64-9,C12H9ClO2,220.65,impurity,12.834,COc1ccc2C(=O)C=CC(=Cc2c1)Cl,2.84,-4.003,2,0,61.72,26.3,0,,12.785
+8-chloro-1-methoxy-5h-benzocyclohepten-5-one,JSK-4349,60683-63-8,C12H9ClO2,220.65,drug,12.666,COc1cccc2C(=O)C=CC(=Cc12)Cl,2.84,-4.003,2,0,61.72,26.3,0,,12.815
+"1,2,4,10-tetrahydro-1,6-dimethyl-2-phenylpyrazolo[3,4-c][1,5]benzoxazepin-3-one",JSK-2441A,52043-95-5,C18H17N3O2,307.35,drug,12.986,Cc2ccc1OCc4c(Nc1c2)c(=O)n(c3ccccc3)n4C,2.844,-4.537,2,1,93.27,48.19,0,,13.026
+chloroxine,chloroxine,773-76-2,C9H5Cl2NO,214.05,drug,13.211,Oc1c(Cl)cc(Cl)c2cccnc12,2.864,-4.07,2,1,53.79,33.12,0.05,,13.002
+6-chloro-1-methoxy-7h-benzocyclohepten-7-one,IMP-4351,60683-65-0,C12H9ClO2,220.65,impurity,12.904,COc1cccc2C=C(Cl)C(=O)C=Cc12,2.87,-4.117,2,0,61.72,26.3,0,,12.996
+"4-methyl-2-(4-nitrophenyl)-4H-pyrrolo[1,2-a]benzimidazole",,6123-77-9,C17H13N3O2,291.3,,13.473,Cn1c2cc(cn2c3ccccc13)c4ccc(cc4)[N+]([O-])=O,2.9,-5.017,2,0,88.41,55.16,0,,13.357
+p-bromofluorobenzene,IMP-9053,460-00-4,C6H4BrF,175,impurity,12.678,C1=CC(=CC=C1F)Br,2.932,-3.23,1,0,34.1,0,0,,12.733
+bis[4-(dimethylamino)phenyl]methanone,Michler's ketone,90-94-8,C17H20N2O,268.35,,13.152,CN(C)c1ccc(cc1)C(=O)c2ccc(cc2)N(C)C,3.01,-4.423,1,0,84.73,23.55,0,,13.286
+clofibrate,clofibrate,637-07-0,C12H15ClO3,242.7,drug,13.315,CCOC(=O)C(C)(C)Oc1ccc(Cl)cc1,3.02,-3.697,3,0,63.3,35.53,0,,13.023
+neocuproine,neocuproine,484-11-7,C14H12N2,208.26,,13.381,Cc1ccc2ccc3ccc(C)nc3c2n1,3.04,-4.363,2,0,66.98,25.78,0.01,,13.16
+5-hydroxyflavone,5-hydroxyflavone,491-78-1,C15H10O3,238.24,natural product,13.608,Oc1cccc2OC(=CC(=O)c12)c3ccccc3,3.05,-5.083,3,1,69.94,50.44,0,,13.812
+"2-(4-methoxyphenyl)-5-phenyl-1,3,4-oxadiazole",,842-79-5,C15H12N2O2,252.27,,13.584,COc1ccc(cc1)c2oc(nn2)c3ccccc3,3.06,-4.517,4,0,71.66,48.15,0,,13.647
+naphthalene,IMP-0109,91-20-3,C10H8,128.17,impurity,13.031,c2ccc1ccccc1c2,3.1,-3.487,0,0,43.95,0,0,,12.888
+4-trimethylsilyloxybromobenzene,TMS 4-Bromophenol,17878-44-3,C9H13BrOSi,245.19,,13.478,C[Si](C)(C)Oc1ccc(Br)cc1,3.13,-4.097,1,0,58.12,9.23,0,,13.523
+flavone,flavone,525-82-6,C15H10O2,222.24,natural product,13.767,O=C1C=C(Oc2ccccc12)c3ccccc3,3.18,-4.7,2,0,67.92,30.21,0,,13.702
+3-methoxyflavone,3-methoxyflavone,7245-05-2,C16H12O3,252.26,natural product,14.102,COC1=C(Oc2ccccc2C1=O)c3ccccc3,3.19,-4.92,3,0,74.41,39.44,0,,14.053
+"2-acetyl-6,8-diethoxy-1-hydroxy-3-methylanthraquinone",JSK-6820,61530-11-8,C21H20O6,368.38,drug,14.211,CCOc3cc(OCC)c2c(=O)c1c(O)c(C(C)=O)c(C)cc1c(=O)c2c3,3.196,-5.427,6,1,99.53,89.9,0,,14.374
+"o,o'-Iminostilbene",carbamazepine,256-96-2,C14H11N,193.24,,13.528,N1c2ccccc2C=Cc3ccccc13,3.21,-4.36,0,1,67.85,12.03,0.039,,13.597
+ cyclohexylphenylmethanone,phenyl cyclohexyl ketone,712-50-5,C13H16O,188.27,,13.369,O=C(C1CCCCC1)c2ccccc2,3.21,-3.68,1,0,58.56,17.07,0,,13.621
+5-chloro-2-hydroxybenzophenone,,85-19-8,C13H9ClO2,232.66,,13.935,Oc1ccc(Cl)cc1C(=O)c2ccccc2,3.21,-4.51,2,1,63.35,37.3,0,,13.842
+4-cyclohexylphenol,,1131-60-8,C12H16O,176.25,,13.309,Oc1ccc(cc1)C2CCCCC2,3.22,-3.827,1,1,55.35,20.23,0,,13.613
+5-methoxyflavone,5-methoxyflavone,42079-78-7,C16H12O3,252.26,natural product,14.081,COC1=CC=CC2=C1C(=O)C=C(O2)C3=CC=CC=C3,3.226,-5.113,3,0,74.41,39.44,0,,14.073
+2-cyclohexylphenol,,119-42-6,C12H16O,176.25,impurity,13.485,Oc1ccccc1C2CCCCC2,3.24,-3.757,1,1,55.35,20.23,0.02,,13.363
+tetrachlorohydroquinone,dihydro-p-chloranil,87-87-6,C6H2Cl4O2,247.89,,13.99,Oc1c(Cl)c(Cl)c(O)c(Cl)c1Cl,3.24,-4.26,2,2,50.53,40.46,0,,13.91
+2-phenyl-4-(phenylmethylene)-5(4H)-oxazolone,,17606-70-1,C16H11NO2,249.26,,14.016,O=C1OC(=NC1=Cc2ccccc2)c3ccccc3,3.27,-4.487,3,0,76.82,38.66,0,,13.869
+"1,3-diphenyl-2-propen-1-one",chalcone,614-47-1,C15H12O,208.26,,13.658,O=C(/C=C/c1ccccc1)c2ccccc2,3.29,-3.833,1,0,66.25,17.07,0,,13.544
+"7-difluoromethoxy-2,3-dihydro-5-phenyl-1H-1,4-benzodiazepin-2-one",,55384-53-7,C16H12F2N2O2,302.28,,14.222,OC1=Nc2ccc(OC(F)F)cc2C(=NC1)c3ccccc3,3.32,-4.763,6,1,86.3,54.18,0,,14.052
+"2,5-Dihydro-5-methoxy-2,2-dimethyl-4-phenyl-5-(trifluoromethyl)oxazole",,58913-92-1,C13H14F3NO2,273.25,,13.677,COC1(OC(C)(C)N=C1c2ccccc2)C(F)(F)F,3.33,-3.777,6,0,67.58,30.82,0,,13.693
+triphenylphosphine oxide,TPO,791-28-6,C18H15OP,278.28,impurity,14.408,C1=CC=C(C=C1)P(=O)(C2=CC=CC=C2)C3=CC=CC=C3,3.414,-4.773,1,0,85.83,26.88,0,done,14.291
+testosterone,testosterone,58-22-0,C19H28O2,288.42,natural product,13.906,C[C@]12CC[C@H]3[C@H]([C@@H]1CC[C@@H]2O)CCC4=CC(=O)CC[C@]34C,3.458,-3.66,2,1,85.36,37.3,0,,13.92
+"7H-benzimidazo[2,1-a]benz[de]isoquinolin-7-one",Luminophor 2,23749-58-8 ,C18H10N2O,270.28,dye,14.78,C1=CC=C2C(=C1)N=C3N2C(=O)C4=CC=CC5=C4C3=CC=C5,3.532,-5.237,2,0,85.17,34.37,0,,14.654
+(4-methylphenyl)(5-phenyl-3-isoxazolyl)methanone,JSK-0795,58144-64-2,C17H13NO2,263.29,,14.927,Cc1ccc(cc1)C(=O)c2cc(on2)c3ccccc3,3.56,-5.253,3,0,76.78,43.1,0,,14.985
+"Iron, tris-1,3-diphenyl-1,3-propanedionato-o,o')-",tris(dibenzoylmethanato)iron,14405-49-3,C45H33FeO6,725.58,,15.265,C1=CC=C(C=C1)C(=CC(=O)C2=CC=CC=C2)[O-].C1=CC=C(C=C1)C(=CC(=O)C2=CC=CC=C2)[O-].C1=CC=C(C=C1)C(=CC(=O)C2=CC=CC=C2)[O-].[Fe+3],2.936,-9.707,6,0,197.63,120.39,0.018,,15.275
+"octahydro-3,3-diphenyl-2hH-indol-2-one",JSK-4729,51945-45-0,C20H21NO,291.39,drug,15.048,O=C2NC1CCCCC1C2(c3ccccc3)c4ccccc4,3.624,-5.193,1,1,92.12,29.1,0,,14.956
+2-(phenylamino)-5-(phenylmethylene)-4(5h)-thiazolone,,38771-64-1,C16H12N2OS,280.34,,15.031,OC\1=NC(SC1=C/c2ccccc2)=Nc3ccccc3,3.66,-5.187,3,1,88.94,70.25,0,,15.058
+"2,2,2-trichloro-N-(1H-perimidin-2-yl)acetamide",,67818-88-6,C13H8Cl3N3O,328.58,,15.241,OC(=NC1=Nc2cccc3cccc(N1)c23)C(Cl)(Cl)Cl,3.68,-5.267,3,2,83.61,61.27,0,,15.265
+dibutyl phthalate,dibutyl phthalate,84-74-2,C16H22O4,278.34,impurity,14.947,CCCCOC(=O)C1=CC=CC=C1C(=O)OCCCC,3.694,-4.757,4,0,77.84,52.6,0,,14.913
+N-cyclohexyl-a-hydroxy-a-phenylbenzeneacetamide,,17003-65-5,C20H23NO2,309.4,drug,15.102,OC(=NC1CCCCC1)C(O)(c2ccccc2)c3ccccc3,3.75,-4.963,3,2,93.73,52.82,0,,15.144
+(4-chlorophenyl)(5-phenyl-3-isoxazolyl)methanone,JSK-0796,58144-67-5,C16H10ClNO2,283.71,,15.414,Clc1ccc(cc1)C(=O)c2cc(on2)c3ccccc3,3.76,-5.513,3,0,76.82,43.1,0,,15.52
+acepromazine,acepromazine,61-00-7,C19H22N2OS,326.46,drug,15.394,CC(=O)C1=CC2=C(C=C1)SC3=CC=CC=C3N2CCCN(C)C,3.766,-5.193,2,0,100.26,48.85,0,,15.089
+"4-(3,3-dimethyl-3H-indol-2-yl)-N,N-dimethylbenzenamine",JSK-6380,4203-57-0,C18H20N2,264.36,drug,15.139,CC1(C2=CC=CC=C2N=C1C3=CC=C(C=C3)N(C)C)C,3.778,-4.94,1,0,90.02,15.6,0,,15.004
+5-methoxy-4-phenyl-1-benzothiepin-3-ol acetate,,37014-56-5,C19H16O3S,324.39,,15.198,COC1=C(C(=CSc2ccccc12)OC(C)=O)c3ccccc3,3.82,-5.003,3,0,92.54,60.83,0,,15.218
+"3-methyl-2-(methylthio)-6,7-diphenyl-4(3H)-pteridinone",JSK-881,50996-35-5,C21H17N3OS,359.44,impurity,15.856,CSc4cc3nc(c1ccccc1)c(c2ccccc2)nc3c(=O)n4C,3.836,-5.937,3,0,107.65,73.08,0,,15.633
+(4-Bromophenyl)(5-phenyl-3-isoxazolyl)methanone,JSK-0797,58144-68-6,C16H10BrNO2,328.16,drug,15.842,O=C(c1ccc(Br)cc1)c3cc(c2ccccc2)on3,3.85,-5.717,3,0,79.51,43.1,0,,15.651
+N-(4-butylphenyl)-3-oxo-2-(phenylhedrazono)butanamide,,67058-87-1,C20H23N3O2,337.42,,16.123,CCCCc1ccc(NC(=O)C(=N/Nc2ccccc2)/C(C)=O)cc1,3.89,-6.567,3,2,102.47,70.56,0,,16.046
+"1,2-diphenyltetramethyldisilane",,1145-98-8,C16H22Si2,270.52,,15.861,C[Si](C)(c1ccccc1)[Si](C)(C)c2ccccc2,3.93,-6.097,0,0,87.12,0,0,,15.999
+chlorodiphenylphosphine,,1079-66-9,C12H10ClP,220.63,,15.579,ClP(c1ccccc1)c2ccccc2,3.94,-5.133,0,0,64.93,13.59,0,,15.569
+phencylidine,phencylidine,77-10-1,C17H25N,243.39,,15.321,C1CCN(CC1)C2(CCCCC2)c3ccccc3,4,-4.563,1,0,81.94,3.24,0.002,,15.238
+1-methyl-2-(phenylthio)benzene,IMP-3668,13963-35-4,C13H12S,200.3,impurity,15.471,CC1=CC=CC=C1SC2=CC=CC=C2,4.006,-4.787,0,0,61.97,25.3,0,,15.523
+2-(4-nitrophenyl)-4-phenylbenzo[h]quinoline-10-sulfonic acid,,90094-11-4,C25H16N2O5S,456.47,drug,16.813,O[S](=O)(=O)c1cccc2ccc3c(cc(nc3c12)c4ccc(cc4)[N+]([O-])=O)c5ccccc5,4.02,-7.647,6,1,128.8,121.46,0.09,,16.903
+5-methoxy-4-phenyl-1-benzothiepin,,37014-57-6,C17H14OS,266.36,,15.754,COC1=C(C=CSc2ccccc12)c3ccccc3,4.06,-4.97,1,0,81.64,34.53,0,,15.773
+"1,3-bis(4-methoxyphenyl)-5-(4-nitrophenyl)formazan",formazan-2,53451-83-5,C21H19N5O4,405.41,dye,16.632,COc3ccc(N/N=C(/N=N/c1ccc(N(=O)=O)cc1)\c2ccc(OC)cc2)cc3,4.064,-7.033,7,1,115.63,113.39,0,,16.652
+"8-bromo-1,5-dihydro-[1,3]thiazino[5,4-b]indole-2,4-dithione",JSK-5913,69343-98-2,C10H5BrN2S3,329.26,drug,16.106,S=c3[nH]c2c1cc(Br)ccc1[nH]c2c(=S)s3,4.122,-5.493,0,2,77.4,124,0,,16.285
+chloroquine,chloroquine,54-05-7,C18H26ClN3,319.87,drug,16.197,Clc1cc2nccc(c2cc1)NC(C)CCCN(CC)CC,4.144,-5.473,2,1,97.41,28.16,0.25,done,16.068
+1-(t-butyl)-4-ethylbenzene,,7364-19-4,C12H18,162.27,,15.974,CCc1ccc(cc1)C(C)(C)C,4.18,-4.787,0,0,55.48,0,0,,15.881
+hexestrol,hexestrol,84-16-2,C18H22O2,270.37,drug,16.153,CC[C@H](C1=CC=C(C=C1)O)[C@@H](CC)C2=CC=C(C=C2)O,4.192,-5.37,2,2,83.98,40.46,0,,16.146
+5-[[4-(diethylamino)phenyl]methylene]-2-phenylamino-4(5H)-thiazolone,,56843-54-0,C20H21N3OS,351.47,,16.484,CCN(CC)c1ccc(cc1)\C=C\2SC(N=C2O)=Nc3ccccc3,4.21,-6.03,3,1,112.76,73.49,0,,16.541
+hexamethylbenzene,mellitene,87-85-4,C12H18,162.27,,16.031,Cc1c(C)c(C)c(C)c(C)c1C,4.22,-4.667,0,0,56.24,0,0,,15.756
+"(Z)-4-[4,4,4-tribromo-1-oxo-2-(trichloroethenyl)-2-butenyl]morpholine",IMP-0229,62398-55-4,C10H10Br3Cl3NO2+,522.26,impurity,16.454,O=[N+](/C(=C/C(Br)(Br)Br)/C(Cl)=C(Cl)/Cl)C1CCOCC1,4.244,-5.367,2,0,89.87,29.31,0,,16.563
+tris(4-methoxyphenyl)phosphine,4-MeO-TPP,855-38-9,C21H21O3P,352.36,impurity,16.715,COC1=CC=C(C=C1)P(C2=CC=C(C=C2)OC)C3=CC=C(C=C3)OC,4.294,-6,3,0,104.62,41.28,0,done,16.684
+riboflavin tetrabutyrate,riboflavin acetate,752-56-7,C33H44N4O10,656.72,natural product,17.185,CCCC(=O)OC[C@H]([C@H]([C@H](CN1C2=C(C=C(C(=C2)C)C)N=C3C1=NC(=O)NC3=O)OC(=O)CCC)OC(=O)CCC)OC(=O)CCC,4.31,-7.087,12,1,174.4,185.84,0,done,17.382
+chlorotriphenylsilane,TPS-Cl,76-86-8,C18H15ClSi,294.85,,16.979,Cl[Si](c1ccccc1)(c2ccccc2)c3ccccc3,4.32,-6.677,0,0,89.84,0,0,,17.138
+N-[(5-chloro-2-hydroxyphenyl)phenylmethylene]-L-alanine,,38075-42-2,C22H18ClNO3,379.84,,17.015,O=C(O)C(Cc1ccccc1)/N=C(c2ccccc2)\c3cc(Cl)ccc3O,4.34,-6.547,4,2,107.29,69.89,0.021,,16.926
+amitriptyline,amitriptyline,50-48-6,C20H23N,277.4,drug,16.555,CN(C)CC\C=C1\c2ccccc2CCc3ccccc13,4.362,-5.5,1,0,90.96,3.24,0.15,,16.553
+" 2,2'-dichloro-1,1'-biphenyl",,13029-08-8,C12H8Cl2,223.1,,16.715,Clc1ccccc1c2ccccc2Cl,4.43,-5.26,0,0,61.9,0,0,,16.671
+trifluoperazine,trifluoperazine,117-89-5,C21H24F3N3S,407.5,drug,17.076,CN1CCN(CCCN2c3ccccc3Sc4ccc(cc24)C(F)(F)F)CC1,4.53,-5.857,5,0,118.1,35.02,0,,17.052
+p-octylacetophenone,,10541-56-7,C16H24O,232.36,,16.934,CCCCCCCCc1ccc(cc1)C(C)=O,4.55,-5.22,1,0,75.25,17.07,0,,16.688
+butylated hydroxytoluene,BHT,128-37-0,C16H26O,234.38,impurity,16.876,CC1=CC(=C(C(=C1)C(C)(C)C)O)C(C)(C)C ,4.582,-5.26,1,1,76.78,20.23,0,,16.827
+triphenyl phosphine,TPP,603-35-0,C18H15P,262.29,impurity,17.405,C1=CC=C(C=C1)P(C2=CC=CC=C2)C3=CC=CC=C3,4.616,-6.277,0,0,85.15,13.59,0,done,17.296
+"2,2,11,11-tetramethyldodeca-3,5,7,9-tetrayne",,20264-61-3,C16H18,210.31,,16.421,CC(C)(C)C#CC#CC#CC#CC(C)(C)C,4.63,-4.013,0,0,71.15,0,0,,16.324
+methoxychlor,methoxychlor,72-43-5,C16H15Cl3O2,345.65,pesticide,17.457,COC1=CC=C(C=C1)C(C2=CC=C(C=C2)OC)C(Cl)(Cl)Cl,4.64,-5.857,2,0,88.11,18.46,0,,17.338
+"1-(4-methoxyphenyl)-3,5-diphenylformazan",formazan-1,20648-42-4,C20H18N4O,330.38,dye,17.682,COC1=CC=C(C=C1)N=NC(=NNC2=CC=CC=C2)C3=CC=CC=C3,4.694,-6.693,4,1,100.31,58.34,0,,17.793
+"9,10-dihydro-9,10[1',2']-benzenoanthracene",triptycene,477-75-8,C20H14,254.33,,17.328,c1ccc2C3c4ccccc4C(c2c1)c5ccccc35,4.74,-5.737,0,0,81.44,0,0,,17.392
+"2,2'-(2-Butene-1,4-diylidene) bis [2,3-dihydro-3-methylbenzothiazole]",,54134-86-0,C20H18N2S2,350.5,,17.982,CN1\C(Sc2ccccc12)=C\C=C\C=C/3Sc4ccccc4N3C,4.82,-6.167,0,0,108.29,66.34,0,,17.71
+"2,2',5,5'-tetramethyl-1,1'-biphenyl",,3075-84-1,C16H18,210.31,,17.393,Cc1ccc(C)c(c1)c2cc(C)ccc2C,4.82,-5.337,0,0,71.74,0,0,,17.366
+mepacrine,mepacrine,69-05-6,C23H30ClN3O,399.96,drug,18.581,CCN(CC)CCCC(C)Nc1c2ccc(cc2nc3c1cc(cc3)OC)Cl,5.084,-7.047,3,1,121.41,37.39,0,,18.78
+mesoporphyrin IX dimethyl ester,dimethoxymesoporphyrin IX,1263-63-4,C36H42N4O4,594.74,dye,19.783,CCC1=C(C2=CC3=C(C(=C(N3)C=C4C(=C(C(=N4)C=C5C(=C(C(=N5)C=C1N2)C)CCC(=O)OC)CCC(=O)OC)C)C)CC)C,5.47,-8.023,6,2,184.85,108.9,0,done,19.852
+(S)-4-chloro-2-[[(2-cyclohexyl-1-methylethyl)imino]phenylmethyl]phenol,,58292-23-2,C22H26ClNO,355.9,drug,19.9,C[C@H](CC1CCCCC1)N=C(c2ccccc2)c3cc(Cl)ccc3O,5.68,-7.173,2,1,107.76,32.59,0,,19.968
+"2,4,6-tri-tert-butylphenol","2,4,6-TTBP",732-26-3,C20H34O,290.48,impurity,19.773,CC(C)(C)C1=CC(=C(C(=C1)C(C)(C)C)O)C(C)(C)C  ,5.724,-6.557,1,1,95.89,20.23,0,,19.631
+"p,p'-DDT",DDT,50-29-3,C14H9Cl5,354.49,pesticide,20.351,C1=CC(=CC=C1C(C2=CC=C(C=C2)Cl)C(Cl)(Cl)Cl)Cl ,5.894,-7.143,0,0,85.15,0,0,done,20.441
+methyl 9-trans-octadecenoate,methyl elaidate,1937-62-8,C19H36O2,296.49,impurity,19.987,CCCCCCCC/C=C/CCCCCCCC(=O)OC,5.948,-6.413,2,0,94.26,26.3,0,,20.219
+"1,2-ethanediylbis[diphenylphosphine]",DPPE,1663-45-2,C26H24P2,398.42,impurity,20.849,C1=CC=C(C=C1)P(CCP(C2=CC=CC=C2)C3=CC=CC=C3)C4=CC=CC=C4,6.07,-7.763,0,0,127.76,27.18,0,done,20.869
+ergosterol,ergosterol,57-87-4,C28H44O,396.65,natural product,21.138,C[C@H](/C=C/[C@H](C)C(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3C2=CC=C4[C@@]3(CC[C@@H](C4)O)C)C ,6.468,-6.49,1,1,127.47,20.23,0,done,21.249
+di-n-nonyl disulphide,dinonyl disulfide,4485-77-2,C18H38S2,318.62,,22.981,CCCCCCCCCSSCCCCCCCCC,7.11,-7.79,0,0,103.82,50.6,0,,22.974
+"tris(2,3,5,6-tetramethylphenyl) phosphine oxide","tris(2,3,5,6-tetramethylphenyl) phosphine oxide",54948-03-7,C30H39OP,446.6,,24.151,CC1=CC(C)=C(C)C(=C1C)P(=O)(C1=C(C)C(C)=CC(C)=C1C)C1=C(C)C(C)=CC(C)=C1C ,7.42,-9.657,1,0,145.43,26.88,0,,24.204
+"tris(2,3,5,6-tetramethylphenyl) phosphine","tris(2,3,5,6-tetramethylphenyl) phosphine",54947-97-6,C30H39P,430.6,,25.465,CC1=CC(C)=C(C)C(P(C2=C(C)C(C)=CC(C)=C2C)C2=C(C)C(C)=CC(C)=C2C)=C1C ,8.12,-9.88,0,0,144.74,13.59,0,,25.631
+"tris (2,3,5,6-tetramethylphenyl)phosphine sulfide",,63491-96-3,C30H39PS,462.67,,26.696,CC1=CC(C)=C(C)C(=C1C)P(=S)(C1=C(C)C(C)=CC(C)=C1C)C1=C(C)C(C)=CC(C)=C1C ,8.53,-10.813,0,0,152.33,41.9,0,,26.504
+chlorophyll a,chlorophyll,42617-16-3,C55H72N4O5--,869.18,,31.856,CCC1=C(C2=NC1=CC3=C(C4=C([N-]3)C(=C5C(C(C(=N5)C=C6C(=C(C(=C2)[N-]6)C=C)C)C)CCC(=O)OCC=C(C)CCCC(C)CCCC(C)CCCC(C)C)C(C4=O)C(=O)OC)C)C.[Mg2+],10.7,-14.62,9,0,273.54,120.17,0,,31.803
