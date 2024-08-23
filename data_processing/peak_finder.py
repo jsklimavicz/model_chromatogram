@@ -140,6 +140,7 @@ class PeakFinder:
                 self.d2_signal[BACKGROUND_NOISE_RANGE[0] : BACKGROUND_NOISE_RANGE[1]]
             )
         )
+        self.d2_signal = np.pad(self.d2_signal, (1, 1))
 
     def find_peaks(self, noise_multiplier: float = NOISE_THRESHOLD_MULTIPLIER):
         """
@@ -165,11 +166,11 @@ class PeakFinder:
         while i < n - 3:
             if (
                 self.d2_signal[i] < low_cutoff * self.d2_sigma
-                or self.processed_signal[i + 1] > LINEAR_LIMIT
+                or self.processed_signal[i] > LINEAR_LIMIT
             ):
                 start = i
                 while i < n and (
-                    self.d2_signal[i] < 0 or self.processed_signal[i + 1] > LINEAR_LIMIT
+                    self.d2_signal[i] < 0 or self.processed_signal[i] > LINEAR_LIMIT
                 ):
                     i += 1
                 initial_regions.append((start, i - 1))
@@ -256,9 +257,6 @@ class PeakFinder:
             final_regions = []
             for region, k in unique_regions.items():
                 start, end = region
-
-                if abs(start - 5955) < 5:
-                    pass
 
                 if k == 1:
                     # If multiplicity is 1, just add the region as is
@@ -474,6 +472,7 @@ class PeakFinder:
             self.raw_signal,
             self.smoothed_signal,
             self.baseline_spline,
+            self.d2_signal,
             self.signal_noise,
         )
         p.calculate_properties()
@@ -499,33 +498,32 @@ class PeakFinder:
         plt.plot(self.timepoints, self.raw_signal, color="black")
         plt.plot(self.timepoints, self.baseline_spline(self.timepoints), color="grey")
 
+        spline = self.baseline_spline(self.timepoints)
+
         if smoothed:
             plt.plot(
                 self.timepoints,
-                self.smoothed_signal + self.baseline_spline(self.timepoints),
+                self.smoothed_signal + spline,
                 color="limegreen",
             )
 
         if second_derivative:
-            d2_times = self.timepoints[1:-1]
             plt.plot(
-                d2_times,
-                self.d2_signal / self.dt + self.baseline_spline(d2_times),
+                self.timepoints,
+                self.d2_signal / self.dt + spline,
                 color="blue",
             )
 
         if noise:
             plt.plot(
                 self.timepoints,
-                2 * self.d2_sigma / self.dt * np.ones_like(self.timepoints)
-                + self.baseline_spline(self.timepoints),
+                2 * self.d2_sigma / self.dt * np.ones_like(self.timepoints) + spline,
                 color="green",
             )
 
             plt.plot(
                 self.timepoints,
-                2 * self.signal_sigma * np.ones_like(self.timepoints)
-                + self.baseline_spline(self.timepoints),
+                2 * self.signal_sigma * np.ones_like(self.timepoints) + spline,
                 color="red",
             )
 
