@@ -476,6 +476,7 @@ class PeakFinder:
             self.signal_noise,
         )
         p.calculate_properties()
+        print(p.get_properties())
 
         self.peaks: PeakList = PeakList(
             self.timepoints,

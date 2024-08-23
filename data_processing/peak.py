@@ -61,31 +61,68 @@ class Peak:
         self.__calculate_asymmetry()
         self.__calculate_resolution()
 
-    def get_properties(self):
-        self.dict = {
-            "start_time": self.start_time,
-            "retention_time": self.retention_time,
-            "end_time": self.end_time,
-            "area": self.area,
-            "relative_area": self.relative_area,
-            "height": self.height,
-            "relative_height": self.relative_height,
-            "peak_type": self.peak_type,
-            "width_50_full": self.width_50_full,
-            "width_50_left": self.width_50_left,
-            "width_50_right": self.width_50_right,
-            "width_10_full": self.width_10_full,
-            "width_10_left": self.width_10_left,
-            "width_10_right": self.width_10_right,
-            "width_5_full": self.width_5_full,
-            "width_5_left": self.width_5_left,
-            "width_5_right": self.width_5_right,
-            "width_baseline_full": self.width_baseline_full,
-            "width_baseline_left": self.width_baseline_left,
-            "width_baseline_right": self.width_baseline_right,
-            "asymmetry_USP": self.asymmetry_USP,
-            "asymmetry_AIA": self.asymmetry_AIA,
-        }
+    def get_properties(self, round_digits=4):
+        return_dict = {}
+        field_list = [
+            "start_time",
+            "retention_time",
+            "end_time",
+            "area",
+            "relative_area",
+            "height",
+            "relative_height",
+            "peak_type",
+            "width_50_full",
+            "width_50_left",
+            "width_50_right",
+            "width_10_full",
+            "width_10_left",
+            "width_10_right",
+            "width_5_full",
+            "width_5_left",
+            "width_5_right",
+            "width_baseline_full",
+            "width_baseline_left",
+            "width_baseline_right",
+            "asymmetry_USP",
+            "asymmetry_AIA",
+        ]
+        for field in field_list:
+            try:
+                val = self.__dict__[field]
+                try:
+                    v = round(float(val), round_digits)
+                except:
+                    v = val
+                return_dict[field] = v
+            except:
+                return_dict[field] = None
+        return return_dict
+
+        # self_dict = {
+        #     "start_time": self.start_time,
+        #     "retention_time": self.retention_time,
+        #     "end_time": self.end_time,
+        #     "area": self.area,
+        #     "relative_area": self.relative_area,
+        #     "height": self.height,
+        #     "relative_height": self.relative_height,
+        #     "peak_type": self.peak_type,
+        #     "width_50_full": self.width_50_full,
+        #     "width_50_left": self.width_50_left,
+        #     "width_50_right": self.width_50_right,
+        #     "width_10_full": self.width_10_full,
+        #     "width_10_left": self.width_10_left,
+        #     "width_10_right": self.width_10_right,
+        #     "width_5_full": self.width_5_full,
+        #     "width_5_left": self.width_5_left,
+        #     "width_5_right": self.width_5_right,
+        #     "width_baseline_full": self.width_baseline_full,
+        #     "width_baseline_left": self.width_baseline_left,
+        #     "width_baseline_right": self.width_baseline_right,
+        #     "asymmetry_USP": self.asymmetry_USP,
+        #     "asymmetry_AIA": self.asymmetry_AIA,
+        # }
 
     def __set_peak_type(self, prev_peak: "Peak", next_peak: "Peak"):
         """
@@ -224,7 +261,7 @@ class Peak:
         if self.width_5_full and self.width_5_left:
             self.asymmetry_USP = self.width_5_full / (2 * self.width_5_left)
         if self.width_10_right and self.width_10_left:
-            self.asymmetry_USP = self.width_10_right / self.width_10_left
+            self.asymmetry_AIA = self.width_10_right / self.width_10_left
 
     def __calculate_resolution(self, reference: "Peak" = None):
         pass
