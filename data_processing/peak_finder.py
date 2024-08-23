@@ -11,7 +11,7 @@ from scipy.signal import (
     argrelmin,
     argrelmax,
 )
-from data_processing import PeakList, als_psalsa
+from data_processing import PeakList, als_psalsa, Peak
 
 from user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
@@ -80,6 +80,8 @@ class PeakFinder:
         # self.smoothed_signal = savgol_filter(
         #     self.smoothed_signal, 5 * sample_rate + 10, 5
         # )
+
+        # TODO: great EMG window
         half_size = int(round(sample_rate * 5 / 2))
         window_size = 2 * half_size
         window = signal.windows.gaussian(window_size, std=2 * sample_rate)
@@ -453,10 +455,21 @@ class PeakFinder:
 
         regions = []
         for start, end in trimmed_regions:
-            if end - start < 2:
+            if end - start < 20:
                 continue
             else:
                 regions.append([start + 1, end + 1])
+
+        p = Peak(
+            regions[1][0],
+            regions[1][1],
+            self.timepoints,
+            self.raw_signal,
+            self.smoothed_signal,
+            self.baseline_spline,
+            self.signal_noise,
+        )
+        p.calculate_properties()
 
         self.peaks: PeakList = PeakList(
             self.timepoints,

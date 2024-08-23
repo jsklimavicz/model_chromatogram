@@ -82,7 +82,7 @@ peak_finder = PeakFinder(times, raw_signal)
 
 peak_finder.print_peaks()
 peak_finder.save_peaks("./output.csv")
-peak_finder.plot_peaks()
+peak_finder.plot_peaks(smoothed=True)
 
 
 # with Profile() as profile:
