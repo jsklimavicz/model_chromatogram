@@ -3,6 +3,7 @@ from random import randrange, shuffle
 from user_parameters import RANDOM_PEAK_ID_DIGITS, IMP_PEAK_PREFIX
 from compounds import Compound
 import warnings
+import pickle
 
 
 class CompoundLibrary:
@@ -132,5 +133,17 @@ class CompoundLibraryWarning(UserWarning):
     pass
 
 
-# create compound library to call
-COMPOUND_LIBRARY = CompoundLibrary()
+from pathlib import Path
+
+Path("./cache/").mkdir(exist_ok=True)
+
+try:
+    with open("./cache/compound_library.obj", "rb") as f:
+        COMPOUND_LIBRARY = pickle.load(f)
+        if not isinstance(COMPOUND_LIBRARY, CompoundLibrary):
+            raise TypeError("Loaded library is not a CompoundLibrary.")
+except (TypeError, FileNotFoundError, EOFError) as e:
+    # create compound library to call
+    COMPOUND_LIBRARY = CompoundLibrary()
+    with open("./cache/compound_library.obj", "wb") as f:
+        pickle.dump(COMPOUND_LIBRARY, f, pickle.HIGHEST_PROTOCOL)
