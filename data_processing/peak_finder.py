@@ -12,7 +12,7 @@ from scipy.signal import (
     argrelmax,
 )
 from data_processing import PeakList, als_psalsa, Peak
-
+from scipy.stats import exponnorm
 from user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
     BUTTER_FILTER_SIZE,
@@ -81,10 +81,17 @@ class PeakFinder:
         #     self.smoothed_signal, 5 * sample_rate + 10, 5
         # )
 
-        # TODO: great EMG window
-        half_size = int(round(sample_rate * 5 / 2))
+        half_size = int(round(sample_rate * 3 / 2))
         window_size = 2 * half_size
         window = signal.windows.gaussian(window_size, std=2 * sample_rate)
+        K = 1.05
+        window_2 = exponnorm.pdf(
+            range(-half_size, half_size),
+            loc=-sample_rate * K,
+            scale=sample_rate,
+            K=K,
+        )
+        window_2 /= window_2.max()
 
         self.smoothed_signal = np.pad(
             self.smoothed_signal,
@@ -93,7 +100,7 @@ class PeakFinder:
             constant_values=(self.smoothed_signal[0], self.smoothed_signal[-1]),
         )
         self.smoothed_signal = signal.convolve(
-            self.smoothed_signal, window, mode="valid"
+            self.smoothed_signal, window_2, mode="valid"
         ) / sum(window)
 
     def __find_baseline(self):
