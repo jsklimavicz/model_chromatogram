@@ -86,6 +86,7 @@ class Peak:
             "width_baseline_right",
             "asymmetry_USP",
             "asymmetry_AIA",
+            "resolution",
         ]
         for field in field_list:
             try:
