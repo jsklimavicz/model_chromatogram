@@ -70,8 +70,6 @@ class Peak:
             self.reverse = False
             self.params = {"K": k, "loc": self.loc, "scale": sigma}
         else:
-            # TODO: support negative K values
-            # raise PeakDefinitionError("Values of K must be non-negative")
             self.distribution = exponnorm
             self.reverse = True
             self.params = {"K": -k, "loc": -self.loc, "scale": sigma}

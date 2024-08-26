@@ -1,4 +1,4 @@
-from compounds import Sample
+from samples import Sample
 import json
 import matplotlib.pyplot as plt
 from methods import Method
@@ -40,8 +40,9 @@ column = Column(
     length=150,
     type="C18",
     serial_number="1995032",
-    injection_count=0,
+    injection_count=10,
 )
+
 system = System(name="James Test", column=column)
 
 my_sample = Sample(**sample_dict)
@@ -78,7 +79,12 @@ injection1 = Injection(sample=my_sample, method=method_1, system=system)
 
 
 times, raw_signal = injection1.get_chromatogram_data("UV_VIS_1", pandas=False)
-peak_finder = PeakFinder(times, raw_signal)
+
+with Profile() as profile:
+    peak_finder = PeakFinder(times, raw_signal)
+
+    f = open("stats.prof", "a")
+    Stats(profile, stream=f).strip_dirs().sort_stats("tottime").print_stats()
 
 peak_finder.print_peaks()
 peak_finder.save_peaks("./output.csv")

@@ -42,7 +42,7 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = (
 
 ## Background Noise Parameters
 BACKGROUND_MEAN = 0  #
-BASELINE_NOISE = 0.2 * math.sqrt(SAMPLE_RATE)  # Standard deviation of background noise
+BASELINE_NOISE = 0.15 * math.sqrt(SAMPLE_RATE)  # Standard deviation of background noise
 BASELINE_AUTOCORRELATION_PARAMETER = math.sqrt(1 / SAMPLE_RATE)
 BASELINE_MULTIPLIER = 2  # multiplier for amplitude of background
 
@@ -54,10 +54,10 @@ RANDOM_PEAK_ID_DIGITS = 4  # number of digits to put into to a random peak id
 
 # Analysis Parameters
 BACKGROUND_NOISE_RANGE = [0, 100]  # indices of background noise signal
-NOISE_THRESHOLD_MULTIPLIER = 1.2  # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
+NOISE_THRESHOLD_MULTIPLIER = 1.1  # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
 PEAK_LIMIT = 1  # sets value to be able to find peaks. Higher values result in fewer peaks being found; lower values may produce false positive peaks.
 BUTTER_FILTER_SIZE = 40  # Parameter for size of Butterworth filter to remove noise in chromatograpm to find peaks
 MINIMUM_HEIGHT = (
-    BASELINE_NOISE * 1.1
+    BASELINE_NOISE * 1.2
 )  # Minimum height for a peak to be kept in peak finding algorithm
 MINIMUM_AREA = 0.05  # Minimum area for a peak to be kept in peak finding algorithm

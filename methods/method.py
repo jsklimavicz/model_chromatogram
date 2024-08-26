@@ -109,7 +109,6 @@ class Method:
             y (np.array): The array of signal values
 
         TODO: Curve parameter input
-        TODO: Handling for repeated x-values.
 
         """
         y = np.interp(interp_times, grad_x, grad_y)
