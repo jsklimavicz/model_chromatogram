@@ -177,8 +177,6 @@ class PeakFinder:
         i = 3
 
         while i < n - 3:
-            if i > 5650:
-                pass
             curr_sig = self.d2_signal[i]
             if (
                 self.d2_signal[i] < low_cutoff * self.d2_sigma
@@ -487,7 +485,7 @@ class PeakFinder:
             self.smoothed_signal,
             self.baseline_spline,
             self.d2_signal,
-            self.signal_sigma,
+            self.signal_noise,
         )
         self.peaks.add_peaks(regions)
 

@@ -34,8 +34,14 @@ class Peak:
         "width_5_right",
         "width_5_sigma_right",
         "width_baseline_right",
+        "moment_0",
         "moment_1",
         "moment_2",
+        "moment_3",
+        "moment_3_standardized",
+        "moment_4",
+        "moment_4_standardized",
+        "signal_to_noise",
         "asymmetry_USP",
         "asymmetry_AIA",
         "asymetry_moments",
@@ -132,7 +138,10 @@ class Peak:
             if isinstance(val, int):
                 return_dict[field] = val
             elif isinstance(val, float):
-                return_dict[field] = round(val, round_digits)
+                if abs(val) < 0.1:
+                    return_dict[field] = f"{val:.4e}"
+                else:
+                    return_dict[field] = round(val, round_digits)
             else:
                 return_dict[field] = val
         return return_dict
@@ -172,6 +181,7 @@ class Peak:
         self.relative_height = None
         self.retention_index = np.argmax(self.baselined_peak_signal) + self.start_index
         self.retention_time = self.times[self.retention_index]
+        self.signal_to_noise = 2 * self.height / self.signal_noise
 
     def __calculate_statistical_moments(self):
         self.moment_0 = self.area
@@ -186,16 +196,24 @@ class Peak:
             * self.dt
             / self.area
         )
-
-        if self.moment_2 < 0:
-            self.moment_2 = (
-                np.sum(
-                    (self.peak_times - self.retention_time) ** 2
-                    * self.baselined_peak_signal
-                )
-                * self.dt
-                / self.area
+        self.moment_3 = (
+            np.sum(
+                (self.peak_times - self.retention_time) ** 3
+                * self.baselined_peak_signal
             )
+            * self.dt
+            / self.area
+        )
+        self.moment_3_standardized = self.moment_3 / self.moment_2 ** (3 / 2)
+        self.moment_4 = (
+            np.sum(
+                (self.peak_times - self.retention_time) ** 4
+                * self.baselined_peak_signal
+            )
+            * self.dt
+            / self.area
+        )
+        self.moment_4_standardized = self.moment_4 / self.moment_2**2
 
     def _calculate_widths_exception(func):
         def calculate_widths(self, *args, **kwargs):
