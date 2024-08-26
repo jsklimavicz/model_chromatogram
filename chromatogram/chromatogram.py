@@ -128,6 +128,8 @@ class Baseline(Chromatogram):
                 f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {corr}."
             )
 
+        random.seed(10)  # TODO remove
+
         s0 = self.signal[0]
         self.signal *= 1 - corr
         self.signal[0] = s0
