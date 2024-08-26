@@ -1,7 +1,7 @@
 from pydash import get as _get
 
 from methods import Method
-from compounds import Sample
+from samples import Sample
 from chromatogram import Chromatogram, Baseline, PeakCreator
 from system import System
 import numpy as np
@@ -13,7 +13,7 @@ class Injection:
         self.method: Method = method
         self.system: System = system
         self.system.inject()
-        self.peak_creator = PeakCreator()
+        self.peak_creator = PeakCreator(self.system.get_column())
         self.uv_wavelengths = []
         self.uv_channel_names = []
         for channel in _get(self.method.detection, "uv_vis_parameters"):

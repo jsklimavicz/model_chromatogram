@@ -10,6 +10,9 @@ class System:
     def set_column(self, column: Column):
         self.column = column
 
+    def get_column(self):
+        return self.column
+
     def get_column_volume(self):
         return self.column.volume
 

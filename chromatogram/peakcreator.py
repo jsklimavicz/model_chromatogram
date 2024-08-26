@@ -4,6 +4,7 @@ from scipy.stats import exponnorm
 from scipy.optimize import minimize_scalar, minimize
 from compounds import Compound
 import numpy as np
+from system import Column
 
 from user_parameters import *
 
@@ -13,10 +14,14 @@ class PeakCreator:
     Class designed to create peak signals based on peak-specific information and user-defined parameters. Generated peaks have an exponentially-modified gaussian shape to mimic peak asymmetry. Only one PeakCreator should be used per injection to ensure that injection-specific variations in retention time and peak height/area remain constant within an injection.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, column: Column) -> None:
         """
         Class designed to create peak signals based on peak-specific information and user-defined parameters. Sets the injection-specific parameters.
         """
+        self.column = column
+        self.column_broadening, self.column_asymmetry = (
+            column.get_column_broadening_and_asymmetry()
+        )
         self.injection_specific_retention_time_offset = uniform(
             -RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX
         )
@@ -71,6 +76,7 @@ class PeakCreator:
         peak_dict = self.peak(
             retention_time=compound.retention_time,
             base_asymmetry=peak_asymmetry,
+            base_width=DEFAULT_PEAK_WIDTH,
         )
 
         # return signal array
@@ -108,11 +114,15 @@ class PeakCreator:
             return curr_fun / base_fun, mode
 
         base_sigma = base_width / (2 * math.sqrt(2 * math.log(2)))
-        curr_sigma = base_sigma * math.pow(WIDENING_CONSTANT, retention_time)
+        curr_sigma = (
+            base_sigma * math.pow(WIDENING_CONSTANT, retention_time)
+            + self.column_broadening
+        )
 
         asymmetry = 1.0 / (
             base_asymmetry
             * math.pow(ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME, retention_time)
+            + self.column_asymmetry
         )
 
         # determine how much the heigh of a peak changes based on its broadening
