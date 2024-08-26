@@ -77,21 +77,20 @@ class PeakFinder:
         self.smoothed_signal = savgol_filter(
             self.smoothed_signal, 3 * sample_rate + 10, 3
         )
-        # self.smoothed_signal = savgol_filter(
-        #     self.smoothed_signal, 5 * sample_rate + 10, 5
-        # )
 
         half_size = int(round(sample_rate * 3 / 2))
         window_size = 2 * half_size
         window = signal.windows.gaussian(window_size, std=2 * sample_rate)
-        K = 1.05
+        s = np.sum(window)
+        K = 0.2
         window_2 = exponnorm.pdf(
             range(-half_size, half_size),
             loc=-sample_rate * K,
             scale=sample_rate,
             K=K,
         )
-        window_2 /= window_2.max()
+        m = np.sum(window_2)
+        window_2 *= s / m
 
         self.smoothed_signal = np.pad(
             self.smoothed_signal,
@@ -101,7 +100,17 @@ class PeakFinder:
         )
         self.smoothed_signal = signal.convolve(
             self.smoothed_signal, window_2, mode="valid"
-        ) / sum(window)
+        ) / sum(window_2)
+
+        self.smoothed_signal = np.pad(
+            self.smoothed_signal,
+            (half_size, half_size - 1),
+            "constant",
+            constant_values=(self.smoothed_signal[0], self.smoothed_signal[-1]),
+        )
+        self.smoothed_signal = signal.convolve(
+            self.smoothed_signal, window_2, mode="valid"
+        ) / sum(window_2)
 
     def __find_baseline(self):
         """
@@ -119,11 +128,12 @@ class PeakFinder:
         """
         self.processed_signal -= self.baseline_spline(self.timepoints)
         self.smoothed_signal -= self.baseline_spline(self.timepoints)
-        self.signal_noise = np.mean(
-            np.abs(
+        self.signal_noise = np.sqrt(
+            np.mean(
                 self.processed_signal[
                     BACKGROUND_NOISE_RANGE[0] : BACKGROUND_NOISE_RANGE[1]
                 ]
+                ** 2
             )
         )
 
@@ -131,14 +141,16 @@ class PeakFinder:
         """
         Calculates the second derivative of the smoothed signal via finite differences.
         """
-        d1 = self.smoothed_signal - self.baseline_spline(self.timepoints)
+        # d1 = self.smoothed_signal - self.baseline_spline(self.timepoints)
+        d1 = self.smoothed_signal
         d_signal1 = d1[:-2] - d1[1:-1]
         d_signal2 = d1[1:-1] - d1[2:]
         self.d2_signal = d_signal1 - d_signal2
-        self.d2_ave_noise = np.mean(
-            np.abs(
+        self.d2_ave_noise = np.sqrt(
+            np.mean(
                 self.d2_signal[BACKGROUND_NOISE_RANGE[0] : BACKGROUND_NOISE_RANGE[1]]
             )
+            ** 2
         )
         self.d2_signal = np.pad(self.d2_signal, (1, 1))
 
@@ -163,7 +175,11 @@ class PeakFinder:
         # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
         initial_regions = []
         i = 3
+
         while i < n - 3:
+            if i > 5650:
+                pass
+            curr_sig = self.d2_signal[i]
             if (
                 self.d2_signal[i] < low_cutoff * self.d2_sigma
                 or self.processed_signal[i] > LINEAR_LIMIT
@@ -460,90 +476,70 @@ class PeakFinder:
 
         regions = []
         for start, end in trimmed_regions:
-            if end - start < 20:
+            if end - start <= 1:
                 continue
             else:
                 regions.append([start + 1, end + 1])
-
-        p = Peak(
-            regions[1][0],
-            regions[1][1],
-            self.timepoints,
-            self.raw_signal,
-            self.smoothed_signal,
-            self.baseline_spline,
-            self.d2_signal,
-            self.signal_noise,
-        )
-        p.calculate_properties()
-        print(p.get_properties())
 
         self.peaks: PeakList = PeakList(
             self.timepoints,
             self.raw_signal,
             self.smoothed_signal,
             self.baseline_spline,
+            self.d2_signal,
             self.signal_sigma,
         )
         self.peaks.add_peaks(regions)
 
     def refine_peaks(self, height_cutoff=MINIMUM_HEIGHT, area_cutoff=MINIMUM_AREA):
-        self.peaks.refine_peaks(height_cutoff, area_cutoff)
-
-    def get_peaks(self) -> pd.DataFrame:
-        return self.peaks.get_peaklist()
+        self.peaks.filter_peaks(height_cutoff, area_cutoff)
 
     def plot_peaks(self, smoothed=False, second_derivative=False, noise=False):
         # Plot the final result
         plt.figure(figsize=(14, 8))
-        plt.plot(self.timepoints, self.raw_signal, color="black")
-        plt.plot(self.timepoints, self.baseline_spline(self.timepoints), color="grey")
+        t = self.timepoints
+        plt.plot(t, self.raw_signal, color="black")
+        plt.plot(t, self.baseline_spline(t), color="grey")
 
-        spline = self.baseline_spline(self.timepoints)
+        spline = self.baseline_spline(t)
 
         if smoothed:
-            plt.plot(
-                self.timepoints,
-                self.smoothed_signal + spline,
-                color="limegreen",
-            )
+            plt.plot(t, self.smoothed_signal + spline, color="limegreen")
 
         if second_derivative:
-            plt.plot(
-                self.timepoints,
-                self.d2_signal / self.dt + spline,
-                color="blue",
-            )
+            plt.plot(t, self.d2_signal / self.dt + spline, color="blue")
 
         if noise:
-            plt.plot(
-                self.timepoints,
-                2 * self.d2_sigma / self.dt * np.ones_like(self.timepoints) + spline,
-                color="green",
-            )
-
-            plt.plot(
-                self.timepoints,
-                2 * self.signal_sigma * np.ones_like(self.timepoints) + spline,
-                color="red",
-            )
+            ones = np.ones_like(t)
+            plt.plot(t, 2 * self.d2_sigma / self.dt * ones + spline, color="green")
+            plt.plot(t, 2 * self.signal_sigma * ones + spline, color="red")
+            plt.plot(t, -2 * self.d2_sigma / self.dt * ones + spline, color="green")
+            plt.plot(t, -2 * self.signal_sigma * ones + spline, color="red")
 
         # Colors for adjacent peaks
-        for idx, row in enumerate(self.get_peaks().iterrows()):
+        for idx, peak in enumerate(self.peaks):
             color = "orange" if idx % 2 == 0 else "blue"
-            # plt.axvspan(start, end, color=color, alpha=0.5, label=f"Peak {idx + 1}")
+            plt.axvspan(peak.start_time, peak.end_time, color=color, alpha=0.2)
 
-            plt.axvspan(
-                row[1]["time_start"], row[1]["time_end"], color=color, alpha=0.2
-            )
-
-        plt.xlabel("Time")
-        plt.ylabel("Second Derivative")
-        # plt.legend()
+        plt.xlabel("Time (min)")
+        plt.ylabel("Absorbance (mAU)")
         plt.show()
+
+    def __peak_list_to_dataframe(self) -> pd.DataFrame:
+        peak_dict_list = []
+        for peak in self.peaks:
+            peak_dict_list.append(peak.get_properties())
+        return pd.DataFrame.from_dict(peak_dict_list)
+
+    def get_peaks(self, dataframe=False) -> PeakList:
+        if dataframe:
+            return self.__peak_list_to_dataframe()
+        else:
+            return self.peaks
 
     def print_peaks(self):
         print(self.get_peaks())
 
     def save_peaks(self, filename="output.csv"):
-        self.get_peaks().to_csv(filename, index=False)
+        df: pd.DataFrame = self.__peak_list_to_dataframe()
+        df.to_csv(filename, index=False)
