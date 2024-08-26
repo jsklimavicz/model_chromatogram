@@ -11,7 +11,7 @@ from data_processing import PeakFinder
 
 import random
 
-random.seed(9)
+random.seed(903)
 
 from cProfile import Profile
 from pstats import Stats
@@ -24,8 +24,8 @@ sample_dict = {
     # "concentration_list": "2.1, 2.2, 14.12, 2.13, 1.6",
     "compound_list": None,
     "concentration_list": None,
-    "num_random_peaks": 40,
-    "max_random_concentration": 0.3,
+    "num_random_peaks": 10,
+    "max_random_concentration": 0.5,
 }
 
 # sample_dict["compound_list"] = [
@@ -82,8 +82,7 @@ peak_finder = PeakFinder(times, raw_signal)
 
 peak_finder.print_peaks()
 peak_finder.save_peaks("./output.csv")
-peak_finder.plot_peaks(smoothed=True)
-
+peak_finder.plot_peaks()
 
 # with Profile() as profile:
 #     for i in range(1):

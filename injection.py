@@ -52,3 +52,9 @@ class Injection:
 
     def get_chromatogram_data(self, channel_name, **kwargs):
         return self.chromatograms[channel_name].get_chromatogram_data(**kwargs)
+
+    def __iter__(self):
+        return iter(self.chromatograms)
+
+    def __getitem__(self, index):
+        return self.chromatograms[index]

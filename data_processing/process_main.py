@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from data_processing.peak_finder import PeakFinder
+from data_processing import PeakFinder
 
 df = pd.read_parquet("./data_processing/test.parquet")
 raw_signal = df["y"].to_numpy()
