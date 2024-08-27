@@ -4,7 +4,7 @@ from scipy.stats import exponnorm
 from scipy.optimize import minimize_scalar, minimize
 from compounds import Compound
 import numpy as np
-from system import Column
+from system import Column, System
 
 from user_parameters import *
 
@@ -14,16 +14,18 @@ class PeakCreator:
     Class designed to create peak signals based on peak-specific information and user-defined parameters. Generated peaks have an exponentially-modified gaussian shape to mimic peak asymmetry. Only one PeakCreator should be used per injection to ensure that injection-specific variations in retention time and peak height/area remain constant within an injection.
     """
 
-    def __init__(self, column: Column) -> None:
+    def __init__(self, system: System) -> None:
         """
         Class designed to create peak signals based on peak-specific information and user-defined parameters. Sets the injection-specific parameters.
         """
-        self.column = column
+        self.system = system
+        self.column = system.get_column()
         self.column_broadening, self.column_asymmetry = (
-            column.get_column_broadening_and_asymmetry()
+            self.column.get_column_broadening_and_asymmetry()
         )
-        self.injection_specific_retention_time_offset = uniform(
-            -RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX
+        self.injection_specific_retention_time_offset = (
+            uniform(-RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX)
+            + system.get_retention_time_offset()
         )
         self.injection_specific_heigh_modifier = uniform(
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE

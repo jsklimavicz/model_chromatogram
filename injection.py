@@ -13,7 +13,7 @@ class Injection:
         self.method: Method = method
         self.system: System = system
         self.system.inject()
-        self.peak_creator = PeakCreator(self.system.get_column())
+        self.peak_creator = PeakCreator(system=self.system)
         self.uv_wavelengths = []
         self.uv_channel_names = []
         for channel in _get(self.method.detection, "uv_vis_parameters"):

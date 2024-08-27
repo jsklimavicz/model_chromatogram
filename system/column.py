@@ -11,6 +11,7 @@ class Column:
         type="C18",
         serial_number="1995032",
         injection_count=0,
+        **kwargs
     ) -> None:
         self.inner_diameter = inner_diameter
         self.length = length
@@ -27,9 +28,12 @@ class Column:
         self.volume = (self.inner_diameter / 2) ** 2 * np.pi * self.length
         self.volume /= 1000  # mm^3 to mL conversion
 
-    def inject(self):
-        self.injection_count += 1
-        self.__check_for_failure()
+    def inject(self, count=1):
+        for i in range(count):
+            self.injection_count += 1
+            self.__check_for_failure()
+        if self.failed:
+            self.__set_failure_values()
 
     def get_column_broadening_and_asymmetry(self):
         return self.failure_broadening, self.failure_asymmetry
@@ -40,8 +44,6 @@ class Column:
             if x < 2e-4 * (self.injection_count - 500):
                 self.failed = True
                 self.failure_number = self.injection_count
-        if self.failed:
-            self.__set_failure_values()
 
     def __set_failure_values(self):
         inconsitency_factor = random.uniform(0.95, 1.05)

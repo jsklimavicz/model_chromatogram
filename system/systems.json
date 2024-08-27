@@ -1,6 +1,6 @@
 [
     {
-        "name": "James's Instrument",
+        "name": "Curie",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
         "modules": {},
@@ -14,13 +14,157 @@
                 "unit": "mm"
             },
             "type": "C18",
-            "serial_number": "1995032",
+            "serial_number": "00386184-P",
+            "injection_count": 100,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            }
+        },
+        "rt_offsset": 0.021
+    },
+    {
+        "name": "Hodgkin",
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": {},
+        "column": {
+            "inner_diameter": {
+                "value": 10,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 150,
+                "unit": "mm"
+            },
+            "type": "C18",
+            "serial_number": "00882042-Y",
+            "injection_count": 200,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            }
+        },
+        "rt_offsset": -0.03
+    },
+    {
+        "name": "Kwolek",
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": {},
+        "column": {
+            "inner_diameter": {
+                "value": 10,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 150,
+                "unit": "mm"
+            },
+            "type": "C18",
+            "serial_number": "00229517-K",
             "injection_count": 0,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
             }
         },
-        "user": "James K"
+        "rt_offsset": -0.12
+    },
+    {
+        "name": "Franklin",
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": {},
+        "column": {
+            "inner_diameter": {
+                "value": 10,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 150,
+                "unit": "mm"
+            },
+            "type": "C18",
+            "serial_number": "00962700-A",
+            "injection_count": 180,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            }
+        },
+        "rt_offsset": 0.08
+    },
+    {
+        "name": "Cori",
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": {},
+        "column": {
+            "inner_diameter": {
+                "value": 10,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 150,
+                "unit": "mm"
+            },
+            "type": "C18",
+            "serial_number": "00437996-L",
+            "injection_count": 0,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            }
+        },
+        "rt_offsset": 0.002
+    },
+    {
+        "name": "Singer",
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": {},
+        "column": {
+            "inner_diameter": {
+                "value": 10,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 150,
+                "unit": "mm"
+            },
+            "type": "C18",
+            "serial_number": "00182204-B",
+            "injection_count": 0,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            }
+        },
+        "rt_offsset": 0.056
+    },
+    {
+        "name": "Meitner",
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": {},
+        "column": {
+            "inner_diameter": {
+                "value": 10,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 150,
+                "unit": "mm"
+            },
+            "type": "C18",
+            "serial_number": "00350556-E",
+            "injection_count": 20,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            }
+        },
+        "rt_offsset": -0.039
     }
 ]
