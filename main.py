@@ -1,7 +1,7 @@
 from samples import Sample
 import json
 import matplotlib.pyplot as plt
-from methods import Method
+from methods import InstrumentMethod
 
 from pydash import get as _get
 from injection import Injection
@@ -18,32 +18,24 @@ from pstats import Stats
 
 
 sample_dict = {
-    "sample_name": "test-1",
-    "location": "R:A1",
-    # "compound_list": "61530-11-8, 614-47-1, 7364-19-4, 10541-56-7, coumarin",
-    # "concentration_list": "2.1, 2.2, 14.12, 2.13, 1.6",
-    "compound_list": None,
-    "concentration_list": None,
-    "num_random_peaks": 10,
-    "max_random_concentration": 0.5,
+    "name": "test-1",
+    "compound_id_list": "61530-11-8, 614-47-1, 7364-19-4, 10541-56-7, coumarin",
+    "compound_concentration_list": "2.1, 2.2, 14.12, 2.13, 1.6",
+    "n_random_named_peaks": 5,
+    "random_named_concentration_range": [0.5, 1],
 }
 
-# sample_dict["compound_list"] = [
-#     a.strip() for a in sample_dict["compound_list"].split(",")
-# ]
-# sample_dict["concentration_list"] = [
-#     float(a) for a in sample_dict["concentration_list"].split(",")
-# ]
+sample_dict["compound_id_list"] = [
+    a.strip() for a in sample_dict["compound_id_list"].split(",")
+]
+sample_dict["compound_concentration_list"] = [
+    float(a) for a in sample_dict["compound_concentration_list"].split(",")
+]
 
-column = Column(
-    inner_diameter=10,
-    length=150,
-    type="C18",
-    serial_number="1995032",
-    injection_count=10,
-)
+with open("./system/systems.json") as f:
+    system_list = json.load(f)
 
-system = System(name="James Test", column=column)
+system = System(**system_list[0])
 
 my_sample = Sample(**sample_dict)
 # my_sample.print_compound_list()
@@ -52,7 +44,7 @@ with open("./methods/instrument_methods.json") as f:
     method_list = json.load(f)
 
 # method_1 = Method(**_get(method_list, "0"))
-method_1 = Method(**_get(method_list, "5"))
+method_1 = InstrumentMethod(**_get(method_list, "5"))
 # method_2 = Method(**_get(method_list, "1"))
 # method_3 = Method(**_get(method_list, "2"))
 # method_4 = Method(**_get(method_list, "3"))

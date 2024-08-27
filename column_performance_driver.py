@@ -1,7 +1,7 @@
 from samples import Sample
 import json
 import matplotlib.pyplot as plt
-from methods import Method
+from methods import InstrumentMethod
 
 from pydash import get as _get
 from injection import Injection

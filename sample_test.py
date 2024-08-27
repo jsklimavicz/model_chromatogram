@@ -37,10 +37,26 @@ compound_mapping = [
     },
 ]
 
+compound_name_mapping = {
+    "90094-11-4": "lovastatin",
+    "56843-54-0": "TS-8829",
+    "50-48-6": "TS-8830",
+    "117-89-5": "lovastatin acetate",
+    "72-43-5": "lovastatin des-sec-butyrate",
+    "79-11-8": "sec-butyric acid",
+    "56-54-2": "dehydrolovastatin",
+    "1617-90-9": "TS-0195A",
+    "93-76-5": "TS-9931",
+    "773-76-2": "5-hydroxylovastatin",
+}
 
-sample_creator.product_stability_samples(
+samples = sample_creator.product_stability_samples(
     time_points=np.array(
         [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 45, 60, 75, 90, 105, 120, 150, 180]
     ),
     compound_mapping=compound_mapping,
+    compound_name_mapping=compound_name_mapping,
 )
+
+for sample in samples:
+    sample.print_compound_list()

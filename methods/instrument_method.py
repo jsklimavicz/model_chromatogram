@@ -6,7 +6,7 @@ from scipy import signal
 import pandas as pd
 
 
-class Method:
+class InstrumentMethod:
     __solvent_ids = ["a", "b", "c", "d"]
     __solvent_percents = [f"percent_{lett}" for lett in __solvent_ids]
 

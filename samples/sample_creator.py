@@ -74,7 +74,10 @@ class SampleCreator:
         return np.real(np.array(C_t))
 
     def product_stability_samples(
-        self, time_points: np.array, compound_mapping: list[dict]
+        self,
+        time_points: np.array,
+        compound_mapping: list[dict],
+        compound_name_mapping: dict = None,
     ) -> list[Sample]:
         # Get the compound names and initial concentrations
         compound_names = set()
@@ -100,4 +103,19 @@ class SampleCreator:
         concentrations_over_time = self._solve_reaction_ODE(
             time_points, A, initial_concentrations
         )
-        print(concentrations_over_time)
+        sample_list: list[Sample] = []
+        if compound_name_mapping:
+            compound_aliases = [compound_name_mapping[name] for name in compound_names]
+        else:
+            compound_aliases = None
+        for concentration_set in zip(concentrations_over_time, time_points):
+            sample = Sample(
+                name="test",
+                compound_id_list=compound_names,
+                compound_concentration_list=concentration_set[0],
+                compound_alias=compound_aliases,
+                concentration_unit=4,
+            )
+            sample_list.append(sample)
+
+        return sample_list

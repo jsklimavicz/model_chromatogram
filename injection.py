@@ -1,6 +1,6 @@
 from pydash import get as _get
 
-from methods import Method
+from methods import InstrumentMethod
 from samples import Sample
 from chromatogram import Chromatogram, Baseline, PeakCreator
 from system import System
@@ -8,9 +8,11 @@ import numpy as np
 
 
 class Injection:
-    def __init__(self, sample: Sample, method: Method, system: System) -> None:
+    def __init__(
+        self, sample: Sample, method: InstrumentMethod, system: System
+    ) -> None:
         self.sample: Sample = sample
-        self.method: Method = method
+        self.method: InstrumentMethod = method
         self.system: System = system
         self.system.inject()
         self.peak_creator = PeakCreator(system=self.system)

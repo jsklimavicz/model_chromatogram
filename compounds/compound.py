@@ -8,7 +8,7 @@ from compounds import UVSpectrum
 
 
 class Compound:
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, find_UV_spectrum=True, **kwargs) -> None:
         self.kwargs = kwargs
         self.name = _get(kwargs, "name").strip()
         self.id = _get(kwargs, "id")
@@ -22,7 +22,18 @@ class Compound:
         self.refractivity: float = self.__set_initial_float("refractivity")
         self.log_s: float = self.__set_initial_float("log_s")
         self.tpsa: float = self.__set_initial_float("tpsa")
-        self.set_uv_spectrum()
+        if find_UV_spectrum:
+            self.set_uv_spectrum()
+
+    def __copy__(self):
+        cmpd_dict = self.kwargs.copy()
+        cmpd_dict["find_UV_spectrum"] = False
+        cmpd = self.__class__(**cmpd_dict)
+        cmpd.spectrum = self.spectrum
+        return cmpd
+
+    def __deepcopy__(self):
+        return self.__class__(**self.kwargs)
 
     def __set_initial_float(self, key, default=0):
         try:
@@ -44,9 +55,35 @@ class Compound:
         )
         return absorbance
 
-    def set_concentration(self, concentration):
-        self.concentration = concentration
-        self.m_molarity = 1000 * self.concentration / self.mw
+    def set_concentration(self, concentration, unit):
+        """
+        Sets the concentration of the compound.
+
+        Args:
+            concentration (float): The numeric value of the concentration.
+            creation_date (datetime): Date that the sample was created.
+            unit (int): An int to signify which units are used for the concentration of the input concentrations.
+                1: mg/ml (part per thousand w/v)
+                2: ug/ml (ppm w/v)
+                3: ng/ml (ppb w/v)
+                4: umol/ml (or mM)
+                5: nmol/ml (or uM)
+        """
+        if unit == 1:
+            self.concentration = concentration * 1000  # in ug/ml
+            self.m_molarity = 1000 * self.concentration / self.mw
+        elif unit == 2:
+            self.concentration = concentration  # in ug/ml
+            self.m_molarity = self.concentration / self.mw
+        elif unit == 3:
+            self.concentration = concentration / 1000  # in ug/ml
+            self.m_molarity = self.concentration / (1000 * self.mw)
+        elif unit == 4:
+            self.m_molarity = concentration
+            self.concentration = self.m_molarity * self.mw
+        elif unit == 5:
+            self.m_molarity = concentration / 1000
+            self.concentration = self.m_molarity * self.mw / 1000
 
     def set_retention_time(self, column_volume: float, solvent_profiles: pd.DataFrame):
         """

@@ -1,6 +1,7 @@
 import numpy as np
 import random
 from user_parameters import DEFAULT_BASE_ASYMMETRY, DEFAULT_PEAK_WIDTH
+from pydash import get as _get
 
 
 class Column:
@@ -13,8 +14,8 @@ class Column:
         injection_count=0,
         **kwargs
     ) -> None:
-        self.inner_diameter = inner_diameter
-        self.length = length
+        self.inner_diameter = _get(inner_diameter, "value")
+        self.length = _get(length, "value")
         self.find_volume()
         self.type = type
         self.serial_number = serial_number

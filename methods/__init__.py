@@ -1,3 +1,3 @@
-from .method import Method
+from .method import InstrumentMethod
 
-__all__ = ["Method"]
+__all__ = ["InstrumentMethod"]

@@ -4,6 +4,7 @@ from user_parameters import RANDOM_PEAK_ID_DIGITS, IMP_PEAK_PREFIX
 from compounds import Compound
 import warnings
 import pickle
+from copy import copy
 
 
 class CompoundLibrary:
@@ -69,7 +70,7 @@ class CompoundLibrary:
             for method in methods:
                 compound = self.__lookup(id, method)
                 if compound is not None:
-                    return compound
+                    return copy(compound)
 
     def __create_id(self, prefix: str | None):
         """
@@ -115,11 +116,12 @@ class CompoundLibrary:
         compound_return = []
         for compound in self.compounds:
             if compound.cas not in cas_exclude_list:
+                new_compound = copy(compound)
                 if set_unknown:
-                    compound.id = True
+                    new_compound.id = "unknown"
                 elif replace_names:
-                    compound.id = self.__create_id(prefix)
-                compound_return.append(compound)
+                    new_compound.id = self.__create_id(prefix)
+                compound_return.append(new_compound)
             if len(compound_return) == count:
                 return compound_return
 

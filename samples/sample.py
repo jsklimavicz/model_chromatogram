@@ -1,36 +1,79 @@
 from compounds import Compound, COMPOUND_LIBRARY
 from random import uniform
+import datetime
 
 
 class Sample:
     def __init__(
         self,
-        sample_name: str,
-        location: str,
-        compound_list: list[str] | None,
-        concentration_list: list[float] | None,
-        num_random_peaks: int = 0,
-        max_random_concentration: float = 0,
+        name: str,
+        compound_id_list: list[str] | None,
+        compound_concentration_list: list[float] | None,
+        creation_date: datetime = None,
+        compound_alias: list[str] | None = None,
+        concentration_unit=4,
+        n_random_named_peaks: int = 0,
+        random_named_concentration_range: list[float] = [0, 1],
+        n_unknown_peaks: int = 0,
+        unknown_concentration_range: list[float] = [0, 1],
     ) -> None:
-        self.name: str = sample_name
-        self.location: str = location
-        if compound_list is None:
-            compound_list = []
-        if concentration_list is None:
-            concentration_list = []
-        self.compounds: list[Compound] = [
-            COMPOUND_LIBRARY.lookup(id) for id in compound_list
-        ]
-        for conc, compound in zip(concentration_list, self.compounds):
-            compound.set_concentration(conc)
+        """
+        Creates a sample with a list of compounds.
+
+        Args:
+            name (str): The name of the sample.
+            compound_id_list (list[str]): A list of compound identifiers for finding compounds in the COMPOUND_LIBRARY
+            compound_concentration_list (list[float]): A list of concentrations in the same order as the `compound_id_list`.
+            creation_date (datetime): Date that the sample was created.
+            compound_alias (list[str]): A list of names to label the compounds in the sample as. These are the names that will be used in processing methods to label peaks.
+            concentration_unit (int): An int to signify which units are used for the concentration of the input concentrations.
+                1: mg/ml (part per thousand w/v)
+                2: ug/ml (ppm w/v)
+                3: ng/ml (ppb w/v)
+                4: umol/ml (or mM)
+                5: nmol/ml (or uM)
+            n_random_named_peaks (int): Number of random compounds to add to the sample, where each peak is assigned a code name.
+            random_named_concentration_range (list[float]): 2-element list containing the min and max concentration values for a randomly added named compound.
+            n_unknown_peaks (int): Number of unknown compounds to add to the sample, where each peak is assigned the name "unknown".
+            random_unknown_range (list[float]): 2-element list containing the min and max concentration values for unknown compounds.
+        """
+
+        self.name: str = name
+        self.creation_date = creation_date
+
+        if compound_id_list is None:
+            compound_id_list = []
+        if compound_concentration_list is None:
+            compound_concentration_list = []
+        self.compounds: list[Compound] = []
+
+        if compound_alias is None:
+            compound_alias = [False] * len(compound_id_list)
+        for id, conc, alias in zip(
+            compound_id_list, compound_concentration_list, compound_alias
+        ):
+            compound = COMPOUND_LIBRARY.lookup(id)
+            compound.set_concentration(conc, unit=concentration_unit)
+            if alias:
+                compound.id = alias
+            self.compounds.append(compound)
+
         exclude_cas = [a.cas for a in self.compounds]
-        if num_random_peaks > 0:
+        if n_random_named_peaks > 0:
             random_peaks = COMPOUND_LIBRARY.fetch_random_compounds(
-                num_random_peaks, exclude_cas, replace_names=True
+                n_random_named_peaks, exclude_cas, replace_names=True
             )
             for compound in random_peaks:
                 compound.set_concentration(
-                    uniform(max_random_concentration / 10, max_random_concentration)
+                    uniform(*random_named_concentration_range), unit=concentration_unit
+                )
+        if n_unknown_peaks > 0:
+            random_peaks = COMPOUND_LIBRARY.fetch_random_compounds(
+                n_unknown_peaks, exclude_cas, set_unknown=True
+            )
+            for compound in random_peaks:
+                compound.set_concentration(
+                    uniform(*unknown_concentration_range), unit=concentration_unit
                 )
 
             self.compounds = [*self.compounds, *random_peaks]

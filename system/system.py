@@ -7,7 +7,7 @@ class System:
         self, name, column=None, system_retention_time_offset=0, **kwargs
     ) -> None:
         self.name = name
-        self.column = Column(column)
+        self.column = Column(**column)
         self.retention_time_offset = system_retention_time_offset
         self.kwargs = kwargs
 
