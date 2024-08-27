@@ -1,0 +1,36 @@
+[
+    {
+        "name": "column performance test",
+        "processing_parameters": {
+            "background_noise_range": {
+                "minimum": 0,
+                "maximum": 100
+            },
+            "noise_threshold_multiplier": 1.1,
+            "peak_limit": 1,
+            "butter_filter_size": 40,
+            "minimum_height": {
+                "type": "baseline_noise_multiplier",
+                "value": 1.2
+            },
+            "minimum_area": 0.05
+        },
+        "peak_identification": [
+            {
+                "min_time": 5,
+                "max_time": 10,
+                "name": ""
+            },
+            {
+                "min_time": 5,
+                "max_time": 10,
+                "name": ""
+            },
+            {
+                "min_time": 5,
+                "max_time": 10,
+                "name": ""
+            }
+        ]
+    }
+]

@@ -477,7 +477,7 @@ class PeakFinder:
             if end - start <= 1:
                 continue
             else:
-                regions.append([start + 1, end + 1])
+                regions.append([start, end])
 
         self.peaks: PeakList = PeakList(
             self.timepoints,
@@ -536,8 +536,14 @@ class PeakFinder:
             return self.peaks
 
     def print_peaks(self):
-        print(self.get_peaks())
+        print(self.get_peaks(dataframe=True))
 
     def save_peaks(self, filename="output.csv"):
         df: pd.DataFrame = self.__peak_list_to_dataframe()
         df.to_csv(filename, index=False)
+
+    def __iter__(self):
+        return iter(self.peaks)
+
+    def __getitem__(self, index):
+        return self.peaks[index]

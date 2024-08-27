@@ -34,10 +34,10 @@ INDIVIDUAL_HEIGHT_RANDOM_NOISE = (
     0.002  # fluctuation of individual height from ideal within injections
 )
 RETENTION_TIME_RANDOM_OFFSET_MAX = (
-    0.003  # fluctuation of retention time between injections
+    0.01  # fluctuation of retention time between injections
 )
 INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = (
-    0.001  # fluctuation of retention time within injections
+    0.002  # fluctuation of retention time within injections
 )
 
 ## Background Noise Parameters

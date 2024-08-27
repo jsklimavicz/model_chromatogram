@@ -6,7 +6,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {
@@ -30,7 +30,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {
@@ -54,7 +54,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {
@@ -78,7 +78,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {
@@ -102,7 +102,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {
@@ -126,7 +126,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {
@@ -150,7 +150,7 @@
         "modules": {},
         "column": {
             "inner_diameter": {
-                "value": 10,
+                "value": 4.6,
                 "unit": "mm"
             },
             "length": {

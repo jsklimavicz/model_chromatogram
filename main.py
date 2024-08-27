@@ -19,18 +19,12 @@ from pstats import Stats
 
 sample_dict = {
     "name": "test-1",
-    "compound_id_list": "61530-11-8, 614-47-1, 7364-19-4, 10541-56-7, coumarin",
-    "compound_concentration_list": "2.1, 2.2, 14.12, 2.13, 1.6",
-    "n_random_named_peaks": 5,
-    "random_named_concentration_range": [0.5, 1],
+    "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
+    "compound_concentration_list": [2, 3, 10],
+    # "n_random_named_peaks": 5,
+    # "random_named_concentration_range": [0.5, 1],
 }
 
-sample_dict["compound_id_list"] = [
-    a.strip() for a in sample_dict["compound_id_list"].split(",")
-]
-sample_dict["compound_concentration_list"] = [
-    float(a) for a in sample_dict["compound_concentration_list"].split(",")
-]
 
 with open("./system/systems.json") as f:
     system_list = json.load(f)
@@ -43,13 +37,37 @@ my_sample = Sample(**sample_dict)
 with open("./methods/instrument_methods.json") as f:
     method_list = json.load(f)
 
+validation_method = None
+for method in method_list:
+    if _get(method, "name") == "column_quality_check":
+        validation_method = InstrumentMethod(**method)
+        break
+
+peak_vals = []
+for i in range(50):
+    injection1 = Injection(sample=my_sample, method=validation_method, system=system)
+
+    peak_finder = PeakFinder(
+        *injection1.get_chromatogram_data("UV_VIS_1", pandas=False)
+    )
+
+    peak = peak_finder[0].get_properties()
+    peak_vals.append(peak)
+    system.inject(count=30)
+    # peak_finder.save_peaks("./output.csv")
+
+peak_list = pd.DataFrame.from_dict(peak_vals)
+print(peak_list)
+peak_list.to_csv("./peak_list_test.csv", index=False)
+exit()
+
 # method_1 = Method(**_get(method_list, "0"))
 method_1 = InstrumentMethod(**_get(method_list, "5"))
 # method_2 = Method(**_get(method_list, "1"))
 # method_3 = Method(**_get(method_list, "2"))
 # method_4 = Method(**_get(method_list, "3"))
 
-injection1 = Injection(sample=my_sample, method=method_1, system=system)
+injection1 = Injection(sample=my_sample, method=validation_method, system=system)
 # injection2 = Injection(sample=my_sample, method=method_2, system=system)
 # injection3 = Injection(sample=my_sample, method=method_3, system=system)
 # injection4 = Injection(sample=my_sample, method=method_4, system=system)
@@ -72,11 +90,11 @@ injection1 = Injection(sample=my_sample, method=method_1, system=system)
 
 times, raw_signal = injection1.get_chromatogram_data("UV_VIS_1", pandas=False)
 
-with Profile() as profile:
-    peak_finder = PeakFinder(times, raw_signal)
+# with Profile() as profile:
+peak_finder = PeakFinder(times, raw_signal)
 
-    f = open("stats.prof", "a")
-    Stats(profile, stream=f).strip_dirs().sort_stats("tottime").print_stats()
+# f = open("stats.prof", "a")
+# Stats(profile, stream=f).strip_dirs().sort_stats("tottime").print_stats()
 
 peak_finder.print_peaks()
 peak_finder.save_peaks("./output.csv")

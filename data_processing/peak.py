@@ -224,6 +224,7 @@ class Peak:
 
         return calculate_widths
 
+    @_calculate_widths_exception
     def __calculate_width_with_curve_fit(self, height):
         val = height * self.height / 100
 

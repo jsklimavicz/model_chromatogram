@@ -20,6 +20,8 @@ class Column:
         self.type = type
         self.serial_number = serial_number
         self.injection_count = injection_count
+        self.inherent_asymmetry = random.uniform(-0.005, 0.02)
+        self.inherent_broadening = random.uniform(0, DEFAULT_PEAK_WIDTH / 50)
         self.failed = False
         self.failure_number = 0
         self.failure_asymmetry = 0
@@ -37,12 +39,14 @@ class Column:
             self.__set_failure_values()
 
     def get_column_broadening_and_asymmetry(self):
-        return self.failure_broadening, self.failure_asymmetry
+        broadening = self.inherent_broadening + self.failure_broadening
+        asymmetry = self.inherent_asymmetry + self.failure_asymmetry
+        return broadening, asymmetry
 
     def __check_for_failure(self):
         if self.injection_count > 500 and not self.failed:
             x = random.uniform(0, 1)
-            if x < 2e-4 * (self.injection_count - 500):
+            if x < 2e-4 * (self.injection_count - 1000):
                 self.failed = True
                 self.failure_number = self.injection_count
 
