@@ -27,6 +27,16 @@ class Column:
         self.failure_asymmetry = 0
         self.failure_broadening = 0
 
+    def todict(self):
+        return {
+            "serial_numer": self.serial_number,
+            "injection_count": self.injection_count,
+            "inner_diameter": self.inner_diameter,
+            "length": self.length,
+            "volume": self.volume,
+            "type": self.type,
+        }
+
     def find_volume(self):
         self.volume = (self.inner_diameter / 2) ** 2 * np.pi * self.length
         self.volume /= 1000  # mm^3 to mL conversion
@@ -53,10 +63,10 @@ class Column:
     def __set_failure_values(self):
         inconsitency_factor = random.uniform(0.95, 1.05)
         x = self.injection_count - self.failure_number + 1
-        mult_value = np.log(1 + 2 * ((x - 1) / 20) ** 2)
+        mult_value = 0.5 * np.log(1 + ((2 * x - 1) ** 3) / 1e7)
         self.failure_asymmetry = (
-            (DEFAULT_BASE_ASYMMETRY - 1) / 3 * mult_value * inconsitency_factor
+            (DEFAULT_BASE_ASYMMETRY - 1) * 20 * mult_value * inconsitency_factor
         )
         self.failure_broadening = (
-            (DEFAULT_PEAK_WIDTH) / 10 * mult_value * inconsitency_factor
+            (DEFAULT_PEAK_WIDTH) / 20 * mult_value * inconsitency_factor
         )

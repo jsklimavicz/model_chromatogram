@@ -1,0 +1,89 @@
+[
+    {
+        "name": "column performance test",
+        "processing_parameters": {
+            "background_noise_range": {
+                "minimum": 0,
+                "maximum": 100
+            },
+            "noise_threshold_multiplier": 1.1,
+            "peak_limit": 1,
+            "butter_filter_size": 40,
+            "minimum_height": {
+                "type": "baseline_noise_multiplier",
+                "value": 1.2
+            },
+            "minimum_area": 0.05
+        },
+        "peak_identification": [
+            {
+                "min_time": 2.2,
+                "max_time": 2.4,
+                "method": "largest",
+                "name": "acetaminophen"
+            },
+            {
+                "min_time": 3.8,
+                "max_time": 4.0,
+                "method": "largest",
+                "name": "ibuprofen",
+                "calibration": {
+                    "type": "linear",
+                    "amount_unit": "mg/mL",
+                    "points": [
+                        {
+                            "area": 101.2,
+                            "amount": 2.5
+                        },
+                        {
+                            "area": 99.2,
+                            "amount": 2.5
+                        },
+                        {
+                            "area": 1002,
+                            "amount": 25
+                        },
+                        {
+                            "area": 987.4,
+                            "amount": 25
+                        },
+                        {
+                            "area": 10,
+                            "amount": 0.25
+                        },
+                        {
+                            "area": 9.3,
+                            "amount": 0.25
+                        },
+                        {
+                            "area": 9.2,
+                            "amount": 0.25
+                        },
+                        {
+                            "area": 0.913,
+                            "amount": 0.025
+                        },
+                        {
+                            "area": 1.01,
+                            "amount": 0.025
+                        },
+                        {
+                            "area": 4.989,
+                            "amount": 0.125
+                        },
+                        {
+                            "area": 5.12,
+                            "amount": 0.125
+                        }
+                    ]
+                }
+            },
+            {
+                "min_time": 6.8,
+                "max_time": 6.3,
+                "method": "largest",
+                "name": "caffeine"
+            }
+        ]
+    }
+]

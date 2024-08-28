@@ -7,10 +7,13 @@ from scipy.optimize import curve_fit, brentq
 class Peak:
     field_list = [
         "index",
+        "name",
         "start_time",
         "retention_time",
         "end_time",
         "area",
+        "amount",
+        "amount_unit",
         "relative_area",
         "height",
         "relative_height",
@@ -129,19 +132,14 @@ class Peak:
 
         self.__calculate_height_and_retention_time()
         self.__calculate_area()
-        self.__calculate_statistical_moments()
+        # self.__calculate_statistical_moments()
 
-    def get_properties(self, round_digits=4):
+    def get_properties(self):
         return_dict = {}
         for field in self.field_list:
             val = self.__dict__[field]
             if isinstance(val, int):
                 return_dict[field] = val
-            elif isinstance(val, float):
-                if abs(val) < 0.1:
-                    return_dict[field] = f"{val:.4e}"
-                else:
-                    return_dict[field] = round(val, round_digits)
             else:
                 return_dict[field] = val
         return return_dict
@@ -219,7 +217,7 @@ class Peak:
         def calculate_widths(self, *args, **kwargs):
             try:
                 return func(self, *args, **kwargs)
-            except IndexError as e:
+            except (IndexError, ValueError, RuntimeError) as e:
                 return None, None, None
 
         return calculate_widths
@@ -280,7 +278,7 @@ class Peak:
             exponnorm_curve,
             t_array,
             signal_array,
-            p0=(self.height / 5, 0.1, self.retention_time + 0.01, guess),
+            p0=(self.height / 5, 0.01, self.retention_time + 0.01, guess),
             bounds=(
                 [0, 0, self.retention_time - 10 * guess, guess / 5],
                 [np.inf, 5, self.retention_time + 10 * guess, 5 * guess],

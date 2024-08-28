@@ -121,9 +121,12 @@ class PeakCreator:
             + self.column_broadening
         )
 
-        asymmetry = 1.0 / (
-            base_asymmetry
-            * math.pow(ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME, retention_time)
+        asymmetry = (
+            1.0
+            / (
+                base_asymmetry
+                * math.pow(ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME, retention_time)
+            )
             + self.column_asymmetry
         )
 

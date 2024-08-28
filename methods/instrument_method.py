@@ -39,6 +39,7 @@ class InstrumentMethod:
             sample_rate (float): Number of samples per second. Default global SAMPLE_RATE.
             run_time (float): Length of the run (in minutes). Default global RUN_LENGTH.
         """
+        self.kwargs = kwargs
         self.name: str = name
         self.run_time: float = run_time
         self.sample_rate: float = sample_rate
@@ -224,3 +225,6 @@ class InstrumentMethod:
             columns = "\n".join(self.profile_table.columns)
             print(f"Column not found. Available columnes are {columns}")
             raise
+
+    def todict(self):
+        return self.kwargs

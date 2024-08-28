@@ -28,10 +28,10 @@ SATURATION_SCALE = (
 
 ## Peak Noise Parameters
 OVERALL_HEIGHT_RANDOM_NOISE = (
-    0.007  # relative size of noise variation in peak height between injections
+    0.01  # relative size of noise variation in peak height between injections
 )
 INDIVIDUAL_HEIGHT_RANDOM_NOISE = (
-    0.002  # fluctuation of individual height from ideal within injections
+    0.005  # fluctuation of individual height from ideal within injections
 )
 RETENTION_TIME_RANDOM_OFFSET_MAX = (
     0.01  # fluctuation of retention time between injections
@@ -54,10 +54,10 @@ RANDOM_PEAK_ID_DIGITS = 4  # number of digits to put into to a random peak id
 
 # Analysis Parameters
 BACKGROUND_NOISE_RANGE = [0, 100]  # indices of background noise signal
-NOISE_THRESHOLD_MULTIPLIER = 1.1  # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
-PEAK_LIMIT = 1  # sets value to be able to find peaks. Higher values result in fewer peaks being found; lower values may produce false positive peaks.
+NOISE_THRESHOLD_MULTIPLIER = 10  # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
+PEAK_LIMIT = 3  # sets value to be able to find peaks. Higher values result in fewer peaks being found; lower values may produce false positive peaks.
 BUTTER_FILTER_SIZE = 40  # Parameter for size of Butterworth filter to remove noise in chromatograpm to find peaks
 MINIMUM_HEIGHT = (
-    BASELINE_NOISE * 1.2
+    BASELINE_NOISE * 1.5
 )  # Minimum height for a peak to be kept in peak finding algorithm
 MINIMUM_AREA = 0.05  # Minimum area for a peak to be kept in peak finding algorithm

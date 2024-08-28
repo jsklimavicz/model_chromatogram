@@ -59,6 +59,8 @@ class Sample:
             self.compounds.append(compound)
 
         exclude_cas = [a.cas for a in self.compounds]
+        random_peaks = []
+        unknown_peaks = []
         if n_random_named_peaks > 0:
             random_peaks = COMPOUND_LIBRARY.fetch_random_compounds(
                 n_random_named_peaks, exclude_cas, replace_names=True
@@ -68,15 +70,15 @@ class Sample:
                     uniform(*random_named_concentration_range), unit=concentration_unit
                 )
         if n_unknown_peaks > 0:
-            random_peaks = COMPOUND_LIBRARY.fetch_random_compounds(
+            unknown_peaks = COMPOUND_LIBRARY.fetch_random_compounds(
                 n_unknown_peaks, exclude_cas, set_unknown=True
             )
-            for compound in random_peaks:
+            for compound in unknown_peaks:
                 compound.set_concentration(
                     uniform(*unknown_concentration_range), unit=concentration_unit
                 )
 
-            self.compounds = [*self.compounds, *random_peaks]
+        self.compounds = [*self.compounds, *random_peaks, *unknown_peaks]
         self.compounds.sort(key=lambda x: x.default_retention_CV)
 
     def output_sample_dict(self):

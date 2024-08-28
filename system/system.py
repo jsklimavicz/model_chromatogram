@@ -9,7 +9,7 @@ class System:
         self.name = name
         self.column = Column(**column)
         self.retention_time_offset = system_retention_time_offset
-        self.kwargs = kwargs
+        self.kwargs = {"name": name, "column": self.column.todict(), **kwargs}
 
     def set_column(self, column: Column):
         self.column = column
@@ -25,3 +25,9 @@ class System:
 
     def inject(self, count=1):
         self.column.inject(count)
+
+    def todict(self):
+        d = self.kwargs.copy()
+        if "retention_time_offset" in d.keys():
+            d.pop("retention_time_offset")
+        return d

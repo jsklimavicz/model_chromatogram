@@ -11,6 +11,7 @@ from scipy.signal import (
     argrelmin,
     argrelmax,
 )
+from methods import ProcessingMethod
 from data_processing import PeakList, als_psalsa, Peak
 from scipy.stats import exponnorm
 from user_parameters import (
@@ -22,6 +23,11 @@ from user_parameters import (
     LINEAR_LIMIT,
     PEAK_LIMIT,
 )
+from pydash import get as _get
+from scipy.stats import linregress
+
+# from lib_cython import dynamic_smoothing
+# from lib_cython import apply_savgol_filter
 
 
 class PeakFinder:
@@ -29,7 +35,12 @@ class PeakFinder:
     Class to find peaks in a noisy spectrum. Peaks are located using a smoothed spectrum and its second derivative.
     """
 
-    def __init__(self, timepoints: np.array, signal: np.array) -> None:
+    def __init__(
+        self,
+        timepoints: np.array,
+        signal: np.array,
+        processing_method: ProcessingMethod,
+    ) -> None:
         """
         Initiates the PeakFinder. Instantiating this performs the following tasks:
             1. smoothing the signal using Savitzky-Golay smoothing and a Butterworth filter
@@ -47,7 +58,9 @@ class PeakFinder:
             timepoints (np.array): Array of times.
             signal (np.array): The raw signal.
         """
+        self.processing_method = processing_method
         self.timepoints = timepoints
+        self.n_points = len(timepoints)
         self.raw_signal = signal
         self.processed_signal = np.copy(signal)
         self.dt = (timepoints[-1] - timepoints[0]) / len(timepoints)
@@ -63,54 +76,104 @@ class PeakFinder:
         self.__get_second_derivative()
         self.find_peaks()
         self.refine_peaks()
+        self.name_peaks()
+
+    def __dynamic_smoothing(
+        self,
+        signal,
+        min_window=3,
+        max_window=52,
+        bg_min=BACKGROUND_NOISE_RANGE[0],
+        bg_max=BACKGROUND_NOISE_RANGE[1],
+    ):
+        # Define the range of window sizes (must be odd)
+        window_sizes = range(min_window, max_window, 2)
+
+        # Update the variance calculation to only consider the original signal with the smoothed value replacing one index
+
+        smoothed_arrays = []
+        for window in window_sizes:
+            smoothed_signal = savgol_filter(
+                signal, window_length=window, polyorder=2, mode="constant"
+            )
+            # smoothed_signal = apply_savgol_filter(signal.tolist(), window)
+            smoothed_arrays.append(smoothed_signal)
+        smoothed_arrays = np.array(smoothed_arrays)
+
+        noise = np.sqrt(np.mean(self.processed_signal[bg_min:bg_max] ** 2))
+        k = 10 * noise
+
+        def smooth_signal(window_sizes, smoothed_arrays):
+            prev_window = len(window_sizes) - 1
+
+            # Apply the dynamic SG smoothing with the new variance calculation
+            new_signal = np.zeros_like(signal)
+
+            max_jump = 1
+
+            for i in range(self.n_points):
+
+                min_window = max(0, prev_window - max_jump)
+                max_window = min(len(smoothed_arrays) - 1, prev_window + max_jump + 1)
+
+                pad_size = window_sizes[-1] // 2
+                min_pad = max(0, i - pad_size)
+                max_pad = min(i + pad_size, self.n_points - 1)
+
+                curr_windows = smoothed_arrays[
+                    min_window : max_window + 1, min_pad : max_pad + 1
+                ]
+
+                vars = np.var(curr_windows, axis=1)
+                mult = np.arange(min_window, max_window + 1)
+                if i > pad_size and i < self.n_points - 4:
+                    means_before = np.mean(curr_windows[:, : pad_size + 1], axis=1)
+                    means_after = np.mean(curr_windows[:, pad_size:], axis=1)
+                    sig_diff = (
+                        2
+                        * np.mean(
+                            (
+                                smoothed_arrays[
+                                    min_window : max_window + 1, i - 3 : i + 4
+                                ]
+                                - signal[i - 3 : i + 4]
+                            ),
+                            axis=1,
+                        )
+                        / noise
+                    )
+                    local_variances = (
+                        vars
+                        / np.sqrt(mult)
+                        * (1 + (k - means_before) ** 2)
+                        * (1 + (k - means_after) ** 2)
+                        * (1 + sig_diff**2)
+                    )
+                else:
+                    means = np.mean(curr_windows, axis=1)
+                    local_variances = vars * (1 + (k - means)) / mult
+                best_window_idx = max(
+                    0, np.argmin(local_variances) + prev_window - max_jump
+                )
+
+                new_signal[i] = smoothed_arrays[best_window_idx, i]
+                prev_window = best_window_idx
+            return new_signal
+
+        return smooth_signal(window_sizes, smoothed_arrays)
+
+    def __smoothing_driver(self, signal, min_window=3, max_window=52):
+        return self.__dynamic_smoothing(
+            signal,
+            min_window=min_window,
+            max_window=max_window,
+            bg_min=BACKGROUND_NOISE_RANGE[0],
+            bg_max=BACKGROUND_NOISE_RANGE[1],
+        )
 
     def __smooth_signal(self):
-        """
-        Smooths the raw signal using:
-        1. a Butterworth filter with size specified by user
-        2. Three sequential Savitzky-Golay smoothing steps with increasing filter size
-        """
-
-        sample_rate = int(round((1 / self.dt) / 60))
-        sos = butter(1, (BUTTER_FILTER_SIZE) * self.dt, output="sos")
-        self.smoothed_signal = sosfiltfilt(sos, self.processed_signal)
-        self.smoothed_signal = savgol_filter(
-            self.smoothed_signal, 3 * sample_rate + 10, 3
-        )
-
-        half_size = int(round(sample_rate * 3 / 2))
-        window_size = 2 * half_size
-        window = signal.windows.gaussian(window_size, std=2 * sample_rate)
-        s = np.sum(window)
-        K = 0.2
-        window_2 = exponnorm.pdf(
-            range(-half_size, half_size),
-            loc=-sample_rate * K,
-            scale=sample_rate,
-            K=K,
-        )
-        m = np.sum(window_2)
-        window_2 *= s / m
-
-        self.smoothed_signal = np.pad(
-            self.smoothed_signal,
-            (half_size, half_size - 1),
-            "constant",
-            constant_values=(self.smoothed_signal[0], self.smoothed_signal[-1]),
-        )
-        self.smoothed_signal = signal.convolve(
-            self.smoothed_signal, window_2, mode="valid"
-        ) / sum(window_2)
-
-        self.smoothed_signal = np.pad(
-            self.smoothed_signal,
-            (half_size, half_size - 1),
-            "constant",
-            constant_values=(self.smoothed_signal[0], self.smoothed_signal[-1]),
-        )
-        self.smoothed_signal = signal.convolve(
-            self.smoothed_signal, window_2, mode="valid"
-        ) / sum(window_2)
+        self.smoothed_signal = self.__smoothing_driver(self.raw_signal)
+        # self.smoothed_signal = self.__dynamic_smoothing(self.raw_signal)
 
     def __find_baseline(self):
         """
@@ -141,18 +204,27 @@ class PeakFinder:
         """
         Calculates the second derivative of the smoothed signal via finite differences.
         """
-        # d1 = self.smoothed_signal - self.baseline_spline(self.timepoints)
+
         d1 = self.smoothed_signal
         d_signal1 = d1[:-2] - d1[1:-1]
         d_signal2 = d1[1:-1] - d1[2:]
         self.d2_signal = d_signal1 - d_signal2
+        self.d2_signal = np.pad(self.d2_signal, (1, 1))
+
+        self.d2_signal = self.__smoothing_driver(
+            self.d2_signal, min_window=11, max_window=32
+        )
+
+        self.d2_signal = self.__smoothing_driver(
+            self.d2_signal, min_window=3, max_window=18
+        )
+
         self.d2_ave_noise = np.sqrt(
             np.mean(
                 self.d2_signal[BACKGROUND_NOISE_RANGE[0] : BACKGROUND_NOISE_RANGE[1]]
             )
             ** 2
         )
-        self.d2_signal = np.pad(self.d2_signal, (1, 1))
 
     def find_peaks(self, noise_multiplier: float = NOISE_THRESHOLD_MULTIPLIER):
         """
@@ -167,7 +239,7 @@ class PeakFinder:
 
         """
         self.d2_sigma = noise_multiplier * self.d2_ave_noise
-        self.signal_sigma = noise_multiplier * self.signal_noise * 1.5
+        self.signal_sigma = 2 * self.signal_noise
         low_cutoff = -PEAK_LIMIT
         high_cutoff = 1.5
         n = len(self.d2_signal)
@@ -177,7 +249,6 @@ class PeakFinder:
         i = 3
 
         while i < n - 3:
-            curr_sig = self.d2_signal[i]
             if (
                 self.d2_signal[i] < low_cutoff * self.d2_sigma
                 or self.processed_signal[i] > LINEAR_LIMIT
@@ -252,6 +323,8 @@ class PeakFinder:
 
         def trim_regions(regions):
             def split_regions(start, end, split_points):
+                if split_points == []:
+                    return [[start, end]]
                 sub_regions = [(start, split_points[0])]
                 for i in range(len(split_points) - 1):
                     sub_regions.append((split_points[i], split_points[i + 1]))
@@ -467,6 +540,15 @@ class PeakFinder:
 
             return trimmed_regions
 
+        regions = []
+        for start, end in initial_regions:
+            if end - start <= 2:
+                continue
+            else:
+                regions.append([start, end])
+
+        initial_regions = regions
+
         expanded_regions = expand_region(initial_regions)
 
         # Step 3: Trim overlapping regions at local minima
@@ -474,7 +556,7 @@ class PeakFinder:
 
         regions = []
         for start, end in trimmed_regions:
-            if end - start <= 1:
+            if end - start <= 2:
                 continue
             else:
                 regions.append([start, end])
@@ -491,6 +573,7 @@ class PeakFinder:
 
     def refine_peaks(self, height_cutoff=MINIMUM_HEIGHT, area_cutoff=MINIMUM_AREA):
         self.peaks.filter_peaks(height_cutoff, area_cutoff)
+        pass
 
     def plot_peaks(self, smoothed=False, second_derivative=False, noise=False):
         # Plot the final result
@@ -505,14 +588,15 @@ class PeakFinder:
             plt.plot(t, self.smoothed_signal + spline, color="limegreen")
 
         if second_derivative:
-            plt.plot(t, self.d2_signal / self.dt + spline, color="blue")
+            plt.plot(t, self.d2_signal + spline, color="blue")
+            # plt.plot(t, self.old_d2 + spline, color="slateblue")
 
         if noise:
             ones = np.ones_like(t)
-            plt.plot(t, 2 * self.d2_sigma / self.dt * ones + spline, color="green")
-            plt.plot(t, 2 * self.signal_sigma * ones + spline, color="red")
-            plt.plot(t, -2 * self.d2_sigma / self.dt * ones + spline, color="green")
-            plt.plot(t, -2 * self.signal_sigma * ones + spline, color="red")
+            plt.plot(t, 2 * self.d2_sigma * ones + spline, color="green")
+            plt.plot(t, self.signal_sigma * ones + spline, color="red")
+            plt.plot(t, -2 * self.d2_sigma * ones + spline, color="green")
+            plt.plot(t, -self.signal_sigma * ones + spline, color="red")
 
         # Colors for adjacent peaks
         for idx, peak in enumerate(self.peaks):
@@ -547,3 +631,35 @@ class PeakFinder:
 
     def __getitem__(self, index):
         return self.peaks[index]
+
+    def name_peaks(self):
+        peak_names = _get(self.processing_method, "peak_identification")
+
+        for identification in peak_names:
+            min_time = identification["min_time"]
+            max_time = identification["max_time"]
+            name = identification["name"]
+            calibration = identification.get("calibration", None)
+
+            # Find the largest peak within the specified time range
+            filtered_peaks = [
+                peak
+                for peak in self.peaks
+                if min_time <= peak.retention_time <= max_time
+            ]
+
+            if filtered_peaks:
+                largest_peak = max(filtered_peaks, key=lambda p: p.area)
+                largest_peak.name = name
+
+                # If calibration data is present, calculate the amount
+                if calibration and calibration["type"] == "linear":
+                    areas = [point["area"] for point in calibration["points"]]
+                    amounts = [point["amount"] for point in calibration["points"]]
+
+                    # Perform linear regression to find the relationship
+                    slope, intercept, _, _, _ = linregress(areas, amounts)
+
+                    # Calculate the amount based on the peak area
+                    largest_peak.amount = slope * largest_peak.area + intercept
+                    largest_peak.amount_unit = calibration["amount_unit"]
