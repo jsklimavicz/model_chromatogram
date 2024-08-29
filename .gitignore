@@ -9,6 +9,8 @@ docs/*.bib
 docs/*.ps
 cache/*
 output.csv
+output/*
+output.zip
 
 # Icon must end with two \r
 Icon
@@ -195,4 +197,3 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 __pycache__/chromatogram.cpython-310.pyc
-

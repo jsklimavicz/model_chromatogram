@@ -8,6 +8,8 @@ from injection import Injection
 from system import *
 import pandas as pd
 from data_processing import PeakFinder
+from sequence import Sequence
+import datetime
 
 import random
 
@@ -51,6 +53,13 @@ for method in processing_method_list:
         validation_processing = ProcessingMethod(**method)
         break
 
+curr_sequence = Sequence(
+    name="Test",
+    datavault="Test",
+    start_time=datetime.datetime.now,
+    url=f"Test",
+)
+
 peak_vals = []
 # with Profile() as profile:
 # for i in range(50):
@@ -59,6 +68,7 @@ injection1 = Injection(
     method=validation_method,
     system=system,
     processing_method=validation_processing,
+    sequence=curr_sequence,
 )
 
 # peak_finder = PeakFinder(

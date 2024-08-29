@@ -12,16 +12,20 @@ class Column:
         type="C18",
         serial_number="1995032",
         injection_count=0,
+        failure_risk_count=1000,
         **kwargs
     ) -> None:
         self.inner_diameter = _get(inner_diameter, "value")
+        self.inner_diameter_unit = _get(inner_diameter, "unit")
         self.length = _get(length, "value")
+        self.length_unit = _get(length, "unit")
         self.find_volume()
         self.type = type
         self.serial_number = serial_number
         self.injection_count = injection_count
         self.inherent_asymmetry = random.uniform(-0.005, 0.02)
         self.inherent_broadening = random.uniform(0, DEFAULT_PEAK_WIDTH / 50)
+        self.failure_risk_count = failure_risk_count
         self.failed = False
         self.failure_number = 0
         self.failure_asymmetry = 0
@@ -29,10 +33,13 @@ class Column:
 
     def todict(self):
         return {
-            "serial_numer": self.serial_number,
+            "serial_number": self.serial_number,
             "injection_count": self.injection_count,
-            "inner_diameter": self.inner_diameter,
-            "length": self.length,
+            "inner_diameter": {
+                "value": self.inner_diameter,
+                "unit": self.inner_diameter_unit,
+            },
+            "length": {"value": self.length, "unit": self.length_unit},
             "volume": self.volume,
             "type": self.type,
         }
@@ -56,7 +63,7 @@ class Column:
     def __check_for_failure(self):
         if self.injection_count > 500 and not self.failed:
             x = random.uniform(0, 1)
-            if x < 2e-4 * (self.injection_count - 1000):
+            if x < 2e-4 * (self.injection_count - self.failure_risk_count):
                 self.failed = True
                 self.failure_number = self.injection_count
 

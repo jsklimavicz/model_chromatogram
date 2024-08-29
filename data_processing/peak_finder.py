@@ -1,33 +1,26 @@
 import numpy as np
 from scipy.interpolate import CubicSpline
-from scipy import signal
 import pandas as pd
 from operator import lt, gt
 import matplotlib.pyplot as plt
 from scipy.signal import (
     savgol_filter,
-    sosfiltfilt,
-    butter,
     argrelmin,
     argrelmax,
 )
 from methods import ProcessingMethod
-from data_processing import PeakList, als_psalsa, Peak
-from scipy.stats import exponnorm
+from data_processing import PeakList, als_psalsa
 from user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
-    BUTTER_FILTER_SIZE,
     MINIMUM_HEIGHT,
     MINIMUM_AREA,
     BACKGROUND_NOISE_RANGE,
     LINEAR_LIMIT,
     PEAK_LIMIT,
+    MINIMUM_HEIGHT_METHOD,
 )
 from pydash import get as _get
 from scipy.stats import linregress
-
-# from lib_cython import dynamic_smoothing
-# from lib_cython import apply_savgol_filter
 
 
 class PeakFinder:
@@ -59,12 +52,42 @@ class PeakFinder:
             signal (np.array): The raw signal.
         """
         self.processing_method = processing_method
+        self.__parse_processing_method()
         self.timepoints = timepoints
         self.n_points = len(timepoints)
         self.raw_signal = signal
         self.processed_signal = np.copy(signal)
         self.dt = (timepoints[-1] - timepoints[0]) / len(timepoints)
         self.__initial_peak_finding()
+
+    def __parse_processing_method(self):
+        def set_param(mapping, default):
+            fetched_val = _get(self.processing_method.kwargs, mapping)
+            if fetched_val == None:
+                fetched_val = default
+            return fetched_val
+
+        self.bg_min = set_param(
+            "detection_parameters.background_noise_range.minimum",
+            BACKGROUND_NOISE_RANGE[0],
+        )
+        self.bg_max = set_param(
+            "detection_parameters.background_noise_range.maximum",
+            BACKGROUND_NOISE_RANGE[1],
+        )
+        self.min_area = set_param("detection_parameters.minimum_area", MINIMUM_AREA)
+        self.min_height = set_param(
+            "detection_parameters.minimum_height.value", MINIMUM_HEIGHT
+        )
+        self.peak_limit = set_param("detection_parameters.peak_limit", PEAK_LIMIT)
+        self.min_height_method = set_param(
+            "detection_parameters.minimum_height.type", MINIMUM_HEIGHT_METHOD
+        )
+        self.resolution_reference = set_param("resolution_reference", "prev")
+        self.noise_threshold_multiplier = set_param(
+            "detection_parameters.noise_threshold_multiplier",
+            NOISE_THRESHOLD_MULTIPLIER,
+        )
 
     def __initial_peak_finding(self):
         """
@@ -76,15 +99,12 @@ class PeakFinder:
         self.__get_second_derivative()
         self.find_peaks()
         self.refine_peaks()
-        self.name_peaks()
 
     def __dynamic_smoothing(
         self,
         signal,
         min_window=3,
         max_window=52,
-        bg_min=BACKGROUND_NOISE_RANGE[0],
-        bg_max=BACKGROUND_NOISE_RANGE[1],
     ):
         # Define the range of window sizes (must be odd)
         window_sizes = range(min_window, max_window, 2)
@@ -100,7 +120,7 @@ class PeakFinder:
             smoothed_arrays.append(smoothed_signal)
         smoothed_arrays = np.array(smoothed_arrays)
 
-        noise = np.sqrt(np.mean(self.processed_signal[bg_min:bg_max] ** 2))
+        noise = np.sqrt(np.mean(self.processed_signal[self.bg_min : self.bg_max] ** 2))
         k = 10 * noise
 
         def smooth_signal(window_sizes, smoothed_arrays):
@@ -164,11 +184,7 @@ class PeakFinder:
 
     def __smoothing_driver(self, signal, min_window=3, max_window=52):
         return self.__dynamic_smoothing(
-            signal,
-            min_window=min_window,
-            max_window=max_window,
-            bg_min=BACKGROUND_NOISE_RANGE[0],
-            bg_max=BACKGROUND_NOISE_RANGE[1],
+            signal, min_window=min_window, max_window=max_window
         )
 
     def __smooth_signal(self):
@@ -192,12 +208,7 @@ class PeakFinder:
         self.processed_signal -= self.baseline_spline(self.timepoints)
         self.smoothed_signal -= self.baseline_spline(self.timepoints)
         self.signal_noise = np.sqrt(
-            np.mean(
-                self.processed_signal[
-                    BACKGROUND_NOISE_RANGE[0] : BACKGROUND_NOISE_RANGE[1]
-                ]
-                ** 2
-            )
+            np.mean(self.processed_signal[self.bg_min : self.bg_max] ** 2)
         )
 
     def __get_second_derivative(self):
@@ -220,13 +231,10 @@ class PeakFinder:
         )
 
         self.d2_ave_noise = np.sqrt(
-            np.mean(
-                self.d2_signal[BACKGROUND_NOISE_RANGE[0] : BACKGROUND_NOISE_RANGE[1]]
-            )
-            ** 2
+            np.mean(self.d2_signal[self.bg_min : self.bg_max]) ** 2
         )
 
-    def find_peaks(self, noise_multiplier: float = NOISE_THRESHOLD_MULTIPLIER):
+    def find_peaks(self):
         """
         Works in three steps:
             1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple of the noise in the second derivative
@@ -238,9 +246,9 @@ class PeakFinder:
             noise_multiplier (float): multiplier for threshold of signal detection. Higher values result in fewer peaks detected.
 
         """
-        self.d2_sigma = noise_multiplier * self.d2_ave_noise
+        self.d2_sigma = self.noise_threshold_multiplier * self.d2_ave_noise
         self.signal_sigma = 2 * self.signal_noise
-        low_cutoff = -PEAK_LIMIT
+        low_cutoff = -self.peak_limit
         high_cutoff = 1.5
         n = len(self.d2_signal)
 
@@ -571,9 +579,15 @@ class PeakFinder:
         )
         self.peaks.add_peaks(regions)
 
-    def refine_peaks(self, height_cutoff=MINIMUM_HEIGHT, area_cutoff=MINIMUM_AREA):
-        self.peaks.filter_peaks(height_cutoff, area_cutoff)
-        pass
+    def refine_peaks(self):
+        if self.min_height_method in ["baseline_noise_multiplier", "multiplier"]:
+            self.min_height *= self.signal_noise
+
+        self.peaks.filter_peaks(self.min_height, self.min_area)
+        self.name_peaks()
+        self.peaks.calculate_peak_properties(
+            globals=True, resolution_reference=self.resolution_reference
+        )
 
     def plot_peaks(self, smoothed=False, second_derivative=False, noise=False):
         # Plot the final result

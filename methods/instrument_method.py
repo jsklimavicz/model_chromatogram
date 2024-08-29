@@ -45,6 +45,7 @@ class InstrumentMethod:
         self.sample_rate: float = sample_rate
         self.detection: dict = detection
         self.mobile_phases: list = mobile_phases
+        self.mobile_phase_gradient_steps: list = mobile_phase_gradient_steps
         self.__update_mobile_phase_dictionary()
         self.gradient_steps: pd.DataFrame = pd.DataFrame.from_dict(
             mobile_phase_gradient_steps
@@ -227,4 +228,15 @@ class InstrumentMethod:
             raise
 
     def todict(self):
-        return self.kwargs
+        method_dict = {
+            "name": self.name,
+            "run_time": self.run_time,
+            "sample_rate": self.sample_rate,
+            "detection": self.detection,
+            "mobile_phases": [
+                {"name": solvent["name"], "id": solvent["id"]}
+                for solvent in self.mobile_phases
+            ],
+            "mobile_phase_gradient_steps": self.mobile_phase_gradient_steps,
+        }
+        return {**method_dict, **self.kwargs}

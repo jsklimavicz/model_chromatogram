@@ -1,13 +1,19 @@
 from samples import Sample
 import json
-import matplotlib.pyplot as plt
+
+# import matplotlib.pyplot as plt
 from methods import InstrumentMethod, ProcessingMethod
 
 from pydash import get as _get
 from injection import Injection
 from system import *
-import pandas as pd
-from data_processing import PeakFinder
+from sequence import Sequence
+from pathlib import Path
+import os
+import numpy as np
+
+# import pandas as pd
+# from data_processing import PeakFinder
 
 import random
 
@@ -15,6 +21,7 @@ random.seed(903)
 
 import datetime
 import holidays
+import concurrent.futures
 
 
 # Start and end dates
@@ -81,6 +88,7 @@ def generate_datetime_set(current_date, count):
 with open("./system/systems.json") as f:
     systems_json = json.load(f)
 systems = [System(**system) for system in systems_json]
+# systems = [systems[0]]
 
 with open("./methods/instrument_methods.json") as f:
     method_list = json.load(f)
@@ -100,33 +108,118 @@ for method in processing_method_list:
         validation_processing = ProcessingMethod(**method)
         break
 
+
+def process_injection(
+    time, system, sequence, validation_method, validation_processing, sample, user
+):
+    sequence.run_blank(
+        injection_time=time
+        - datetime.timedelta(minutes=validation_method.run_time - 0.2)
+    )
+
+    curr_injection = Injection(
+        sample=sample,
+        method=validation_method,
+        processing_method=validation_processing,
+        sequence=sequence,
+        system=system,
+        user=user,
+        injection_time=time,
+    )
+    curr_injection.find_peaks("UV_VIS_1")
+    system.inject(random.randrange(24, 38))
+
+    return curr_injection
+
+
+def save_injections(quarterly_injection_list):
+    for injection in quarterly_injection_list:
+        inj_dict = injection.to_dict()
+        path = f'./output/{_get(inj_dict, "runs.0.sequence.url")}'
+        file_name = f'./output/{_get(inj_dict, "runs.0.injection_url")}'
+        Path(path).mkdir(parents=True, exist_ok=True)
+        with open(file_name, "w") as f:
+            json.dump(inj_dict, f)
+
+
 # Generate datetimes ensuring they are at least 20 minutes apart
 current_date = start_date
 minimum_time_difference = datetime.timedelta(minutes=20)
 previous_quarter = None
+users = ["John Dalton", "Amedeo Avogadro", "Antoine Lavoisier"]
+quarterly_injection_list = []
+failed_ago = np.zeros(len(systems))
 
 while current_date <= end_date:
+    print(current_date)
     weekly_datetimes = generate_datetime_set(current_date, len(systems))
 
     # Determine the current quarter
     current_quarter = (current_date.month - 1) // 3 + 1
     # Check if the quarter has changed
     if current_quarter != previous_quarter:
+        previous_quarter = current_quarter
+        year = current_date.year
+        # make a new calibration standard
         sample_dict = {
-            "name": "Calibration Standard",
+            "name": f"Calibration Standard {year}Q{current_quarter}",
             "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
             "compound_concentration_list": [
-                5 + random.uniform(-0.025, 0.025),
-                7 + random.uniform(-0.035, 0.035),
-                10 + random.uniform(-0.1, 0.1),
+                5 * random.uniform(0.99, 1.01),
+                7 * random.uniform(0.99, 1.01),
+                10 * random.uniform(0.99, 1.01),
             ],
         }
+        sample = Sample(**sample_dict)
+        # make new sequences
         sequence_name_prefix = f"calibration/{current_date.year}Q{current_quarter}"
+        sequences: list[Sequence] = []
+        for time, system in zip(weekly_datetimes, systems):
+            name = f"{system.name}_calibration/{current_date.year}Q{current_quarter}"
+            datavault = system.name.upper()
+            curr_sequence = Sequence(
+                name=name,
+                datavault=system.name.upper(),
+                start_time=time,
+                url=f"{datavault}/{name}",
+            )
+            sequences.append(curr_sequence)
 
-    for time, system in zip(weekly_datetimes, systems):
-        print(
-            f"{system.name.upper()}/calibration/{system.name}_{sequence_name_prefix}_{time}"
-        )
+        save_injections(quarterly_injection_list)
+
+        quarterly_injection_list = []
+
+    user = random.choice(users)
+
+    # Use ThreadPoolExecutor to parallelize
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(
+                process_injection,
+                time,
+                system,
+                sequence,
+                validation_method,
+                validation_processing,
+                sample,
+                user,
+            )
+            for time, system, sequence in zip(weekly_datetimes, systems, sequences)
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            quarterly_injection_list.append(future.result())
+
+    for ind, system in enumerate(systems):
+        if system.column.failed:
+            failed_ago[ind] += 1
+        if failed_ago[ind] > 3 and (current_date.year != 2023 or system.name != "Cori"):
+            print(
+                f"Column replaced on {system.name} on {current_date} after {system.column.injection_count} injections."
+            )
+            system.replace_column()
+            failed_ago[ind] = 0
 
     # Move to the next week
     current_date += delta
+
+save_injections(quarterly_injection_list)

@@ -7,8 +7,9 @@ from chromatogram import Chromatogram, Baseline, PeakCreator
 from system import System
 import numpy as np
 import datetime
-
+from sequence import Sequence
 from data_processing import PeakFinder
+import uuid
 
 
 class Injection:
@@ -17,16 +18,20 @@ class Injection:
         sample: Sample,
         method: InstrumentMethod,
         processing_method: ProcessingMethod,
+        sequence: Sequence,
         system: System,
-        user: str | None = None,
+        user: str | None = "admin",
         injection_time: datetime.datetime | None = None,
     ) -> None:
         self.sample: Sample = sample
         self.user = user
+        self.injection_uuid = str(uuid.uuid4())
         self.injection_time = injection_time
         self.method: InstrumentMethod = method
         self.processing_method = processing_method
         self.system: System = system
+        self.sequence = sequence
+        self.__add_to_sequence()
         self.system.inject()
         self.peak_creator = PeakCreator(system=self.system)
         self._create_self_dict()
@@ -38,6 +43,13 @@ class Injection:
         self.__calculate_compound_retention()
         self.__create_chromatograms()
         self.__add_compounds()
+
+    def __add_to_sequence(self):
+        self.sequence.add_injection(
+            sample_name=self.sample.name,
+            injection_time=self.injection_time,
+            injection_uuid=self.injection_uuid,
+        )
 
     def __calculate_compound_retention(self):
         for compound in self.sample.compounds:
@@ -99,13 +111,30 @@ class Injection:
         return self.chromatograms[index]
 
     def to_dict(self):
-        return self.dict
+        seq_dict = self.sequence.lookup_injection(self.injection_uuid)
+        runs_dict = {
+            "runs": [
+                {
+                    "injection_time": self.injection_time.isoformat(),
+                    "injection_number": _get(seq_dict, "injection_number"),
+                    "injection_url": _get(seq_dict, "injection_url"),
+                    "sequence": {
+                        "name": _get(seq_dict, "name"),
+                        "datavault": _get(seq_dict, "datavault"),
+                        "url": _get(seq_dict, "url"),
+                        "start_time": _get(seq_dict, "start_time"),
+                        "last_update_time": _get(seq_dict, "last_update_time"),
+                        "total_injections": _get(seq_dict, "total_injections"),
+                    },
+                }
+            ]
+        }
+        return {**self.dict, **runs_dict}
 
     def _create_self_dict(self):
         self.dict = {
             "systems": [self.system.todict()],
             "users": [{"name": self.user}],
-            "runs": [{"injection_time": self.injection_time}],
             "methods": [
                 {
                     "injection": self.method.todict(),

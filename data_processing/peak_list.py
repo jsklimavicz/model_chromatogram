@@ -53,7 +53,7 @@ class PeakList:
         self.peaks.append(curr_peak)
 
     def calculate_peak_properties(
-        self, globals=True, resolution_reference=None
+        self, globals=True, resolution_reference="prev"
     ) -> None:
         """
         Drives the calculation of peak properties that are based on the values other peaks, like relative area and resolution.
@@ -89,19 +89,25 @@ class PeakList:
                 peak.relative_height = 100 * peak.height / total_height
 
         # calculate resolution
-        if resolution_reference in ["prev", "previous"]:
+        if resolution_reference in ["prev", "previous", "first"]:
             ref_peak = self.peaks[0]
             for peak in self.peaks[1:]:
                 peak.calculate_resolution(ref_peak)
-                ref_peak = peak
-        elif resolution_reference == "next":
+                if resolution_reference != "first":
+                    ref_peak = peak
+        elif resolution_reference in ["next", "last"]:
             ref_peak = self.peaks[-1]
             for peak in self.peaks[-2::-1]:
                 peak.calculate_resolution(ref_peak)
-                ref_peak = peak
+                if resolution_reference != "last":
+                    ref_peak = peak
+        elif resolution_reference == "previous_main":
+            pass
+        elif resolution_reference == "next_main":
+            pass
         else:
             try:
-                peak_index = int(resolution_reference - 1)
+                peak_index = int(resolution_reference) - 1
                 ref_peak = self.__getitem__(peak_index)
                 for ind, peak in enumerate(self.peaks):
                     if ind == peak_index:
@@ -109,24 +115,25 @@ class PeakList:
                     else:
                         peak.calculate_resolution(ref_peak)
             except ValueError as e:
-                raise PeakListValueError(
-                    f"The value {resolution_reference} for resolution_reference cannot be cast to `int`."
-                )
+                for ref_ind, ref_peak in enumerate(self.peaks):
+                    if ref_peak.name == resolution_reference:
+                        for ind, peak in enumerate(self.peaks):
+                            if ind == ref_ind:
+                                continue
+                            else:
+                                peak.calculate_resolution(ref_peak)
+                        break
 
     def filter_peaks(
         self,
         min_height=MINIMUM_HEIGHT,
         min_area=MINIMUM_AREA,
-        resolution_reference="prev",
     ) -> None:
         peaks = []
         for peak in self.peaks:
             if peak.area >= min_area and peak.height >= min_height:
                 peaks.append(peak)
         self.peaks = peaks
-        self.calculate_peak_properties(
-            globals=True, resolution_reference=resolution_reference
-        )
 
 
 class PeakListIndexError(IndexError):

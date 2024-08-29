@@ -3,7 +3,34 @@
         "name": "Curie",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "23056882"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "96014241"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "54202953",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -15,19 +42,46 @@
             },
             "type": "C18",
             "serial_number": "00386184-P",
-            "injection_count": 100,
+            "injection_count": 900,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
             }
         },
-        "rt_offsset": 0.021
+        "system_retention_time_offset": 0.021
     },
     {
         "name": "Hodgkin",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "92000842"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "84028153"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "57299315",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -45,13 +99,40 @@
                 "unit": "um"
             }
         },
-        "rt_offsset": -0.03
+        "system_retention_time_offset": -0.03
     },
     {
         "name": "Kwolek",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "79930134"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "74409411"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "01992840",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -69,13 +150,40 @@
                 "unit": "um"
             }
         },
-        "rt_offsset": -0.12
+        "system_retention_time_offset": -0.12
     },
     {
         "name": "Franklin",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "76920482"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "55538602"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "87014389",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -93,13 +201,40 @@
                 "unit": "um"
             }
         },
-        "rt_offsset": 0.08
+        "system_retention_time_offset": 0.08
     },
     {
         "name": "Cori",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "76920582"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "56603914"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "67739682",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -117,13 +252,40 @@
                 "unit": "um"
             }
         },
-        "rt_offsset": 0.002
+        "system_retention_time_offset": 0.002
     },
     {
         "name": "Singer",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "12356393"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "67390582"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "67499562",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -141,13 +303,40 @@
                 "unit": "um"
             }
         },
-        "rt_offsset": 0.0356
+        "system_retention_time_offset": 0.0356
     },
     {
         "name": "Meitner",
         "software": "Chromeleon",
         "manufacturer": "ThermoFisher",
-        "modules": {},
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "ACC-3000T",
+                "serial_number": "48702524"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "LPG-3400SD",
+                "serial_number": "68390682"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "DAD-3000RS",
+                "serial_number": "05898295",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 4.6,
@@ -165,6 +354,6 @@
                 "unit": "um"
             }
         },
-        "rt_offsset": -0.039
+        "system_retention_time_offset": -0.039
     }
 ]

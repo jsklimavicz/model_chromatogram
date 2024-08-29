@@ -287,14 +287,19 @@ class Peak:
 
     @_calculate_widths_exception
     def __calculate_width_at_baseline(self):
+
+        self.__fit_EMG_curve(self.peak_times, self.baselined_peak_signal)
+        t_list = np.linspace(self.start_time - self.dt, self.end_time + self.dt, 502)
+        vals = self._exponnorm_curve(t_list)
+        vals_d2 = np.diff(np.diff(vals))
         d2_spline = CubicSpline(
-            self.peak_times,
-            self.d2_signal[self.start_index : self.end_index + 1],
+            t_list[1:-1],
+            vals_d2,
         )
         r = d2_spline.roots(extrapolate=False)
         self.left_poi = r[0]
         self.right_poi = r[1]
-        self.__fit_EMG_curve(self.peak_times, self.baselined_peak_signal)
+
         times = [
             self.left_poi - self.dt / 2,
             self.left_poi + self.dt / 2,

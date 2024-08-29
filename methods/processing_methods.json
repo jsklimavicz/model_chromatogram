@@ -1,29 +1,30 @@
 [
     {
         "name": "column performance test",
-        "processing_parameters": {
+        "detection_parameters": {
             "background_noise_range": {
                 "minimum": 0,
                 "maximum": 100
             },
-            "noise_threshold_multiplier": 1.1,
-            "peak_limit": 1,
+            "noise_threshold_multiplier": 10,
+            "peak_limit": 3,
             "minimum_height": {
                 "type": "baseline_noise_multiplier",
-                "value": 1.2
+                "value": 1.5
             },
             "minimum_area": 0.05
         },
+        "resolution_reference": "acetaminophen",
         "peak_identification": [
             {
-                "min_time": 2.2,
-                "max_time": 2.4,
+                "min_time": 2.0,
+                "max_time": 2.5,
                 "method": "largest",
                 "name": "acetaminophen"
             },
             {
-                "min_time": 3.8,
-                "max_time": 4.0,
+                "min_time": 3.6,
+                "max_time": 4.1,
                 "method": "largest",
                 "name": "ibuprofen",
                 "calibration": {
@@ -78,8 +79,8 @@
                 }
             },
             {
-                "min_time": 6.8,
-                "max_time": 6.3,
+                "min_time": 5.9,
+                "max_time": 6.4,
                 "method": "largest",
                 "name": "caffeine"
             }

@@ -1,5 +1,6 @@
 import numpy as np
 from system import Column
+import random, string
 
 
 class System:
@@ -14,11 +15,21 @@ class System:
     def get_column(self):
         return self.column
 
-    def replace_column(self, column: Column | None = None, serial_number=""):
+    def random_column_serial_number(self):
+        digits = "".join(random.choices(string.digits, k=6))
+        capital_letter = random.choice(string.ascii_uppercase)
+        # Combine them with a hyphen
+        random_string = f"00{digits}-{capital_letter}"
+        return random_string
+
+    def replace_column(self, column: Column | None = None, serial_number=None):
+        if serial_number is None:
+            serial_number = self.random_column_serial_number()
         if column is None:
             column_dict = self.column.todict()
             column_dict["serial_number"] = serial_number
             self.column = Column(**column_dict)
+            self.column.injection_count = 0
         else:
             self.column = column
 
@@ -33,6 +44,7 @@ class System:
 
     def todict(self):
         d = self.kwargs.copy()
-        if "retention_time_offset" in d.keys():
-            d.pop("retention_time_offset")
+        d["column"] = self.column.todict()
+        if "system_retention_time_offset" in d.keys():
+            d.pop("system_retention_time_offset")
         return d

@@ -9,7 +9,7 @@ class Sample:
         name: str,
         compound_id_list: list[str] | None,
         compound_concentration_list: list[float] | None,
-        creation_date: datetime = None,
+        creation_date: datetime.datetime | None = None,
         compound_alias: list[str] | None = None,
         concentration_unit=4,
         n_random_named_peaks: int = 0,
@@ -39,8 +39,10 @@ class Sample:
         """
 
         self.name: str = name
-        self.creation_date = creation_date
-
+        if isinstance(creation_date, datetime.datetime):
+            self.creation_date = creation_date.isoformat()
+        else:
+            self.creation_date = creation_date
         if compound_id_list is None:
             compound_id_list = []
         if compound_concentration_list is None:
