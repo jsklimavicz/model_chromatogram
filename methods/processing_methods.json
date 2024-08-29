@@ -8,7 +8,6 @@
             },
             "noise_threshold_multiplier": 1.1,
             "peak_limit": 1,
-            "butter_filter_size": 40,
             "minimum_height": {
                 "type": "baseline_noise_multiplier",
                 "value": 1.2

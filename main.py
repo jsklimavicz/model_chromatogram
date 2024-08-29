@@ -19,11 +19,9 @@ import json
 
 
 sample_dict = {
-    "name": "test-1",
+    "name": "Calibration Standard",
     "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
     "compound_concentration_list": [0.5, 0.7, 0.3],
-    # "n_random_named_peaks": 20,
-    # "random_named_concentration_range": [0.5, 0.10],
 }
 
 

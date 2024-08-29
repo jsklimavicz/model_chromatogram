@@ -11,11 +11,16 @@ class System:
         self.retention_time_offset = system_retention_time_offset
         self.kwargs = {"name": name, "column": self.column.todict(), **kwargs}
 
-    def set_column(self, column: Column):
-        self.column = column
-
     def get_column(self):
         return self.column
+
+    def replace_column(self, column: Column | None = None, serial_number=""):
+        if column is None:
+            column_dict = self.column.todict()
+            column_dict["serial_number"] = serial_number
+            self.column = Column(**column_dict)
+        else:
+            self.column = column
 
     def get_column_volume(self):
         return self.column.volume

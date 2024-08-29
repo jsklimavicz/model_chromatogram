@@ -11,14 +11,14 @@ SOLVENT_PROFILE_CONVOLUTION_WIDTH = (
 # Chromatogram creation filterss
 ## Peak shape parameters
 DEFAULT_PEAK_WIDTH = (
-    0.07  # default peak width for peak eluting at t = 0, in units of min
+    0.06  # default peak width for peak eluting at t = 0, in units of min
 )
 SIGNAL_MULTIPLIER = 1  # multipier for signal
 DEFAULT_BASE_ASYMMETRY = 1.03  # default peak asymmetry
 ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME = (
     1.003  # how much peaks become more asymmetric over time, in units of min^-1
 )
-WIDENING_CONSTANT = 1.025  # how much peaks widen over time, in units of min^-1
+WIDENING_CONSTANT = 1.02  # how much peaks widen over time, in units of min^-1
 LINEAR_LIMIT = (
     2000  # mAU after which peak height is no longer linear with concentration
 )

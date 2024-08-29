@@ -783,14 +783,6 @@
                 {
                     "name": "UV_VIS_2",
                     "wavelength": 270
-                },
-                {
-                    "name": "UV_VIS_3",
-                    "wavelength": 230
-                },
-                {
-                    "name": "UV_VIS_4",
-                    "wavelength": 285
                 }
             ]
         }
