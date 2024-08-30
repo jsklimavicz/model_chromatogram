@@ -785,6 +785,56 @@
                     "wavelength": 270
                 }
             ]
+        },
+        "creation": {
+            "computer": "CHROMELEON2",
+            "comment": null,
+            "time": {
+                "value": "2020-08-31T12:18:06.01Z",
+                "raw_value": "2020-08-31T12:18:06.01+00:00"
+            },
+            "user": "cmadmin",
+            "data_vault_name": "CHROMELEON2/ChromeleonLocal"
+        },
+        "last_update": {
+            "computer": "CHROMELEON2",
+            "comment": null,
+            "time": {
+                "value": "2020-08-31T12:24:33.75Z",
+                "raw_value": "2020-08-31T12:24:33.75+00:00"
+            },
+            "user": "cmadmin",
+            "data_vault_name": "CHROMELEON2/ChromeleonLocal"
+        },
+        "sample_introduction": {
+            "dilution_factor": {
+                "value": 1.0,
+                "unit": "Unitless",
+                "raw_value": "1.0000"
+            },
+            "injection": {
+                "volume": {
+                    "value": 20.0,
+                    "unit": "Microliter",
+                    "raw_value": "20.0"
+                }
+            },
+            "weight": {
+                "value": 1.0,
+                "unit": "Unitless",
+                "raw_value": "1.0000"
+            },
+            "internal_standard_amount": {
+                "value": 1.0,
+                "unit": "Unitless",
+                "raw_value": "1.0000"
+            },
+            "spike_group": null,
+            "autodilution_ratio": {
+                "raw_value": "0",
+                "is_error": false,
+                "value": 0.0
+            }
         }
     }
 ]

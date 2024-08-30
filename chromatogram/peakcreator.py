@@ -20,8 +20,8 @@ class PeakCreator:
         """
         self.system = system
         self.column = system.get_column()
-        self.column_broadening, self.column_asymmetry = (
-            self.column.get_column_broadening_and_asymmetry()
+        self.column_broadening, self.column_asymmetry, self.rt_diff = (
+            self.column.get_column_peak_vals()
         )
         self.injection_specific_retention_time_offset = (
             uniform(-RETENTION_TIME_RANDOM_OFFSET_MAX, RETENTION_TIME_RANDOM_OFFSET_MAX)
@@ -153,7 +153,7 @@ class PeakCreator:
                 -INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE,
                 INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE,
             )
-        )
+        ) * self.rt_diff
 
         exponentially_modified_gaussian_mean = desired_mode - mode
 

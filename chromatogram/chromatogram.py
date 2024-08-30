@@ -12,7 +12,9 @@ class Chromatogram:
     Creates and stores time and signal data for chromatograms.
     """
 
-    def __init__(self, times: np.array, initial_values: np.array) -> None:
+    def __init__(
+        self, times: np.array, initial_values: np.array, wavelength: float
+    ) -> None:
         """
         Creates a new Chromatogram.
 
@@ -24,6 +26,7 @@ class Chromatogram:
         self.signal: np.array = initial_values
         self.saturated_signal: np.array = self.signal
         self.saturation_up_to_date = False
+        self.wavelength = wavelength
 
     def add_compound_peak(self, signal: np.array, absorbance: float = 1) -> None:
         """
@@ -100,7 +103,9 @@ class Baseline(Chromatogram):
     Class for creating a baseline.
     """
 
-    def __init__(self, times, initial_values, noise_level=BASELINE_NOISE) -> None:
+    def __init__(
+        self, times, initial_values, wavelength: float, noise_level=BASELINE_NOISE
+    ) -> None:
         """
         Creates a new baseline chromatogram.
 
@@ -109,7 +114,7 @@ class Baseline(Chromatogram):
             initial_values (np.array): array of initial signal values to add peaks to.
             noise_level (float): value specifying the noise level of the baseline. Roughly 95% of baseline values will be in the interval [`initial_values - noise_level`, `initial_values + noise_level`].
         """
-        super().__init__(times, initial_values)
+        super().__init__(times, initial_values, wavelength)
         self.noise_level = noise_level
         self.create_baseline()
 

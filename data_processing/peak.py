@@ -12,6 +12,12 @@ class Peak:
         "retention_time",
         "end_time",
         "area",
+        "start_signal",
+        "end_signal",
+        "retention_signal",
+        "start_baseline",
+        "end_baseline",
+        "retention_baseline",
         "amount",
         "amount_unit",
         "relative_area",
@@ -47,7 +53,7 @@ class Peak:
         "signal_to_noise",
         "asymmetry_USP",
         "asymmetry_AIA",
-        "asymetry_moments",
+        "asymmetry_moments",
         "skewness",
         "resolution_EP",
         "resolution_USP",
@@ -114,18 +120,20 @@ class Peak:
         self.__set_peak_type(prev_peak, next_peak)
 
         if self.start_peak_type.lower() == "b":
-            start_y = self.start_signal
+            self.start_baseline = self.start_signal
         else:
-            start_y = self.start_spline
+            self.start_baseline = self.start_spline
 
         if self.end_peak_type.lower() == "b":
-            end_y = self.end_signal
+            self.end_baseline = self.end_signal
         else:
-            end_y = self.end_spline
+            self.end_baseline = self.end_spline
 
         self.peak_times = self.times[self.start_index : self.end_index + 1]
         base_signals = np.interp(
-            self.peak_times, (self.peak_times[0], self.peak_times[-1]), (start_y, end_y)
+            self.peak_times,
+            (self.peak_times[0], self.peak_times[-1]),
+            (self.start_baseline, self.end_baseline),
         )
         self.peak_signal = self.raw_signal[self.start_index : self.end_index + 1]
         self.baselined_peak_signal = self.peak_signal - base_signals
@@ -178,7 +186,24 @@ class Peak:
         self.height = np.max(self.baselined_peak_signal)
         self.relative_height = None
         self.retention_index = np.argmax(self.baselined_peak_signal) + self.start_index
-        self.retention_time = self.times[self.retention_index]
+        time_window = self.times[self.retention_index - 3 : self.retention_index + 3]
+        signal_window = self.raw_signal[
+            self.retention_index - 3 : self.retention_index + 3
+        ]
+
+        def quadratic(x, a, b, c):
+            return a * x**2 + b * x + c
+
+        params, _ = curve_fit(quadratic, time_window, signal_window)
+        a, b, _ = params
+
+        self.retention_time = -b / (2 * a)
+        if not (self.start_time < self.retention_time < self.start_time):
+            self.retention_time = self.times[self.retention_index]
+            self.retention_signal = self.height
+        else:
+            self.retention_signal = quadratic(self.retention_time, *params)
+
         self.signal_to_noise = 2 * self.height / self.signal_noise
 
     def __calculate_statistical_moments(self):
@@ -404,7 +429,7 @@ class Peak:
             self.skewness = (self.width_10_right + self.width_10_left) / (
                 2 * self.width_10_left
             )
-        self.asymetry_moments = (self.moment_1 - self.retention_time) / np.sqrt(
+        self.asymmetry_moments = (self.moment_1 - self.retention_time) / np.sqrt(
             self.moment_2
         )
 

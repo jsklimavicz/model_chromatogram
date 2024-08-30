@@ -25,11 +25,13 @@ class Column:
         self.injection_count = injection_count
         self.inherent_asymmetry = random.uniform(-0.005, 0.015)
         self.inherent_broadening = random.uniform(0, DEFAULT_PEAK_WIDTH / 50)
+        self.inherent_rt_diff = random.uniform(-0.005, 0.005)
         self.failure_risk_count = failure_risk_count
         self.failed = False
         self.failure_number = 0
         self.failure_asymmetry = 0
         self.failure_broadening = 0
+        self.failure_rt_shift_mult = 1
 
     def todict(self):
         return {
@@ -55,10 +57,11 @@ class Column:
         if self.failed:
             self.__set_failure_values()
 
-    def get_column_broadening_and_asymmetry(self):
+    def get_column_peak_vals(self):
         broadening = self.inherent_broadening + self.failure_broadening
         asymmetry = self.inherent_asymmetry + self.failure_asymmetry
-        return broadening, asymmetry
+        rt_shift = self.inherent_rt_diff + self.failure_rt_shift_mult
+        return broadening, asymmetry, rt_shift
 
     def __check_for_failure(self):
         if self.injection_count > 500 and not self.failed:
@@ -77,3 +80,4 @@ class Column:
         self.failure_broadening = (
             (DEFAULT_PEAK_WIDTH) / 20 * mult_value * inconsitency_factor
         )
+        self.failure_rt_shift_mult = 1 + mult_value * inconsitency_factor / 20

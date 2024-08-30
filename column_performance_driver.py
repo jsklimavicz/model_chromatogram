@@ -153,8 +153,8 @@ def process_injection(
 def save_injections(quarterly_injection_list):
     for injection in quarterly_injection_list:
         inj_dict = injection.to_dict()
-        path = f'./output/{_get(inj_dict, "runs.0.sequence.url")}'
-        file_name = f'./output/{_get(inj_dict, "runs.0.injection_url")}'
+        path = f'./output4/{_get(inj_dict, "runs.0.sequence.url")}'
+        file_name = f'./output4/{_get(inj_dict, "runs.0.injection_url")}'
         Path(path).mkdir(parents=True, exist_ok=True)
         with open(file_name, "w") as f:
             json.dump(inj_dict, f)
@@ -183,9 +183,9 @@ while current_date <= end_date:
             "name": f"Calibration Standard {year}Q{current_quarter}",
             "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
             "compound_concentration_list": [
-                5 * random.uniform(0.99, 1.01),
-                7 * random.uniform(0.99, 1.01),
-                10 * random.uniform(0.99, 1.01),
+                5 * random.uniform(0.997, 1.003),
+                7 * random.uniform(0.997, 1.003),
+                10 * random.uniform(0.997, 1.003),
             ],
         }
         sample = Sample(**sample_dict)
@@ -230,8 +230,14 @@ while current_date <= end_date:
     for ind, system in enumerate(systems):
         if system.column.failed:
             failed_ago[ind] += 1
-        if failed_ago[ind] > 3 and (current_date.year != 2023 or system.name != "Cori"):
-            p = random.uniform(0, 0.5) + (failed_ago[ind] - 3) / 10
+        if failed_ago[ind] > 3 and (
+            (
+                system.column.injection_count - system.column.failure_risk_count > 1000
+                or current_date.year != 2023
+            )
+            or system.name != "Cori"
+        ):
+            p = random.uniform(0, 0.5) + (failed_ago[ind] - 3) / 5
             if p > 1:
                 print(
                     f"Column replaced on {system.name} on {current_date} after {system.column.injection_count} injections."

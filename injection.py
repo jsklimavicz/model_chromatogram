@@ -62,15 +62,28 @@ class Injection:
         # uv_channels
         for wavelength, name in zip(self.uv_wavelengths, self.uv_channel_names):
             times, signals = self.method.get_uv_background(wavelength)
-            baseline = Baseline(np.array(times), np.array(signals))
+            baseline = Baseline(
+                np.array(times), np.array(signals), wavelength=wavelength
+            )
             self.chromatograms[name] = baseline
         self.times = times
 
         for name, chromatogram in self.chromatograms.items():
-            results_dict = {"channel_name": name, "peaks": []}
+            results_dict = {
+                "channel_name": name,
+                "peaks": [],
+                "drift": chromatogram.signal[-1] - chromatogram.signal[0],
+                "signal_noise": np.mean(chromatogram.signal[0:50]),
+                "signal_statistic": {
+                    "minimum": chromatogram.signal.min(),
+                    "maximum": chromatogram.signal.max(),
+                    "average": np.mean(chromatogram.signal),
+                },
+            }
             self.dict["results"].append(results_dict)
             datacube_dict = {
                 "channel": name,
+                "wavelength": chromatogram.wavelength,
                 "times": chromatogram.times.tolist(),
                 "times_unit": "MinuteTime",
                 "signal": chromatogram.signal.tolist(),

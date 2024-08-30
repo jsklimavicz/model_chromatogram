@@ -14,19 +14,19 @@
             },
             "minimum_area": 1
         },
-        "resolution_reference": "acetaminophen",
+        "resolution_reference": "TS-8391",
         "peak_identification": [
             {
                 "min_time": 2.0,
                 "max_time": 2.5,
                 "method": "largest",
-                "name": "acetaminophen"
+                "name": "TS-8391"
             },
             {
                 "min_time": 3.6,
                 "max_time": 4.1,
                 "method": "largest",
-                "name": "ibuprofen",
+                "name": "klimavizinib",
                 "calibration": {
                     "type": "linear",
                     "amount_unit": "mg/mL",
