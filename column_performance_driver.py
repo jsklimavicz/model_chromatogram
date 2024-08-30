@@ -39,7 +39,25 @@ us_holidays = holidays.UnitedStates()
 
 # Function to generate a random time between 9 AM and 4 PM
 def random_time():
-    random_hour = random.randint(9, 15)  # Between 9 AM and 3 PM
+    val = random.random()
+    if val < 0.217:
+        random_hour = 8
+    elif val < 0.392:
+        random_hour = 9
+    elif val < 0.511:
+        random_hour = 10
+    elif val < 0.564:
+        random_hour = 11
+    elif val < 0.613:
+        random_hour = 12
+    elif val < 0.764:
+        random_hour = 13
+    elif val < 0.897:
+        random_hour = 14
+    elif val < 0.951:
+        random_hour = 15
+    else:
+        random_hour = 16
     random_minute = random.randint(0, 59)  # Any minute
     random_second = random.randint(0, 59)  # Any second
     return datetime.time(random_hour, random_minute, random_second)

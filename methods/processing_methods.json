@@ -4,15 +4,15 @@
         "detection_parameters": {
             "background_noise_range": {
                 "minimum": 0,
-                "maximum": 100
+                "maximum": 150
             },
             "noise_threshold_multiplier": 10,
-            "peak_limit": 3,
+            "peak_limit": 5,
             "minimum_height": {
                 "type": "baseline_noise_multiplier",
-                "value": 1.5
+                "value": 10
             },
-            "minimum_area": 0.05
+            "minimum_area": 1
         },
         "resolution_reference": "acetaminophen",
         "peak_identification": [
