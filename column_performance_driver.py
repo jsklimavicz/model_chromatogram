@@ -213,11 +213,13 @@ while current_date <= end_date:
         if system.column.failed:
             failed_ago[ind] += 1
         if failed_ago[ind] > 3 and (current_date.year != 2023 or system.name != "Cori"):
-            print(
-                f"Column replaced on {system.name} on {current_date} after {system.column.injection_count} injections."
-            )
-            system.replace_column()
-            failed_ago[ind] = 0
+            p = random.uniform(0, 0.5) + (failed_ago[ind] - 3) / 10
+            if p > 1:
+                print(
+                    f"Column replaced on {system.name} on {current_date} after {system.column.injection_count} injections."
+                )
+                system.replace_column()
+                failed_ago[ind] = 0
 
     # Move to the next week
     current_date += delta

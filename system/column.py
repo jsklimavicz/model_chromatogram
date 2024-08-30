@@ -23,7 +23,7 @@ class Column:
         self.type = type
         self.serial_number = serial_number
         self.injection_count = injection_count
-        self.inherent_asymmetry = random.uniform(-0.005, 0.02)
+        self.inherent_asymmetry = random.uniform(-0.005, 0.015)
         self.inherent_broadening = random.uniform(0, DEFAULT_PEAK_WIDTH / 50)
         self.failure_risk_count = failure_risk_count
         self.failed = False
@@ -63,14 +63,14 @@ class Column:
     def __check_for_failure(self):
         if self.injection_count > 500 and not self.failed:
             x = random.uniform(0, 1)
-            if x < 2e-4 * (self.injection_count - self.failure_risk_count):
+            if x < 1.5e-4 * (self.injection_count - self.failure_risk_count):
                 self.failed = True
                 self.failure_number = self.injection_count
 
     def __set_failure_values(self):
         inconsitency_factor = random.uniform(0.95, 1.05)
         x = self.injection_count - self.failure_number + 1
-        mult_value = 0.5 * np.log(1 + ((2 * x - 1) ** 3) / 1e7)
+        mult_value = 0.5 * np.log(1 + ((x / 2 - 1) ** 3) / 1e7)
         self.failure_asymmetry = (
             (DEFAULT_BASE_ASYMMETRY - 1) * 20 * mult_value * inconsitency_factor
         )

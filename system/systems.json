@@ -42,7 +42,7 @@
             },
             "type": "C18",
             "serial_number": "00386184-P",
-            "injection_count": 900,
+            "injection_count": 843,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
@@ -93,7 +93,7 @@
             },
             "type": "C18",
             "serial_number": "00882042-Y",
-            "injection_count": 200,
+            "injection_count": 203,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
@@ -150,7 +150,7 @@
                 "unit": "um"
             }
         },
-        "system_retention_time_offset": -0.12
+        "system_retention_time_offset": -0.012
     },
     {
         "name": "Franklin",
@@ -195,13 +195,13 @@
             },
             "type": "C18",
             "serial_number": "00962700-A",
-            "injection_count": 180,
+            "injection_count": 197,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
             }
         },
-        "system_retention_time_offset": 0.08
+        "system_retention_time_offset": 0.048
     },
     {
         "name": "Cori",
@@ -246,13 +246,13 @@
             },
             "type": "C18",
             "serial_number": "00437996-L",
-            "injection_count": 0,
+            "injection_count": 582,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
             }
         },
-        "system_retention_time_offset": 0.002
+        "system_retention_time_offset": 0.017
     },
     {
         "name": "Singer",
@@ -297,7 +297,7 @@
             },
             "type": "C18",
             "serial_number": "00182204-B",
-            "injection_count": 0,
+            "injection_count": 291,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
@@ -348,7 +348,7 @@
             },
             "type": "C18",
             "serial_number": "00350556-E",
-            "injection_count": 20,
+            "injection_count": 670,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
