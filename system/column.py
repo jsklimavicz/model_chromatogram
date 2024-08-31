@@ -25,7 +25,7 @@ class Column:
         self.injection_count = injection_count
         self.inherent_asymmetry = random.uniform(-0.005, 0.015)
         self.inherent_broadening = random.uniform(0, DEFAULT_PEAK_WIDTH / 50)
-        self.inherent_rt_diff = random.uniform(-0.005, 0.005)
+        self.inherent_rt_diff = random.uniform(-0.002, 0.002)
         self.failure_risk_count = failure_risk_count
         self.failed = False
         self.failure_number = 0
@@ -80,4 +80,4 @@ class Column:
         self.failure_broadening = (
             (DEFAULT_PEAK_WIDTH) / 20 * mult_value * inconsitency_factor
         )
-        self.failure_rt_shift_mult = 1 + mult_value * inconsitency_factor / 20
+        self.failure_rt_shift_mult = 1 + mult_value * inconsitency_factor / 100

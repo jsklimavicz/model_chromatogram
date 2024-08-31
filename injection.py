@@ -26,7 +26,9 @@ class Injection:
         self.sample: Sample = sample
         self.user = user
         self.injection_uuid = str(uuid.uuid4())
-        self.injection_time = injection_time
+        self.injection_time = (
+            injection_time if injection_time is not None else datetime.datetime.now()
+        )
         self.method: InstrumentMethod = method
         self.processing_method = processing_method
         self.system: System = system
@@ -68,6 +70,15 @@ class Injection:
             self.chromatograms[name] = baseline
         self.times = times
 
+    def __add_compounds(self):
+        for compound in self.sample.compounds:
+            compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
+            max_absobances = compound.get_absorbance(self.uv_wavelengths)
+            for name, absorbance in zip(self.uv_channel_names, max_absobances):
+                self.chromatograms[name].add_compound_peak(
+                    absorbance=absorbance, signal=compound_peak_signal
+                )
+
         for name, chromatogram in self.chromatograms.items():
             results_dict = {
                 "channel_name": name,
@@ -90,15 +101,6 @@ class Injection:
                 "signal_unit": "MilliAbsorbanceUnit",
             }
             self.dict["datacubes"].append(datacube_dict)
-
-    def __add_compounds(self):
-        for compound in self.sample.compounds:
-            compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
-            max_absobances = compound.get_absorbance(self.uv_wavelengths)
-            for name, absorbance in zip(self.uv_channel_names, max_absobances):
-                self.chromatograms[name].add_compound_peak(
-                    absorbance=absorbance, signal=compound_peak_signal
-                )
 
     def plot_chromatogram(self, channel_name, **kwargs):
         return self.chromatograms[channel_name].plot(**kwargs)

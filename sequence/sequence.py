@@ -33,10 +33,12 @@ class Sequence:
     def add_injection(
         self,
         sample_name: str,
-        injection_time: datetime.datetime,
         injection_uuid: uuid.uuid4,
+        injection_time: datetime.datetime | None = None,
     ) -> int:
         self.total_injections += 1
+        if not injection_time:
+            injection_time = datetime.datetime.now()
         self.last_update_time = injection_time
         self.injection_list.append(
             {

@@ -10,7 +10,8 @@ def als_psalsa(
     k: float = 2,
     rel_tol: float = 1e-6,
 ):
-    """
+    """Peaked Signal’s Asymmetric Least Squares Algorithm
+
     Algorithm for finding a baseline of a chromatogram based on the method outlined in:
     S. Oller-Moreno, A. Pardo, J. M. Jiménez-Soto, J. Samitier and S. Marco, "Adaptive Asymmetric Least Squares baseline estimation for analytical instruments," 2014 IEEE 11th International Multi-Conference on Systems, Signals & Devices (SSD14), Barcelona, Spain, 2014, pp. 1-5, doi: 10.1109/SSD.2014.6808837.
     https://diposit.ub.edu/dspace/bitstream/2445/188026/1/2014_IEEE_Adaptive_MarcoS_postprint.pdf

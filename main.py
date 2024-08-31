@@ -19,11 +19,15 @@ from cProfile import Profile
 from pstats import Stats
 import json
 
+import numpy as np
+
+np.seterr(all="warn")
+
 
 sample_dict = {
     "name": "Calibration Standard",
     "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
-    "compound_concentration_list": [0.5, 0.7, 0.3],
+    "compound_concentration_list": [0.05, 0.07, 0.1],
 }
 
 
@@ -56,11 +60,11 @@ for method in processing_method_list:
 curr_sequence = Sequence(
     name="Test",
     datavault="Test",
-    start_time=datetime.datetime.now,
+    start_time=datetime.datetime.now(),
     url=f"Test",
 )
 
-peak_vals = []
+
 # with Profile() as profile:
 # for i in range(50):
 injection1 = Injection(
@@ -71,12 +75,13 @@ injection1 = Injection(
     sequence=curr_sequence,
 )
 
-# peak_finder = PeakFinder(
-#     *injection1.get_chromatogram_data("UV_VIS_1", pandas=False)
-# )
+peak_finder = PeakFinder(
+    *injection1.get_chromatogram_data("UV_VIS_1", pandas=False),
+    processing_method=validation_processing,
+)
 
 # peak = peak_finder[1].get_properties()
-# # peak_finder.plot_peaks(smoothed=True, second_derivative=True, noise=True)
+peak_finder.plot_peaks(smoothed=True, second_derivative=True, noise=True)
 injection1.find_peaks("UV_VIS_1")
 injection_json = injection1.to_dict()
 # peak_finder.plot_peaks()
@@ -90,14 +95,14 @@ with open("./injection.json", "w") as f:
     # f = open("stats.prof", "a")
     # Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()
 
-
+exit()
 peak_list = pd.DataFrame.from_dict(peak_vals)
 print(peak_list)
 peak_list.to_csv("./peak_list_test.csv", index=False)
 
 
-data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1", pandas=True)
-data.to_csv("./chromatogram.csv")
+# data: pd.DataFrame = injection1.get_chromatogram_data("UV_VIS_1", pandas=True)
+# data.to_csv("./chromatogram.csv")
 
 
 exit()

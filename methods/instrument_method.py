@@ -128,7 +128,7 @@ class InstrumentMethod:
         n_points = round(self.run_time * 60 * self.sample_rate)
         # account for max time not being a multiple of frequency:
         max_time = n_points / (self.sample_rate * 60)
-        times = np.linspace(0, max_time, n_points)
+        times = np.linspace(0, max_time, n_points + 1)
 
         self.profile_table = pd.DataFrame({"time": times})
 

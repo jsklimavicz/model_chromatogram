@@ -16,13 +16,11 @@ import numpy as np
 # from data_processing import PeakFinder
 
 import random
-
-random.seed(903)
-
 import datetime
 import holidays
 import concurrent.futures
 
+folder = "output9"
 
 # Start and end dates
 start_date = datetime.datetime(2021, 1, 1)
@@ -153,8 +151,8 @@ def process_injection(
 def save_injections(quarterly_injection_list):
     for injection in quarterly_injection_list:
         inj_dict = injection.to_dict()
-        path = f'./output4/{_get(inj_dict, "runs.0.sequence.url")}'
-        file_name = f'./output4/{_get(inj_dict, "runs.0.injection_url")}'
+        path = f'./{folder}/{_get(inj_dict, "runs.0.sequence.url")}'
+        file_name = f'./{folder}/{_get(inj_dict, "runs.0.injection_url")}'
         Path(path).mkdir(parents=True, exist_ok=True)
         with open(file_name, "w") as f:
             json.dump(inj_dict, f)
@@ -183,9 +181,9 @@ while current_date <= end_date:
             "name": f"Calibration Standard {year}Q{current_quarter}",
             "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
             "compound_concentration_list": [
-                5 * random.uniform(0.997, 1.003),
-                7 * random.uniform(0.997, 1.003),
-                10 * random.uniform(0.997, 1.003),
+                0.05 * random.uniform(0.997, 1.003),
+                0.07 * random.uniform(0.997, 1.003),
+                0.10 * random.uniform(0.997, 1.003),
             ],
         }
         sample = Sample(**sample_dict)

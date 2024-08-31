@@ -43,6 +43,7 @@ class Peak:
         "width_5_right",
         "width_5_sigma_right",
         "width_baseline_right",
+        "capillary_electrophoresis_area",
         "moment_0",
         "moment_1",
         "moment_2",
@@ -50,14 +51,27 @@ class Peak:
         "moment_3_standardized",
         "moment_4",
         "moment_4_standardized",
+        "standard_deviation",
         "signal_to_noise",
         "asymmetry_USP",
         "asymmetry_AIA",
         "asymmetry_moments",
         "skewness",
-        "resolution_EP",
-        "resolution_USP",
-        "resolution_statistical",
+        "resolution_ep_next_main",
+        "resolution_usp_next_main",
+        "resolution_statistical_next_main",
+        "resolution_ep_previous_main",
+        "resolution_usp_previous_main",
+        "resolution_statistical_previous_main",
+        "resolution_ep_previous_identified",
+        "resolution_usp_previous_identified",
+        "resolution_statistical_previous_identified",
+        "resolution_ep_next_identified",
+        "resolution_usp_next_identified",
+        "resolution_statistical_next_identified",
+        "resolution_ep_reference",
+        "resolution_usp_reference",
+        "resolution_statistical_reference",
         "plates_USP",
         "plates_EP",
         "plates_statistical",
@@ -131,12 +145,13 @@ class Peak:
 
         self.peak_times = self.times[self.start_index : self.end_index + 1]
         base_signals = np.interp(
-            self.peak_times,
+            [*self.peak_times, self.retention_time],
             (self.peak_times[0], self.peak_times[-1]),
             (self.start_baseline, self.end_baseline),
         )
         self.peak_signal = self.raw_signal[self.start_index : self.end_index + 1]
-        self.baselined_peak_signal = self.peak_signal - base_signals
+        self.baselined_peak_signal = self.peak_signal - base_signals[:-1]
+        self.retention_baseline = base_signals[-1]
 
         self.__calculate_height_and_retention_time()
         self.__calculate_area()
@@ -181,6 +196,7 @@ class Peak:
     def __calculate_area(self):
         self.area = np.sum(self.baselined_peak_signal) * self.dt
         self.relative_area = None
+        self.capillary_electrophoresis_area = self.area / self.retention_time
 
     def __calculate_height_and_retention_time(self):
         self.height = np.max(self.baselined_peak_signal)
@@ -198,7 +214,7 @@ class Peak:
         a, b, _ = params
 
         self.retention_time = -b / (2 * a)
-        if not (self.start_time < self.retention_time < self.start_time):
+        if not (self.start_time < self.retention_time < self.end_time):
             self.retention_time = self.times[self.retention_index]
             self.retention_signal = self.height
         else:
@@ -207,35 +223,15 @@ class Peak:
         self.signal_to_noise = 2 * self.height / self.signal_noise
 
     def __calculate_statistical_moments(self):
-        self.moment_0 = self.area
-        self.moment_1 = (
-            np.sum(self.peak_times * self.baselined_peak_signal) * self.dt / self.area
-        )
-        self.moment_2 = (
-            np.sum(
-                (self.peak_times - self.retention_time) ** 2
-                * self.baselined_peak_signal
-            )
-            * self.dt
-            / self.area
-        )
-        self.moment_3 = (
-            np.sum(
-                (self.peak_times - self.retention_time) ** 3
-                * self.baselined_peak_signal
-            )
-            * self.dt
-            / self.area
-        )
+        signal = np.abs(self.baselined_peak_signal)
+        d_times = self.peak_times - self.retention_time
+        self.moment_0 = np.sum(signal) * self.dt
+        self.moment_1 = np.sum(self.peak_times * signal) * self.dt / self.area
+        self.moment_2 = np.sum(d_times**2 * signal) * self.dt / self.moment_0
+        self.standard_deviation = np.sqrt(self.moment_2)
+        self.moment_3 = np.sum(d_times**3 * signal) * self.dt / self.area
         self.moment_3_standardized = self.moment_3 / self.moment_2 ** (3 / 2)
-        self.moment_4 = (
-            np.sum(
-                (self.peak_times - self.retention_time) ** 4
-                * self.baselined_peak_signal
-            )
-            * self.dt
-            / self.area
-        )
+        self.moment_4 = np.sum(d_times**4 * signal) * self.dt / self.area
         self.moment_4_standardized = self.moment_4 / self.moment_2**2
 
     def _calculate_widths_exception(func):
@@ -298,15 +294,15 @@ class Peak:
         def exponnorm_curve(t, h, K, loc, scale):
             return h * exponnorm.pdf(t, K=K, loc=loc, scale=scale)
 
-        guess = np.sqrt(self.moment_2)
+        guess = self.standard_deviation
         self.curve_params, _ = curve_fit(
             exponnorm_curve,
             t_array,
             signal_array,
-            p0=(self.height / 5, 0.01, self.retention_time + 0.01, guess),
+            p0=(self.height / 10, 0.01, self.retention_time + 0.02, guess),
             bounds=(
-                [0, 0, self.retention_time - 10 * guess, guess / 5],
-                [np.inf, 5, self.retention_time + 10 * guess, 5 * guess],
+                [0, 0, self.retention_time - 20 * guess, guess / 3],
+                [np.inf, 5, self.retention_time + 20 * guess, 5 * guess],
             ),
         )
 
@@ -314,9 +310,9 @@ class Peak:
     def __calculate_width_at_baseline(self):
 
         self.__fit_EMG_curve(self.peak_times, self.baselined_peak_signal)
-        t_list = np.linspace(self.start_time - self.dt, self.end_time + self.dt, 502)
-        vals = self._exponnorm_curve(t_list)
-        vals_d2 = np.diff(np.diff(vals))
+        t_list = np.linspace(self.start_time - self.dt, self.end_time + self.dt, 202)
+        t_vals = self._exponnorm_curve(t_list)
+        vals_d2 = np.diff(np.diff(t_vals))
         d2_spline = CubicSpline(
             t_list[1:-1],
             vals_d2,
@@ -336,6 +332,8 @@ class Peak:
         def find_x_intercept(x0, y0, x1, y1):
             # Calculate the slope
             m = (y1 - y0) / (x1 - x0)
+            if m == 0:
+                pass
             # Calculate the x-intercept
             return x0 - y0 / m
 
@@ -433,20 +431,24 @@ class Peak:
             self.moment_2
         )
 
-    def calculate_resolution(self, reference: "Peak" = None):
-        d_rt = reference.retention_time - self.retention_time
-        if self.width_50_full and reference.width_50_full:
-            self.resolution_EP = 1.18 * abs(
-                d_rt / (self.width_50_full + reference.width_50_full)
-            )
-        if self.width_baseline_full and reference.width_baseline_full:
-            self.resolution_USP = 2 * abs(
-                d_rt / (self.width_baseline_full + reference.width_baseline_full)
-            )
-        if self.moment_2 and reference.moment_2:
-            self.resolution_statistical = abs(
-                d_rt / (2 * (np.sqrt(reference.moment_2) + np.sqrt(self.moment_2)))
-            )
+    def calculate_resolution(self, type_, reference: "Peak" = None):
+        if reference and reference != self:
+            d_rt = reference.retention_time - self.retention_time
+            ep = usp = statistical = None
+            if self.width_50_full and reference.width_50_full:
+                ep = 1.18 * abs(d_rt / (self.width_50_full + reference.width_50_full))
+            if self.width_baseline_full and reference.width_baseline_full:
+                usp = 2 * abs(
+                    d_rt / (self.width_baseline_full + reference.width_baseline_full)
+                )
+            if self.moment_2 and reference.moment_2:
+                statistical = abs(
+                    d_rt / (2 * (np.sqrt(reference.moment_2) + np.sqrt(self.moment_2)))
+                )
+            for name, value in zip(
+                ["ep", "usp", "statistical"], [ep, usp, statistical]
+            ):
+                self.__dict__.update({f"resolution_{name}_{type_}": value})
 
     def __calculate_theoretical_plates(self):
         if self.width_50_full:

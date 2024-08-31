@@ -82,12 +82,15 @@ class PeakCreator:
         )
 
         # return signal array
-        return exponnorm.pdf(
+        raw_signal = exponnorm.pdf(
             times,
             K=peak_dict["asymmetry"],
             loc=peak_dict["time"],
             scale=peak_dict["width"],
         )
+        # Set elements less than 1e-8 to 0
+        raw_signal[raw_signal < 1e-8] = 0
+        return raw_signal
 
     def peak(
         self,

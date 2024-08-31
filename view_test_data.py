@@ -3,7 +3,7 @@ import pandas as pd
 from pydash import get
 
 data = []
-root_dir = "./output3"
+root_dir = "./output9"
 
 for subdir, dirs, files in os.walk(root_dir):
     for file in files:
@@ -57,8 +57,8 @@ fig, axes = plt.subplots(4, 2, figsize=(16, 10), sharex=True)
 axes = axes.flatten()
 
 # Determine the global y-axis limits
-y_min = df["resolution_EP"].min()
-y_max = df["resolution_EP"].max()
+y_min = df["resolution_usp_reference"].min()
+y_max = df["resolution_usp_reference"].max()
 
 # Iterate over system names and create a subplot for each
 for i, system_name in enumerate(system_names):
@@ -66,13 +66,13 @@ for i, system_name in enumerate(system_names):
     sns.scatterplot(
         data=df[df["system_name"] == system_name],
         x="injection_time",
-        y="resolution_EP",
+        y="resolution_usp_reference",
         hue="column_serial_number",
         ax=ax,
     )
     ax.set_title(f"Resolution over Time - {system_name}")
     ax.set_xlabel("Injection Time")
-    ax.set_ylabel("Resolution EP")
+    ax.set_ylabel("Resolution USP")
     ax.set_ylim(y_min, y_max)  # Set consistent y-axis limits
     ax.legend(title="Column Serial Number", loc="lower left", bbox_to_anchor=(0, 0))
     ax.tick_params(axis="x", rotation=45)
@@ -98,7 +98,7 @@ columns_to_plot = [
     "moment_2",
     "moment_3_standardized",
     "asymmetry_USP",
-    "resolution_USP",
+    "resolution_usp_reference",
     "plates_USP",
 ]
 

@@ -57,7 +57,8 @@ class PeakFinder:
         self.n_points = len(timepoints)
         self.raw_signal = signal
         self.processed_signal = np.copy(signal)
-        self.dt = (timepoints[-1] - timepoints[0]) / len(timepoints)
+        self.dt = (timepoints[-1] - timepoints[0]) / (len(timepoints) - 1)
+        self.sample_rate = (1 / self.dt) / 60
         self.__initial_peak_finding()
 
     def __parse_processing_method(self):
@@ -164,7 +165,7 @@ class PeakFinder:
                     )
                     local_variances = (
                         vars
-                        / np.sqrt(mult)
+                        / np.sqrt(2 * mult + 1)
                         * (1 + (k - means_before) ** 2)
                         * (1 + (k - means_after) ** 2)
                         * (1 + sig_diff**2)
@@ -307,15 +308,20 @@ class PeakFinder:
                 expands regions while the second derivative and signal meet the requirements
                 """
                 while (
-                    comp_func(index, x_limit)  # index in bounds
+                    self.processed_signal[index] > 0
+                    and comp_func(index, x_limit)  # index in bounds
                     and compare_d2_to_noise(index, lt)  # d2 < noise cutoff
                     and compare_signal_to_noise(index)  # signal > noise cutoff
                 ):
                     index += addn_value
                 else:
-                    while comp_func(index, x_limit) and (
-                        compare_d2_to_noise(index, gt)
-                        and compare_signal_to_noise(index)
+                    while (
+                        self.processed_signal[index] > 0
+                        and comp_func(index, x_limit)
+                        and (
+                            compare_d2_to_noise(index, gt)
+                            or compare_signal_to_noise(index)
+                        )
                     ):
                         index += addn_value
                 return index
@@ -531,26 +537,11 @@ class PeakFinder:
                     current_start, current_end = next_start, next_end
             trimmed_regions.append([current_start, current_end])
 
-            # for region in final_regions[1:]:
-            #     curr_start, curr_end = region
-            #     if curr_start < prev_end:
-            #         local_max = (
-            #             argrelmax(self.d2_signal[curr_start : prev_end + 1], order=10)[
-            #                 0
-            #             ]
-            #             + curr_start
-            #         )[0]
-            #         trimmed_regions.append([prev_start, local_max])
-            #         prev_start, prev_end = prev_start, local_max
-            #         continue
-            #     prev_start, prev_end = curr_start, curr_end
-            #     trimmed_regions.append([prev_start, prev_end])
-
             return trimmed_regions
 
         regions = []
         for start, end in initial_regions:
-            if end - start <= 2:
+            if end - start <= 5:
                 continue
             else:
                 regions.append([start, end])
@@ -562,12 +553,12 @@ class PeakFinder:
         # Step 3: Trim overlapping regions at local minima
         trimmed_regions = trim_regions(expanded_regions)
 
-        regions = []
+        final_regions = []
         for start, end in trimmed_regions:
-            if end - start <= 2:
+            if end - start <= 15:
                 continue
             else:
-                regions.append([start, end])
+                final_regions.append([start, end])
 
         self.peaks: PeakList = PeakList(
             self.timepoints,
@@ -577,7 +568,7 @@ class PeakFinder:
             self.d2_signal,
             self.signal_noise,
         )
-        self.peaks.add_peaks(regions)
+        self.peaks.add_peaks(final_regions)
 
     def refine_peaks(self):
         if self.min_height_method in ["baseline_noise_multiplier", "multiplier"]:
@@ -602,14 +593,14 @@ class PeakFinder:
             plt.plot(t, self.smoothed_signal + spline, color="limegreen")
 
         if second_derivative:
-            plt.plot(t, self.d2_signal + spline, color="blue")
+            plt.plot(t, self.d2_signal / self.dt + spline, color="blue")
             # plt.plot(t, self.old_d2 + spline, color="slateblue")
 
         if noise:
             ones = np.ones_like(t)
-            plt.plot(t, 2 * self.d2_sigma * ones + spline, color="green")
+            plt.plot(t, 2 * self.d2_sigma / self.dt * ones + spline, color="green")
             plt.plot(t, self.signal_sigma * ones + spline, color="red")
-            plt.plot(t, -2 * self.d2_sigma * ones + spline, color="green")
+            plt.plot(t, -2 * self.d2_sigma / self.dt * ones + spline, color="green")
             plt.plot(t, -self.signal_sigma * ones + spline, color="red")
 
         # Colors for adjacent peaks
