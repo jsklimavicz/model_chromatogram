@@ -4,9 +4,9 @@ import numpy as np
 def als_psalsa(
     raw_time: np.array,
     raw_signal: np.array,
-    sr: int = 10,
-    p: float = 0.01,
-    smoothness: float = 10,
+    sr: int = 5,
+    p: float = 0.001,
+    s: float = 1,
     k: float = 2,
     rel_tol: float = 1e-6,
 ):
@@ -21,7 +21,7 @@ def als_psalsa(
         raw_signal (np.array): chromatogram signal values
         sr (int): sampling rate to downsample the raw time and raw signal. Every `sr`th raw signal and time are kept. Setting to 1 keeps everything; this is not recommended due to long compute times. Default = 10
         p (float): weight parameter for the asymmetric least square algorithm. Must be between 0 and 1; typically 0.001 <= p <= 0.1.
-        smoothness (float): multiplicative factor for cost function. Higher values force penalize "wavier" baselines.
+        s (float): multiplicative factor for cost function. Higher values force penalize "wavier" baselines.
         k (float): adaptive value for controlling the exponential decay of weight for peak regions
 
     Returns:
@@ -58,12 +58,12 @@ def als_psalsa(
     D = difference_matrix(len(z))
 
     # define loss function
-    def loss_function(weights, residuals):
-        def second_deriv(residuals):
-            return np.diff(np.diff(residuals))
+    def loss_function(weights, residuals, z):
+        def second_deriv(z):
+            return D @ z
 
         S = np.sum(weights * residuals**2)
-        S += smoothness * sum(second_deriv(residuals) ** 2)
+        S += s * sum(second_deriv(z) ** 2)
         return S
 
     prev_loss = 0  # intial loss
@@ -72,9 +72,9 @@ def als_psalsa(
     while not converged and iterations < 20:
         iterations += 1
         W = np.diag(weights)
-        z = np.linalg.inv(W + smoothness * D.T @ D).dot(weights * signal)
+        z = np.linalg.inv(W + s * D.T @ D).dot(weights * signal)
         residuals = signal - z
-        curr_loss = loss_function(weights, residuals)
+        curr_loss = loss_function(weights, residuals, z)
         rel_loss = abs(curr_loss - prev_loss) / curr_loss
         if rel_loss < rel_tol:
             converged = True

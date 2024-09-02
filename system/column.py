@@ -73,11 +73,7 @@ class Column:
     def __set_failure_values(self):
         inconsitency_factor = random.uniform(0.95, 1.05)
         x = self.injection_count - self.failure_number + 1
-        mult_value = 0.5 * np.log(1 + ((x / 2 - 1) ** 3) / 1e7)
-        self.failure_asymmetry = (
-            (DEFAULT_BASE_ASYMMETRY - 1) * 20 * mult_value * inconsitency_factor
-        )
-        self.failure_broadening = (
-            (DEFAULT_PEAK_WIDTH) / 20 * mult_value * inconsitency_factor
-        )
-        self.failure_rt_shift_mult = 1 + mult_value * inconsitency_factor / 100
+        mult_value = 0.5 * inconsitency_factor * np.log(1 + ((x / 2 - 1) ** 3) / 1e7)
+        self.failure_asymmetry = (DEFAULT_BASE_ASYMMETRY - 1) * 20 * mult_value
+        self.failure_broadening = (DEFAULT_PEAK_WIDTH) / 20 * mult_value
+        self.failure_rt_shift_mult = 1 + mult_value / 100

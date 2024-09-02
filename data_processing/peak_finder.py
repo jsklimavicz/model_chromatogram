@@ -115,7 +115,7 @@ class PeakFinder:
         smoothed_arrays = []
         for window in window_sizes:
             smoothed_signal = savgol_filter(
-                signal, window_length=window, polyorder=2, mode="constant"
+                signal, window_length=window, polyorder=2, mode="nearest"
             )
             # smoothed_signal = apply_savgol_filter(signal.tolist(), window)
             smoothed_arrays.append(smoothed_signal)
