@@ -13,7 +13,7 @@ from model_chromatogram.injection import Injection
 from model_chromatogram.sequence import Sequence
 from model_chromatogram.system import System, Column
 
-folder = "output10"
+folder = "output11"
 
 # Start and end dates
 start_date = datetime.datetime(2021, 1, 1)
@@ -221,14 +221,14 @@ while current_date <= end_date:
     for ind, system in enumerate(systems):
         if system.column.failed:
             failed_ago[ind] += 1
-        if failed_ago[ind] > 3 and (
+        if failed_ago[ind] > 5 and (
             (
-                system.column.injection_count - system.column.failure_risk_count > 1000
+                system.column.injection_count - system.column.failure_risk_count > 1600
                 or current_date.year != 2023
             )
             or system.name != "Cori"
         ):
-            p = random.uniform(0, 0.5) + (failed_ago[ind] - 3) / 5
+            p = random.uniform(0, 0.5) + (failed_ago[ind] - 5) / 5
             if p > 1:
                 print(
                     f"Column replaced on {system.name} on {current_date} after {system.column.injection_count} injections."

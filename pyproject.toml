@@ -15,6 +15,7 @@ pandas = "^2.2.2"
 uuid = "^1.30"
 holidays = "^0.56"
 matplotlib = "^3.9.2"
+seaborn = "^0.13.2"
 
 
 [build-system]
