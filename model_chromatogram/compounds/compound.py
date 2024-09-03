@@ -4,7 +4,7 @@ from pydash import get as _get
 import pandas as pd
 from scipy.optimize import fsolve
 from scipy.stats import norm
-from compounds import UVSpectrum
+from model_chromatogram.compounds import UVSpectrum
 
 
 class Compound:

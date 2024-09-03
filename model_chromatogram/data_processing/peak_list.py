@@ -1,8 +1,8 @@
 from scipy.interpolate import CubicSpline
 import pandas as pd
 import numpy as np
-from data_processing import Peak
-from user_parameters import MINIMUM_AREA, MINIMUM_HEIGHT
+from model_chromatogram.data_processing import Peak
+from model_chromatogram.user_parameters import MINIMUM_AREA, MINIMUM_HEIGHT
 
 
 class PeakList:

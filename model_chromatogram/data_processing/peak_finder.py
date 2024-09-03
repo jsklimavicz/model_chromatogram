@@ -8,9 +8,9 @@ from scipy.signal import (
     argrelmin,
     argrelmax,
 )
-from methods import ProcessingMethod
-from data_processing import PeakList, als_psalsa
-from user_parameters import (
+from model_chromatogram.methods import ProcessingMethod
+from model_chromatogram.data_processing import PeakList, als_psalsa
+from model_chromatogram.user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
     MINIMUM_HEIGHT,
     MINIMUM_AREA,

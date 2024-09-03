@@ -1,7 +1,7 @@
 import csv
 from random import randrange, shuffle
-from user_parameters import RANDOM_PEAK_ID_DIGITS, IMP_PEAK_PREFIX
-from compounds import Compound
+from model_chromatogram.user_parameters import RANDOM_PEAK_ID_DIGITS, IMP_PEAK_PREFIX
+from model_chromatogram.compounds import Compound
 import warnings
 import pickle
 from copy import copy
@@ -17,7 +17,11 @@ class CompoundLibrary:
         Creates new instance of library by reading from the csv file. Each line in the csv file must be a valid compound for the Compound class.
         """
         self.compounds: list[Compound] = []
-        with open("./compounds/compounds.csv", mode="r", encoding="utf-8-sig") as f:
+        with open(
+            "./model_chromatogram/compounds/compounds.csv",
+            mode="r",
+            encoding="utf-8-sig",
+        ) as f:
             reader = csv.DictReader(f)
             rows = list(reader)
 

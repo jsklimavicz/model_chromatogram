@@ -4,8 +4,6 @@
 .LSOverride
 ./docs/build/*
 ./docs/*.ps
-docs/*.tex
-docs/*.bib
 docs/*.ps
 cache/*
 output.csv

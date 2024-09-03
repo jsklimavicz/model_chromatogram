@@ -1,4 +1,4 @@
-from compounds import Compound, COMPOUND_LIBRARY
+from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 from random import uniform
 import datetime
 

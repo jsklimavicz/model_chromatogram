@@ -1,5 +1,5 @@
 from pydash import get as _get
-from compounds import Compound
+from model_chromatogram.compounds import Compound
 
 
 class Solvent(Compound):

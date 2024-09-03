@@ -27,11 +27,11 @@ np.seterr(all="warn")
 sample_dict = {
     "name": "Calibration Standard",
     "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
-    "compound_concentration_list": [0.05, 0.07, 0.1],
+    "compound_concentration_list": [0.1, 0.15, 0.3],
 }
 
 
-with open("./system/systems.json") as f:
+with open("./model_chromatogram/system/systems.json") as f:
     system_list = json.load(f)
 
 system = System(**system_list[0])
@@ -39,10 +39,10 @@ system = System(**system_list[0])
 my_sample = Sample(**sample_dict)
 # my_sample.print_compound_list()
 
-with open("./methods/instrument_methods.json") as f:
+with open("./model_chromatogram/methods/instrument_methods.json") as f:
     method_list = json.load(f)
 
-with open("./methods/processing_methods.json") as f:
+with open("./model_chromatogram/methods/processing_methods.json") as f:
     processing_method_list = json.load(f)
 
 validation_method = None
@@ -81,7 +81,9 @@ peak_finder = PeakFinder(
 )
 
 # peak = peak_finder[1].get_properties()
-peak_finder.plot_peaks(smoothed=True, second_derivative=True, noise=True)
+# peak_finder.plot_peaks(smoothed=True, second_derivative=True)
+peak_finder.plot_peaks(smoothed=True)
+
 injection1.find_peaks("UV_VIS_1")
 injection_json = injection1.to_dict()
 # peak_finder.plot_peaks()
@@ -145,34 +147,3 @@ peak_finder = PeakFinder(times, raw_signal)
 peak_finder.print_peaks()
 peak_finder.save_peaks("./output.csv")
 peak_finder.plot_peaks()
-
-# with Profile() as profile:
-#     for i in range(1):
-#         sample_dict = {
-#             "sample_name": "test-1",
-#             "location": "R:A1",
-#             "compound_list": "cystine, guanosine, chloroquine, DPU, coumarin",
-#             "concentration_list": "0.5, 2.1, 3.2, 1.3, 2.4",
-#             "num_random_peaks": 10,
-#             "max_random_concentration": 1,
-#         }
-#         sample_dict["compound_list"] = [
-#             a.strip() for a in sample_dict["compound_list"].split(",")
-#         ]
-#         sample_dict["concentration_list"] = [
-#             float(a) for a in sample_dict["concentration_list"].split(",")
-#         ]
-#         column = Column(
-#             inner_diameter=6,
-#             length=100,
-#             type="C18",
-#             serial_number="1995032",
-#             injection_count=0,
-#         )
-#         system = System(name="James Test", column=column)
-#         method = Method(**_get(method_list, i % len(method_list)))
-#         my_sample = Sample(**sample_dict)
-#         injection = Injection(sample=my_sample, method=method_1, system=system)
-
-#     f = open("stats.prof", "a")
-#     Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()

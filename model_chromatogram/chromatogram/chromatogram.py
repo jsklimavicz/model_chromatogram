@@ -1,6 +1,6 @@
 import numpy.random as random
 import numpy as np
-from user_parameters import *
+from model_chromatogram.user_parameters import *
 
 import numpy as np
 import matplotlib.pyplot as plt

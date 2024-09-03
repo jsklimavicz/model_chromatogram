@@ -1,6 +1,9 @@
 import numpy as np
 import random
-from user_parameters import DEFAULT_BASE_ASYMMETRY, DEFAULT_PEAK_WIDTH
+from model_chromatogram.user_parameters import (
+    DEFAULT_BASE_ASYMMETRY,
+    DEFAULT_PEAK_WIDTH,
+)
 from pydash import get as _get
 
 

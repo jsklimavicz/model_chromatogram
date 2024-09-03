@@ -1,5 +1,5 @@
 import numpy as np
-from system import Column
+from model_chromatogram.system import Column
 import random, string
 
 

@@ -1,14 +1,14 @@
 from pydash import get as _get
 from pydash import set_
 
-from methods import InstrumentMethod, ProcessingMethod
-from samples import Sample
-from chromatogram import Chromatogram, Baseline, PeakCreator
-from system import System
+from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
+from model_chromatogram.samples import Sample
+from model_chromatogram.chromatogram import Chromatogram, Baseline, PeakCreator
+from model_chromatogram.system import System
 import numpy as np
 import datetime
-from sequence import Sequence
-from data_processing import PeakFinder
+from model_chromatogram.sequence import Sequence
+from model_chromatogram.data_processing import PeakFinder
 import uuid
 
 

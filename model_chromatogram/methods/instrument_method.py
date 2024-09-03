@@ -1,6 +1,6 @@
-from compounds import SOLVENT_LIBRARY, Solvent
+from model_chromatogram.compounds import SOLVENT_LIBRARY, Solvent
 from pydash import get as _get
-from user_parameters import *
+from model_chromatogram.user_parameters import *
 import numpy as np
 from scipy import signal
 import pandas as pd

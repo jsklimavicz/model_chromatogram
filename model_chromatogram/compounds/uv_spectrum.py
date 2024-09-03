@@ -16,7 +16,9 @@ class UVSpectrum:
             self.wavelengths = []
             self.log_epsilon = []
             start_read = False
-            with open(f"./compounds/spectra/{self.cas}-UVVis.jdx") as f:
+            with open(
+                f"./model_chromatogram/compounds/spectra/{self.cas}-UVVis.jdx"
+            ) as f:
                 while line := f.readline():
                     if "##END" in line:
                         break

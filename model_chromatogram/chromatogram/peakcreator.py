@@ -2,11 +2,11 @@ from numpy.random import uniform
 import math
 from scipy.stats import exponnorm
 from scipy.optimize import minimize_scalar, minimize
-from compounds import Compound
+from model_chromatogram.compounds import Compound
 import numpy as np
-from system import Column, System
+from model_chromatogram.system import Column, System
 
-from user_parameters import *
+from model_chromatogram.user_parameters import *
 
 
 class PeakCreator:
