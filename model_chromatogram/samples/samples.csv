@@ -1,3 +1,0 @@
-﻿sample_name,location,compounds,concentrations,random_peaks,max_random_amount
-test-1,R:A1,"guanosine, chloroquine, DPU, coumarin","2.1, 3.2, 1.3, 2.4",5,0.5
-test-2,R:A2,"eugenol, safrole, amitriptyline","2, 1.5, 1.3",6,0.6

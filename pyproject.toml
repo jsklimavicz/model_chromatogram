@@ -8,6 +8,13 @@ packages = [{include = "model_chromatogram"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+pydash = "^8.0.3"
+numpy = "^2.1.0"
+scipy = "^1.14.1"
+pandas = "^2.2.2"
+uuid = "^1.30"
+holidays = "^0.56"
+matplotlib = "^3.9.2"
 
 
 [build-system]

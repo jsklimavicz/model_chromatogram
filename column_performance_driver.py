@@ -1,26 +1,19 @@
-from samples import Sample
 import json
-
-# import matplotlib.pyplot as plt
-from methods import InstrumentMethod, ProcessingMethod
-
-from pydash import get as _get
-from injection import Injection
-from system import *
-from sequence import Sequence
 from pathlib import Path
-import os
 import numpy as np
-
-# import pandas as pd
-# from data_processing import PeakFinder
-
 import random
 import datetime
 import holidays
 import concurrent.futures
+from pydash import get as get_
 
-folder = "output9"
+from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
+from model_chromatogram.samples import Sample
+from model_chromatogram.injection import Injection
+from model_chromatogram.sequence import Sequence
+from model_chromatogram.system import System, Column
+
+folder = "output10"
 
 # Start and end dates
 start_date = datetime.datetime(2021, 1, 1)
@@ -101,26 +94,26 @@ def generate_datetime_set(current_date, count):
     return sorted(weekly_datetimes)
 
 
-with open("./system/systems.json") as f:
+with open("./input_json/systems.json") as f:
     systems_json = json.load(f)
 systems = [System(**system) for system in systems_json]
 # systems = [systems[0]]
 
-with open("./methods/instrument_methods.json") as f:
+with open("./input_json/instrument_methods.json") as f:
     method_list = json.load(f)
 
-with open("./methods/processing_methods.json") as f:
+with open("./input_json/processing_methods.json") as f:
     processing_method_list = json.load(f)
 
 validation_method = None
 for method in method_list:
-    if _get(method, "name") == "column_quality_check":
+    if get_(method, "name") == "column_quality_check":
         validation_method = InstrumentMethod(**method)
         break
 
 validation_processing = None
 for method in processing_method_list:
-    if _get(method, "name") == "column performance test":
+    if get_(method, "name") == "column performance test":
         validation_processing = ProcessingMethod(**method)
         break
 
@@ -151,8 +144,8 @@ def process_injection(
 def save_injections(quarterly_injection_list):
     for injection in quarterly_injection_list:
         inj_dict = injection.to_dict()
-        path = f'./{folder}/{_get(inj_dict, "runs.0.sequence.url")}'
-        file_name = f'./{folder}/{_get(inj_dict, "runs.0.injection_url")}'
+        path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
+        file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
         Path(path).mkdir(parents=True, exist_ok=True)
         with open(file_name, "w") as f:
             json.dump(inj_dict, f)
@@ -181,9 +174,9 @@ while current_date <= end_date:
             "name": f"Calibration Standard {year}Q{current_quarter}",
             "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
             "compound_concentration_list": [
-                0.05 * random.uniform(0.997, 1.003),
-                0.07 * random.uniform(0.997, 1.003),
-                0.10 * random.uniform(0.997, 1.003),
+                0.2 * random.uniform(0.997, 1.003),
+                0.28 * random.uniform(0.997, 1.003),
+                0.4 * random.uniform(0.997, 1.003),
             ],
         }
         sample = Sample(**sample_dict)
