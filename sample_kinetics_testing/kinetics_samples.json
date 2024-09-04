@@ -1,6 +1,19 @@
 [
     {
         "sample_base": "lovastatin_stability",
+        "compound_name_mapping": {
+            "90094-11-4": "lovastatin",
+            "58144-68-6": "TS-8829",
+            "3075-84-1": "TS-8830",
+            "117-89-5": "lovastatin acetate",
+            "491-78-1": "lovastatin des-sec-butyrate",
+            "79-11-8": "sec-butyric acid",
+            "58144-64-2": "dehydrolovastatin",
+            "94-59-7": "TS-0195A",
+            "93-76-5": "TS-9931",
+            "773-76-2": "5-hydroxylovastatin",
+            "304-21-2": "dihydroxylovastatin"
+        },
         "conditions": [
             {
                 "conditions": "40C_buffer",
@@ -70,19 +83,7 @@
                             0.01
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "20C_buffer",
@@ -152,19 +153,7 @@
                             0.005
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "50C_buffer",
@@ -234,19 +223,7 @@
                             0.02
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "25C_tablet_40%_RH",
@@ -316,19 +293,7 @@
                             0.0012
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "25C_tablet_90%_RH",
@@ -398,19 +363,7 @@
                             0.0019
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "40C_tablet_20%_RH",
@@ -480,19 +433,7 @@
                             0.0048
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "40C_tablet_50%_RH",
@@ -562,19 +503,7 @@
                             0.0048
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "20C_0.01M_HCl",
@@ -644,20 +573,7 @@
                             0.0002
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin",
-                    "304-21-2": "TS-0195B"
-                }
+                ]
             },
             {
                 "conditions": "40C_0.01M_HCl",
@@ -727,20 +643,7 @@
                             0.00102
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin",
-                    "304-21-2": "TS-0195B"
-                }
+                ]
             },
             {
                 "conditions": "20C_0.01M_NaOH",
@@ -810,19 +713,7 @@
                             0.0049
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             },
             {
                 "conditions": "40C_0.01M_NaOH",
@@ -892,19 +783,7 @@
                             0.0199
                         ]
                     }
-                ],
-                "compound_name_mapping": {
-                    "90094-11-4": "lovastatin",
-                    "58144-68-6": "TS-8829",
-                    "3075-84-1": "TS-8830",
-                    "117-89-5": "lovastatin acetate",
-                    "491-78-1": "lovastatin des-sec-butyrate",
-                    "79-11-8": "sec-butyric acid",
-                    "58144-64-2": "dehydrolovastatin",
-                    "94-59-7": "TS-0195A",
-                    "93-76-5": "TS-9931",
-                    "773-76-2": "5-hydroxylovastatin"
-                }
+                ]
             }
         ]
     }

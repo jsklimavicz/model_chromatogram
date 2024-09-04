@@ -16,7 +16,6 @@ from model_chromatogram.system import System
 folder = "output11"
 
 cmpds = [
-    "90094-11-4",  # 16.813
     "79-11-8",  # 5.144
     "304-21-2",  # 11.307
     "94-59-7",  # 11.761
@@ -25,10 +24,11 @@ cmpds = [
     "491-78-1",  # 13.608
     "58144-64-2",  # 14.927
     "58144-68-6",  # 15.842
+    "90094-11-4",  # 16.813
     "117-89-5",  # 17.076
     "3075-84-1",  # 17.393
 ]
-conc = [0.1, 10, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+conc = np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 50
 
 
 with open("./sample_kinetics_testing/input_json/instrument_methods.json") as f:
@@ -80,7 +80,7 @@ curr_injection = Injection(
 )
 
 
-peak_finder = curr_injection.find_peaks("UV_VIS_2")
+peak_finder = curr_injection.find_peaks("UV_VIS_1")
 
-peak_finder.print_peaks()
+peak_finder.save_peaks("./sample_kinetics_testing/peaks.csv")
 peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)

@@ -6,27 +6,28 @@
                 "minimum": 0,
                 "maximum": 250
             },
-            "noise_threshold_multiplier": 10,
-            "peak_limit": 20,
+            "noise_threshold_multiplier": 5,
+            "peak_limit": 10,
             "minimum_height": {
                 "type": "baseline_noise_multiplier",
-                "value": 10
+                "value": 5
             },
-            "minimum_area": 0.03
+            "minimum_area": 0.01,
+            "baseline": {
+                "sr": 5,
+                "p": 0.001,
+                "s": 0.5,
+                "k": 2,
+                "rel_tol": 1e-6
+            }
         },
         "resolution_reference": "TS-8391",
         "peak_identification": [
             {
-                "min_time": 2.0,
-                "max_time": 2.5,
+                "min_time": 2.85,
+                "max_time": 3.2,
                 "method": "largest",
-                "name": "TS-8391"
-            },
-            {
-                "min_time": 3.6,
-                "max_time": 4.1,
-                "method": "largest",
-                "name": "klimavizinib",
+                "name": "sec-butyric acid",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -36,56 +37,200 @@
                             {
                                 "area": 101.2,
                                 "amount": 2.5
-                            },
-                            {
-                                "area": 99.2,
-                                "amount": 2.5
-                            },
-                            {
-                                "area": 1002,
-                                "amount": 25
-                            },
-                            {
-                                "area": 987.4,
-                                "amount": 25
-                            },
-                            {
-                                "area": 10,
-                                "amount": 0.25
-                            },
-                            {
-                                "area": 9.3,
-                                "amount": 0.25
-                            },
-                            {
-                                "area": 9.2,
-                                "amount": 0.25
-                            },
-                            {
-                                "area": 0.913,
-                                "amount": 0.025
-                            },
-                            {
-                                "area": 1.01,
-                                "amount": 0.025
-                            },
-                            {
-                                "area": 4.989,
-                                "amount": 0.125
-                            },
-                            {
-                                "area": 5.12,
-                                "amount": 0.125
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 5.9,
-                "max_time": 6.4,
+                "min_time": 11.2,
+                "max_time": 11.5,
                 "method": "largest",
-                "name": "caffeine"
+                "name": "dihydroxylovastatin",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 11.9,
+                "max_time": 12.1,
+                "method": "largest",
+                "name": "TS-0195A",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 13.2,
+                "max_time": 13.5,
+                "method": "largest",
+                "name": "TS-9931",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 13.7,
+                "max_time": 13.95,
+                "method": "largest",
+                "name": "5-hydroxylovastatin",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 13.95,
+                "max_time": 14.2,
+                "method": "largest",
+                "name": "lovastatin des-sec-butyrate",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 15.4,
+                "max_time": 15.9,
+                "method": "largest",
+                "name": "dehydrolovastatin",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 16.5,
+                "max_time": 16.8,
+                "method": "largest",
+                "name": "TS-8829",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 17,
+                "max_time": 17.6,
+                "method": "largest",
+                "name": "lovastatin",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 17.7,
+                "max_time": 18,
+                "method": "largest",
+                "name": "lovastatin acetate",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 18,
+                "max_time": 18.4,
+                "method": "largest",
+                "name": "TS-8830",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

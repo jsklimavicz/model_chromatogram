@@ -1,0 +1,309 @@
+﻿area,umol,cmpd,channel
+0.072202159,0.005,5-hydroxylovastatin,UV_VIS_1
+0.061220623,0.005,5-hydroxylovastatin,UV_VIS_1
+0.162299371,0.01,5-hydroxylovastatin,UV_VIS_1
+0.179494392,0.01,5-hydroxylovastatin,UV_VIS_1
+0.964624318,0.05,5-hydroxylovastatin,UV_VIS_1
+0.940517591,0.05,5-hydroxylovastatin,UV_VIS_1
+1.958463329,0.1,5-hydroxylovastatin,UV_VIS_1
+1.952046838,0.1,5-hydroxylovastatin,UV_VIS_1
+9.92177754,0.5,5-hydroxylovastatin,UV_VIS_1
+19.93730499,1,5-hydroxylovastatin,UV_VIS_1
+19.92686578,1,5-hydroxylovastatin,UV_VIS_1
+99.5407695,5,5-hydroxylovastatin,UV_VIS_1
+0.094118395,0.005,dehydrolovastatin,UV_VIS_1
+0.131456888,0.005,dehydrolovastatin,UV_VIS_1
+0.248069179,0.01,dehydrolovastatin,UV_VIS_1
+0.249311969,0.01,dehydrolovastatin,UV_VIS_1
+1.434775591,0.05,dehydrolovastatin,UV_VIS_1
+1.385713951,0.05,dehydrolovastatin,UV_VIS_1
+2.789376129,0.1,dehydrolovastatin,UV_VIS_1
+2.838129393,0.1,dehydrolovastatin,UV_VIS_1
+14.36274122,0.5,dehydrolovastatin,UV_VIS_1
+28.66158864,1,dehydrolovastatin,UV_VIS_1
+28.82813348,1,dehydrolovastatin,UV_VIS_1
+143.9302439,5,dehydrolovastatin,UV_VIS_1
+0.055700617,0.005,dihydroxylovastatin,UV_VIS_1
+0.055184451,0.005,dihydroxylovastatin,UV_VIS_1
+0.150172753,0.01,dihydroxylovastatin,UV_VIS_1
+0.142734224,0.01,dihydroxylovastatin,UV_VIS_1
+0.761428997,0.05,dihydroxylovastatin,UV_VIS_1
+0.758916821,0.05,dihydroxylovastatin,UV_VIS_1
+1.618721337,0.1,dihydroxylovastatin,UV_VIS_1
+1.598555606,0.1,dihydroxylovastatin,UV_VIS_1
+8.214110937,0.5,dihydroxylovastatin,UV_VIS_1
+16.42415601,1,dihydroxylovastatin,UV_VIS_1
+16.44999678,1,dihydroxylovastatin,UV_VIS_1
+82.5008316,5,dihydroxylovastatin,UV_VIS_1
+0.204873279,0.005,lovastatin,UV_VIS_1
+0.155692702,0.005,lovastatin,UV_VIS_1
+0.420909944,0.01,lovastatin,UV_VIS_1
+0.376438148,0.01,lovastatin,UV_VIS_1
+2.142836186,0.05,lovastatin,UV_VIS_1
+2.161090842,0.05,lovastatin,UV_VIS_1
+4.298669696,0.1,lovastatin,UV_VIS_1
+4.316173148,0.1,lovastatin,UV_VIS_1
+21.75553033,0.5,lovastatin,UV_VIS_1
+43.65445038,1,lovastatin,UV_VIS_1
+43.69921359,1,lovastatin,UV_VIS_1
+218.6855801,5,lovastatin,UV_VIS_1
+0.039878433,0.005,lovastatin acetate,UV_VIS_1
+0.065362869,0.01,lovastatin acetate,UV_VIS_1
+0.068935914,0.01,lovastatin acetate,UV_VIS_1
+0.501589861,0.05,lovastatin acetate,UV_VIS_1
+0.510659568,0.05,lovastatin acetate,UV_VIS_1
+1.014087846,0.1,lovastatin acetate,UV_VIS_1
+1.054479083,0.1,lovastatin acetate,UV_VIS_1
+5.46620908,0.5,lovastatin acetate,UV_VIS_1
+10.99692321,1,lovastatin acetate,UV_VIS_1
+11.08537215,1,lovastatin acetate,UV_VIS_1
+55.67435565,5,lovastatin acetate,UV_VIS_1
+0.152064698,0.005,lovastatin des-sec-butyrate,UV_VIS_1
+0.13438667,0.005,lovastatin des-sec-butyrate,UV_VIS_1
+0.280659448,0.01,lovastatin des-sec-butyrate,UV_VIS_1
+0.287223273,0.01,lovastatin des-sec-butyrate,UV_VIS_1
+1.774533431,0.05,lovastatin des-sec-butyrate,UV_VIS_1
+1.724440284,0.05,lovastatin des-sec-butyrate,UV_VIS_1
+3.488359827,0.1,lovastatin des-sec-butyrate,UV_VIS_1
+3.466902271,0.1,lovastatin des-sec-butyrate,UV_VIS_1
+17.43527378,0.5,lovastatin des-sec-butyrate,UV_VIS_1
+34.87244936,1,lovastatin des-sec-butyrate,UV_VIS_1
+34.92135566,1,lovastatin des-sec-butyrate,UV_VIS_1
+174.977655,5,lovastatin des-sec-butyrate,UV_VIS_1
+0.029255282,1,sec-butyric acid,UV_VIS_1
+0.754370137,10,sec-butyric acid,UV_VIS_1
+0.747501232,10,sec-butyric acid,UV_VIS_1
+0.029412379,0.005,TS-0195A,UV_VIS_1
+0.099402473,0.01,TS-0195A,UV_VIS_1
+0.10540835,0.01,TS-0195A,UV_VIS_1
+0.619631069,0.05,TS-0195A,UV_VIS_1
+0.600696269,0.05,TS-0195A,UV_VIS_1
+1.25349132,0.1,TS-0195A,UV_VIS_1
+1.256226536,0.1,TS-0195A,UV_VIS_1
+6.487588883,0.5,TS-0195A,UV_VIS_1
+13.00829489,1,TS-0195A,UV_VIS_1
+12.95915741,1,TS-0195A,UV_VIS_1
+65.31791996,5,TS-0195A,UV_VIS_1
+0.056150849,0.005,TS-8829,UV_VIS_1
+0.074947125,0.005,TS-8829,UV_VIS_1
+0.219519917,0.01,TS-8829,UV_VIS_1
+0.157905609,0.01,TS-8829,UV_VIS_1
+1.055963404,0.05,TS-8829,UV_VIS_1
+1.06599298,0.05,TS-8829,UV_VIS_1
+2.185689114,0.1,TS-8829,UV_VIS_1
+2.171069091,0.1,TS-8829,UV_VIS_1
+10.95653706,0.5,TS-8829,UV_VIS_1
+21.9822931,1,TS-8829,UV_VIS_1
+21.99862506,1,TS-8829,UV_VIS_1
+110.4113103,5,TS-8829,UV_VIS_1
+0.06014633,0.01,TS-8830,UV_VIS_1
+0.069034216,0.01,TS-8830,UV_VIS_1
+0.433393216,0.05,TS-8830,UV_VIS_1
+0.419628452,0.05,TS-8830,UV_VIS_1
+0.899610267,0.1,TS-8830,UV_VIS_1
+0.904705702,0.1,TS-8830,UV_VIS_1
+4.728322562,0.5,TS-8830,UV_VIS_1
+9.585256643,1,TS-8830,UV_VIS_1
+9.750165601,1,TS-8830,UV_VIS_1
+48.47005864,5,TS-8830,UV_VIS_1
+0.090841057,0.01,TS-9931,UV_VIS_1
+0.06666895,0.01,TS-9931,UV_VIS_1
+0.50719505,0.05,TS-9931,UV_VIS_1
+0.510250181,0.05,TS-9931,UV_VIS_1
+1.092791831,0.1,TS-9931,UV_VIS_1
+1.081439442,0.1,TS-9931,UV_VIS_1
+5.666483686,0.5,TS-9931,UV_VIS_1
+11.32798618,1,TS-9931,UV_VIS_1
+11.31712911,1,TS-9931,UV_VIS_1
+57.16525863,5,TS-9931,UV_VIS_1
+0.03930234,0.01,5-hydroxylovastatin,UV_VIS_2
+0.03930234,0.01,5-hydroxylovastatin,UV_VIS_2
+0.307045027,0.05,5-hydroxylovastatin,UV_VIS_2
+0.343491415,0.05,5-hydroxylovastatin,UV_VIS_2
+0.744537657,0.1,5-hydroxylovastatin,UV_VIS_2
+0.714129891,0.1,5-hydroxylovastatin,UV_VIS_2
+0.711603383,0.1,5-hydroxylovastatin,UV_VIS_2
+1.444071368,0.2,5-hydroxylovastatin,UV_VIS_2
+1.469117833,0.2,5-hydroxylovastatin,UV_VIS_2
+3.661676917,0.5,5-hydroxylovastatin,UV_VIS_2
+3.620163905,0.5,5-hydroxylovastatin,UV_VIS_2
+7.429979808,1,5-hydroxylovastatin,UV_VIS_2
+7.384197362,1,5-hydroxylovastatin,UV_VIS_2
+14.79254863,2,5-hydroxylovastatin,UV_VIS_2
+14.80910875,2,5-hydroxylovastatin,UV_VIS_2
+37.15181524,5,5-hydroxylovastatin,UV_VIS_2
+37.07106125,5,5-hydroxylovastatin,UV_VIS_2
+74.21151701,10,5-hydroxylovastatin,UV_VIS_2
+0.194384036,0.01,dehydrolovastatin,UV_VIS_2
+0.194384036,0.01,dehydrolovastatin,UV_VIS_2
+1.021687483,0.05,dehydrolovastatin,UV_VIS_2
+1.047137756,0.05,dehydrolovastatin,UV_VIS_2
+2.151968218,0.1,dehydrolovastatin,UV_VIS_2
+2.106678377,0.1,dehydrolovastatin,UV_VIS_2
+2.155938942,0.1,dehydrolovastatin,UV_VIS_2
+4.30706781,0.2,dehydrolovastatin,UV_VIS_2
+4.333512095,0.2,dehydrolovastatin,UV_VIS_2
+10.99554685,0.5,dehydrolovastatin,UV_VIS_2
+10.96689847,0.5,dehydrolovastatin,UV_VIS_2
+21.98525977,1,dehydrolovastatin,UV_VIS_2
+22.03797596,1,dehydrolovastatin,UV_VIS_2
+44.20571645,2,dehydrolovastatin,UV_VIS_2
+44.22945831,2,dehydrolovastatin,UV_VIS_2
+110.6289629,5,dehydrolovastatin,UV_VIS_2
+110.5696066,5,dehydrolovastatin,UV_VIS_2
+221.5940773,10,dehydrolovastatin,UV_VIS_2
+0.070151535,0.01,dihydroxylovastatin,UV_VIS_2
+0.070151535,0.01,dihydroxylovastatin,UV_VIS_2
+0.445993873,0.05,dihydroxylovastatin,UV_VIS_2
+0.432535507,0.05,dihydroxylovastatin,UV_VIS_2
+0.861328512,0.1,dihydroxylovastatin,UV_VIS_2
+0.824443161,0.1,dihydroxylovastatin,UV_VIS_2
+0.867952975,0.1,dihydroxylovastatin,UV_VIS_2
+1.762236275,0.2,dihydroxylovastatin,UV_VIS_2
+1.751114315,0.2,dihydroxylovastatin,UV_VIS_2
+4.477881619,0.5,dihydroxylovastatin,UV_VIS_2
+4.506004573,0.5,dihydroxylovastatin,UV_VIS_2
+9.057713627,1,dihydroxylovastatin,UV_VIS_2
+9.013658826,1,dihydroxylovastatin,UV_VIS_2
+18.14533087,2,dihydroxylovastatin,UV_VIS_2
+18.02785835,2,dihydroxylovastatin,UV_VIS_2
+45.33437068,5,dihydroxylovastatin,UV_VIS_2
+45.36437398,5,dihydroxylovastatin,UV_VIS_2
+90.76533443,10,dihydroxylovastatin,UV_VIS_2
+0.363611565,0.01,lovastatin,UV_VIS_2
+0.363611565,0.01,lovastatin,UV_VIS_2
+2.118503398,0.05,lovastatin,UV_VIS_2
+2.06171555,0.05,lovastatin,UV_VIS_2
+4.221858894,0.1,lovastatin,UV_VIS_2
+4.172846744,0.1,lovastatin,UV_VIS_2
+4.218173065,0.1,lovastatin,UV_VIS_2
+8.483489753,0.2,lovastatin,UV_VIS_2
+8.462799413,0.2,lovastatin,UV_VIS_2
+21.2375136,0.5,lovastatin,UV_VIS_2
+21.24253803,0.5,lovastatin,UV_VIS_2
+42.46970815,1,lovastatin,UV_VIS_2
+42.52445735,1,lovastatin,UV_VIS_2
+84.99822919,2,lovastatin,UV_VIS_2
+84.96117912,2,lovastatin,UV_VIS_2
+213.5937268,5,lovastatin,UV_VIS_2
+213.3726232,5,lovastatin,UV_VIS_2
+0.069684785,0.01,lovastatin acetate,UV_VIS_2
+0.069684785,0.01,lovastatin acetate,UV_VIS_2
+0.541205615,0.05,lovastatin acetate,UV_VIS_2
+0.469461697,0.05,lovastatin acetate,UV_VIS_2
+1.093774155,0.1,lovastatin acetate,UV_VIS_2
+1.063870527,0.1,lovastatin acetate,UV_VIS_2
+1.086404101,0.1,lovastatin acetate,UV_VIS_2
+2.214621843,0.2,lovastatin acetate,UV_VIS_2
+2.147820495,0.2,lovastatin acetate,UV_VIS_2
+5.47519239,0.5,lovastatin acetate,UV_VIS_2
+5.389875155,0.5,lovastatin acetate,UV_VIS_2
+11.10312249,1,lovastatin acetate,UV_VIS_2
+11.13884246,1,lovastatin acetate,UV_VIS_2
+22.31158755,2,lovastatin acetate,UV_VIS_2
+22.2877422,2,lovastatin acetate,UV_VIS_2
+56.33244612,5,lovastatin acetate,UV_VIS_2
+56.15735546,5,lovastatin acetate,UV_VIS_2
+111.8241474,10,lovastatin acetate,UV_VIS_2
+0.100728246,0.01,lovastatin des-sec-butyrate,UV_VIS_2
+0.100728246,0.01,lovastatin des-sec-butyrate,UV_VIS_2
+0.782562021,0.05,lovastatin des-sec-butyrate,UV_VIS_2
+0.834426835,0.05,lovastatin des-sec-butyrate,UV_VIS_2
+1.731839195,0.1,lovastatin des-sec-butyrate,UV_VIS_2
+1.702944508,0.1,lovastatin des-sec-butyrate,UV_VIS_2
+1.69390189,0.1,lovastatin des-sec-butyrate,UV_VIS_2
+3.426432062,0.2,lovastatin des-sec-butyrate,UV_VIS_2
+3.472897009,0.2,lovastatin des-sec-butyrate,UV_VIS_2
+8.668669734,0.5,lovastatin des-sec-butyrate,UV_VIS_2
+8.656993572,0.5,lovastatin des-sec-butyrate,UV_VIS_2
+17.37504263,1,lovastatin des-sec-butyrate,UV_VIS_2
+17.29446844,1,lovastatin des-sec-butyrate,UV_VIS_2
+34.62638199,2,lovastatin des-sec-butyrate,UV_VIS_2
+34.70246868,2,lovastatin des-sec-butyrate,UV_VIS_2
+86.67358924,5,lovastatin des-sec-butyrate,UV_VIS_2
+86.70442256,5,lovastatin des-sec-butyrate,UV_VIS_2
+173.4620041,10,lovastatin des-sec-butyrate,UV_VIS_2
+0.032525247,1,sec-butyric acid,UV_VIS_2
+0.044624256,1,sec-butyric acid,UV_VIS_2
+0.033970546,1,sec-butyric acid,UV_VIS_2
+0.082403655,2,sec-butyric acid,UV_VIS_2
+0.09032662,2,sec-butyric acid,UV_VIS_2
+0.282561884,5,sec-butyric acid,UV_VIS_2
+0.252014261,5,sec-butyric acid,UV_VIS_2
+0.582626693,10,sec-butyric acid,UV_VIS_2
+0.558172355,10,sec-butyric acid,UV_VIS_2
+0.537739363,10,sec-butyric acid,UV_VIS_2
+1.164601866,20,sec-butyric acid,UV_VIS_2
+1.136931141,20,sec-butyric acid,UV_VIS_2
+2.939323394,50,sec-butyric acid,UV_VIS_2
+2.978609168,50,sec-butyric acid,UV_VIS_2
+0.144202999,0.05,TS-0195A,UV_VIS_2
+0.127543682,0.05,TS-0195A,UV_VIS_2
+0.298582037,0.1,TS-0195A,UV_VIS_2
+0.298479136,0.1,TS-0195A,UV_VIS_2
+0.281282032,0.1,TS-0195A,UV_VIS_2
+0.627407996,0.2,TS-0195A,UV_VIS_2
+0.640819814,0.2,TS-0195A,UV_VIS_2
+1.60061916,0.5,TS-0195A,UV_VIS_2
+1.630300802,0.5,TS-0195A,UV_VIS_2
+3.237441465,1,TS-0195A,UV_VIS_2
+3.241574589,1,TS-0195A,UV_VIS_2
+6.560201691,2,TS-0195A,UV_VIS_2
+6.560724416,2,TS-0195A,UV_VIS_2
+16.47222759,5,TS-0195A,UV_VIS_2
+16.50362176,5,TS-0195A,UV_VIS_2
+33.06752496,10,TS-0195A,UV_VIS_2
+0.097933326,0.01,TS-8829,UV_VIS_2
+0.097933326,0.01,TS-8829,UV_VIS_2
+0.647260851,0.05,TS-8829,UV_VIS_2
+0.630690063,0.05,TS-8829,UV_VIS_2
+1.302293027,0.1,TS-8829,UV_VIS_2
+1.360147301,0.1,TS-8829,UV_VIS_2
+1.305325684,0.1,TS-8829,UV_VIS_2
+2.744127242,0.2,TS-8829,UV_VIS_2
+2.733381783,0.2,TS-8829,UV_VIS_2
+6.939286727,0.5,TS-8829,UV_VIS_2
+6.920451187,0.5,TS-8829,UV_VIS_2
+13.90737848,1,TS-8829,UV_VIS_2
+13.91690427,1,TS-8829,UV_VIS_2
+27.83908139,2,TS-8829,UV_VIS_2
+27.90902364,2,TS-8829,UV_VIS_2
+71.01166936,5,TS-8829,UV_VIS_2
+70.38940426,5,TS-8829,UV_VIS_2
+140.4944323,10,TS-8829,UV_VIS_2
+0.03235687,0.01,TS-8830,UV_VIS_2
+0.03235687,0.01,TS-8830,UV_VIS_2
+0.31463352,0.05,TS-8830,UV_VIS_2
+0.321404045,0.05,TS-8830,UV_VIS_2
+0.687377936,0.1,TS-8830,UV_VIS_2
+0.676425526,0.1,TS-8830,UV_VIS_2
+0.676361267,0.1,TS-8830,UV_VIS_2
+1.366652862,0.2,TS-8830,UV_VIS_2
+1.381216465,0.2,TS-8830,UV_VIS_2
+3.619379636,0.5,TS-8830,UV_VIS_2
+3.665903416,0.5,TS-8830,UV_VIS_2
+7.362924308,1,TS-8830,UV_VIS_2
+7.385097014,1,TS-8830,UV_VIS_2
+14.83911535,2,TS-8830,UV_VIS_2
+14.82210995,2,TS-8830,UV_VIS_2
+37.2764378,5,TS-8830,UV_VIS_2
+37.17150534,5,TS-8830,UV_VIS_2
+74.16443357,10,TS-8830,UV_VIS_2
+0.050319228,0.01,TS-9931,UV_VIS_2
+0.050319228,0.01,TS-9931,UV_VIS_2
+0.331135737,0.05,TS-9931,UV_VIS_2
+0.309188958,0.05,TS-9931,UV_VIS_2
+0.686777089,0.1,TS-9931,UV_VIS_2
+0.742002649,0.1,TS-9931,UV_VIS_2
+0.671742397,0.1,TS-9931,UV_VIS_2
+1.42508786,0.2,TS-9931,UV_VIS_2
+1.435368658,0.2,TS-9931,UV_VIS_2
+3.707970211,0.5,TS-9931,UV_VIS_2
+3.721556025,0.5,TS-9931,UV_VIS_2
+7.473879479,1,TS-9931,UV_VIS_2
+7.436372744,1,TS-9931,UV_VIS_2
+15.00392371,2,TS-9931,UV_VIS_2
+14.95091934,2,TS-9931,UV_VIS_2
+37.57187337,5,TS-9931,UV_VIS_2
+37.58650492,5,TS-9931,UV_VIS_2
+75.1944917,10,TS-9931,UV_VIS_2
