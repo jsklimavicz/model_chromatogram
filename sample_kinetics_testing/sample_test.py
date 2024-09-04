@@ -1,4 +1,4 @@
-from samples import Sample, SampleCreator
+from model_chromatogram.samples import Sample, SampleCreator
 import numpy as np
 
 
@@ -52,7 +52,33 @@ compound_name_mapping = {
 
 samples = sample_creator.product_stability_samples(
     time_points=np.array(
-        [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 45, 60, 75, 90, 105, 120, 150, 180]
+        [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            10,
+            15,
+            20,
+            25,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            10,
+            120,
+            150,
+            180,
+            210,
+            250,
+            300,
+            365,
+        ]
     ),
     compound_mapping=compound_mapping,
     compound_name_mapping=compound_name_mapping,
