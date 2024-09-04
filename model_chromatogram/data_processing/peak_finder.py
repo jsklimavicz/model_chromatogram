@@ -33,6 +33,7 @@ class PeakFinder:
         timepoints: np.array,
         signal: np.array,
         processing_method: ProcessingMethod,
+        channel_name: str = None,
     ) -> None:
         """
         Initiates the PeakFinder. Instantiating this performs the following tasks:
@@ -52,6 +53,7 @@ class PeakFinder:
             signal (np.array): The raw signal.
         """
         self.processing_method = processing_method
+        self.channel_name = channel_name
         self.__parse_processing_method()
         self.timepoints = timepoints
         self.n_points = len(timepoints)
@@ -97,16 +99,11 @@ class PeakFinder:
         self.__smooth_signal()
         self.__find_baseline()
         self.__apply_baseline()
-        self.__get_second_derivative()
+        self.__get_derivatives()
         self.find_peaks()
         self.refine_peaks()
 
-    def __dynamic_smoothing(
-        self,
-        signal,
-        min_window=3,
-        max_window=52,
-    ):
+    def __dynamic_smoothing(self, signal, min_window=3, max_window=52, deriv=0):
         # Define the range of window sizes (must be odd)
         window_sizes = range(min_window, max_window, 2)
 
@@ -115,7 +112,7 @@ class PeakFinder:
         smoothed_arrays = []
         for window in window_sizes:
             smoothed_signal = savgol_filter(
-                signal, window_length=window, polyorder=2, mode="nearest"
+                signal, window_length=window, polyorder=2, mode="nearest", deriv=deriv
             )
             # smoothed_signal = apply_savgol_filter(signal.tolist(), window)
             smoothed_arrays.append(smoothed_signal)
@@ -183,9 +180,9 @@ class PeakFinder:
 
         return smooth_signal(window_sizes, smoothed_arrays)
 
-    def __smoothing_driver(self, signal, min_window=3, max_window=52):
+    def __smoothing_driver(self, signal, min_window=3, max_window=52, deriv=0):
         return self.__dynamic_smoothing(
-            signal, min_window=min_window, max_window=max_window
+            signal, min_window=min_window, max_window=max_window, deriv=deriv
         )
 
     def __smooth_signal(self):
@@ -212,24 +209,28 @@ class PeakFinder:
             np.mean(self.processed_signal[self.bg_min : self.bg_max] ** 2)
         )
 
-    def __get_second_derivative(self):
+    def __get_derivatives(self):
         """
         Calculates the second derivative of the smoothed signal via finite differences.
         """
 
-        d1 = self.smoothed_signal
-        d_signal1 = d1[:-2] - d1[1:-1]
-        d_signal2 = d1[1:-1] - d1[2:]
-        self.d2_signal = d_signal1 - d_signal2
-        self.d2_signal = np.pad(self.d2_signal, (1, 1))
+        # d1 = self.smoothed_signal
+        # d_signal1 = d1[:-2] - d1[1:-1]
+        # d_signal2 = d1[1:-1] - d1[2:]
+        # self.d2_signal = d_signal1 - d_signal2
+        # self.d2_signal = np.pad(self.d2_signal, (1, 1))
 
-        self.d2_signal = self.__smoothing_driver(
-            self.d2_signal, min_window=11, max_window=32
+        self.d1_signal = self.__smoothing_driver(
+            self.smoothed_signal, min_window=41, max_window=42, deriv=1
         )
 
         self.d2_signal = self.__smoothing_driver(
-            self.d2_signal, min_window=3, max_window=18
+            self.smoothed_signal, min_window=41, max_window=42, deriv=2
         )
+
+        # self.d2_signal = self.__smoothing_driver(
+        #     self.d2_signal, min_window=3, max_window=18
+        # )
 
         self.d2_ave_noise = np.sqrt(
             np.mean(self.d2_signal[self.bg_min : self.bg_max]) ** 2
@@ -554,7 +555,7 @@ class PeakFinder:
         trimmed_regions = trim_regions(expanded_regions)
 
         final_regions = []
-        for start, end in trimmed_regions:
+        for start, end in initial_regions:
             if end - start <= 15:
                 continue
             else:
@@ -580,7 +581,13 @@ class PeakFinder:
             globals=True, resolution_reference=self.resolution_reference
         )
 
-    def plot_peaks(self, smoothed=False, second_derivative=False, noise=False):
+    def plot_peaks(
+        self,
+        smoothed=False,
+        first_derivative=False,
+        second_derivative=False,
+        noise=False,
+    ):
         # Plot the final result
         plt.figure(figsize=(14, 8))
         t = self.timepoints
@@ -592,9 +599,11 @@ class PeakFinder:
         if smoothed:
             plt.plot(t, self.smoothed_signal + spline, color="limegreen")
 
+        if first_derivative:
+            plt.plot(t, self.d1_signal / self.dt + spline, color="slateblue")
+
         if second_derivative:
             plt.plot(t, self.d2_signal / self.dt + spline, color="blue")
-            # plt.plot(t, self.old_d2 + spline, color="slateblue")
 
         if noise:
             ones = np.ones_like(t)
@@ -644,7 +653,7 @@ class PeakFinder:
             min_time = identification["min_time"]
             max_time = identification["max_time"]
             name = identification["name"]
-            calibration = identification.get("calibration", None)
+            calibration_sets = identification.get("calibration", None)
 
             # Find the largest peak within the specified time range
             filtered_peaks = [
@@ -658,13 +667,20 @@ class PeakFinder:
                 largest_peak.name = name
 
                 # If calibration data is present, calculate the amount
-                if calibration and calibration["type"] == "linear":
-                    areas = [point["area"] for point in calibration["points"]]
-                    amounts = [point["amount"] for point in calibration["points"]]
+                if calibration_sets:
+                    for calibration in calibration_sets:
+                        if (
+                            calibration["channel"] == self.channel_name
+                            and calibration["type"] == "linear"
+                        ):
+                            areas = [point["area"] for point in calibration["points"]]
+                            amounts = [
+                                point["amount"] for point in calibration["points"]
+                            ]
 
-                    # Perform linear regression to find the relationship
-                    slope, intercept, _, _, _ = linregress(areas, amounts)
+                            # Perform linear regression to find the relationship
+                            slope, intercept, _, _, _ = linregress(areas, amounts)
 
-                    # Calculate the amount based on the peak area
-                    largest_peak.amount = slope * largest_peak.area + intercept
-                    largest_peak.amount_unit = calibration["amount_unit"]
+                            # Calculate the amount based on the peak area
+                            largest_peak.amount = slope * largest_peak.area + intercept
+                            largest_peak.amount_unit = calibration["amount_unit"]
