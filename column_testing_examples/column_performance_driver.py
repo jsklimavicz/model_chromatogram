@@ -11,7 +11,7 @@ from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
 from model_chromatogram.samples import Sample
 from model_chromatogram.injection import Injection
 from model_chromatogram.sequence import Sequence
-from model_chromatogram.system import System, Column
+from model_chromatogram.system import System
 
 folder = "output11"
 
@@ -94,15 +94,15 @@ def generate_datetime_set(current_date, count):
     return sorted(weekly_datetimes)
 
 
-with open("./input_json/systems.json") as f:
+with open("./column_testing_examples/input_json/systems.json") as f:
     systems_json = json.load(f)
 systems = [System(**system) for system in systems_json]
 # systems = [systems[0]]
 
-with open("./input_json/instrument_methods.json") as f:
+with open("./column_testing_examples/input_json/instrument_methods.json") as f:
     method_list = json.load(f)
 
-with open("./input_json/processing_methods.json") as f:
+with open("./column_testing_examples/input_json/processing_methods.json") as f:
     processing_method_list = json.load(f)
 
 validation_method = None

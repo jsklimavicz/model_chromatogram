@@ -1,0 +1,19 @@
+[
+    {
+        "inner_diameter": {
+            "value": 10,
+            "unit": "mm"
+        },
+        "length": {
+            "value": 150,
+            "unit": "mm"
+        },
+        "type": "C18",
+        "serial_number": "00882945-M",
+        "injection_count": 0,
+        "particle_size": {
+            "value": 5,
+            "unit": "um"
+        }
+    }
+]

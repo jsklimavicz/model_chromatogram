@@ -1,6 +1,6 @@
 [
     {
-        "name": "column performance test",
+        "name": "lovastatin_stability_quant",
         "detection_parameters": {
             "background_noise_range": {
                 "minimum": 0,

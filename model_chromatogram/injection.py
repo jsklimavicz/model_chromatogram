@@ -108,7 +108,7 @@ class Injection:
     def get_chromatogram_data(self, channel_name, **kwargs):
         return self.chromatograms[channel_name].get_chromatogram_data(**kwargs)
 
-    def find_peaks(self, channel_name):
+    def find_peaks(self, channel_name) -> PeakFinder:
         peak_finder = PeakFinder(
             *self.get_chromatogram_data(channel_name, pandas=False),
             processing_method=self.processing_method
@@ -118,6 +118,8 @@ class Injection:
                 self.dict["results"][ind]["peaks"] = [
                     peak.get_properties() for peak in peak_finder
                 ]
+
+        return peak_finder
 
     def __iter__(self):
         return iter(self.chromatograms)
