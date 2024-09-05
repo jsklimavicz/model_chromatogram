@@ -29,7 +29,7 @@ cmpds = [
     "117-89-5",  # 17.076
     "3075-84-1",  # 17.393
 ]
-conc = np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 10
+conc = np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 5
 
 
 with open("./sample_kinetics_testing/input_json/instrument_methods.json") as f:

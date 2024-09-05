@@ -100,7 +100,9 @@ class PeakFinder:
         self.find_peaks()
         self.refine_peaks()
 
-    def __test_smoothing(self, signal, min_window=5, max_window=41, var_window_size=31):
+    def __signal_smoothing(
+        self, signal, min_window=5, max_window=41, var_window_size=31
+    ):
         # Calculate local variance using a uniform filter
         signal = savgol_filter(signal, 5, 2, mode="nearest")
         local_mean = uniform_filter1d(signal, size=var_window_size)
@@ -161,7 +163,7 @@ class PeakFinder:
 
     def __smoothing_driver(self, signal, min_window=5, max_window=41, deriv=0):
         if deriv == 0:
-            return self.__test_smoothing(
+            return self.__signal_smoothing(
                 signal,
                 min_window=min_window,
                 max_window=max_window,
@@ -228,7 +230,6 @@ class PeakFinder:
         self.d2_sigma = self.noise_threshold_multiplier * self.d2_ave_noise
         self.signal_sigma = 2 * self.signal_noise
         low_cutoff = -self.peak_limit
-        high_cutoff = 1.5
         n = len(self.d2_signal)
 
         # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
