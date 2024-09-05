@@ -314,14 +314,18 @@ class PeakFinder:
         first_derivative=False,
         second_derivative=False,
         noise=False,
+        highlight_peaks=False,
+        show_spline=False,
     ):
         # Plot the final result
         plt.figure(figsize=(14, 8))
         t = self.timepoints
         plt.plot(t, self.raw_signal, color="black")
-        plt.plot(t, self.baseline_spline(t), color="grey")
 
         spline = self.baseline_spline(t)
+
+        if show_spline:
+            plt.plot(t, spline, color="grey")
 
         if smoothed:
             plt.plot(t, self.smoothed_signal + spline, color="limegreen")
@@ -340,13 +344,14 @@ class PeakFinder:
             plt.plot(t, -self.signal_sigma * ones + spline, color="red")
 
         # Colors for adjacent peaks
-        for idx, peak in enumerate(self.peaks):
-            color = "orange" if idx % 2 == 0 else "blue"
-            plt.axvspan(peak.start_time, peak.end_time, color=color, alpha=0.2)
+        if highlight_peaks:
+            for idx, peak in enumerate(self.peaks):
+                color = "orange" if idx % 2 == 0 else "blue"
+                plt.axvspan(peak.start_time, peak.end_time, color=color, alpha=0.2)
 
         plt.xlabel("Time (min)")
         plt.ylabel("Absorbance (mAU)")
-        plt.show()
+        return plt
 
     def __peak_list_to_dataframe(self) -> pd.DataFrame:
         peak_dict_list = []

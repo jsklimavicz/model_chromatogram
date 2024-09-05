@@ -85,4 +85,8 @@ peak_finder = curr_injection.find_peaks("UV_VIS_1")
 df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
 df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
 peak_finder.save_peaks("./sample_kinetics_testing/peaks.csv")
-peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
+# peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
+peak_finder.plot_peaks()
+import matplotlib.pyplot as plt
+
+plt.savefig("./image.png", transparent=True)
