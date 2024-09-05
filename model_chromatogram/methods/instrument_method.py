@@ -78,16 +78,18 @@ class InstrumentMethod:
         Returns:
             filtered (np.array): The convolved signal values
         """
-        window_size = int(round(self.sample_rate * 60 * convolution_width))
-        window = signal.windows.tukey(window_size)
-        y = np.pad(
-            y,
-            (window_size - 1, 0),
-            "constant",
-            constant_values=(y[0], y[-1]),
-        )
-        filtered = signal.convolve(y, window, mode="valid") / sum(window)
-        return filtered
+
+        for _ in range(3):
+            window_size = int(round(self.sample_rate * 60 * convolution_width))
+            window = signal.windows.boxcar(window_size)
+            y = np.pad(
+                y,
+                (window_size - 1, 0),
+                "constant",
+                constant_values=(y[0], y[-1]),
+            )
+            y = signal.convolve(y, window, mode="valid") / sum(window)
+        return y
 
     def __create_profile(
         self,

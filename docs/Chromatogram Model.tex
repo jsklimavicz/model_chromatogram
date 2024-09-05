@@ -378,7 +378,6 @@ The detection algorithm is arguably the most complicated algorithm implemented i
 \begin{enumerate}
 \item Initial region detection
 \item Region expansion
-\item Region contraction
 \item Peak refinement
 \end{enumerate}
 
@@ -416,15 +415,15 @@ Before proceeding on to region expansion, a quick filtering is performed to ensu
 \begin{algorithm}[t]
 \caption{Initial region detection}\label{alg:regdetect}
 \begin{algorithmic}
-\Require $\mathbf{d}$ \Comment{Second derivative array}
-\State $n \gets \text{len}(\mathbf{d})$
+\Require $\mathbf{y}^{\prime\prime}$ \Comment{Second derivative array}
+\State $n \gets \text{len}(\mathbf{y}^{\prime\prime})$
 \State $\texttt{regions} \gets \texttt{[]}$
 \State $i \gets 1$
 \While {$i < n$}
-  \If{$\mathbf{d}_i < \omega \cdot \sigma_{\text{bg}}$}
+  \If{$\mathbf{y}^{\prime\prime}_i < \omega \cdot \sigma_{\text{bg}}$}
     \State $\texttt{start} \gets i$
     \State $i \gets i+1$
-    \While {$\mathbf{d}_i < \omega \cdot \sigma_{\text{bg}}$}:
+    \While {$\mathbf{y}^{\prime\prime}_i < \omega \cdot \sigma_{\text{bg}}$}:
       \State $i \gets i+1$
     \EndWhile
     \State $\texttt{stop} = i$
@@ -440,20 +439,12 @@ Before proceeding on to region expansion, a quick filtering is performed to ensu
 
 \subsubsection{Region Expansion}
 
-Once we have a set of regions, we must expand them, since the negative peaks of a second derivative are narrower than the original peak.
+Once we have a set of regions, we must expand them, since the negative peaks of a second derivative are narrower than the original peak. We expand peaks until the peak raw signal drops below the noise threshold, or the first derivative changes sign. 
 
 
 
 \begin{algorithm}[t]
 \caption{Region expansion}\label{alg:regexp}
-\begin{algorithmic}
-\State $y \gets x$
-\end{algorithmic}
-\end{algorithm}
-
-\subsubsection{Region Contraction}
-\begin{algorithm}[t]
-\caption{Region contraction}\label{alg:regcont}
 \begin{algorithmic}
 \State $y \gets x$
 \end{algorithmic}

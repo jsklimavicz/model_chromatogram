@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 import numpy as np
+import pandas as pd
 import random
 import datetime
 import holidays
@@ -28,7 +29,7 @@ cmpds = [
     "117-89-5",  # 17.076
     "3075-84-1",  # 17.393
 ]
-conc = np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 50
+conc = np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 10
 
 
 with open("./sample_kinetics_testing/input_json/instrument_methods.json") as f:
@@ -81,6 +82,7 @@ curr_injection = Injection(
 
 
 peak_finder = curr_injection.find_peaks("UV_VIS_1")
-
+df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
+df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
 peak_finder.save_peaks("./sample_kinetics_testing/peaks.csv")
 peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)

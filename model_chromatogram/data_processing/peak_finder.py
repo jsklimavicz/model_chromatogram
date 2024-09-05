@@ -1,13 +1,9 @@
 import numpy as np
 from scipy.interpolate import CubicSpline
 import pandas as pd
-from operator import lt, gt
 import matplotlib.pyplot as plt
-from scipy.signal import (
-    savgol_filter,
-    argrelmin,
-    argrelmax,
-)
+from scipy.signal import savgol_filter
+from scipy.ndimage import uniform_filter1d
 from model_chromatogram.methods import ProcessingMethod
 from model_chromatogram.data_processing import PeakList, als_psalsa
 from model_chromatogram.user_parameters import (
@@ -21,6 +17,7 @@ from model_chromatogram.user_parameters import (
 )
 from pydash import get as _get
 from scipy.stats import linregress
+import itertools
 
 
 class PeakFinder:
@@ -103,91 +100,78 @@ class PeakFinder:
         self.find_peaks()
         self.refine_peaks()
 
-    def __dynamic_smoothing(self, signal, min_window=3, max_window=52, deriv=0):
-        # Define the range of window sizes (must be odd)
-        window_sizes = range(min_window, max_window, 2)
-
-        # Update the variance calculation to only consider the original signal with the smoothed value replacing one index
-
-        smoothed_arrays = []
-        for window in window_sizes:
-            smoothed_signal = savgol_filter(
-                signal, window_length=window, polyorder=2, mode="nearest", deriv=deriv
-            )
-            # smoothed_signal = apply_savgol_filter(signal.tolist(), window)
-            smoothed_arrays.append(smoothed_signal)
-        smoothed_arrays = np.array(smoothed_arrays)
-
-        noise = np.sqrt(np.mean(self.processed_signal[self.bg_min : self.bg_max] ** 2))
-        k = 10 * noise
-
-        def smooth_signal(window_sizes, smoothed_arrays):
-            prev_window = len(window_sizes) - 1
-
-            # Apply the dynamic SG smoothing with the new variance calculation
-            new_signal = np.zeros_like(signal)
-
-            max_jump = 1
-
-            for i in range(self.n_points):
-
-                min_window = max(0, prev_window - max_jump)
-                max_window = min(len(smoothed_arrays) - 1, prev_window + max_jump + 1)
-
-                pad_size = window_sizes[-1] // 2
-                min_pad = max(0, i - pad_size)
-                max_pad = min(i + pad_size, self.n_points - 1)
-
-                curr_windows = smoothed_arrays[
-                    min_window : max_window + 1, min_pad : max_pad + 1
-                ]
-
-                vars = np.var(curr_windows, axis=1)
-                mult = np.arange(min_window, max_window + 1)
-                if i > pad_size and i < self.n_points - 4:
-                    means_before = np.mean(curr_windows[:, : pad_size + 1], axis=1)
-                    means_after = np.mean(curr_windows[:, pad_size:], axis=1)
-                    sig_diff = (
-                        2
-                        * np.mean(
-                            (
-                                smoothed_arrays[
-                                    min_window : max_window + 1, i - 3 : i + 4
-                                ]
-                                - signal[i - 3 : i + 4]
-                            ),
-                            axis=1,
-                        )
-                        / noise
-                    )
-                    local_variances = (
-                        vars
-                        / np.sqrt(2 * mult + 1)
-                        * (1 + (k - means_before) ** 2)
-                        * (1 + (k - means_after) ** 2)
-                        * (1 + sig_diff**2)
-                    )
-                else:
-                    means = np.mean(curr_windows, axis=1)
-                    local_variances = vars * (1 + (k - means)) / mult
-                best_window_idx = max(
-                    0, np.argmin(local_variances) + prev_window - max_jump
-                )
-
-                new_signal[i] = smoothed_arrays[best_window_idx, i]
-                prev_window = best_window_idx
-            return new_signal
-
-        return smooth_signal(window_sizes, smoothed_arrays)
-
-    def __smoothing_driver(self, signal, min_window=3, max_window=52, deriv=0):
-        return self.__dynamic_smoothing(
-            signal, min_window=min_window, max_window=max_window, deriv=deriv
+    def __test_smoothing(self, signal, min_window=5, max_window=41, var_window_size=31):
+        # Calculate local variance using a uniform filter
+        signal = savgol_filter(signal, 5, 2, mode="nearest")
+        local_mean = uniform_filter1d(signal, size=var_window_size)
+        local_variance = uniform_filter1d(
+            (signal - local_mean) ** 2, size=var_window_size
         )
+        rms_noise = np.sqrt(np.mean(local_variance[:150]))
+
+        # Normalize the variance for smoother scaling of window sizes
+        normalized_variance = (np.sqrt(local_variance) / (7.5 * rms_noise)) ** 2
+
+        # Apply linear interpolation for smoother window size adjustment
+        window_sizes = np.clip(
+            max_window - (max_window - min_window) * normalized_variance,
+            min_window,
+            max_window,
+        )
+
+        # Initialize the smoothed signal
+        smoothed_signal = np.zeros_like(signal)
+
+        # Adjust window sizes so they only change by 1 at a time
+        for i in range(1, len(window_sizes)):
+            if window_sizes[i] > window_sizes[i - 1] + 0.5:
+                window_sizes[i] = min(window_sizes[i - 1] + 1, max_window)
+            elif window_sizes[i] < window_sizes[i - 1] - 0.5:
+                window_sizes[i] = max(window_sizes[i - 1] - 1, min_window)
+
+        # Ensure window sizes are odd
+        window_sizes = np.int64(np.round(window_sizes))
+        window_sizes = np.where(
+            window_sizes % 2 == 0, window_sizes + 1, window_sizes
+        ).astype(int)
+
+        # Identify contiguous regions with the same window size
+        for key, group in itertools.groupby(enumerate(window_sizes), lambda x: x[1]):
+            indices, window_size = zip(*group)
+            start = indices[0]
+            end = indices[-1] + 1
+
+            half_window = window_size[0] // 2
+            region_start = max(0, start - half_window)
+            offset = max(half_window - region_start, 0)
+            region_end = min(len(signal), end + half_window)
+
+            # Apply Savitzky-Golay filter to the contiguous region
+            filtered_region = savgol_filter(
+                signal[region_start:region_end], window_size[0], 2, mode="nearest"
+            )
+
+            # Store the filtered result in the smoothed signal
+            smoothed_signal[start:end] = filtered_region[
+                half_window - offset : half_window + (end - start) - offset
+            ]
+
+        smoothed_signal = savgol_filter(smoothed_signal, 5, 2, mode="nearest")
+        return smoothed_signal
+
+    def __smoothing_driver(self, signal, min_window=5, max_window=41, deriv=0):
+        if deriv == 0:
+            return self.__test_smoothing(
+                signal,
+                min_window=min_window,
+                max_window=max_window,
+                var_window_size=31,
+            )
+        else:
+            return savgol_filter(signal, 31, 2, deriv=deriv)
 
     def __smooth_signal(self):
         self.smoothed_signal = self.__smoothing_driver(self.raw_signal)
-        # self.smoothed_signal = self.__dynamic_smoothing(self.raw_signal)
 
     def __find_baseline(self):
         """
@@ -214,7 +198,7 @@ class PeakFinder:
 
     def __get_derivatives(self):
         """
-        Calculates the second derivative of the smoothed signal via finite differences.
+        Calculates the first and second derivative of the smoothed signal via the savgol filter.
         """
 
         self.d1_signal = self.__smoothing_driver(
