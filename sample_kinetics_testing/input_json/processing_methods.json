@@ -1,6 +1,6 @@
 [
     {
-        "name": "lovastatin_stability_quant",
+        "name": "tetracinib_stability_quant",
         "detection_parameters": {
             "background_noise_range": {
                 "minimum": 0,
@@ -46,7 +46,7 @@
                 "min_time": 11.2,
                 "max_time": 11.5,
                 "method": "largest",
-                "name": "dihydroxylovastatin",
+                "name": "dihydroxytetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -103,7 +103,7 @@
                 "min_time": 13.7,
                 "max_time": 13.95,
                 "method": "largest",
-                "name": "5-hydroxylovastatin",
+                "name": "5-hydroxytetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -122,7 +122,7 @@
                 "min_time": 13.95,
                 "max_time": 14.2,
                 "method": "largest",
-                "name": "lovastatin des-sec-butyrate",
+                "name": "tetracinib des-sec-butyrate",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -141,7 +141,7 @@
                 "min_time": 15.4,
                 "max_time": 15.9,
                 "method": "largest",
-                "name": "dehydrolovastatin",
+                "name": "dehydrotetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -179,7 +179,7 @@
                 "min_time": 17,
                 "max_time": 17.6,
                 "method": "largest",
-                "name": "lovastatin",
+                "name": "tetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -198,7 +198,7 @@
                 "min_time": 17.7,
                 "max_time": 18,
                 "method": "largest",
-                "name": "lovastatin acetate",
+                "name": "tetracinib acetate",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",

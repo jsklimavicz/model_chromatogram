@@ -45,26 +45,26 @@ system = System(**systems_json[0])
 
 validation_method = None
 for method in method_list:
-    if get_(method, "name") == "lovastatin_gradient":
+    if get_(method, "name") == "tetracinib_gradient":
         validation_method = InstrumentMethod(**method)
         break
 
 validation_processing = None
 for method in processing_method_list:
-    if get_(method, "name") == "lovastatin_stability_quant":
+    if get_(method, "name") == "tetracinib_stability_quant":
         validation_processing = ProcessingMethod(**method)
         break
 
 
 sample_dict = {
-    "name": f"lovastatin_degradation_standard",
+    "name": f"tetracinib_degradation_standard",
     "compound_id_list": cmpds,
     "compound_concentration_list": conc,
 }
 sample = Sample(**sample_dict)
 
 sequence = Sequence(
-    "lovastatin_stability",
+    "tetracinib_stability",
     f"{system.name.upper()}",
     start_time=datetime.datetime.now(),
     url="",

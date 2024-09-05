@@ -1,75 +1,75 @@
 ﻿area,umol,cmpd,channel
-0.072202159,0.005,5-hydroxylovastatin,UV_VIS_1
-0.061220623,0.005,5-hydroxylovastatin,UV_VIS_1
-0.162299371,0.01,5-hydroxylovastatin,UV_VIS_1
-0.179494392,0.01,5-hydroxylovastatin,UV_VIS_1
-0.964624318,0.05,5-hydroxylovastatin,UV_VIS_1
-0.940517591,0.05,5-hydroxylovastatin,UV_VIS_1
-1.958463329,0.1,5-hydroxylovastatin,UV_VIS_1
-1.952046838,0.1,5-hydroxylovastatin,UV_VIS_1
-9.92177754,0.5,5-hydroxylovastatin,UV_VIS_1
-19.93730499,1,5-hydroxylovastatin,UV_VIS_1
-19.92686578,1,5-hydroxylovastatin,UV_VIS_1
-99.5407695,5,5-hydroxylovastatin,UV_VIS_1
-0.094118395,0.005,dehydrolovastatin,UV_VIS_1
-0.131456888,0.005,dehydrolovastatin,UV_VIS_1
-0.248069179,0.01,dehydrolovastatin,UV_VIS_1
-0.249311969,0.01,dehydrolovastatin,UV_VIS_1
-1.434775591,0.05,dehydrolovastatin,UV_VIS_1
-1.385713951,0.05,dehydrolovastatin,UV_VIS_1
-2.789376129,0.1,dehydrolovastatin,UV_VIS_1
-2.838129393,0.1,dehydrolovastatin,UV_VIS_1
-14.36274122,0.5,dehydrolovastatin,UV_VIS_1
-28.66158864,1,dehydrolovastatin,UV_VIS_1
-28.82813348,1,dehydrolovastatin,UV_VIS_1
-143.9302439,5,dehydrolovastatin,UV_VIS_1
-0.055700617,0.005,dihydroxylovastatin,UV_VIS_1
-0.055184451,0.005,dihydroxylovastatin,UV_VIS_1
-0.150172753,0.01,dihydroxylovastatin,UV_VIS_1
-0.142734224,0.01,dihydroxylovastatin,UV_VIS_1
-0.761428997,0.05,dihydroxylovastatin,UV_VIS_1
-0.758916821,0.05,dihydroxylovastatin,UV_VIS_1
-1.618721337,0.1,dihydroxylovastatin,UV_VIS_1
-1.598555606,0.1,dihydroxylovastatin,UV_VIS_1
-8.214110937,0.5,dihydroxylovastatin,UV_VIS_1
-16.42415601,1,dihydroxylovastatin,UV_VIS_1
-16.44999678,1,dihydroxylovastatin,UV_VIS_1
-82.5008316,5,dihydroxylovastatin,UV_VIS_1
-0.204873279,0.005,lovastatin,UV_VIS_1
-0.155692702,0.005,lovastatin,UV_VIS_1
-0.420909944,0.01,lovastatin,UV_VIS_1
-0.376438148,0.01,lovastatin,UV_VIS_1
-2.142836186,0.05,lovastatin,UV_VIS_1
-2.161090842,0.05,lovastatin,UV_VIS_1
-4.298669696,0.1,lovastatin,UV_VIS_1
-4.316173148,0.1,lovastatin,UV_VIS_1
-21.75553033,0.5,lovastatin,UV_VIS_1
-43.65445038,1,lovastatin,UV_VIS_1
-43.69921359,1,lovastatin,UV_VIS_1
-218.6855801,5,lovastatin,UV_VIS_1
-0.039878433,0.005,lovastatin acetate,UV_VIS_1
-0.065362869,0.01,lovastatin acetate,UV_VIS_1
-0.068935914,0.01,lovastatin acetate,UV_VIS_1
-0.501589861,0.05,lovastatin acetate,UV_VIS_1
-0.510659568,0.05,lovastatin acetate,UV_VIS_1
-1.014087846,0.1,lovastatin acetate,UV_VIS_1
-1.054479083,0.1,lovastatin acetate,UV_VIS_1
-5.46620908,0.5,lovastatin acetate,UV_VIS_1
-10.99692321,1,lovastatin acetate,UV_VIS_1
-11.08537215,1,lovastatin acetate,UV_VIS_1
-55.67435565,5,lovastatin acetate,UV_VIS_1
-0.152064698,0.005,lovastatin des-sec-butyrate,UV_VIS_1
-0.13438667,0.005,lovastatin des-sec-butyrate,UV_VIS_1
-0.280659448,0.01,lovastatin des-sec-butyrate,UV_VIS_1
-0.287223273,0.01,lovastatin des-sec-butyrate,UV_VIS_1
-1.774533431,0.05,lovastatin des-sec-butyrate,UV_VIS_1
-1.724440284,0.05,lovastatin des-sec-butyrate,UV_VIS_1
-3.488359827,0.1,lovastatin des-sec-butyrate,UV_VIS_1
-3.466902271,0.1,lovastatin des-sec-butyrate,UV_VIS_1
-17.43527378,0.5,lovastatin des-sec-butyrate,UV_VIS_1
-34.87244936,1,lovastatin des-sec-butyrate,UV_VIS_1
-34.92135566,1,lovastatin des-sec-butyrate,UV_VIS_1
-174.977655,5,lovastatin des-sec-butyrate,UV_VIS_1
+0.072202159,0.005,5-hydroxytetracinib,UV_VIS_1
+0.061220623,0.005,5-hydroxytetracinib,UV_VIS_1
+0.162299371,0.01,5-hydroxytetracinib,UV_VIS_1
+0.179494392,0.01,5-hydroxytetracinib,UV_VIS_1
+0.964624318,0.05,5-hydroxytetracinib,UV_VIS_1
+0.940517591,0.05,5-hydroxytetracinib,UV_VIS_1
+1.958463329,0.1,5-hydroxytetracinib,UV_VIS_1
+1.952046838,0.1,5-hydroxytetracinib,UV_VIS_1
+9.92177754,0.5,5-hydroxytetracinib,UV_VIS_1
+19.93730499,1,5-hydroxytetracinib,UV_VIS_1
+19.92686578,1,5-hydroxytetracinib,UV_VIS_1
+99.5407695,5,5-hydroxytetracinib,UV_VIS_1
+0.094118395,0.005,dehydrotetracinib,UV_VIS_1
+0.131456888,0.005,dehydrotetracinib,UV_VIS_1
+0.248069179,0.01,dehydrotetracinib,UV_VIS_1
+0.249311969,0.01,dehydrotetracinib,UV_VIS_1
+1.434775591,0.05,dehydrotetracinib,UV_VIS_1
+1.385713951,0.05,dehydrotetracinib,UV_VIS_1
+2.789376129,0.1,dehydrotetracinib,UV_VIS_1
+2.838129393,0.1,dehydrotetracinib,UV_VIS_1
+14.36274122,0.5,dehydrotetracinib,UV_VIS_1
+28.66158864,1,dehydrotetracinib,UV_VIS_1
+28.82813348,1,dehydrotetracinib,UV_VIS_1
+143.9302439,5,dehydrotetracinib,UV_VIS_1
+0.055700617,0.005,dihydroxytetracinib,UV_VIS_1
+0.055184451,0.005,dihydroxytetracinib,UV_VIS_1
+0.150172753,0.01,dihydroxytetracinib,UV_VIS_1
+0.142734224,0.01,dihydroxytetracinib,UV_VIS_1
+0.761428997,0.05,dihydroxytetracinib,UV_VIS_1
+0.758916821,0.05,dihydroxytetracinib,UV_VIS_1
+1.618721337,0.1,dihydroxytetracinib,UV_VIS_1
+1.598555606,0.1,dihydroxytetracinib,UV_VIS_1
+8.214110937,0.5,dihydroxytetracinib,UV_VIS_1
+16.42415601,1,dihydroxytetracinib,UV_VIS_1
+16.44999678,1,dihydroxytetracinib,UV_VIS_1
+82.5008316,5,dihydroxytetracinib,UV_VIS_1
+0.204873279,0.005,tetracinib,UV_VIS_1
+0.155692702,0.005,tetracinib,UV_VIS_1
+0.420909944,0.01,tetracinib,UV_VIS_1
+0.376438148,0.01,tetracinib,UV_VIS_1
+2.142836186,0.05,tetracinib,UV_VIS_1
+2.161090842,0.05,tetracinib,UV_VIS_1
+4.298669696,0.1,tetracinib,UV_VIS_1
+4.316173148,0.1,tetracinib,UV_VIS_1
+21.75553033,0.5,tetracinib,UV_VIS_1
+43.65445038,1,tetracinib,UV_VIS_1
+43.69921359,1,tetracinib,UV_VIS_1
+218.6855801,5,tetracinib,UV_VIS_1
+0.039878433,0.005,tetracinib acetate,UV_VIS_1
+0.065362869,0.01,tetracinib acetate,UV_VIS_1
+0.068935914,0.01,tetracinib acetate,UV_VIS_1
+0.501589861,0.05,tetracinib acetate,UV_VIS_1
+0.510659568,0.05,tetracinib acetate,UV_VIS_1
+1.014087846,0.1,tetracinib acetate,UV_VIS_1
+1.054479083,0.1,tetracinib acetate,UV_VIS_1
+5.46620908,0.5,tetracinib acetate,UV_VIS_1
+10.99692321,1,tetracinib acetate,UV_VIS_1
+11.08537215,1,tetracinib acetate,UV_VIS_1
+55.67435565,5,tetracinib acetate,UV_VIS_1
+0.152064698,0.005,tetracinib des-sec-butyrate,UV_VIS_1
+0.13438667,0.005,tetracinib des-sec-butyrate,UV_VIS_1
+0.280659448,0.01,tetracinib des-sec-butyrate,UV_VIS_1
+0.287223273,0.01,tetracinib des-sec-butyrate,UV_VIS_1
+1.774533431,0.05,tetracinib des-sec-butyrate,UV_VIS_1
+1.724440284,0.05,tetracinib des-sec-butyrate,UV_VIS_1
+3.488359827,0.1,tetracinib des-sec-butyrate,UV_VIS_1
+3.466902271,0.1,tetracinib des-sec-butyrate,UV_VIS_1
+17.43527378,0.5,tetracinib des-sec-butyrate,UV_VIS_1
+34.87244936,1,tetracinib des-sec-butyrate,UV_VIS_1
+34.92135566,1,tetracinib des-sec-butyrate,UV_VIS_1
+174.977655,5,tetracinib des-sec-butyrate,UV_VIS_1
 0.029255282,1,sec-butyric acid,UV_VIS_1
 0.754370137,10,sec-butyric acid,UV_VIS_1
 0.747501232,10,sec-butyric acid,UV_VIS_1
@@ -116,113 +116,113 @@
 11.32798618,1,TS-9931,UV_VIS_1
 11.31712911,1,TS-9931,UV_VIS_1
 57.16525863,5,TS-9931,UV_VIS_1
-0.03930234,0.01,5-hydroxylovastatin,UV_VIS_2
-0.03930234,0.01,5-hydroxylovastatin,UV_VIS_2
-0.307045027,0.05,5-hydroxylovastatin,UV_VIS_2
-0.343491415,0.05,5-hydroxylovastatin,UV_VIS_2
-0.744537657,0.1,5-hydroxylovastatin,UV_VIS_2
-0.714129891,0.1,5-hydroxylovastatin,UV_VIS_2
-0.711603383,0.1,5-hydroxylovastatin,UV_VIS_2
-1.444071368,0.2,5-hydroxylovastatin,UV_VIS_2
-1.469117833,0.2,5-hydroxylovastatin,UV_VIS_2
-3.661676917,0.5,5-hydroxylovastatin,UV_VIS_2
-3.620163905,0.5,5-hydroxylovastatin,UV_VIS_2
-7.429979808,1,5-hydroxylovastatin,UV_VIS_2
-7.384197362,1,5-hydroxylovastatin,UV_VIS_2
-14.79254863,2,5-hydroxylovastatin,UV_VIS_2
-14.80910875,2,5-hydroxylovastatin,UV_VIS_2
-37.15181524,5,5-hydroxylovastatin,UV_VIS_2
-37.07106125,5,5-hydroxylovastatin,UV_VIS_2
-74.21151701,10,5-hydroxylovastatin,UV_VIS_2
-0.194384036,0.01,dehydrolovastatin,UV_VIS_2
-0.194384036,0.01,dehydrolovastatin,UV_VIS_2
-1.021687483,0.05,dehydrolovastatin,UV_VIS_2
-1.047137756,0.05,dehydrolovastatin,UV_VIS_2
-2.151968218,0.1,dehydrolovastatin,UV_VIS_2
-2.106678377,0.1,dehydrolovastatin,UV_VIS_2
-2.155938942,0.1,dehydrolovastatin,UV_VIS_2
-4.30706781,0.2,dehydrolovastatin,UV_VIS_2
-4.333512095,0.2,dehydrolovastatin,UV_VIS_2
-10.99554685,0.5,dehydrolovastatin,UV_VIS_2
-10.96689847,0.5,dehydrolovastatin,UV_VIS_2
-21.98525977,1,dehydrolovastatin,UV_VIS_2
-22.03797596,1,dehydrolovastatin,UV_VIS_2
-44.20571645,2,dehydrolovastatin,UV_VIS_2
-44.22945831,2,dehydrolovastatin,UV_VIS_2
-110.6289629,5,dehydrolovastatin,UV_VIS_2
-110.5696066,5,dehydrolovastatin,UV_VIS_2
-221.5940773,10,dehydrolovastatin,UV_VIS_2
-0.070151535,0.01,dihydroxylovastatin,UV_VIS_2
-0.070151535,0.01,dihydroxylovastatin,UV_VIS_2
-0.445993873,0.05,dihydroxylovastatin,UV_VIS_2
-0.432535507,0.05,dihydroxylovastatin,UV_VIS_2
-0.861328512,0.1,dihydroxylovastatin,UV_VIS_2
-0.824443161,0.1,dihydroxylovastatin,UV_VIS_2
-0.867952975,0.1,dihydroxylovastatin,UV_VIS_2
-1.762236275,0.2,dihydroxylovastatin,UV_VIS_2
-1.751114315,0.2,dihydroxylovastatin,UV_VIS_2
-4.477881619,0.5,dihydroxylovastatin,UV_VIS_2
-4.506004573,0.5,dihydroxylovastatin,UV_VIS_2
-9.057713627,1,dihydroxylovastatin,UV_VIS_2
-9.013658826,1,dihydroxylovastatin,UV_VIS_2
-18.14533087,2,dihydroxylovastatin,UV_VIS_2
-18.02785835,2,dihydroxylovastatin,UV_VIS_2
-45.33437068,5,dihydroxylovastatin,UV_VIS_2
-45.36437398,5,dihydroxylovastatin,UV_VIS_2
-90.76533443,10,dihydroxylovastatin,UV_VIS_2
-0.363611565,0.01,lovastatin,UV_VIS_2
-0.363611565,0.01,lovastatin,UV_VIS_2
-2.118503398,0.05,lovastatin,UV_VIS_2
-2.06171555,0.05,lovastatin,UV_VIS_2
-4.221858894,0.1,lovastatin,UV_VIS_2
-4.172846744,0.1,lovastatin,UV_VIS_2
-4.218173065,0.1,lovastatin,UV_VIS_2
-8.483489753,0.2,lovastatin,UV_VIS_2
-8.462799413,0.2,lovastatin,UV_VIS_2
-21.2375136,0.5,lovastatin,UV_VIS_2
-21.24253803,0.5,lovastatin,UV_VIS_2
-42.46970815,1,lovastatin,UV_VIS_2
-42.52445735,1,lovastatin,UV_VIS_2
-84.99822919,2,lovastatin,UV_VIS_2
-84.96117912,2,lovastatin,UV_VIS_2
-213.5937268,5,lovastatin,UV_VIS_2
-213.3726232,5,lovastatin,UV_VIS_2
-0.069684785,0.01,lovastatin acetate,UV_VIS_2
-0.069684785,0.01,lovastatin acetate,UV_VIS_2
-0.541205615,0.05,lovastatin acetate,UV_VIS_2
-0.469461697,0.05,lovastatin acetate,UV_VIS_2
-1.093774155,0.1,lovastatin acetate,UV_VIS_2
-1.063870527,0.1,lovastatin acetate,UV_VIS_2
-1.086404101,0.1,lovastatin acetate,UV_VIS_2
-2.214621843,0.2,lovastatin acetate,UV_VIS_2
-2.147820495,0.2,lovastatin acetate,UV_VIS_2
-5.47519239,0.5,lovastatin acetate,UV_VIS_2
-5.389875155,0.5,lovastatin acetate,UV_VIS_2
-11.10312249,1,lovastatin acetate,UV_VIS_2
-11.13884246,1,lovastatin acetate,UV_VIS_2
-22.31158755,2,lovastatin acetate,UV_VIS_2
-22.2877422,2,lovastatin acetate,UV_VIS_2
-56.33244612,5,lovastatin acetate,UV_VIS_2
-56.15735546,5,lovastatin acetate,UV_VIS_2
-111.8241474,10,lovastatin acetate,UV_VIS_2
-0.100728246,0.01,lovastatin des-sec-butyrate,UV_VIS_2
-0.100728246,0.01,lovastatin des-sec-butyrate,UV_VIS_2
-0.782562021,0.05,lovastatin des-sec-butyrate,UV_VIS_2
-0.834426835,0.05,lovastatin des-sec-butyrate,UV_VIS_2
-1.731839195,0.1,lovastatin des-sec-butyrate,UV_VIS_2
-1.702944508,0.1,lovastatin des-sec-butyrate,UV_VIS_2
-1.69390189,0.1,lovastatin des-sec-butyrate,UV_VIS_2
-3.426432062,0.2,lovastatin des-sec-butyrate,UV_VIS_2
-3.472897009,0.2,lovastatin des-sec-butyrate,UV_VIS_2
-8.668669734,0.5,lovastatin des-sec-butyrate,UV_VIS_2
-8.656993572,0.5,lovastatin des-sec-butyrate,UV_VIS_2
-17.37504263,1,lovastatin des-sec-butyrate,UV_VIS_2
-17.29446844,1,lovastatin des-sec-butyrate,UV_VIS_2
-34.62638199,2,lovastatin des-sec-butyrate,UV_VIS_2
-34.70246868,2,lovastatin des-sec-butyrate,UV_VIS_2
-86.67358924,5,lovastatin des-sec-butyrate,UV_VIS_2
-86.70442256,5,lovastatin des-sec-butyrate,UV_VIS_2
-173.4620041,10,lovastatin des-sec-butyrate,UV_VIS_2
+0.03930234,0.01,5-hydroxytetracinib,UV_VIS_2
+0.03930234,0.01,5-hydroxytetracinib,UV_VIS_2
+0.307045027,0.05,5-hydroxytetracinib,UV_VIS_2
+0.343491415,0.05,5-hydroxytetracinib,UV_VIS_2
+0.744537657,0.1,5-hydroxytetracinib,UV_VIS_2
+0.714129891,0.1,5-hydroxytetracinib,UV_VIS_2
+0.711603383,0.1,5-hydroxytetracinib,UV_VIS_2
+1.444071368,0.2,5-hydroxytetracinib,UV_VIS_2
+1.469117833,0.2,5-hydroxytetracinib,UV_VIS_2
+3.661676917,0.5,5-hydroxytetracinib,UV_VIS_2
+3.620163905,0.5,5-hydroxytetracinib,UV_VIS_2
+7.429979808,1,5-hydroxytetracinib,UV_VIS_2
+7.384197362,1,5-hydroxytetracinib,UV_VIS_2
+14.79254863,2,5-hydroxytetracinib,UV_VIS_2
+14.80910875,2,5-hydroxytetracinib,UV_VIS_2
+37.15181524,5,5-hydroxytetracinib,UV_VIS_2
+37.07106125,5,5-hydroxytetracinib,UV_VIS_2
+74.21151701,10,5-hydroxytetracinib,UV_VIS_2
+0.194384036,0.01,dehydrotetracinib,UV_VIS_2
+0.194384036,0.01,dehydrotetracinib,UV_VIS_2
+1.021687483,0.05,dehydrotetracinib,UV_VIS_2
+1.047137756,0.05,dehydrotetracinib,UV_VIS_2
+2.151968218,0.1,dehydrotetracinib,UV_VIS_2
+2.106678377,0.1,dehydrotetracinib,UV_VIS_2
+2.155938942,0.1,dehydrotetracinib,UV_VIS_2
+4.30706781,0.2,dehydrotetracinib,UV_VIS_2
+4.333512095,0.2,dehydrotetracinib,UV_VIS_2
+10.99554685,0.5,dehydrotetracinib,UV_VIS_2
+10.96689847,0.5,dehydrotetracinib,UV_VIS_2
+21.98525977,1,dehydrotetracinib,UV_VIS_2
+22.03797596,1,dehydrotetracinib,UV_VIS_2
+44.20571645,2,dehydrotetracinib,UV_VIS_2
+44.22945831,2,dehydrotetracinib,UV_VIS_2
+110.6289629,5,dehydrotetracinib,UV_VIS_2
+110.5696066,5,dehydrotetracinib,UV_VIS_2
+221.5940773,10,dehydrotetracinib,UV_VIS_2
+0.070151535,0.01,dihydroxytetracinib,UV_VIS_2
+0.070151535,0.01,dihydroxytetracinib,UV_VIS_2
+0.445993873,0.05,dihydroxytetracinib,UV_VIS_2
+0.432535507,0.05,dihydroxytetracinib,UV_VIS_2
+0.861328512,0.1,dihydroxytetracinib,UV_VIS_2
+0.824443161,0.1,dihydroxytetracinib,UV_VIS_2
+0.867952975,0.1,dihydroxytetracinib,UV_VIS_2
+1.762236275,0.2,dihydroxytetracinib,UV_VIS_2
+1.751114315,0.2,dihydroxytetracinib,UV_VIS_2
+4.477881619,0.5,dihydroxytetracinib,UV_VIS_2
+4.506004573,0.5,dihydroxytetracinib,UV_VIS_2
+9.057713627,1,dihydroxytetracinib,UV_VIS_2
+9.013658826,1,dihydroxytetracinib,UV_VIS_2
+18.14533087,2,dihydroxytetracinib,UV_VIS_2
+18.02785835,2,dihydroxytetracinib,UV_VIS_2
+45.33437068,5,dihydroxytetracinib,UV_VIS_2
+45.36437398,5,dihydroxytetracinib,UV_VIS_2
+90.76533443,10,dihydroxytetracinib,UV_VIS_2
+0.363611565,0.01,tetracinib,UV_VIS_2
+0.363611565,0.01,tetracinib,UV_VIS_2
+2.118503398,0.05,tetracinib,UV_VIS_2
+2.06171555,0.05,tetracinib,UV_VIS_2
+4.221858894,0.1,tetracinib,UV_VIS_2
+4.172846744,0.1,tetracinib,UV_VIS_2
+4.218173065,0.1,tetracinib,UV_VIS_2
+8.483489753,0.2,tetracinib,UV_VIS_2
+8.462799413,0.2,tetracinib,UV_VIS_2
+21.2375136,0.5,tetracinib,UV_VIS_2
+21.24253803,0.5,tetracinib,UV_VIS_2
+42.46970815,1,tetracinib,UV_VIS_2
+42.52445735,1,tetracinib,UV_VIS_2
+84.99822919,2,tetracinib,UV_VIS_2
+84.96117912,2,tetracinib,UV_VIS_2
+213.5937268,5,tetracinib,UV_VIS_2
+213.3726232,5,tetracinib,UV_VIS_2
+0.069684785,0.01,tetracinib acetate,UV_VIS_2
+0.069684785,0.01,tetracinib acetate,UV_VIS_2
+0.541205615,0.05,tetracinib acetate,UV_VIS_2
+0.469461697,0.05,tetracinib acetate,UV_VIS_2
+1.093774155,0.1,tetracinib acetate,UV_VIS_2
+1.063870527,0.1,tetracinib acetate,UV_VIS_2
+1.086404101,0.1,tetracinib acetate,UV_VIS_2
+2.214621843,0.2,tetracinib acetate,UV_VIS_2
+2.147820495,0.2,tetracinib acetate,UV_VIS_2
+5.47519239,0.5,tetracinib acetate,UV_VIS_2
+5.389875155,0.5,tetracinib acetate,UV_VIS_2
+11.10312249,1,tetracinib acetate,UV_VIS_2
+11.13884246,1,tetracinib acetate,UV_VIS_2
+22.31158755,2,tetracinib acetate,UV_VIS_2
+22.2877422,2,tetracinib acetate,UV_VIS_2
+56.33244612,5,tetracinib acetate,UV_VIS_2
+56.15735546,5,tetracinib acetate,UV_VIS_2
+111.8241474,10,tetracinib acetate,UV_VIS_2
+0.100728246,0.01,tetracinib des-sec-butyrate,UV_VIS_2
+0.100728246,0.01,tetracinib des-sec-butyrate,UV_VIS_2
+0.782562021,0.05,tetracinib des-sec-butyrate,UV_VIS_2
+0.834426835,0.05,tetracinib des-sec-butyrate,UV_VIS_2
+1.731839195,0.1,tetracinib des-sec-butyrate,UV_VIS_2
+1.702944508,0.1,tetracinib des-sec-butyrate,UV_VIS_2
+1.69390189,0.1,tetracinib des-sec-butyrate,UV_VIS_2
+3.426432062,0.2,tetracinib des-sec-butyrate,UV_VIS_2
+3.472897009,0.2,tetracinib des-sec-butyrate,UV_VIS_2
+8.668669734,0.5,tetracinib des-sec-butyrate,UV_VIS_2
+8.656993572,0.5,tetracinib des-sec-butyrate,UV_VIS_2
+17.37504263,1,tetracinib des-sec-butyrate,UV_VIS_2
+17.29446844,1,tetracinib des-sec-butyrate,UV_VIS_2
+34.62638199,2,tetracinib des-sec-butyrate,UV_VIS_2
+34.70246868,2,tetracinib des-sec-butyrate,UV_VIS_2
+86.67358924,5,tetracinib des-sec-butyrate,UV_VIS_2
+86.70442256,5,tetracinib des-sec-butyrate,UV_VIS_2
+173.4620041,10,tetracinib des-sec-butyrate,UV_VIS_2
 0.032525247,1,sec-butyric acid,UV_VIS_2
 0.044624256,1,sec-butyric acid,UV_VIS_2
 0.033970546,1,sec-butyric acid,UV_VIS_2

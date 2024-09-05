@@ -1,18 +1,18 @@
 [
     {
-        "sample_base": "lovastatin_stability",
+        "sample_base": "tetracinib_stability",
         "compound_name_mapping": {
-            "90094-11-4": "lovastatin",
+            "90094-11-4": "tetracinib",
             "58144-68-6": "TS-8829",
             "3075-84-1": "TS-8830",
-            "117-89-5": "lovastatin acetate",
-            "491-78-1": "lovastatin des-sec-butyrate",
+            "117-89-5": "tetracinib acetate",
+            "491-78-1": "tetracinib des-sec-butyrate",
             "79-11-8": "sec-butyric acid",
-            "58144-64-2": "dehydrolovastatin",
+            "58144-64-2": "dehydrotetracinib",
             "94-59-7": "TS-0195A",
             "93-76-5": "TS-9931",
-            "773-76-2": "5-hydroxylovastatin",
-            "304-21-2": "dihydroxylovastatin"
+            "773-76-2": "5-hydroxytetracinib",
+            "304-21-2": "dihydroxytetracinib"
         },
         "conditions": [
             {
