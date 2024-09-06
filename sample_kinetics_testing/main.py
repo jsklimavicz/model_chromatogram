@@ -29,7 +29,7 @@ cmpds = [
     "117-89-5",  # 17.076
     "3075-84-1",  # 17.393
 ]
-conc = np.array([0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 5
+conc = np.array([1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 5
 
 
 with open("./sample_kinetics_testing/input_json/instrument_methods.json") as f:
@@ -86,7 +86,10 @@ df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
 df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
 peak_finder.save_peaks("./sample_kinetics_testing/peaks.csv")
 # peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
-peak_finder.plot_peaks()
 import matplotlib.pyplot as plt
 
-plt.savefig("./image.png", transparent=True)
+peak_finder.plot_peaks()
+plt.show()
+
+
+# plt.savefig("./image.png", transparent=True)

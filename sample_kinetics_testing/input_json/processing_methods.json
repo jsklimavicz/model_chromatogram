@@ -18,14 +18,14 @@
                 "p": 0.001,
                 "s": 0.5,
                 "k": 2,
-                "rel_tol": 1e-6
+                "rel_tol": 1e-06
             }
         },
         "resolution_reference": "TS-8391",
         "peak_identification": [
             {
-                "min_time": 2.85,
-                "max_time": 3.2,
+                "min_time": 3.1,
+                "max_time": 3.5,
                 "method": "largest",
                 "name": "sec-butyric acid",
                 "calibration": [
@@ -35,16 +35,87 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.029255282,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.754370137,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.747501232,
+                                "amount": 10.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.032525247,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.044624256,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.033970546,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.082403655,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 0.09032662,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 0.282561884,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 0.252014261,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 0.582626693,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.558172355,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.537739363,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 1.164601866,
+                                "amount": 20.0
+                            },
+                            {
+                                "area": 1.136931141,
+                                "amount": 20.0
+                            },
+                            {
+                                "area": 2.939323394,
+                                "amount": 50.0
+                            },
+                            {
+                                "area": 2.978609168,
+                                "amount": 50.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 11.2,
-                "max_time": 11.5,
+                "min_time": 9.6,
+                "max_time": 10.0,
                 "method": "largest",
                 "name": "dihydroxytetracinib",
                 "calibration": [
@@ -54,16 +125,139 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.055700617,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.055184451,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.150172753,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.142734224,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.761428997,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.758916821,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.618721337,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.598555606,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 8.214110937,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 16.42415601,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 16.44999678,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 82.5008316,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.070151535,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.070151535,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.445993873,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.432535507,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.861328512,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.824443161,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.867952975,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.762236275,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 1.751114315,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 4.477881619,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 4.506004573,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 9.057713627,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 9.013658826,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 18.14533087,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 18.02785835,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 45.33437068,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 45.36437398,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 90.76533443,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 11.9,
-                "max_time": 12.1,
+                "min_time": 10.3,
+                "max_time": 10.7,
                 "method": "largest",
                 "name": "TS-0195A",
                 "calibration": [
@@ -73,16 +267,127 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.029412379,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.099402473,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.10540835,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.619631069,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.600696269,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.25349132,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.256226536,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 6.487588883,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 13.00829489,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 12.95915741,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 65.31791996,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.144202999,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.127543682,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.298582037,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.298479136,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.281282032,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.627407996,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 0.640819814,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 1.60061916,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 1.630300802,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 3.237441465,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 3.241574589,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 6.560201691,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 6.560724416,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 16.47222759,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 16.50362176,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 33.06752496,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 13.2,
-                "max_time": 13.5,
+                "min_time": 11.75,
+                "max_time": 12.15,
                 "method": "largest",
                 "name": "TS-9931",
                 "calibration": [
@@ -92,16 +397,131 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.090841057,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.06666895,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.50719505,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.510250181,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.092791831,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.081439442,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 5.666483686,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 11.32798618,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 11.31712911,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 57.16525863,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.050319228,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.050319228,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.331135737,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.309188958,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.686777089,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.742002649,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.671742397,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.42508786,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 1.435368658,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 3.707970211,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 3.721556025,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 7.473879479,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 7.436372744,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 15.00392371,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 14.95091934,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 37.57187337,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 37.58650492,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 75.1944917,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 13.7,
-                "max_time": 13.95,
+                "min_time": 12.35,
+                "max_time": 12.7,
                 "method": "largest",
                 "name": "5-hydroxytetracinib",
                 "calibration": [
@@ -111,16 +531,139 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.072202159,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.061220623,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.162299371,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.179494392,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.964624318,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.940517591,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.958463329,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.952046838,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 9.92177754,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 19.93730499,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 19.92686578,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 99.5407695,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.03930234,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.03930234,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.307045027,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.343491415,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.744537657,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.714129891,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.711603383,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.444071368,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 1.469117833,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 3.661676917,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 3.620163905,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 7.429979808,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 7.384197362,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 14.79254863,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 14.80910875,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 37.15181524,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 37.07106125,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 74.21151701,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 13.95,
-                "max_time": 14.2,
+                "min_time": 12.7,
+                "max_time": 13.1,
                 "method": "largest",
                 "name": "tetracinib des-sec-butyrate",
                 "calibration": [
@@ -130,16 +673,139 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.152064698,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.13438667,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.280659448,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.287223273,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 1.774533431,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.724440284,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 3.488359827,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 3.466902271,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 17.43527378,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 34.87244936,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 34.92135566,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 174.977655,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.100728246,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.100728246,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.782562021,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.834426835,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.731839195,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.702944508,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.69390189,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 3.426432062,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 3.472897009,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 8.668669734,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 8.656993572,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 17.37504263,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 17.29446844,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 34.62638199,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 34.70246868,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 86.67358924,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 86.70442256,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 173.4620041,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 15.4,
-                "max_time": 15.9,
+                "min_time": 14.4,
+                "max_time": 14.8,
                 "method": "largest",
                 "name": "dehydrotetracinib",
                 "calibration": [
@@ -149,16 +815,139 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.094118395,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.131456888,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.248069179,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.249311969,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 1.434775591,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.385713951,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 2.789376129,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 2.838129393,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 14.36274122,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 28.66158864,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 28.82813348,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 143.9302439,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.194384036,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.194384036,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 1.021687483,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.047137756,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 2.151968218,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 2.106678377,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 2.155938942,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 4.30706781,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 4.333512095,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 10.99554685,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 10.96689847,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 21.98525977,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 22.03797596,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 44.20571645,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 44.22945831,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 110.6289629,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 110.5696066,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 221.5940773,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 16.5,
-                "max_time": 16.8,
+                "min_time": 15.55,
+                "max_time": 15.95,
                 "method": "largest",
                 "name": "TS-8829",
                 "calibration": [
@@ -168,16 +957,139 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.056150849,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.074947125,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.219519917,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.157905609,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 1.055963404,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.06599298,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 2.185689114,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 2.171069091,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 10.95653706,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 21.9822931,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 21.99862506,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 110.4113103,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.097933326,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.097933326,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.647260851,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.630690063,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.302293027,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.360147301,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.305325684,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 2.744127242,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 2.733381783,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 6.939286727,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 6.920451187,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 13.90737848,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 13.91690427,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 27.83908139,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 27.90902364,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 71.01166936,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 70.38940426,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 140.4944323,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 17,
-                "max_time": 17.6,
+                "min_time": 16.5,
+                "max_time": 16.9,
                 "method": "largest",
                 "name": "tetracinib",
                 "calibration": [
@@ -187,16 +1099,135 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.204873279,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.155692702,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.420909944,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.376438148,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 2.142836186,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 2.161090842,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 4.298669696,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 4.316173148,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 21.75553033,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 43.65445038,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 43.69921359,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 218.6855801,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.363611565,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.363611565,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 2.118503398,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 2.06171555,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 4.221858894,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 4.172846744,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 4.218173065,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 8.483489753,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 8.462799413,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 21.2375136,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 21.24253803,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 42.46970815,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 42.52445735,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 84.99822919,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 84.96117912,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 213.5937268,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 213.3726232,
+                                "amount": 5.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 17.7,
-                "max_time": 18,
+                "min_time": 17.1,
+                "max_time": 17.5,
                 "method": "largest",
                 "name": "tetracinib acetate",
                 "calibration": [
@@ -206,16 +1237,135 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.039878433,
+                                "amount": 0.005
+                            },
+                            {
+                                "area": 0.065362869,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.068935914,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.501589861,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.510659568,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.014087846,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.054479083,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 5.46620908,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 10.99692321,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 11.08537215,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 55.67435565,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.069684785,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.069684785,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.541205615,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.469461697,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 1.093774155,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.063870527,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.086404101,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 2.214621843,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 2.147820495,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 5.47519239,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 5.389875155,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 11.10312249,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 11.13884246,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 22.31158755,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 22.2877422,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 56.33244612,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 56.15735546,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 111.8241474,
+                                "amount": 10.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "min_time": 18,
-                "max_time": 18.4,
+                "min_time": 17.5,
+                "max_time": 17.8,
                 "method": "largest",
                 "name": "TS-8830",
                 "calibration": [
@@ -225,8 +1375,123 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 101.2,
-                                "amount": 2.5
+                                "area": 0.06014633,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.069034216,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.433393216,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.419628452,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.899610267,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.904705702,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 4.728322562,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 9.585256643,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 9.750165601,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 48.47005864,
+                                "amount": 5.0
+                            }
+                        ]
+                    },
+                    {
+                        "channel": "UV_VIS_2",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.03235687,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.03235687,
+                                "amount": 0.01
+                            },
+                            {
+                                "area": 0.31463352,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.321404045,
+                                "amount": 0.05
+                            },
+                            {
+                                "area": 0.687377936,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.676425526,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.676361267,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 1.366652862,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 1.381216465,
+                                "amount": 0.2
+                            },
+                            {
+                                "area": 3.619379636,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 3.665903416,
+                                "amount": 0.5
+                            },
+                            {
+                                "area": 7.362924308,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 7.385097014,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 14.83911535,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 14.82210995,
+                                "amount": 2.0
+                            },
+                            {
+                                "area": 37.2764378,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 37.17150534,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 74.16443357,
+                                "amount": 10.0
                             }
                         ]
                     }
