@@ -2,7 +2,7 @@
     {
         "name": "tetracinib_gradient",
         "run_time": 30,
-        "buffer_ph": 4.4,
+        "buffer_ph": 6.8,
         "mobile_phases": [
             {
                 "name": "water",
@@ -10,11 +10,11 @@
             },
             {
                 "name": "acetonitrile",
-                "id": "B"
+                "id": "C"
             },
             {
                 "name": "tetrahydrofuran",
-                "id": "C"
+                "id": "B"
             },
             {
                 "name": "methanol",
@@ -24,7 +24,7 @@
         "mobile_phase_gradient_steps": [
             {
                 "time": 0.0,
-                "flow": 5.0,
+                "flow": 3.0,
                 "percent_a": 90,
                 "percent_b": 10,
                 "percent_c": 0.0,
@@ -33,7 +33,7 @@
             },
             {
                 "time": 4.0,
-                "flow": 5.0,
+                "flow": 3.0,
                 "percent_a": 90.0,
                 "percent_b": 10.0,
                 "percent_c": 0.0,
@@ -42,7 +42,7 @@
             },
             {
                 "time": 7.0,
-                "flow": 5,
+                "flow": 3,
                 "percent_a": 85.0,
                 "percent_b": 15.0,
                 "percent_c": 0.0,
@@ -51,7 +51,7 @@
             },
             {
                 "time": 15.0,
-                "flow": 5,
+                "flow": 3,
                 "percent_a": 70.0,
                 "percent_b": 30.0,
                 "percent_c": 0.0,

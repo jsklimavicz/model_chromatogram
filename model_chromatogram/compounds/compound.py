@@ -217,11 +217,17 @@ class Compound:
         def R(t):
             return R_spline(t)
 
-        def elution_equation(t):
-            volume, _ = quad(F, 0, t)
-            return volume - R(t) * column.volume
+        # def elution_equation(t):
+        #     volume, _ = quad(F, 0, t)
+        #     return volume - R(t) * column.volume
 
-        retention_time = fsolve(elution_equation, Rv[0])[0]
+        # retention_time = fsolve(elution_equation, Rv[0])[0]
+
+        def cumulative_fraction_traversed(t):
+            cumulative_movement, _ = quad(lambda tau: F(tau) / R(tau), 0, t)
+            return cumulative_movement - 1
+
+        retention_time = fsolve(cumulative_fraction_traversed, Rv[0])[0]
 
         self.retention_time = retention_time
         return retention_time

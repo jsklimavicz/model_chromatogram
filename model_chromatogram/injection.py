@@ -111,7 +111,8 @@ class Injection:
     def find_peaks(self, channel_name) -> PeakFinder:
         peak_finder = PeakFinder(
             *self.get_chromatogram_data(channel_name, pandas=False),
-            processing_method=self.processing_method
+            processing_method=self.processing_method,
+            channel_name=channel_name
         )
         for ind, result in enumerate(self.dict["results"]):
             if result["channel_name"] == channel_name:

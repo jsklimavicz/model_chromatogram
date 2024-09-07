@@ -24,8 +24,8 @@
         "resolution_reference": "TS-8391",
         "peak_identification": [
             {
-                "min_time": 3.1,
-                "max_time": 3.5,
+                "min_time": 3.7,
+                "max_time": 3.9,
                 "method": "largest",
                 "name": "sec-butyric acid",
                 "calibration": [
@@ -35,7 +35,11 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 0.029255282,
+                                "area": 0.079255282,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.07794571,
                                 "amount": 1.0
                             },
                             {
@@ -43,8 +47,20 @@
                                 "amount": 10.0
                             },
                             {
+                                "area": 0.753836915,
+                                "amount": 10.0
+                            },
+                            {
                                 "area": 0.747501232,
                                 "amount": 10.0
+                            },
+                            {
+                                "area": 0.372404691,
+                                "amount": 5.0
+                            },
+                            {
+                                "area": 0.347617422,
+                                "amount": 5.0
                             }
                         ]
                     },
@@ -114,8 +130,8 @@
                 ]
             },
             {
-                "min_time": 9.6,
-                "max_time": 10.0,
+                "min_time": 6.7,
+                "max_time": 7.1,
                 "method": "largest",
                 "name": "dihydroxytetracinib",
                 "calibration": [
@@ -256,8 +272,8 @@
                 ]
             },
             {
-                "min_time": 10.3,
-                "max_time": 10.7,
+                "min_time": 9.7,
+                "max_time": 10.1,
                 "method": "largest",
                 "name": "TS-0195A",
                 "calibration": [
@@ -386,8 +402,8 @@
                 ]
             },
             {
-                "min_time": 11.75,
-                "max_time": 12.15,
+                "min_time": 8.3,
+                "max_time": 8.7,
                 "method": "largest",
                 "name": "TS-9931",
                 "calibration": [
@@ -520,8 +536,8 @@
                 ]
             },
             {
-                "min_time": 12.35,
-                "max_time": 12.7,
+                "min_time": 7.9,
+                "max_time": 8.3,
                 "method": "largest",
                 "name": "5-hydroxytetracinib",
                 "calibration": [
@@ -662,8 +678,8 @@
                 ]
             },
             {
-                "min_time": 12.7,
-                "max_time": 13.1,
+                "min_time": 9.1,
+                "max_time": 9.5,
                 "method": "largest",
                 "name": "tetracinib des-sec-butyrate",
                 "calibration": [
@@ -804,8 +820,8 @@
                 ]
             },
             {
-                "min_time": 14.4,
-                "max_time": 14.8,
+                "min_time": 13.4,
+                "max_time": 13.8,
                 "method": "largest",
                 "name": "dehydrotetracinib",
                 "calibration": [
@@ -946,8 +962,8 @@
                 ]
             },
             {
-                "min_time": 15.55,
-                "max_time": 15.95,
+                "min_time": 14.0,
+                "max_time": 14.4,
                 "method": "largest",
                 "name": "TS-8829",
                 "calibration": [
@@ -1088,8 +1104,8 @@
                 ]
             },
             {
-                "min_time": 16.5,
-                "max_time": 16.9,
+                "min_time": 11.9,
+                "max_time": 12.3,
                 "method": "largest",
                 "name": "tetracinib",
                 "calibration": [
@@ -1226,8 +1242,8 @@
                 ]
             },
             {
-                "min_time": 17.1,
-                "max_time": 17.5,
+                "min_time": 17.7,
+                "max_time": 18.1,
                 "method": "largest",
                 "name": "tetracinib acetate",
                 "calibration": [
@@ -1364,8 +1380,8 @@
                 ]
             },
             {
-                "min_time": 17.5,
-                "max_time": 17.8,
+                "min_time": 16.25,
+                "max_time": 16.65,
                 "method": "largest",
                 "name": "TS-8830",
                 "calibration": [
