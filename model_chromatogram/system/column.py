@@ -4,7 +4,19 @@ from model_chromatogram.user_parameters import (
     DEFAULT_BASE_ASYMMETRY,
     DEFAULT_PEAK_WIDTH,
 )
-from pydash import get as _get
+from pydash import get
+
+
+class Parameters:
+    def __init__(self, parameter_dict):
+        self.id = get(parameter_dict, "id", 91)
+        self.h = get(parameter_dict, "h", 1.03)
+        self.s_star = get(parameter_dict, "s_star", 0.01)
+        self.a = get(parameter_dict, "a", -0.14)
+        self.b = get(parameter_dict, "b", -0.02)
+        self.c28 = get(parameter_dict, "c28", 0.08)
+        self.c7 = get(parameter_dict, "c7", 0.0)
+        self.eb = get(parameter_dict, "eb", 10.1)
 
 
 class Column:
@@ -18,10 +30,10 @@ class Column:
         failure_risk_count=1000,
         **kwargs
     ) -> None:
-        self.inner_diameter = _get(inner_diameter, "value")
-        self.inner_diameter_unit = _get(inner_diameter, "unit")
-        self.length = _get(length, "value")
-        self.length_unit = _get(length, "unit")
+        self.inner_diameter = get(inner_diameter, "value")
+        self.inner_diameter_unit = get(inner_diameter, "unit")
+        self.length = get(length, "value")
+        self.length_unit = get(length, "unit")
         self.find_volume()
         self.type = type
         self.serial_number = serial_number
@@ -35,6 +47,11 @@ class Column:
         self.failure_asymmetry = 0
         self.failure_broadening = 0
         self.failure_rt_shift_mult = 1
+        self.set_parameters(**kwargs)
+
+    def set_parameters(self, **kwargs):
+        param_dict = get(kwargs, "parameters")
+        self.parameters = Parameters(param_dict)
 
     def todict(self):
         return {

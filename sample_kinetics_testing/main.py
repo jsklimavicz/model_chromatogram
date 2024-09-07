@@ -8,11 +8,14 @@ import holidays
 import concurrent.futures
 from pydash import get as get_
 
-from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
-from model_chromatogram.samples import Sample
-from model_chromatogram.injection import Injection
-from model_chromatogram.sequence import Sequence
-from model_chromatogram.system import System
+from model_chromatogram import (
+    InstrumentMethod,
+    ProcessingMethod,
+    Sample,
+    Injection,
+    Sequence,
+    System,
+)
 
 folder = "output11"
 

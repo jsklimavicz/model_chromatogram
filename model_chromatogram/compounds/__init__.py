@@ -1,7 +1,7 @@
 from .uv_spectrum import UVSpectrum
 from .compound import Compound
 from .solvent import Solvent
-from .compound_library import COMPOUND_LIBRARY, CompoundLibrary
+from .compound_library import CompoundLibrary, COMPOUND_LIBRARY
 from .solvent_library import SolventLibrary, SOLVENT_LIBRARY
 
 

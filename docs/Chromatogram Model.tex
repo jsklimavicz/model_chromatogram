@@ -14,8 +14,9 @@
 \usepackage[backend=biber, sorting=none]{biblatex}
 \addbibresource{references.bib}
 
-\usepackage{amsmath, amsfonts}
-\usepackage{algorithm, algpseudocode}
+\usepackage{amsmath, amsfonts, bm}
+\usepackage{algorithm}
+\usepackage[spaceRequire=false]{algpseudocodex}
 \usepackage{appendix}
 \usepackage{float}
 
@@ -319,34 +320,23 @@ The goal of the adaptive smoothing is to use a maximally sized smoothing window 
 \begin{algorithm}[t]
 \caption{Adaptive Signal Smoothing}\label{alg:smooth}
 \begin{algorithmic}
-\Require $\mathbf{y}, s_\text{max}$
-\For {$ j \gets 1, k $}
-\State calculate $\overline{\mathbf{y}}^j = \textsc{SavGol}(\mathbf{y}, 2i+1)$
-\EndFor
-\Function{SmoothnessPenalty}{$\overline{\mathbf{y}}^s, i, s, n$}
-\State $k \gets$ signal noise
-\State $a_1 = \text{var}(\overline{\mathbf{y}}^s[i-k:i+k+1])$
-\State $a_2 = 1 + (k-\text{mean}(\overline{\mathbf{y}}^s[i:i+k+1]))^2$
-\State $a_3 = 1 + (k-\text{mean}(\overline{\mathbf{y}}^s[i-k:i+1]))^2$
-\State $a_4 = 1 + \text{mean}((\mathbf{y} - \overline{\mathbf{y}}^s)[i-3:i+4])^2$
-\State return $ a_1 \cdot a_2 \cdot a_3 \cdot a_4 / \sqrt{2n + 1} $
-\EndFunction
-\State $s_{\text{curr}} \gets k-1$
+\Require $\bm{y}, w_\text{min}, w_\text{max}, w_\text{var}, k$
+\State $\bm{\mu}_\text{local} \gets \textsc{Uniform}(\bm{y},w_\text{var})$ \Comment{Array of local means of size $w_\text{var}$}
+\State $\bm{\sigma}^2_\text{local} \gets \textsc{Uniform}\left((\bm{y} - \bm{\mu}_\text{local})^2,w_\text{var}\right)$ \Comment{Array of local variances of size $w_\text{var}$}
+\State $\varsigma_\text{bg} \gets$ root mean square of background standard deviation
+\State $\bm{\sigma}^2_\text{adj} \gets (\bm{\sigma}_\text{local}/(k \cdot \varsigma_\text{bg}))^2$
+\State $\bm{w} \gets w_\text{max} - \bm{\sigma}^2_\text{adj} \cdot (w_\text{max} - w_\text{min}) $, clipped to range $[w_\text{min}, w_\text{max}]$
+\State adjust windows $\bm{w}$ to only change one step at a time
+\State discretize windows $\bm{w}$ to nearest integer $ w_\text{min} < \bm{w}_i = 2k+1 < w_\text{max}$
 \State $\mathbf{\tilde{y}} \gets \mathbf{0}$
-\For {$ i \gets 1, \text{len}(\mathbf{y})$}
-\State $s_{\text{min}} \gets \max(1, s_{\text{curr}} -1)$
-\State $s_{\text{mak}} \gets \min(k, s_{\text{curr}} +1)$
-\For{$l \gets s_{\text{min}}, s_{\text{mak}}$}
-	\State $p_l = \textsc{SmoothnessPenalty}(\overline{\mathbf{y}}^l, i, l, n$)
+\ForAll{$i \in \{1,\dots, \text{len}(\bm{w})\}$}
+  \State $\bm{\tilde{y}}_i \gets \textsc{SavGol}(\bm{y}_i, \bm{w}_i)$
 \EndFor
-\State $\tilde{\mathbf{y}}_i \gets \overline{\mathbf{y}}^{\text{argmin}(p_l)}_i$ 
-\EndFor
+\Return $\bm{\tilde{y}}$
 \end{algorithmic}
 \end{algorithm}
 
-The algorithm takes the signal $\mathbf{y}$ and a max window size $n = 2k+1, k \in \mathbb{Z}^+$ as input. The window sizes range from 3 to $n$ over the odd integers, and so there are $k$ different window sizes. In the following algorithm, $\overline{\mathbf{y}}^k = \textsc{SavGol}(\mathbf{y}, n)$ is chromatogram signal $\mathbf{y}$ smoothed by the polynomial order 2 SG filter with window size $n =2k+1$, while $\overline{y}^k_i$ is the $i$th value from the chromatogram smoothed with window size $n$. 
-
-The first width chosen $s_{\text{curr}}$ is set as $k-1$. At each point $y_i$, with $s_{\text{curr}}$, we calculate several variances and means, and use this weighting to calculate the optimal window width. We also limit jumps in window sizes between consecutive points to ensure smoothness and prevent large jumps in value. 
+The algorithm takes the signal $\bm{y}$ and a max window size $n = 2k+1, k \in \mathbb{Z}^+$ as input. 
 
 \subsection{Baseline Detection and Smoothing}\label{sec:psalsa}
 The baseline is detected using an asymmetric least squares algorithm. The algorithm currently implemented is the \textit{Peaked Signal's Asymmetric
@@ -354,22 +344,22 @@ Least Squares Algorithm} (psalsa) method \cite{psalsa}.
 
 The algorithm takes three parameters: $p \in (0,1)$, which is a weight parameter; $s > 0$, which is a multiplicative factor that penalizes changes in the second derivative of the baseline, and $k\geq 1$, which controls the exponential decay of weights in peak regions. 
 
-The weights $w_i$ are calculated as:
+The weights $\bm{w}$ are calculated as:
 \begin{align}
-w_i = \begin{cases}
-	p \cdot e^{\frac{-r_i}{k}} & \text{if } r_i > 0\\
+\bm{w}_i = \begin{cases}
+	p \cdot e^{\frac{-\bm{r}_i}{k}} & \text{if } \bm{r}_i > 0\\
 	1-p & \text{otherwise}
 \end{cases} \label{eqn:weights}
 \end{align}
-for residuals $r_i = y_i-z_i$, where $z_i$ is the baseline fit at point $i$. The cost function for psalsa is then
+for residuals $\bm{r}_i = \bm{y}_i-\bm{z}_i$, where $\bm{z}_i$ is the baseline fit at point $i$. The cost function for psalsa is then
 \begin{align}
-C(\mathbf{r},\mathbf{w},\mathbf{z}) = \sum_i w_i r_i^2 + s \sum_i (\Delta^2 z_i)^2,
+C(\bm{r},\bm{w},\bm{z}) = \sum_i \bm{w}_i \bm{r}_i^2 + s \sum_i (\Delta^2 \bm{z}_i)^2,
 \end{align}
 where $\Delta^2$ second difference operator. Minimization of this cost function gives 
 \begin{align}
-\mathbf{z} = (\mathbf{W} + s \cdot \mathbf{D}^T\mathbf{D})^{-1}\mathbf{W}\mathbf{y},
+\bm{z} = (\mathbf{W} + s \cdot \mathbf{D}^T\mathbf{D})^{-1}\mathbf{W}\bm{y},
 \end{align}
-where $\mathbf{D}$ is the tridiagonal second difference matrix, and $\mathbf{W} = \text{diag}(\mathbf{w})$. The implemented method perturbs $\mathbf{D}$ such the $\mathbf{D}_{1,1} = \mathbf{D}_{n,n} = 1$. 
+where $\mathbf{D}$ is the tridiagonal second difference matrix, and $\mathbf{W} = \text{diag}(\bm{w})$. The implemented method perturbs $\mathbf{D}$ such the $\mathbf{D}_{1,1} = \mathbf{D}_{n,n} = 1$. 
 
 For tractability, the chromatogram signal and times arrays are down-sampled to prevent massive matrices. The down-sampled points are then interpolated with a cubic spline. The algorithm is outlined in Algorithm \ref{alg:psalsa}.
 
@@ -384,27 +374,27 @@ The detection algorithm is arguably the most complicated algorithm implemented i
 \begin{algorithm}[ht]
 \caption{Asymmetric Least Squares: psalsa}\label{alg:psalsa}
 \begin{algorithmic}
-\Require $ \mathbf{y}, k, s, p, \text{tol}$
-\State $\mathbf{z} \gets \text{mean}(\mathbf{y}) \cdot \mathbf{1}$\Comment{initial baseline guess}
-\State $\mathbf{r} \gets \mathbf{y} - \mathbf{z}$\Comment{initial residuals}
-\State $\mathbf{w} \gets \mathbf{1}$ \Comment{initialize all weights to 1}
+\Require $ \bm{y}, k, s, p, \text{tol}$
+\State $\bm{z} \gets \text{mean}(\bm{y}) \cdot \bm{1}$\Comment{initial baseline guess}
+\State $\bm{r} \gets \bm{y} - \bm{z}$\Comment{initial residuals}
+\State $\bm{w} \gets \bm{1}$ \Comment{initialize all weights to 1}
 \State $\text{prev\_loss} \gets \infty$
 \While{not converged}
-\State $\mathbf{W} \gets \text{diag}(\mathbf{w})$ \Comment{create diagonal matrix of weights}
-\State $\mathbf{z} \gets (\mathbf{W} + s \cdot \mathbf{D}^T\mathbf{D})^{-1}\mathbf{W}\mathbf{y}$ \Comment{solve normal equation}
-\State $\mathbf{r} \gets \mathbf{y} - \mathbf{z}$ \Comment{calculate updated residuals}
-\State $\text{loss} \gets C(\mathbf{r},\mathbf{w},\mathbf{z})$ \Comment{calculate loss}
+\State $\mathbf{W} \gets \text{diag}(\bm{w})$ \Comment{create diagonal matrix of weights}
+\State $\bm{z} \gets (\mathbf{W} + s \cdot \mathbf{D}^T\mathbf{D})^{-1}\mathbf{W}\bm{y}$ \Comment{solve normal equation}
+\State $\bm{r} \gets \bm{y} - \bm{z}$ \Comment{calculate updated residuals}
+\State $\text{loss} \gets C(\bm{r},\bm{w},\bm{z})$ \Comment{calculate loss}
 \If{$|\text{loss} - \text{prev\_loss}|<\text{tol}$} \Comment{check for convergence}
     \State $\text{converged} \gets \texttt{True}$
 \EndIf
 \State $\text{prev\_loss} \gets \text{loss}$
-\State update $\mathbf{w}$ \Comment{update according to Eqn \ref{eqn:weights}}
+\State update $\bm{w}$ \Comment{update according to Eqn \ref{eqn:weights}}
 \EndWhile
 \end{algorithmic}
 \end{algorithm}
 
 \subsubsection{Initial Region Detection}
-The initial region detection is relatively simple. First, the root-mean-squared noise $\sigma_{\text{bg}}$ of the second derivative of the spectrum is calculated. Then, all the contiguous regions where the second derivative is below $\omega \cdot \sigma_{\text{bg}}$ for some user-specified $\omega >1$ are recorded as peaks. 
+The initial region detection is relatively simple. First, the root-mean-squared noise $\varsigma_{\text{bg}}$ of the second derivative of the spectrum is calculated. Then, all the contiguous regions where the second derivative is below $\omega \cdot \varsigma_{\text{bg}}$ for some user-specified $\omega >1$ are recorded as peaks. 
 
 Some additional checking is performed to determine if the signal is above the linear limit for a detector, since peaks going above this limit may have some artifacts in the second derivative caused by saturation of the signal; it is undesirable for these peaks to be split from these artifacts in the second derivative.
 
@@ -415,15 +405,15 @@ Before proceeding on to region expansion, a quick filtering is performed to ensu
 \begin{algorithm}[t]
 \caption{Initial region detection}\label{alg:regdetect}
 \begin{algorithmic}
-\Require $\mathbf{y}^{\prime\prime}$ \Comment{Second derivative array}
-\State $n \gets \text{len}(\mathbf{y}^{\prime\prime})$
+\Require $\bm{y}, \omega, \varsigma_{\text{bg}}, w_{\text{deriv}}$
+\State $\bm{y}^{\prime\prime} \gets \textsc{SavGol}(\bm{y}, w_{\text{deriv}}, \texttt{deriv=2})$ \Comment{Second derivative array}
 \State $\texttt{regions} \gets \texttt{[]}$
 \State $i \gets 1$
-\While {$i < n$}
-  \If{$\mathbf{y}^{\prime\prime}_i < \omega \cdot \sigma_{\text{bg}}$}
+\While {$i < \text{len}(\bm{y}^{\prime\prime})$}
+  \If{$\bm{y}^{\prime\prime}_i < \omega \cdot \varsigma_{\text{bg}}$}
     \State $\texttt{start} \gets i$
     \State $i \gets i+1$
-    \While {$\mathbf{y}^{\prime\prime}_i < \omega \cdot \sigma_{\text{bg}}$}:
+    \While {$\bm{y}^{\prime\prime}_i < \omega \cdot \varsigma_{\text{bg}}$}:
       \State $i \gets i+1$
     \EndWhile
     \State $\texttt{stop} = i$
@@ -446,7 +436,15 @@ Once we have a set of regions, we must expand them, since the negative peaks of 
 \begin{algorithm}[t]
 \caption{Region expansion}\label{alg:regexp}
 \begin{algorithmic}
-\State $y \gets x$
+\Require $\bm{\tilde{y}},\bm{y}, \varsigma_{\text{bg}}, w_{\text{deriv}}$
+\Require \texttt{start}, \texttt{end} \Comment{start and end indices of a peak region from Alg. \ref{alg:regdetect}}
+\State $\bm{y}^\prime \gets \textsc{SavGol}(\bm{y}, w_{\text{deriv}}, \texttt{deriv=1})$
+\While{$ \texttt{start} > 0$ \texttt{\&\&} $\bm{\tilde{y}}_\texttt{start} > \varsigma_{\text{bg}}$ \texttt{\&\&} $\bm{y}^\prime_\texttt{start} > 0$}
+\State $ \texttt{start--}$
+\EndWhile
+\While{$ \texttt{end} < \text{len}(\bm{\tilde{y}})$ \texttt{\&\&} $\bm{\tilde{y}}_\texttt{end} > \varsigma_{\text{bg}}$ \texttt{\&\&} $\bm{y}^\prime_\texttt{end} < 0$}
+\State $ \texttt{end++}$
+\EndWhile
 \end{algorithmic}
 \end{algorithm}
 

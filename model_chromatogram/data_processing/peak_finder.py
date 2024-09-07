@@ -101,7 +101,7 @@ class PeakFinder:
         self.refine_peaks()
 
     def __signal_smoothing(
-        self, signal, min_window=5, max_window=41, var_window_size=31
+        self, signal, min_window=5, max_window=41, var_window_size=31, k=7.5
     ):
         # Calculate local variance using a uniform filter
         signal = savgol_filter(signal, 5, 2, mode="nearest")
@@ -112,7 +112,7 @@ class PeakFinder:
         rms_noise = np.sqrt(np.mean(local_variance[:150]))
 
         # Normalize the variance for smoother scaling of window sizes
-        normalized_variance = (np.sqrt(local_variance) / (7.5 * rms_noise)) ** 2
+        normalized_variance = (np.sqrt(local_variance) / (k * rms_noise)) ** 2
 
         # Apply linear interpolation for smoother window size adjustment
         window_sizes = np.clip(
@@ -267,13 +267,13 @@ class PeakFinder:
                     and self.processed_signal[start] > self.signal_noise
                 ):
                     start -= 1
-                start += 1
 
                 while end < len(self.raw_signal) and (
                     self.d1_signal[end] < 0
                     and self.processed_signal[end] > self.signal_noise
                 ):
                     end += 1
+                end -= 1
 
                 expanded_regions.append([start, end])
 

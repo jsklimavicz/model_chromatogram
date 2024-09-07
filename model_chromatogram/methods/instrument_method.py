@@ -16,8 +16,9 @@ class InstrumentMethod:
         mobile_phases,
         mobile_phase_gradient_steps,
         detection,
-        sample_rate=SAMPLE_RATE,
-        run_time=RUN_LENGTH,
+        buffer_ph: float = 7.0,
+        sample_rate: float = SAMPLE_RATE,
+        run_time: float = RUN_LENGTH,
         **kwargs,
     ) -> None:
         """
@@ -41,6 +42,7 @@ class InstrumentMethod:
         """
         self.kwargs = kwargs
         self.name: str = name
+        self.ph: float = buffer_ph
         self.run_time: float = run_time
         self.sample_rate: float = sample_rate
         self.detection: dict = detection
@@ -118,8 +120,8 @@ class InstrumentMethod:
         y = np.interp(interp_times, grad_x, grad_y)
         if convolve:
             y = self.__convolve_profile(y)
-        if set_zero_time:
-            y = y - y[0]
+        # if set_zero_time:
+        #     y = y - y[0]
         return y
 
     def __create_gradient_profile(self):
@@ -146,8 +148,6 @@ class InstrumentMethod:
         """
 
         solvents = [_get(solvent, "solvent") for solvent in self.mobile_phases]
-        # value are normalized by subtracting from the water-only value
-        water = SOLVENT_LIBRARY.lookup("water")
 
         for comp_property in [
             "hb_acidity",
@@ -157,7 +157,7 @@ class InstrumentMethod:
             "dielectric",
         ]:
             comp_values = [s.__dict__[comp_property] for s in solvents]
-            self.profile_table[comp_property] = -water.__dict__[comp_property]
+            self.profile_table[comp_property] = 0
             for mult, name in zip(comp_values, self.__solvent_percents):
                 self.profile_table[comp_property] += (
                     mult / 100 * self.profile_table[name]

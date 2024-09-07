@@ -56,7 +56,7 @@ class Injection:
     def __calculate_compound_retention(self):
         for compound in self.sample.compounds:
             compound.set_retention_time(
-                self.system.get_column_volume(), self.method.profile_table
+                self.system.column, self.method.profile_table, self.method.ph
             )
 
     def __create_chromatograms(self):

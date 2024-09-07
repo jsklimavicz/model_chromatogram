@@ -2,6 +2,7 @@
     {
         "name": "tetracinib_gradient",
         "run_time": 30,
+        "buffer_ph": 6.0,
         "mobile_phases": [
             {
                 "name": "water",
@@ -23,52 +24,43 @@
         "mobile_phase_gradient_steps": [
             {
                 "time": 0.0,
-                "flow": 4.0,
-                "percent_a": 100,
-                "percent_b": 0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5
-            },
-            {
-                "time": 2.0,
-                "flow": 4.0,
-                "percent_a": 95.0,
-                "percent_b": 5.0,
+                "flow": 5.0,
+                "percent_a": 90,
+                "percent_b": 10,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
             },
             {
                 "time": 4.0,
-                "flow": 2.0,
-                "percent_a": 95.0,
-                "percent_b": 5.0,
+                "flow": 5.0,
+                "percent_a": 90.0,
+                "percent_b": 10.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
             },
             {
                 "time": 7.0,
-                "flow": 1.5,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
+                "flow": 5,
+                "percent_a": 85.0,
+                "percent_b": 15.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
             },
             {
                 "time": 15.0,
-                "flow": 1.5,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
+                "flow": 5,
+                "percent_a": 70.0,
+                "percent_b": 30.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
             },
             {
                 "time": 20.0,
-                "flow": 1.8,
+                "flow": 5,
                 "percent_a": 50.0,
                 "percent_b": 50.0,
                 "percent_c": 0.0,

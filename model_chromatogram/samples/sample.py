@@ -81,7 +81,7 @@ class Sample:
                 )
 
         self.compounds = [*self.compounds, *random_peaks, *unknown_peaks]
-        self.compounds.sort(key=lambda x: x.default_retention_CV)
+        self.compounds.sort(key=lambda x: x.intrinsic_log_p)
 
     def output_sample_dict(self):
         self_dict = {

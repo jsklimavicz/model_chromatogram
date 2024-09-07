@@ -1,10 +1,12 @@
 from scipy.interpolate import CubicSpline
+from scipy.integrate import quad
+from scipy.optimize import fsolve
 import numpy as np
 from pydash import get as _get
 import pandas as pd
-from scipy.optimize import fsolve
-from scipy.stats import norm
 from model_chromatogram.compounds import UVSpectrum
+from model_chromatogram.system import Column
+import itertools
 
 
 class Compound:
@@ -14,16 +16,30 @@ class Compound:
         self.id = _get(kwargs, "id")
         self.cas = _get(kwargs, "cas").strip()
         self.mw = float(kwargs["mw"])
-        self.default_retention_CV = float(kwargs["default_CV"])
-        self.log_p = float(kwargs["logp"])
-        self.asymmetry_addition = self.__set_initial_float("asymmetry_addition")
+        self.intrinsic_log_p = float(kwargs["logp"])
+        self.asymmetry_addition = 0
+        self.broadening_factor = 0
         self.h_donors: float = self.__set_initial_float("H_donor")
         self.h_acceptors: float = self.__set_initial_float("H_acceptor")
         self.refractivity: float = self.__set_initial_float("refractivity")
         self.log_s: float = self.__set_initial_float("log_s")
         self.tpsa: float = self.__set_initial_float("tpsa")
+        self.pka_list: list[float] = self.__set_pK_list(_get(kwargs, "pka_list"))
+        self.pkb_list: list[float] = self.__set_pK_list(_get(kwargs, "pkb_list"))
         if find_UV_spectrum:
             self.set_uv_spectrum()
+
+    def __set_pK_list(self, vals: str) -> list[float]:
+        if vals is None or vals == "":
+            return []
+        else:
+            float_vals = []
+            for val in vals.split(","):
+                if val.strip() == "":
+                    continue
+                else:
+                    float_vals.append(float(val))
+            return float_vals
 
     def __copy__(self):
         cmpd_dict = self.kwargs.copy()
@@ -85,7 +101,93 @@ class Compound:
             self.m_molarity = concentration / 1000
             self.concentration = self.m_molarity * self.mw / 1000
 
-    def set_retention_time(self, column_volume: float, solvent_profiles: pd.DataFrame):
+    def calculate_logD(self, pH_value: float):
+        n_pka = len(self.pka_list)
+        n_pkb = len(self.pkb_list)
+        all_pka_values = [*self.pka_list, *self.pkb_list]
+        n_groups = n_pka + n_pkb
+        proportions = []
+        a_states = list(itertools.product([0, -1], repeat=n_pka))
+        b_states = list(itertools.product([1, 0], repeat=n_pkb))
+        states = [list(fk + sk) for fk in a_states for sk in b_states]
+
+        ratios = np.array([10 ** (pH_value - pKa) for pKa in all_pka_values])
+        fractions = np.array([1 / (1 + ratio) for ratio in ratios])
+        state_probabilities = []
+        for state in states:
+            prob = 1
+            for i in range(n_groups):
+                if (i < n_pka and state[i] == 0) or (i >= n_pka and state[i] == 1):
+                    prob *= fractions[i]
+                else:
+                    prob *= 1 - fractions[i]
+
+            state_probabilities.append(prob)
+        proportions.append(state_probabilities)
+
+        def calculate_logD(row, state_charges):
+            weights = (
+                np.where(
+                    state_charges < 0,
+                    -(state_charges**2) * 0.8,
+                    -(state_charges**2) * 0.75,
+                )
+                + self.intrinsic_log_p
+            )
+            return np.dot(row, weights)
+
+        # state_labels = [f"State {','.join(map(str,state))}" for state in states]
+        state_charges = np.array([np.sum(state) for state in states])
+        proportions = np.array(proportions)
+        self.average_charge = np.dot(proportions, state_charges)[0]
+        self.broadening_factor = 1 / np.sqrt(np.sum(proportions**2, axis=1))[0]
+        self.logD = calculate_logD(proportions, state_charges)[0]
+        self.logD += self.intrinsic_log_p - np.max(self.logD)
+
+    def find_retention_volume(
+        self, solvent_profiles: pd.DataFrame, solvent_ph: float, col_param
+    ):
+        solv_p = solvent_profiles["polarity"].to_numpy()
+        col_p = col_param.h
+        self.calculate_logD(solvent_ph)
+        Rv = 0.5 * (col_param.eb - 1)
+        m = 2 + np.tanh((self.logD / 2 - 3) / (1 + np.exp(col_p * self.logD)))
+        Rv *= m
+        n = np.exp((solv_p / 10) ** 1.5 + (1 + np.arcsinh(self.logD / 2 - 3)) / 2)
+        Rv *= n
+
+        solv_a = solvent_profiles["hb_acidity"].to_numpy()
+        col_a = col_param.a
+        a = solv_a * self.h_acceptors**2 / (10 * col_a)
+        a = a * np.exp(a) + 1
+        a = np.tanh(a)
+
+        solv_b = solvent_profiles["hb_basicity"].to_numpy()
+        col_b = col_param.b
+        b = solv_b * self.h_donors**2 / (10 * col_b)
+        b = np.tanh(b * np.exp(b) + 1)
+        b = np.tanh(b)
+
+        s = 2 + np.tanh(2 * col_param.s_star * self.mw ** (1 / 3))
+
+        solv_d = solvent_profiles["dielectric"].to_numpy()
+        psa_v = self.tpsa**0.5 / self.mw ** (1 / 3)
+        d = solv_d * psa_v / col_p
+        d = np.tanh(d * np.exp(d) + 1)
+        d = np.tanh(d)
+
+        Rv *= a * b * s * d
+        Rv += 1
+
+        self.asymmetry_addition = self.average_charge * np.interp(
+            solvent_ph, (2.8, 7), (col_param.c7, col_param.c28)
+        )
+
+        return Rv
+
+    def set_retention_time(
+        self, column: Column, solvent_profiles: pd.DataFrame, solvent_ph: float = 7.0
+    ):
         """
         Calculates the retention time of a compound based on column volume, solvent properties, and compound properties.
 
@@ -103,52 +205,23 @@ class Compound:
 
         """
 
-        # first calculate constants a, b, c, and d:
-        t_0 = self.default_retention_CV
-        a = 2 * (3 - self.log_p) + self.tpsa / self.mw
-        b = 600 / self.mw * (np.sqrt(self.h_donors) - 1)
-        c = 600 / self.mw * (np.sqrt(self.h_acceptors) - 1)
-        d = (1 - self.log_s) / 5
-
+        Rv = self.find_retention_volume(solvent_profiles, solvent_ph, column.parameters)
         time = solvent_profiles["time"].to_numpy()
+        flow = solvent_profiles["flow"].to_numpy() / column.volume
 
-        flow = solvent_profiles["flow"].to_numpy()
+        flow_spline = CubicSpline(time, flow)
+        R_spline = CubicSpline(time, Rv)
 
-        objective = a * (solvent_profiles["polarity"].to_numpy())
-        objective -= b * (solvent_profiles["hb_basicity"].to_numpy())
-        objective -= c * (solvent_profiles["hb_acidity"].to_numpy())
-        objective -= d * (solvent_profiles["dielectric"].to_numpy())
-        linear_component = a * -0.15 + (b + c + d) * -0.05
-        objective += linear_component
-        objective /= 120
+        def F(t):
+            return flow_spline(t)
 
-        objective *= flow
+        def R(t):
+            return R_spline(t)
 
-        dt = time[1] - time[0]
-        integral_function = np.cumsum(objective) * dt
+        def elution_equation(t):
+            volume, _ = quad(F, 0, t)
+            return volume - R(t) * column.volume
 
-        spline = CubicSpline(
-            time,
-            integral_function,
-            extrapolate=False,
-        )
-
-        def objective_function(t):
-            return t - (t_0 - spline(t))
-
-        v = fsolve(objective_function, t_0 + 0.2, xtol=1e-04, maxfev=50)
-        adjusted_retention_volume = v[0]
-        # Note: Total volume cannot be less than one column volume...
-        # Let's modify with 1+norm.cdf to prevent this.
-        adjusted_retention_volume = max(
-            1 + norm.cdf(adjusted_retention_volume) / 2,
-            adjusted_retention_volume,
-        )
-        cumulative_volume = np.cumsum(flow) * dt
-        cumulative_volume /= column_volume
-
-        self.retention_time = np.interp(
-            adjusted_retention_volume, cumulative_volume, time
-        )
+        self.retention_time = fsolve(elution_equation, Rv[0])
 
         return self.retention_time

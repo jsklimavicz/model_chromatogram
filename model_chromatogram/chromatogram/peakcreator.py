@@ -79,6 +79,7 @@ class PeakCreator:
             retention_time=compound.retention_time,
             base_asymmetry=peak_asymmetry,
             base_width=DEFAULT_PEAK_WIDTH,
+            compound=compound,
         )
 
         # return signal array
@@ -95,6 +96,7 @@ class PeakCreator:
     def peak(
         self,
         retention_time: float,
+        compound: Compound,
         height: float = 1,
         name: str = None,
         base_width: float = DEFAULT_PEAK_WIDTH,
@@ -122,7 +124,7 @@ class PeakCreator:
         curr_sigma = (
             base_sigma * math.pow(WIDENING_CONSTANT, retention_time)
             + self.column_broadening
-        )
+        ) * compound.broadening_factor
 
         asymmetry = (
             1.0
