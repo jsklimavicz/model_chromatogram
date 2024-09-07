@@ -142,7 +142,6 @@ class Compound:
         self.average_charge = np.dot(proportions, state_charges)[0]
         self.broadening_factor = 1 / np.sqrt(np.sum(proportions**2, axis=1))[0]
         self.logD = calculate_logD(proportions, state_charges)[0]
-        self.logD += self.intrinsic_log_p - np.max(self.logD)
 
     def find_retention_volume(
         self, solvent_profiles: pd.DataFrame, solvent_ph: float, col_param
@@ -222,6 +221,7 @@ class Compound:
             volume, _ = quad(F, 0, t)
             return volume - R(t) * column.volume
 
-        self.retention_time = fsolve(elution_equation, Rv[0])
+        retention_time = fsolve(elution_equation, Rv[0])[0]
 
-        return self.retention_time
+        self.retention_time = retention_time
+        return retention_time

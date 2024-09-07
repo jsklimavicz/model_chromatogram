@@ -2,7 +2,7 @@
     {
         "name": "tetracinib_gradient",
         "run_time": 30,
-        "buffer_ph": 6.0,
+        "buffer_ph": 4.4,
         "mobile_phases": [
             {
                 "name": "water",
@@ -13,11 +13,11 @@
                 "id": "B"
             },
             {
-                "name": "methanol",
+                "name": "tetrahydrofuran",
                 "id": "C"
             },
             {
-                "name": "THF",
+                "name": "methanol",
                 "id": "D"
             }
         ],

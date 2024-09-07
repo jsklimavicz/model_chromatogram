@@ -81,8 +81,10 @@ class InstrumentMethod:
             filtered (np.array): The convolved signal values
         """
 
-        for _ in range(3):
-            window_size = int(round(self.sample_rate * 60 * convolution_width))
+        for i in range(3):
+            window_size = int(
+                round(self.sample_rate * 60 * (2 + i) / 2 * convolution_width)
+            )
             window = signal.windows.boxcar(window_size)
             y = np.pad(
                 y,
