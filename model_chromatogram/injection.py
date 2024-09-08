@@ -54,13 +54,28 @@ class Injection:
         )
 
     def __calculate_compound_retention(self):
+        """Iteratively calculates retention time for compounds.
+
+        Currently implemented to use the column parameters, solvent profiles, solvent ph, and temperature to calculate the retention times of each compound.
+
+        Returns:
+            None
+        """
         for compound in self.sample.compounds:
             compound.set_retention_time(
-                self.system.column, self.method.profile_table, self.method.ph
+                column=self.system.column,
+                solvent_profiles=self.method.profile_table,
+                solvent_ph=self.method.ph,
+                temperature=self.method.temperature,
             )
 
     def __create_chromatograms(self):
-        self.chromatograms: dict[Chromatogram] = {}
+        """Creates initial background chromatograms based on solvent gradient.
+
+        Returns:
+            None
+        """
+        self.chromatograms: dict = {}
         # uv_channels
         for wavelength, name in zip(self.uv_wavelengths, self.uv_channel_names):
             times, signals = self.method.get_uv_background(wavelength)
@@ -71,8 +86,19 @@ class Injection:
         self.times = times
 
     def __add_compounds(self):
+        """Iteratively calculates signals for each peak.
+
+        For each compound, a signal is created across the whole chromatogram. Then for each chromatogram, these original signals are multiple by each compound's absorbance at each chromatogram's wavelength, and then these signals are added to each chromatogram.
+
+        Additionally, output son components are created after the chromatograms are produced.
+
+        Returns:
+            None
+        """
         for compound in self.sample.compounds:
             compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
+            compound_peak_signal /= self.method.dilution_factor
+            compound_peak_signal *= self.method.injection_volume
             max_absobances = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absobances):
                 self.chromatograms[name].add_compound_peak(

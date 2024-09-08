@@ -1,6 +1,5 @@
 import numpy as np
-from model_chromatogram.system import Column
-import random, string
+from model_chromatogram.system import Column, random_column_serial_number
 
 
 class System:
@@ -15,16 +14,9 @@ class System:
     def get_column(self):
         return self.column
 
-    def random_column_serial_number(self):
-        digits = "".join(random.choices(string.digits, k=6))
-        capital_letter = random.choice(string.ascii_uppercase)
-        # Combine them with a hyphen
-        random_string = f"00{digits}-{capital_letter}"
-        return random_string
-
     def replace_column(self, column: Column | None = None, serial_number=None):
         if serial_number is None:
-            serial_number = self.random_column_serial_number()
+            serial_number = random_column_serial_number()
         if column is None:
             column_dict = self.column.todict()
             column_dict["serial_number"] = serial_number

@@ -17,8 +17,10 @@ class InstrumentMethod:
         mobile_phase_gradient_steps,
         detection,
         buffer_ph: float = 7.0,
+        column_temperature: float = 298,
         sample_rate: float = SAMPLE_RATE,
         run_time: float = RUN_LENGTH,
+        sample_introduction: dict = {},
         **kwargs,
     ) -> None:
         """
@@ -43,9 +45,12 @@ class InstrumentMethod:
         self.kwargs = kwargs
         self.name: str = name
         self.ph: float = buffer_ph
+        self.temperature: float = column_temperature
         self.run_time: float = run_time
         self.sample_rate: float = sample_rate
         self.detection: dict = detection
+        self.sample_introduction: dict = sample_introduction
+        self.__extract_sample_introduction_values()
         self.mobile_phases: list = mobile_phases
         self.mobile_phase_gradient_steps: list = mobile_phase_gradient_steps
         self.__update_mobile_phase_dictionary()
@@ -55,6 +60,10 @@ class InstrumentMethod:
         self.__create_gradient_profile()
         self.__create_composite_profiles()
         self.__dict__ = {**self.__dict__, **kwargs}
+
+    def __extract_sample_introduction_values(self):
+        self.injection_volume = _get(self.sample_introduction, "injection_volume", 10)
+        self.dilution_factor = _get(self.sample_introduction, "dilution_factor", 1)
 
     def __update_mobile_phase_dictionary(self):
         """
@@ -181,7 +190,7 @@ class InstrumentMethod:
         solvents: list[Solvent] = [
             _get(solvent, "solvent") for solvent in self.mobile_phases
         ]
-        comp_values = [s.get_absorbance(wavelength, concentration=1) for s in solvents]
+        comp_values = [s.get_absorbance(wavelength) for s in solvents]
         background = np.zeros_like(self.profile_table["time"])
         for mult, name in zip(comp_values, self.__solvent_percents):
             background += mult * self.profile_table[name]
@@ -232,11 +241,17 @@ class InstrumentMethod:
             raise
 
     def todict(self):
+        """Converts the instrument method to a json-serializable dict
+
+        Returns:
+            out (dict): json-serializable dictionary of the the insrument method.
+        """
         method_dict = {
             "name": self.name,
             "run_time": self.run_time,
             "sample_rate": self.sample_rate,
             "detection": self.detection,
+            "sample_introduction": self.sample_introduction,
             "mobile_phases": [
                 {"name": solvent["name"], "id": solvent["id"]}
                 for solvent in self.mobile_phases

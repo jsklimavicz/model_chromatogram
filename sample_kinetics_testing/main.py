@@ -32,7 +32,7 @@ cmpds = [
     "117-89-5",  # 17.853      11
     "3075-84-1",  # 16.386     10
 ]
-conc = np.array([1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]) * 1
+conc = np.array([1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
 
 
 with open("./sample_kinetics_testing/input_json/instrument_methods.json") as f:
@@ -58,13 +58,12 @@ for method in processing_method_list:
         validation_processing = ProcessingMethod(**method)
         break
 
-
-sample_dict = {
-    "name": f"tetracinib_degradation_standard",
-    "compound_id_list": cmpds,
-    "compound_concentration_list": conc,
-}
-sample = Sample(**sample_dict)
+sample = Sample(
+    name=f"tetracinib_degradation_standard",
+    compound_id_list=cmpds,
+    compound_concentration_list=conc,
+    concentration_unit=1,
+)
 
 sequence = Sequence(
     "tetracinib_stability",
@@ -87,7 +86,7 @@ curr_injection = Injection(
 peak_finder = curr_injection.find_peaks("UV_VIS_1")
 df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
 df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
-peak_finder.save_peaks("./sample_kinetics_testing/peaks.csv")
+peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
 # peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
 import matplotlib.pyplot as plt
 

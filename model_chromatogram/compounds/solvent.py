@@ -19,4 +19,4 @@ class Solvent(Compound):
         self.dipolarity = float(kwargs["dipolarity"])
         self.polarity = float(kwargs["polarity"])
         self.dielectric = float(kwargs["dielectric"])
-        self.set_concentration(float(_get(kwargs, "density")), unit=1)
+        self.set_concentration(float(_get(kwargs, "density")) / 10, unit=1)

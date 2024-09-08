@@ -40,13 +40,12 @@
                 "value": 150,
                 "unit": "mm"
             },
-            "type": "C18",
-            "serial_number": "00325819-Q",
-            "injection_count": 843,
+            "injection_count": 0,
             "particle_size": {
                 "value": 5,
                 "unit": "um"
-            }
+            },
+            "parameters_id": 93
         },
         "system_retention_time_offset": 0.012
     }

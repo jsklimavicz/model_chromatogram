@@ -1,0 +1,261 @@
+﻿id,name,manufacturer,silica_type,h,s_star,a,b,c28,c7,eb,usp_type,phase_type
+772,Agilent 5 Prep C18 Scalar,Agilent Technologies,B,1.08,0.046,0.084,-0.037,0.075,0.018,12.6,L1,C18
+641,Poroshell 120 Bonus-RP,Agilent Technologies,EP,0.686,-0.03,-0.573,0.18,-0.67,-0.017,3.98,L60,EP
+637,Poroshell 120 EC-C18,Agilent Technologies,B,1.02,0.008,-0.13,-0.004,0.161,0.123,6.92,L1,C18
+638,Poroshell 120 EC-C8,Agilent Technologies,B,0.877,0.011,-0.232,0.023,0.127,0.09,4.84,L7,C8
+639,Poroshell 120 EC-CN,Agilent Technologies,CN,0.421,-0.057,-0.476,0.002,0.045,0.87,0.95,L10,CN
+694,Poroshell 120 HPH C18,Agilent Technologies,B,1.03,0.005,-0.14,-0.014,0.073,-0.004,6.1,L1,C18
+693,Poroshell 120 HPH C8,Agilent Technologies,B,0.887,0.01,-0.25,0.008,-0.019,-0.073,4.18,L7,C8
+695,Poroshell 120 PFP,Agilent Technologies,fluoro,0.63,-0.059,-0.46,0.015,-0.038,0.741,2.88,L43,F
+640,Poroshell 120 Phenyl-Hexyl,Agilent Technologies,phenyl,0.752,-0.083,-0.394,0.018,0.136,0.14,3.59,L11,Phenyl
+644,Poroshell 120 SB-AQ,Agilent Technologies,EP,0.581,-0.12,-0.133,0.051,-0.014,0.67,2.15,L60,EP
+642,Poroshell 120 SB-C18,Agilent Technologies,B,0.956,-0.041,0.168,0.025,0.21,0.763,5.44,L1,C18
+643,Poroshell 120 SB-C8,Agilent Technologies,B,0.726,-0.087,0.068,0.044,0.087,0.807,3.56,L7,C8
+369,Zorbax Bonus RP,Agilent Technologies,EP,0.65,0.1,-1.04,0.37,-2.97,-1.1,4.5,L60,EP
+1,Zorbax C18,Agilent Technologies,A,1.08,0.05,0.47,0.06,1.48,1.56,10.7,L1,C18
+2,Zorbax C8,Agilent Technologies,A,0.97,-0.04,0.21,0.17,0.97,1.05,8.3,L7,C8
+486,Zorbax Eclipse PAH,Agilent Technologies,B,1.03,-0.01,0.68,-0.05,0.07,1.4,5.9,L1,C18
+376,Zorbax Eclipse Plus C18,Agilent Technologies,B,1.03,0,-0.07,-0.02,0,0.02,7.8,L1,C18
+377,Zorbax Eclipse Plus C8,Agilent Technologies,B,0.88,0.01,-0.17,0,-0.04,0.05,5.2,L1,C18
+3,Zorbax Eclipse XDB-C18,Agilent Technologies,B,1.07,0.02,-0.06,-0.03,0.05,0.08,9.1,L1,C18
+4,Zorbax Eclipse XDB-C8,Agilent Technologies,B,0.91,0.02,-0.21,0,0,0.01,6.6,L7,C8
+19,Zorbax Eclipse XDB-CN,Agilent Technologies,CN,0.45,-0.06,-0.31,0,0.07,0.99,1.3,L10,CN
+5,Zorbax Extend C18,Agilent Technologies,B,1.09,0.05,0.01,-0.04,0.03,0.01,8.4,L1,C18
+6,Zorbax Rx-18,Agilent Technologies,B,1.07,0.03,0.3,-0.03,0.09,0.41,7.7,L1,C18
+7,Zorbax Rx-C8,Agilent Technologies,B,0.79,-0.07,0.11,0.01,0.01,0.94,5,L7,C8
+15,Zorbax SB-AQ,Agilent Technologies,EP,0.59,-0.12,-0.08,0.03,-0.13,0.73,2.5,,EP
+18,Zorbax SB-CN,Agilent Technologies,CN,0.5,-0.1,-0.22,0.04,-0.14,1.04,1.7,L10,CN
+16,Zorbax SB-Phenyl,Agilent Technologies,phenyl,0.62,-0.16,0.06,0.03,0.03,1.08,2.7,L11,Phenyl
+8,Zorbax StableBond 300A C18,Agilent Technologies,B,0.9,-0.05,0.04,0.04,0.25,0.7,2.2,L1,C18
+9,Zorbax StableBond 300A C3,Agilent Technologies,B,0.52,-0.12,-0.19,0.04,0.05,0.35,0.7,L56,C3
+10,Zorbax StableBond 300A C8,Agilent Technologies,B,0.7,-0.08,0,0.04,0.14,0.82,1.3,L7,C8
+11,Zorbax StableBond 80A C18,Agilent Technologies,B,0.99,-0.03,0.26,0,0.13,1.04,7.6,L1,C18
+12,Zorbax StableBond 80A C3,Agilent Technologies,B,0.6,-0.12,-0.08,0.03,-0.08,0.81,2.8,L56,C3
+13,Zorbax StableBond 80A C8,Agilent Technologies,B,0.79,-0.07,0.13,0.01,0.01,1.02,5.1,L7,C8
+17,Zorbax XDB-Phenyl,Agilent Technologies,phenyl,0.66,-0.12,-0.24,0.01,0.06,0.58,3.2,L11,Phenyl
+435,Microsorb 100-5 C8,Agilent Technologies/Varian,A,0.87,0.06,0.09,0.19,0.61,0.82,5.4,L7,C8
+436,Microsorb 100-5 Phenyl,Agilent Technologies/Varian,phenyl,0.71,-0.14,-0.19,0.16,0.6,0.78,3.1,L11,phenyl
+437,Microsorb 300-5 C4,Agilent Technologies/Varian,B,0.66,-0.02,-0.31,0.03,0.2,0.41,1,L26,C4
+438,Microsorb-MV 100 CN,Agilent Technologies/Varian,CN,0.35,-0.24,-0.85,-0.02,0.14,0.78,1.3,L10,CN
+279,OmniSpher 5 C18,Agilent Technologies/Varian,B,1.05,0.05,-0.03,-0.02,0.12,0.05,10.9,L1,C18
+455,Polaris Amide-C18,Agilent Technologies/Varian,EP,0.84,0.11,-0.33,0.34,-1.65,-0.55,4.2,L60,EP
+280,Polaris C18-A,Agilent Technologies/Varian,EP,0.92,0,-0.22,0.06,0.14,0.16,5.2,L1,EP
+202,Polaris C18-Ether,Agilent Technologies/Varian,EP,0.94,-0.01,-0.12,0.02,0.16,0.55,5.5,,EP
+281,Polaris C8-A,Agilent Technologies/Varian,EP,0.6,0,-0.6,0.1,-0.07,0.2,2.2,L7,EP
+203,Polaris C8-Ether,Agilent Technologies/Varian,EP,0.7,-0.02,-0.31,0.04,0.09,0.26,1.8,,EP
+282,Pursuit C18,Agilent Technologies/Varian,B,1,0,-0.16,0.01,0.24,0.22,6.2,L1,C18
+457,Pursuit DP,Agilent Technologies/Varian,phenyl,0.57,-0.13,-0.53,0.04,0.15,0.26,1.7,,Phenyl
+458,Pursuit PFP,Agilent Technologies/Varian,F,0.65,-0.08,-0.25,-0.02,0.05,0.53,2.2,L43,F
+459,Pursuit UPS C18,Agilent Technologies/Varian,B,1.06,0.06,-0.05,0,-0.07,0.2,4.6,L1,C18
+490,Pursuit XRs C-18,Agilent Technologies/Varian,B,1.04,0.03,-0.12,-0.03,-0.01,-0.1,11.7,L1,C18
+491,Pursuit XRs C-8,Agilent Technologies/Varian,B,0.88,0.02,-0.22,0,-0.15,-0.06,8.2,L7,C8
+492,Pursuit XRs DP,Agilent Technologies/Varian,phenyl,0.63,-0.13,-0.43,0.03,0.04,0.39,4,,Phenyl
+93,Acclaim 120 C18,Dionex,B,1.03,0.01,-0.14,-0.02,0.08,0,10.1,L1,C18
+94,Acclaim 120 C8,Dionex,B,0.85,0,-0.27,0.01,0.08,0.01,6,L7,C8
+97,Acclaim Organic Acid,Dionex,other,0.83,-0.06,-0.38,0,-0.31,0.34,6.7,,Other
+96,Acclaim Polar Advantage,Dionex,EP,0.85,-0.06,-0.11,0.02,-0.27,0.35,6.8,L60,EP
+98,Acclaim PolarAdvantage II,Dionex,EP,0.74,0.01,-0.55,0.21,-0.22,0.67,6.3,L60,EP
+95,Acclaim300 C18,Dionex,B,0.95,-0.01,-0.17,0.01,0.26,0.22,2.9,L1,C18
+408,Allure Aqueous C18,Restek,B,0.96,-0.1,0.39,-0.04,0,1.38,17,L1,C18
+409,Allure Basix,Restek,CN,0.43,-0.07,-0.42,0,0.01,0.86,2.4,Other,CN
+410,Allure Biphenyl,Restek,phenyl,0.71,-0.19,-0.29,0.02,-0.01,0.69,7.2,,Phenyl
+214,Allure C18,Restek,B,1.13,0.05,0.04,-0.04,-0.03,0.02,17.9,L1,C18
+411,Allure Organic Acids,Restek,B,0.91,-0.12,0.53,-0.02,0.19,1.5,14.5,L1,C18
+218,Allure PFP Propyl,Restek,F,0.83,-0.26,0.05,0.34,1.1,1.65,7.4,L43,F
+442,Pinnacle DB Aqueous C18,Restek,A,0.69,-0.14,0.22,0.03,0.37,1.13,3.5,L1,C18
+443,Pinnacle DB Biphenyl,Restek,phenyl,0.64,-0.17,-0.34,0.05,0.19,0.51,2.3,L11,Phenyl
+444,Pinnacle DB C18,Restek,A,1.01,0.02,-0.03,0,0.36,0.28,6.3,L1,C18
+445,Pinnacle DB C8,Restek,A,0.83,0,-0.19,0.03,0.26,0.23,3.8,L7,C8
+446,Pinnacle DB Cyano,Restek,CN,0.37,-0.07,-0.38,0,0.22,0.72,0.7,L10,CN
+447,Pinnacle DB PFP Propyl,Restek,F,0.64,-0.06,-0.25,0.05,0.59,1.1,2.5,L43,F
+448,Pinnacle DB Phenyl,Restek,phenyl,0.57,-0.12,-0.46,0.04,0.16,0.28,1.7,L11,Phenyl
+449,Pinnacle II Biphenyl,Restek,phenyl,0.64,-0.19,-0.24,0.05,0.46,0.73,2.9,L11,Phenyl
+450,Pinnacle II C18,Restek,A,1.03,0.01,-0.03,0,0.44,0.34,8.4,L1,C18
+451,Pinnacle II C8,Restek,A,0.85,0,-0.11,0.03,0.39,0.43,5.3,L7,C8
+452,Pinnacle II Cyano,Restek,CN,0.37,-0.08,-0.21,-0.01,0.2,0.78,1.2,L10,CN
+453,Pinnacle II PAH,Restek,A,0.97,-0.02,0.35,-0.02,0.74,1.18,6.8,L1,C18
+454,Pinnacle II Phenyl,Restek,phenyl,0.59,-0.13,-0.4,0.06,0.37,0.49,2.3,L11,Phenyl
+465,Ultra Aqueous C18,Restek,B,0.8,-0.12,0.37,0.01,0.22,1.25,8.1,L1,C18
+538,Ultra Aromax,Restek,phenyl,0.741,-0.179,-0.375,0.021,0.195,0.375,5.6,L11,Phenyl
+466,Ultra Biphenyl,Restek,phenyl,0.66,-0.18,-0.28,0.04,0.2,0.72,3.9,L11,Phenyl
+467,Ultra C1,Restek,B,0.61,-0.05,-0.4,0.01,-0.03,0.05,3.5,L13,C1
+215,Ultra C18,Restek,B,1.05,0.03,-0.03,-0.02,0.05,0,12.2,L1,C18
+468,Ultra C4,Restek,B,0.73,-0.01,-0.27,0.01,0.03,0.31,5.2,L26,C4
+216,Ultra C8,Restek,B,0.87,0.01,-0.19,0.01,-0.03,-0.07,8.2,L7,C8
+469,Ultra Cyano,Restek,CN,0.4,-0.04,-0.8,-0.01,-0.11,0.62,1.6,L10,CN
+470,Ultra IBD,Restek,EP,0.67,-0.03,-0.05,0.23,-0.56,0.86,4.6,L68,EP
+471,Ultra II Aqueous C18,Restek,B,0.78,-0.15,0.32,0.01,0.46,1.16,7.4,L1,C18
+472,Ultra II Aromax,Restek,phenyl,0.73,-0.19,-0.34,0.02,0.47,0.64,5.3,L11,Phenyl
+513,Ultra II Biphenyl,Restek,phenyl,0.65,-0.19,-0.27,0.04,0.43,0.76,3.9,L11,Phenyl
+473,Ultra II C18,Restek,B,1.04,0.02,-0.03,-0.01,0.26,0.18,10.8,L1,C18
+474,Ultra II IBD,Restek,EP,0.67,-0.04,-0.02,0.22,-0.25,0.86,4,L68,EP
+475,Ultra II PFP Propyl,Restek,F,0.67,-0.08,-0.3,0,0.76,1.21,4.3,L43,F
+476,Ultra PFP,Restek,F,0.44,-0.05,-0.24,0.01,-0.22,0.15,1.6,L43,F
+537,Ultra PFP Propyl,Restek,F,0.622,-0.102,-0.314,-0.035,0.456,1.05,4.5,L43,F
+477,Ultra Phenyl,Restek,phenyl,0.58,-0.12,-0.33,0.03,0.04,0.43,3,L11,Phenyl
+478,Ultra Quat,Restek,other,0.85,0.01,-0.17,0.01,0.02,0.13,7.3,,Other
+479,Viva Biphenyl,Restek,phenyl,0.6,-0.18,-0.3,0.04,0.33,0.54,1.3,L11,Phenyl
+480,Viva C18,Restek,A,0.98,0.01,-0.07,0.01,0.35,0.3,4,L1,C18
+481,Viva C4,Restek,A,0.7,-0.01,-0.28,0.03,0.22,0.31,1.7,L26,C4
+482,Viva C8,Restek,A,0.83,0,-0.22,0.03,0.26,0.22,2.6,L7,C8
+483,Viva PFP Propyl,Restek,F,0.62,-0.06,-0.25,0.02,0.28,0.76,1.5,L43,F
+750,Shim-pack Arata C18,Shimadzu,B,0.782,0.032,-0.503,0.236,-0.52,0.079,7.6,L1,C18
+753,Shim-pack Velox Biphenyl,Shimadzu,B,0.707,-0.19,-0.244,0.046,0.063,1.07,3.2,L11,Phenyl
+752,Shim-pack Velox C18,Shimadzu,B,1.1,0.051,0.101,-0.034,0.111,0.196,6.6,L1,C18
+754,Shim-pack Velox PFPP,Shimadzu,B,0.688,-0.13,0.116,-0.043,0.443,1.59,3,L43,F
+751,Shim-pack Velox SP-C18,Shimadzu,B,0.983,-0.045,0.385,0.01,0.106,1.06,6.3,L1,C18
+539,Shim-pack XR-C8,Shimadzu,B,0.862,0.01,-0.16,0.017,-0.044,0.217,3.689,L7,C8
+540,Shim-pack XR-ODS,Shimadzu,B,1.01,0.032,-0.106,-0.018,-0.061,0.17,5.741,L1,C18
+579,Shim-pack XR-ODS II,Shimadzu,B,1.09,0.039,0.076,-0.026,-0.006,0.204,12.85,L1,C18
+541,Shim-pack XR-Phenyl,Shimadzu,phenyl,0.705,-0.08,-0.264,0.01,-0.021,0.486,2.656,L11,Phenyl
+515,apHera C18 Polymer,Supelco,B,0.83,-0.01,-1.1,0,-0.55,7.51,6.3,L67,C18
+334,Ascentis C18,Supelco,B,1.07,0.05,0.03,-0.04,-0.08,-0.08,10.5,L1,C18
+335,Ascentis C8,Supelco,B,0.89,0.02,-0.18,0,-0.12,-0.03,8.4,L7,C8
+516,Ascentis ES Cyano,Supelco,CN,0.54,-0.1,-0.49,0.01,0.13,-0.44,2.9,L10,CN
+632,Ascentis Express 5 C18,Supelco,B,1.13,0.053,0.053,-0.05,0.084,0.197,6.56,L1,C18
+631,Ascentis Express 5 F5,Supelco,F,0.711,-0.118,-0.097,-0.067,1.06,1.71,2.85,L43,F
+696,Ascentis Express Biphenyl,Supelco,phenyl,0.702,-0.177,-0.23,0.031,0.208,0.923,2.43,L11,Phenyl
+336,Ascentis Express C18,Supelco,B,1.13,0.05,0.02,-0.05,0.06,0.1,6.5,L1,C18
+337,Ascentis Express C8,Supelco,B,0.91,0.01,-0.11,0,0,0.17,4.6,L7,C8
+635,Ascentis Express ES-CN,Supelco,CN,0.565,-0.098,-0.415,0.014,0.031,1.04,1.88,L10,CN
+630,Ascentis Express F5,Supelco,F,0.721,-0.124,0.067,-0.074,1.06,1.84,3.25,L43,F
+517,Ascentis Express Peptide ES-C18,Supelco,B,0.91,-0.04,0.26,0.01,0.19,0.81,3.6,,C18
+518,Ascentis Express Phenyl-Hexyl,Supelco,phenyl,0.79,-0.08,-0.26,-0.01,0.09,0.48,3.5,L11,Phenyl
+412,Ascentis Express RP-Amide,Supelco,EP,0.84,0.06,-0.41,0.19,-0.47,0.26,5.1,L60,EP
+413,Ascentis Phenyl,Supelco,phenyl,0.72,-0.1,-0.28,0,0,0.57,4.8,L11,Phenyl
+338,Ascentis RP-Amide,Supelco,EP,0.84,0.07,-0.49,0.18,-0.78,0.08,8.8,L60,EP
+703,BIOshell A160 Peptide C18,Supelco,B,0.89,-0.059,0.25,0.024,0.177,0.819,3,L1,C18
+706,BIOshell A160 Peptide CN,Supelco,CN,0.481,-0.098,-0.353,0.028,0.076,0.838,0.9,L10,CN
+704,BIOshell A400 Protein C18,Supelco,B,0.94,-0.052,-0.202,0.063,0.177,0.261,1.1,L1,C18
+705,BIOshell A400 Protein C4,Supelco,B,0.704,0.005,-0.847,0.013,0.109,0.155,0.61,L26,C4
+244,Discovery Amide C16,Supelco,EP,0.72,0.01,-0.62,0.21,-0.09,-0.02,4,L60,EP
+238,Discovery BIO Wide pore C18,Supelco,B,0.83,0.01,-0.25,0.02,0.12,0.11,3.4,L1,C18
+239,Discovery BIO Wide pore C5,Supelco,B,0.65,-0.01,-0.3,0.02,0.09,0.21,1.1,,C5
+240,Discovery BIO Wide pore C8,Supelco,B,0.83,0.01,-0.22,0.03,0.2,0.19,2.2,L7,C8
+241,Discovery C18,Supelco,B,0.98,0.02,-0.12,0,0.17,0.15,4.8,L1,C18
+242,Discovery C8,Supelco,B,0.83,0.01,-0.23,0.02,0.11,0.14,3.3,L7,C8
+243,Discovery CN,Supelco,CN,0.39,-0.11,-0.61,0,-0.03,0.51,0.6,L10,CN
+418,Discovery HS F5,Supelco,F,0.67,0.08,-0.28,0,0.91,1.42,4.1,L43,F
+245,Discovery HS PEG,Supelco,EP,0.31,0.02,-0.71,0.12,-0.53,0.38,0.7,,EP
+246,Supelcosil LC-18,Supelco,A,1.01,-0.04,0.18,0.16,1.59,1.75,5.9,L1,C18
+247,Supelcosil LC-18-DB,Supelco,A,0.97,-0.02,0.04,0.11,0.48,0.53,5.7,L1,C18
+248,Supelcosil LC-8,Supelco,A,0.83,-0.04,-0.02,0.08,1.11,1.09,3.6,L7,C8
+249,Supelcosil LC-8-DB,Supelco,A,0.81,-0.03,-0.07,0.14,0.44,0.55,3.4,L7,C8
+250,Supelcosil LC-PAH,Supelco,A,0.85,-0.02,0.1,-0.03,0.64,0.83,4.4,L1,C18
+645,Titan C18,Supelco,C18,1.01,0.004,-0.084,-0.047,-0.052,0.088,10.11,L1,C18
+628,Acclaim C30,Thermo/Hypersil,B,0.973,-0.022,-0.126,0.004,0.353,0.32,5.52,L62,C30
+756,Acclaim Mixed-Mode HILIC-1,Thermo/Hypersil,B,0.517,-0.086,0,0.126,0.067,0.893,1.7,L60,EP
+757,Acclaim Mixed-Mode WCX-1,Thermo/Hypersil,B,0.432,-0.099,-0.606,0.168,-0.156,0.99,1.5,L60,EP
+629,Acclaim Phenyl-1,Thermo/Hypersil,phenyl,0.689,-0.15,-0.548,0.068,0.013,0.15,4.27,L11,Phenyl
+620,Accucore 150-C18,Thermo/Hypersil,B,1.03,0.046,-0.037,-0.009,0.2,0.171,4.45,L1,C18
+621,Accucore 150-C4,Thermo/Hypersil,B,0.738,-0.008,-0.309,0.023,0.13,0.224,2.17,L26,C4
+622,Accucore aQ,Thermo/Hypersil,EP,1.07,0.05,0.002,-0.059,0.06,0.508,5.46,L60,EP
+760,Accucore Biphenyl,Thermo/Hypersil,B,0.706,-0.18,-0.317,0.025,0.077,0.727,3.3,L11,Phenyl
+617,Accucore C18,Thermo/Hypersil,B,1.09,0.054,0.055,-0.04,0.072,0.095,6.5,L1,C18
+619,Accucore C30,Thermo/Hypersil,B,0.978,-0.02,-0.143,-0.002,0.321,0.462,4.52,L62,C30
+618,Accucore C8,Thermo/Hypersil,B,0.924,0.015,-0.084,-0.003,0.002,0.186,5.2,L7,C8
+625,Accucore PFP,Thermo/Hypersil,F,0.729,-0.098,-0.249,-0.036,0.873,1.66,3.22,L43,F
+624,Accucore Phenyl-Hexyl,Thermo/Hypersil,phenyl,0.786,-0.047,-0.223,0.006,0.055,0.574,3.6,L11,Phenyl
+623,Accucore Phenyl-X,Thermo/Hypersil,phenyl,0.781,-0.103,-0.554,0.044,-0.294,-0.082,3.64,L11,Phenyl
+627,Accucore Polar Premium,Thermo/Hypersil,EP,0.871,0.103,-0.567,0.217,-0.207,0.787,5.6,L60,EP
+626,Accucore RP-MS,Thermo/Hypersil,B,1,0.024,-0.015,-0.006,0.027,0.057,6.2,,
+615,Accucore XL C18,Thermo/Hypersil,B,1.09,0.059,0.051,-0.038,0.086,0.384,5.22,L1,C18
+616,Accucore XL C8,Thermo/Hypersil,B,0.926,0.02,-0.161,-0.001,0.02,-0.432,4.63,L7,C8
+333,Aquasil C18,Thermo/Hypersil,EP,0.8,0.11,0.26,0.01,0.23,1.19,7.4,,EP
+262,BetaBasic CN,Thermo/Hypersil,CN,0.42,-0.04,-0.45,0.01,0.01,0.9,0.8,L10,CN
+277,BetaBasic Phenyl,Thermo/Hypersil,phenyl,0.58,-0.15,-0.41,0.04,0.1,0.75,1.7,L11,Phenyl
+263,BetaMax Acid,Thermo/Hypersil,EP,0.63,0.05,-0.59,0.37,-2.06,-0.51,5.8,,EP
+264,BetaMax Base,Thermo/Hypersil,EP,0.47,-0.06,-0.39,0.01,0.01,1.14,2.2,,EP
+339,Betasil C18,Thermo/Hypersil,B,1.05,0.04,-0.1,-0.03,-0.03,-0.04,11.1,L1,C18
+755,Betasil C18,Thermo/Hypersil,B,1.06,0.033,0.034,-0.014,0.095,0.099,12.3,L1,C18
+759,Betasil C8,Thermo/Hypersil,B,0.875,-0.0027,-0.164,0.031,0.084,0.076,8.1,L7,C8
+278,Betasil Phenyl-Hexyl,Thermo/Hypersil,phenyl,0.7,-0.05,-0.29,0.02,0.05,0.35,4.3,L11,Phenyl
+343,BioBasic 4,Thermo/Hypersil,B,0.69,0,-0.19,0.03,0.18,0.39,1.2,L26,C4
+341,BioBasic CN,Thermo/Hypersil,CN,0.39,-0.03,-0.82,0,-0.07,0.53,0.4,L10,CN
+342,BioBasic Phenyl,Thermo/Hypersil,phenyl,0.49,-0.23,-0.67,0.21,0.01,0.39,0.8,L11,Phenyl
+275,Fluophase PFP,Thermo/Hypersil,F,0.67,-0.12,-0.31,0.06,0.81,1.37,4.5,L43,F
+276,Fluophase RP,Thermo/Hypersil,F,0.69,0.02,0.1,0.03,1.03,1.41,3.4,L43,F
+253,Hypersil 100 C18,Thermo/Hypersil,A,1.04,0.02,0.11,0.03,0.4,0.34,7.9,L1,C18
+254,Hypersil BDS C18,Thermo/Hypersil,A,0.99,0.01,-0.09,0,0.33,0.28,5.6,L1,C18
+259,Hypersil Beta Basic-18,Thermo/Hypersil,B,0.99,0.03,-0.09,0,0.16,0.12,6.4,L1,C18
+260,Hypersil Beta Basic-8,Thermo/Hypersil,B,0.83,0.01,-0.24,0.02,0.11,0.11,4.2,L7,C8
+261,Hypersil Betamax Neutral,Thermo/Hypersil,B,1.09,0.03,0.06,-0.03,-0.03,0.01,17,L1,C18
+265,Hypersil Bio Basic-18,Thermo/Hypersil,B,0.97,0.02,-0.1,0,0.25,0.21,3.2,L1,C18
+266,Hypersil Bio Basic-8,Thermo/Hypersil,B,0.82,0.01,-0.23,0.02,0.23,0.21,1.8,L7,C8
+267,Hypersil GOLD,Thermo/Hypersil,B,0.88,0,-0.01,0.03,0.16,0.47,3.9,L1,C18
+345,Hypersil GOLD aQ,Thermo/Hypersil,A,0.91,-0.01,-0.06,-0.01,0.37,0.63,4.1,L1,C18
+612,Hypersil GOLD C4,Thermo/Hypersil,B,0.705,-0.003,-0.285,0.026,0.11,0.235,2.19,L26,C4
+346,Hypersil GOLD C8,Thermo/Hypersil,B,0.82,0.01,-0.15,0.03,0.09,0.21,2.7,L7,C8
+614,Hypersil GOLD CN,Thermo/Hypersil,CN,0.397,-0.035,-0.886,-0.019,-0.069,0.66,0.75,L10,CN
+347,Hypersil GOLD PFP,Thermo/Hypersil,F,0.62,-0.08,-0.11,-0.02,0.37,0.99,1.9,L43,F
+613,Hypersil GOLD Phenyl,Thermo/Hypersil,phenyl,0.65,-0.091,-0.362,0.03,0.161,0.416,2,L11,Phenyl
+256,Hypersil ODS,Thermo/Hypersil,A,0.97,-0.02,-0.12,0.02,0.91,0.97,5.5,L1,C18
+758,Hypersil ODS,Thermo/Hypersil,B,0.973,-0.051,-0.094,0.019,1.1,0.895,5.7,L1,C18
+257,Hypersil ODS-2,Thermo/Hypersil,B,0.98,0.01,0.13,-0.01,0.25,0.37,5.6,L1,C18
+258,Hypersil PAH,Thermo/Hypersil,A,0.94,-0.05,0.23,-0.01,1.43,1.72,5.3,L1,C18
+272,Hypersil Prism C18 RP,Thermo/Hypersil,EP,0.64,0.08,-0.45,0.3,-2.81,-0.71,4.8,,EP
+273,Hypersil Prism C18 RPN,Thermo/Hypersil,EP,0.67,0,-0.06,0.23,-0.54,0.62,3.4,,EP
+274,Hypurity Advance,Thermo/Hypersil,EP,0.41,-0.05,-0.09,0.24,-1.33,0.78,1.6,L60,EP
+268,Hypurity C18,Thermo/Hypersil,B,0.98,0.02,-0.09,0,0.19,0.16,5.6,L1,C18
+269,HyPurity C4,Thermo/Hypersil,B,0.71,0,-0.29,0.02,0.12,0.25,1.9,L26,C4
+270,Hypurity C8,Thermo/Hypersil,B,0.83,0.01,-0.2,0.03,0.15,0.16,3.5,L7,C8
+271,Hypurity Cyano,Thermo/Hypersil,CN,0.45,-0.04,-0.49,0.02,-0.01,0.83,0.7,L10,CN
+610,Syncronis aQ,Thermo/Hypersil,EP,0.984,-0.004,-0.1,-0.038,0.066,1.08,10.2,L60,EP
+608,Syncronis C18,Thermo/Hypersil,B,1.04,-0.003,-0.086,-0.019,-0.026,0.038,13,L1,C18
+609,Syncronis C8,Thermo/Hypersil,B,0.84,-0.024,-0.227,0.01,-0.058,0.116,7.99,L7,C8
+611,Syncronis Phenyl,Thermo/Hypersil,phenyl,0.75,-0.082,-0.32,0.008,-0.031,0.176,6.36,L11,Phenyl
+252,Thermo CN,Thermo/Hypersil,CN,0.4,-0.11,-0.7,0,-0.02,0.49,0.8,L10,CN
+697,Acquity UPLC BEH C18,Waters,B,1,0.028,-0.366,0.007,0.142,0.088,6.4,L1,C18
+330,Acquity UPLC BEH C8,Waters,B,0.85,0,0.09,0.05,0.22,0.77,2.7,L7,C8
+331,Acquity UPLC BEH Phenyl,Waters,phenyl,0.76,-0.07,-0.05,0.06,0.29,0.58,2,L11,Phenyl
+332,Acquity UPLC BEH Shield RP-18,Waters,EP,0.9,0.01,-0.03,0.13,-0.05,0.41,3.5,,EP
+698,Acquity UPLC CSH C18,Waters,EP,0.968,0,-0.355,0.199,0.065,0.157,6.1,L60,EP
+291,Atlantis dC18,Waters,B,0.91,-0.03,-0.19,0,0.03,0.08,8.1,L1,C18
+327,Atlantis T3,Waters,B,0.94,-0.03,-0.18,0,0.02,0.71,8.4,L1,C18
+723,BioResolve RP mAb,Waters,phenyl,0.586,-0.14,-0.49,0.058,0.18,0.25,0.39,L11,Phenyl
+667,Cortecs C18,Waters,B,1.08,0.043,-0.108,-0.037,0.063,0.035,6.39,L1,C18
+668,Cortecs C18+,Waters,B,1.04,-0.005,0.175,0.026,-0.033,0.537,6.54,L1,C18
+718,Cortecs C8,Waters,B,0.882,0.02,-0.21,-0.007,0.028,0.047,4.5,L7,C8
+720,Cortecs Phenyl,Waters,phenyl,0.764,-0.088,-0.31,0.009,0.042,0.59,3.3,L11,Phenyl
+719,Cortecs T3,Waters,B,0.954,-0.036,-0.16,0.016,0.15,0.19,5.2,L1,C18
+721,Cortecs UPLC Shield RP18,Waters,EP,0.869,-0.023,-0.28,0.1,-0.19,0.096,4.9,L60,EP
+292,DeltaPak C18 100A,Waters,B,1.02,0.01,-0.01,-0.01,-0.05,0.02,9,L1,C18
+293,DeltaPak C18 300A,Waters,B,0.95,-0.01,-0.1,0.01,0.23,0.28,3,L1,C18
+519,HSS C18,Waters,B,1.02,0.03,-0.13,-0.02,0.05,0,8.6,L1,C18
+520,HSS C18 SB,Waters,B,0.73,-0.12,0.4,0.02,0.4,1.41,4,L1,C18
+521,HSS T3,Waters,B,0.94,-0.02,-0.17,0,0.03,0.18,7.9,L1,C18
+283,MicroBondapak C18,Waters,A,0.79,-0.07,-0.03,0.01,0.28,0.85,4.6,L1,C18
+317,MicroBondapak Phenyl,Waters,phenyl,0.58,-0.15,-0.24,0.02,0.35,0.97,2.1,L11,Phenyl
+284,Nova-Pak C18,Waters,A,1.04,0,0.09,-0.02,0.54,0.56,6.5,L1,C18
+285,Nova-Pak C8,Waters,A,0.89,-0.02,-0.09,0,0.61,0.62,3.9,L7,C8
+311,Nova-Pak CN HP 60A,Waters,CN,0.36,-0.16,0.1,0,0.69,1.17,0.4,L10,CN
+318,Nova-Pak Phenyl,Waters,phenyl,0.7,-0.15,-0.3,0.01,0.76,0.81,2.5,L11,Phenyl
+286,Resolve C18,Waters,A,0.96,-0.12,0.33,-0.04,1.92,2.14,7.9,L1,C18
+287,Spherisorb C8,Waters,A,0.76,-0.09,-0.03,0.05,0.73,1.14,4.9,L7,C8
+288,Spherisorb ODS-1,Waters,A,0.68,-0.18,0.32,0.01,0.84,1.29,4.6,L1,C18
+289,Spherisorb ODS-2,Waters,A,0.96,-0.07,0.07,0.03,0.9,1.26,8.3,L1,C18
+290,Spherisorb S5 ODSB,Waters,B,0.97,0.02,0.24,0.38,-0.64,1.68,6.9,L1,C18
+298,Sunfire C18,Waters,B,1.03,0.03,0.04,-0.01,-0.18,-0.09,9.9,L1,C18
+297,Sunfire C8,Waters,B,0.85,0.03,-0.12,0,-0.27,0,5.8,L7,C8
+299,Symmetry 300 C18,Waters,B,0.98,0.03,-0.05,0,0.22,0.2,3.5,L1,C18
+300,Symmetry 300 C4,Waters,B,0.65,-0.01,-0.42,0.01,0.1,0.18,1.4,L26,C4
+301,Symmetry C18,Waters,B,1.05,0.06,0.01,-0.02,-0.3,0.12,9.8,L1,C18
+578,Symmetry C4,Waters,B,0.687,-0.012,-0.29,0.022,0.217,0.305,1.41,L26,C4
+302,Symmetry C8,Waters,B,0.89,0.04,-0.2,0.02,-0.5,0.28,7,L7,C8
+312,SymmetryShield C18,Waters,EP,0.85,0.02,-0.41,0.09,-0.72,0.13,7.3,,EP
+313,SymmetryShield C8,Waters,EP,0.73,0,-0.55,0.1,-0.62,0.13,5.7,,EP
+404,XBridge C18,Waters,B,1,0.02,-0.09,0,0.17,0.13,4.6,L1,C18
+484,XBridge C8,Waters,B,0.8,0.01,-0.29,0.01,0.12,0.06,3.4,L7,C8
+405,XBridge Phenyl,Waters,phenyl,0.73,-0.07,-0.35,0.03,0.19,0.2,2.4,L11,Phenyl
+722,Xbridge Protein BEH C4,Waters,B,0.546,-0.073,-0.21,0.043,0.007,0.12,0.85,L26,C4
+406,XBridge Shield RP18,Waters,EP,0.83,-0.02,-0.37,0.09,-0.12,-0.05,3.7,,EP
+542,XSelect CSH C18,Waters,B,0.954,-0.002,-0.179,0.118,0.082,0.171,5.62,L1,C18
+543,XSelect CSH Fluoro-Phenyl,Waters,F,0.498,-0.138,-0.052,0.055,-0.321,0.793,1.413,L43,F
+544,XSelect CSH Phenyl-Hexyl,Waters,phenyl,0.708,-0.059,-0.435,0.129,-0.068,0.223,2.865,L11,Phenyl
+562,Xselect HSS Cyano,Waters,CN,0.479,-0.116,-0.224,0.043,0.082,1.18,1.76,L10,CN
+580,Xselect HSS PFP,Waters,F,0.592,-0.164,0.146,-0.02,0.74,1.77,3.35,L43,F
+314,XTerra C18 RP,Waters,EP,0.75,-0.04,-0.48,0.09,-0.17,-0.17,4.3,,EP
+315,XTerra C8 RP,Waters,EP,0.65,-0.04,-0.6,0.09,-0.18,-0.19,3.1,,EP
+303,XTerra MS C18,Waters,B,0.98,0.01,-0.14,-0.01,0.13,0.05,6.3,L1,C18
+304,XTerra MS C8,Waters,B,0.8,0,-0.29,0,0.05,0,3.7,L7,C8
+316,XTerra Phenyl,Waters,phenyl,0.68,-0.07,-0.36,0,0.11,0.02,2.6,L11,Phenyl

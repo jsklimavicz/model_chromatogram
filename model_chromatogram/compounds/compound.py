@@ -5,7 +5,7 @@ import numpy as np
 from pydash import get as _get
 import pandas as pd
 from model_chromatogram.compounds import UVSpectrum
-from model_chromatogram.system import Column
+from model_chromatogram.system import ColumnParameters, Column
 import itertools
 
 
@@ -64,11 +64,10 @@ class Compound:
             # default UV spectrum
             self.spectrum = UVSpectrum("63-74-1")
 
-    def get_absorbance(self, wavelength, concentration=None, pathlength=1):
+    def get_absorbance(self, wavelength, pathlength=1):
+        """ """
         absorbance = self.spectrum.get_epsilon(wavelength) * pathlength
-        absorbance *= (
-            concentration if concentration is not None else self.m_molarity / 1000
-        )
+        absorbance *= self.m_molarity / 1000
         return absorbance
 
     def set_concentration(self, concentration, unit):
@@ -86,22 +85,30 @@ class Compound:
                 5: nmol/ml (or uM)
         """
         if unit == 1:
-            self.concentration = concentration * 1000  # in ug/ml
-            self.m_molarity = 1000 * self.concentration / self.mw
+            self.concentration = concentration * 1000  # mg/ml to ug/ml
+            self.m_molarity = self.concentration / self.mw
         elif unit == 2:
-            self.concentration = concentration  # in ug/ml
+            self.concentration = concentration  # already in ug/ml
             self.m_molarity = self.concentration / self.mw
         elif unit == 3:
-            self.concentration = concentration / 1000  # in ug/ml
-            self.m_molarity = self.concentration / (1000 * self.mw)
+            self.concentration = concentration / 1000  # ng/ml to ug/ml
+            self.m_molarity = self.concentration / self.mw
         elif unit == 4:
-            self.m_molarity = concentration
+            self.m_molarity = concentration  # already in mM
             self.concentration = self.m_molarity * self.mw
         elif unit == 5:
-            self.m_molarity = concentration / 1000
-            self.concentration = self.m_molarity * self.mw / 1000
+            self.m_molarity = concentration / 1000  # uM to mM
+            self.concentration = self.m_molarity * self.mw
 
     def calculate_logD(self, pH_value: float):
+        """Calculates logD (distribution coefficient) of the compound at the provided pH.
+
+        Acidic and basic pka values are used to generate a list of microspecies, and calculate their proportions and charges. This information is then used to calculate the logD, average charge of the microspecies at the given pH, and a broadening factor for the peak that depends on the distribution of the microspecies.
+
+        Args:
+            pH_value (float): pH value at which to calculate the logD.
+
+        """
         n_pka = len(self.pka_list)
         n_pkb = len(self.pkb_list)
         all_pka_values = [*self.pka_list, *self.pkb_list]
@@ -136,56 +143,74 @@ class Compound:
             )
             return np.dot(row, weights)
 
-        # state_labels = [f"State {','.join(map(str,state))}" for state in states]
         state_charges = np.array([np.sum(state) for state in states])
         proportions = np.array(proportions)
         self.average_charge = np.dot(proportions, state_charges)[0]
         self.broadening_factor = 1 / np.sqrt(np.sum(proportions**2, axis=1))[0]
         self.logD = calculate_logD(proportions, state_charges)[0]
 
-    def find_retention_volume(
-        self, solvent_profiles: pd.DataFrame, solvent_ph: float, col_param
-    ):
+    def find_retention_factor(
+        self,
+        solvent_profiles: pd.DataFrame,
+        solvent_ph: float,
+        col_param: ColumnParameters,
+    ) -> np.array:
+        """Calculate a retention factor based on compound, solvent, and stationary phase parameters.
+
+        Args:
+            solvent_profiles (pd.DataFrame): DataFrame of solvent profiles with columns for `polarity`, `hb_acidity`, `hb_basicity`, and `dielectric`.
+            solvent_ph (float): pH of the buffered solvent
+            col_param (ColumnParameters): A `ColumnParameters` object containing attribute for the hydrophobic subtraction model.
+
+        Returns:
+            Rf (np.array): An array of retention factor values for each set of solvent profile points.
+
+        """
+
+        # polarity adjustments for solvent, column, and compound
         solv_p = solvent_profiles["polarity"].to_numpy()
         col_p = col_param.h
         self.calculate_logD(solvent_ph)
-        Rv = 0.5 * (col_param.eb - 1)
-        m = 2 + np.tanh((self.logD / 2 - 3) / (1 + np.exp(col_p * self.logD)))
-        Rv *= m
-        n = np.exp((solv_p / 10) ** 1.5 + (1 + np.arcsinh(self.logD / 2 - 3)) / 2)
-        Rv *= n
+        Rf = (col_param.eb - 1) / 5
+        Rf *= 2 + np.tanh((self.logD / 2 - 3) / (1 + np.exp(col_p * self.logD)))
+        Rf *= np.exp((solv_p / 10) ** 1.5 + (1 + np.arcsinh(self.logD / 2 - 3)) / 2)
 
+        # solvent/column H-bond acidity interaction with compound H-bond acceptors
         solv_a = solvent_profiles["hb_acidity"].to_numpy()
         col_a = col_param.a
         a = solv_a * self.h_acceptors**2 / (10 * col_a)
-        a = a * np.exp(a) + 1
-        a = np.tanh(a)
+        Rf *= np.tanh(a * np.exp(a) + 1)
 
+        # solvent/column H-bond basicity interaction with compound H-bond donors
         solv_b = solvent_profiles["hb_basicity"].to_numpy()
         col_b = col_param.b
         b = solv_b * self.h_donors**2 / (10 * col_b)
-        b = np.tanh(b * np.exp(b) + 1)
-        b = np.tanh(b)
+        Rf *= np.tanh(b * np.exp(b) + 1)
 
-        s = 2 + np.tanh(2 * col_param.s_star * self.mw ** (1 / 3))
+        # column interaction with size of compounds
+        Rf *= 2 + np.tanh(2 * col_param.s_star * self.mw ** (1 / 3))
 
+        # solvent/column dielectric interaction with compound ratio of polar surface area
         solv_d = solvent_profiles["dielectric"].to_numpy()
         psa_v = self.tpsa**0.5 / self.mw ** (1 / 3)
         d = solv_d * psa_v / col_p
-        d = np.tanh(d * np.exp(d) + 1)
-        d = np.tanh(d)
+        Rf *= np.tanh(d * np.exp(d) + 1)
 
-        Rv *= a * b * s * d
-        Rv += 1
+        Rf += 1  # add minimal retention factor of 1
 
+        # add symmetric deviation depending on stationary phase retention of ions
         self.asymmetry_addition = self.average_charge * np.interp(
             solvent_ph, (2.8, 7), (col_param.c7, col_param.c28)
         )
 
-        return Rv
+        return Rf
 
     def set_retention_time(
-        self, column: Column, solvent_profiles: pd.DataFrame, solvent_ph: float = 7.0
+        self,
+        column: Column,
+        solvent_profiles: pd.DataFrame,
+        solvent_ph: float = 7.0,
+        temperature=298,
     ):
         """
         Calculates the retention time of a compound based on column volume, solvent properties, and compound properties.
@@ -198,36 +223,36 @@ class Compound:
                 hydrogen bond basicity (hb_basicity)
                 polarity
                 dielectric
+            solvent_ph (float): The pH of the solvent buffer.
+            temperature (float): The temperature in Kelvin of the column during the injection.
 
         Returns:
             retention_time (float): Value of retention time.
 
         """
 
-        Rv = self.find_retention_volume(solvent_profiles, solvent_ph, column.parameters)
+        Rf_0 = self.find_retention_factor(
+            solvent_profiles, solvent_ph, column.parameters
+        )
+        Rf = Rf_0 * np.exp(
+            (
+                self.logD
+                + np.sqrt(1 + self.h_acceptors**2 + self.h_donors**2)
+                - 2 * self.log_s
+            )
+            * (10 * (1.0 / temperature - 1.0 / 298.0))
+        )
         time = solvent_profiles["time"].to_numpy()
         flow = solvent_profiles["flow"].to_numpy() / column.volume
 
         flow_spline = CubicSpline(time, flow)
-        R_spline = CubicSpline(time, Rv)
-
-        def F(t):
-            return flow_spline(t)
-
-        def R(t):
-            return R_spline(t)
-
-        # def elution_equation(t):
-        #     volume, _ = quad(F, 0, t)
-        #     return volume - R(t) * column.volume
-
-        # retention_time = fsolve(elution_equation, Rv[0])[0]
+        R_spline = CubicSpline(time, Rf)
 
         def cumulative_fraction_traversed(t):
-            cumulative_movement, _ = quad(lambda tau: F(tau) / R(tau), 0, t)
-            return cumulative_movement - 1
+            cumul_move, _ = quad(lambda tau: flow_spline(tau) / R_spline(tau), 0, t)
+            return cumul_move - 1
 
-        retention_time = fsolve(cumulative_fraction_traversed, Rv[0])[0]
+        retention_time = fsolve(cumulative_fraction_traversed, Rf[0])[0]
 
         self.retention_time = retention_time
         return retention_time

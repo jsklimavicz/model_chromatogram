@@ -8,24 +8,12 @@
             "value": 150,
             "unit": "mm"
         },
-        "type": "C18",
         "serial_number": "00882945-M",
         "injection_count": 0,
         "particle_size": {
             "value": 5,
             "unit": "um"
         },
-        "name": "Acclaim 120 C18",
-        "manufacturer": "Dionex",
-        "parameters": {
-            "id": 91,
-            "h": 1.03,
-            "s_star": 0.01,
-            "a": -0.14,
-            "b": -0.02,
-            "c28": 0.08,
-            "c7": 0.0,
-            "eb": 10.1
-        }
+        "parameters_id": 1
     }
 ]

@@ -1,5 +1,5 @@
 # model_chromatogram/__init__.py
-from .system import Column, System
+from .system import ColumnParameters, Column, System
 from .compounds import Compound, UVSpectrum, COMPOUND_LIBRARY, SOLVENT_LIBRARY
 from .chromatogram import PeakCreator, Baseline, Chromatogram
 from .data_processing import Peak, als_psalsa, PeakList, PeakFinder
@@ -11,6 +11,7 @@ from .sequence import Sequence
 
 __all__ = [
     "Injection",
+    "ColumnParameters",
     "System",
     "Column",
     "Chromatogram",

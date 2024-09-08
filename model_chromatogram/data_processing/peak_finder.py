@@ -109,6 +109,9 @@ class PeakFinder:
         local_variance = uniform_filter1d(
             (signal - local_mean) ** 2, size=var_window_size
         )
+        # very rarely, round errors produce negative variances, which is very bad. Make sure this doesn't happen
+        local_variance = np.abs(local_variance) + 1e-8
+
         rms_noise = np.sqrt(np.mean(local_variance[:150]))
 
         # Normalize the variance for smoother scaling of window sizes
