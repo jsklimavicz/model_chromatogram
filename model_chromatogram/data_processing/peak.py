@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.interpolate import CubicSpline
-from model_chromatogram.lib import exponnorm
+from model_chromatogram.utils import exponnorm
 from scipy.stats import norm
 from scipy.optimize import curve_fit, brentq
 

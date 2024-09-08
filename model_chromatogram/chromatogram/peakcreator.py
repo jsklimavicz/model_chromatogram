@@ -1,7 +1,7 @@
 from numpy.random import uniform
 import math
 
-from model_chromatogram.lib import exponnorm
+from model_chromatogram.utils import exponnorm
 from scipy.optimize import minimize_scalar
 from model_chromatogram.compounds import Compound
 import numpy as np
