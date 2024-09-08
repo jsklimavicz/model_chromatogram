@@ -203,9 +203,9 @@ class Peak:
         self.height = np.max(self.baselined_peak_signal)
         self.relative_height = None
         self.retention_index = np.argmax(self.baselined_peak_signal) + self.start_index
-        time_window = self.times[self.retention_index - 3 : self.retention_index + 3]
+        time_window = self.times[self.retention_index - 10 : self.retention_index + 10]
         signal_window = self.raw_signal[
-            self.retention_index - 3 : self.retention_index + 3
+            self.retention_index - 10 : self.retention_index + 10
         ]
 
         def quadratic(x, a, b, c):

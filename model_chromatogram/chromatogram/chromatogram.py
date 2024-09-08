@@ -1,4 +1,3 @@
-import numpy.random as random
 import numpy as np
 from model_chromatogram.user_parameters import *
 
@@ -133,13 +132,14 @@ class Baseline(Chromatogram):
                 f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {corr}."
             )
 
-        s0 = self.signal[0]
-        self.signal *= 1 - corr
-        self.signal[0] = s0
+        # s0 = self.signal[0]
+        # self.signal *= 1 - corr
+        # self.signal[0] = s0
         eps = np.sqrt((sigma**2) * (1 - corr**2))
-        self.signal += random.normal(loc=0, scale=eps, size=np.shape(self.signal))
+        vals = np.random.normal(loc=0, scale=eps, size=len(self.signal))
         for ind in range(1, len(self.signal)):
-            self.signal[ind] += corr * self.signal[ind - 1]
+            vals[ind] += corr * vals[ind - 1]
+        self.signal += vals
 
     def create_baseline(self):
         """

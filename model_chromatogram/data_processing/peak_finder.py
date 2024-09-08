@@ -140,26 +140,24 @@ class PeakFinder:
             window_sizes % 2 == 0, window_sizes + 1, window_sizes
         ).astype(int)
 
+        # precompute windows
+        precomputed_filters = {}
+        for window_size in range(min_window, max_window + 1, 2):
+            precomputed_filters[window_size] = savgol_filter(
+                signal, window_size, 2, mode="nearest"
+            )
+
         # Identify contiguous regions with the same window size
         for key, group in itertools.groupby(enumerate(window_sizes), lambda x: x[1]):
             indices, window_size = zip(*group)
             start = indices[0]
             end = indices[-1] + 1
 
-            half_window = window_size[0] // 2
-            region_start = max(0, start - half_window)
-            offset = max(half_window - region_start, 0)
-            region_end = min(len(signal), end + half_window)
-
-            # Apply Savitzky-Golay filter to the contiguous region
-            filtered_region = savgol_filter(
-                signal[region_start:region_end], window_size[0], 2, mode="nearest"
-            )
+            # Retrieve the precomputed filtered signal for the corresponding window size
+            filtered_region = precomputed_filters[window_size[0]]
 
             # Store the filtered result in the smoothed signal
-            smoothed_signal[start:end] = filtered_region[
-                half_window - offset : half_window + (end - start) - offset
-            ]
+            smoothed_signal[start:end] = filtered_region[start:end]
 
         smoothed_signal = savgol_filter(smoothed_signal, 5, 2, mode="nearest")
         return smoothed_signal

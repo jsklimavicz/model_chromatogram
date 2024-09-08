@@ -133,41 +133,6 @@ class PeakList:
             for key, ref_peak in ref_peak_dic.items():
                 peak.calculate_resolution(key, ref_peak)
 
-        # if resolution_reference in ["prev", "previous", "first"]:
-        #     ref_peak = self.peaks[0]
-        #     for peak in self.peaks[1:]:
-        #         peak.calculate_resolution(ref_peak)
-        #         if resolution_reference != "first":
-        #             ref_peak = peak
-        # elif resolution_reference in ["next", "last"]:
-        #     ref_peak = self.peaks[-1]
-        #     for peak in self.peaks[-2::-1]:
-        #         peak.calculate_resolution(ref_peak)
-        #         if resolution_reference != "last":
-        #             ref_peak = peak
-        # elif resolution_reference == "previous_main":
-        #     pass
-        # elif resolution_reference == "next_main":
-        #     pass
-        # else:
-        #     try:
-        #         peak_index = int(resolution_reference) - 1
-        #         ref_peak = self.__getitem__(peak_index)
-        #         for ind, peak in enumerate(self.peaks):
-        #             if ind == peak_index:
-        #                 continue
-        #             else:
-        #                 peak.calculate_resolution(ref_peak)
-        #     except ValueError as e:
-        #         for ref_ind, ref_peak in enumerate(self.peaks):
-        #             if ref_peak.name == resolution_reference:
-        #                 for ind, peak in enumerate(self.peaks):
-        #                     if ind == ref_ind:
-        #                         continue
-        #                     else:
-        #                         peak.calculate_resolution(ref_peak)
-        #                 break
-
     def filter_peaks(
         self,
         min_height=MINIMUM_HEIGHT,
