@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 from scipy.ndimage import uniform_filter1d
 from model_chromatogram.methods import ProcessingMethod
-from model_chromatogram.data_processing import PeakList, als_psalsa
+from model_chromatogram.data_processing import Peak, PeakList, als_psalsa
 from model_chromatogram.user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
     MINIMUM_HEIGHT,
@@ -391,7 +391,7 @@ class PeakFinder:
             calibration_sets = identification.get("calibration", None)
 
             # Find the largest peak within the specified time range
-            filtered_peaks = [
+            filtered_peaks: list[Peak] = [
                 peak
                 for peak in self.peaks
                 if min_time <= peak.retention_time <= max_time

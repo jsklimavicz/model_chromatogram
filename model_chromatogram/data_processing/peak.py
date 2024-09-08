@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.interpolate import CubicSpline
-from scipy.stats import exponnorm, norm
+from model_chromatogram.lib import exponnorm
+from scipy.stats import norm
 from scipy.optimize import curve_fit, brentq
 
 
@@ -288,11 +289,11 @@ class Peak:
 
     def _exponnorm_curve(self, t):
         h, K, loc, scale = self.curve_params
-        return h * exponnorm.pdf(t, K=K, loc=loc, scale=scale)
+        return h * exponnorm(t, K=K, loc=loc, scale=scale)
 
     def __fit_EMG_curve(self, t_array, signal_array):
         def exponnorm_curve(t, h, K, loc, scale):
-            return h * exponnorm.pdf(t, K=K, loc=loc, scale=scale)
+            return h * exponnorm(t, K=K, loc=loc, scale=scale)
 
         guess = self.standard_deviation
         self.curve_params, _ = curve_fit(

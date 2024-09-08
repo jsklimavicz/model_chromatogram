@@ -245,14 +245,8 @@ class Compound:
         time = solvent_profiles["time"].to_numpy()
         flow = solvent_profiles["flow"].to_numpy() / column.volume
 
-        flow_spline = CubicSpline(time, flow)
-        R_spline = CubicSpline(time, Rf)
-
-        def cumulative_fraction_traversed(t):
-            cumul_move, _ = quad(lambda tau: flow_spline(tau) / R_spline(tau), 0, t)
-            return cumul_move - 1
-
-        retention_time = fsolve(cumulative_fraction_traversed, Rf[0])[0]
+        move_ratio = np.cumsum(flow / Rf) * (time[1] - time[0]) - 1
+        retention_time = np.interp(0, move_ratio, time)
 
         self.retention_time = retention_time
         return retention_time

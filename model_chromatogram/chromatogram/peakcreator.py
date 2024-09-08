@@ -1,7 +1,8 @@
 from numpy.random import uniform
 import math
-from scipy.stats import exponnorm
-from scipy.optimize import minimize_scalar, minimize
+
+from model_chromatogram.lib import exponnorm
+from scipy.optimize import minimize_scalar
 from model_chromatogram.compounds import Compound
 import numpy as np
 from model_chromatogram.system import Column, System
@@ -50,7 +51,8 @@ class PeakCreator:
 
         # Define a function that returns the negative PDF (to maximize)
         def neg_pdf(x):
-            return -exponnorm.pdf(x, scale=sigma, K=asymmetry)
+            # return -exponnorm.pdf(x, scale=sigma, K=asymmetry)
+            return -exponnorm(x, scale=sigma, K=asymmetry)
 
         # Use optimization to find the mode
         result = minimize_scalar(neg_pdf, tol=1e-4)
@@ -83,12 +85,19 @@ class PeakCreator:
         )
 
         # return signal array
-        raw_signal = exponnorm.pdf(
+        # raw_signal = exponnorm.pdf(
+        #     times,
+        #     K=peak_dict["asymmetry"],
+        #     loc=peak_dict["time"],
+        #     scale=peak_dict["width"],
+        # )
+        raw_signal = exponnorm(
             times,
             K=peak_dict["asymmetry"],
             loc=peak_dict["time"],
             scale=peak_dict["width"],
         )
+
         # Set elements less than 1e-8 to 0
         raw_signal[raw_signal < 1e-8] = 0
         return raw_signal

@@ -72,22 +72,32 @@ sequence = Sequence(
     url="",
 )
 
-curr_injection = Injection(
-    sample=sample,
-    method=validation_method,
-    processing_method=validation_processing,
-    sequence=sequence,
-    system=system,
-    user="James",
-    injection_time=datetime.datetime.now(),
-)
 
+from cProfile import Profile
+from pstats import Stats
 
-peak_finder = curr_injection.find_peaks("UV_VIS_1")
-df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
-df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
-peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
+with Profile() as profile:
+
+    curr_injection = Injection(
+        sample=sample,
+        method=validation_method,
+        processing_method=validation_processing,
+        sequence=sequence,
+        system=system,
+        user="James",
+        injection_time=datetime.datetime.now(),
+    )
+
+    peak_finder = curr_injection.find_peaks("UV_VIS_1")
+
+    with open("stats.prof", "w") as f:
+        Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()
+
+# df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
+# df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
+# peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
 # peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
+
 import matplotlib.pyplot as plt
 
 peak_finder.plot_peaks()

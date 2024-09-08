@@ -83,7 +83,7 @@ class Injection:
                 np.array(times), np.array(signals), wavelength=wavelength
             )
             self.chromatograms[name] = baseline
-        self.times = times
+        self.times = times.to_numpy()
 
     def __add_compounds(self):
         """Iteratively calculates signals for each peak.
