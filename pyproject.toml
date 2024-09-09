@@ -16,6 +16,7 @@ uuid = "^1.30"
 holidays = "^0.56"
 matplotlib = "^3.9.2"
 seaborn = "^0.13.2"
+cython = "^3.0.11"
 
 
 [build-system]
