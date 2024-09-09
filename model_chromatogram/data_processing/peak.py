@@ -321,12 +321,14 @@ class Peak:
         self.left_poi = r[0]
         self.right_poi = r[1]
 
-        times = [
-            self.left_poi - self.dt / 2,
-            self.left_poi + self.dt / 2,
-            self.right_poi - self.dt / 2,
-            self.right_poi + self.dt / 2,
-        ]
+        times = np.array(
+            [
+                self.left_poi - self.dt / 2,
+                self.left_poi + self.dt / 2,
+                self.right_poi - self.dt / 2,
+                self.right_poi + self.dt / 2,
+            ]
+        )
         # vals = self._exponnorm_curve(times)
         vals = scaled_exponnorm(times, *self.curve_params)
 
