@@ -91,7 +91,7 @@ with Profile() as profile:
     peak_finder = curr_injection.find_peaks("UV_VIS_1")
 
     with open("stats.prof", "w") as f:
-        Stats(profile, stream=f).strip_dirs().sort_stats("tottime").print_stats()
+        Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()
 
 # df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
 # df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
@@ -100,7 +100,7 @@ peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
 
 import matplotlib.pyplot as plt
 
-peak_finder.plot_peaks()
+peak_finder.plot_peaks(show_spline=True)
 plt.show()
 
 

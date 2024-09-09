@@ -1,4 +1,9 @@
 import numpy as np
+from scipy.sparse import diags
+
+from scipy.sparse.linalg import spsolve
+
+from scipy.linalg import solve
 
 
 def als_psalsa(
@@ -34,6 +39,8 @@ def als_psalsa(
     time = [*raw_time[::interval]]
     signal: np.array = [*raw_signal[::interval]]
 
+    size = len(time)
+
     # set initial z values
     z = np.mean(signal) * np.ones_like(signal)
     residuals = signal - z
@@ -46,24 +53,16 @@ def als_psalsa(
     converged = False
     iterations = 0
 
-    # create tridiagonal second difference matrix
-    def difference_matrix(size):
-        a = -1 * np.ones(size - 1)  # upper and lower diagonals
-        b = 2 * np.ones(size)  # diagonal
-        D = np.diag(a, k=-1) + np.diag(b) + np.diag(a, k=1)
-        # Perturb matrix for dealing with endpoints:
-        D[0][0] = D[-1][-1] = 1
-        return D
-
-    D = difference_matrix(len(z))
+    a = -1 * np.ones(size - 1)  # upper and lower diagonals
+    b = 2 * np.ones(size)  # diagonal
+    b[0] = b[-1] = 1  # Perturb matrix for dealing with endpoints
+    D = diags([a, b, a], [-1, 0, 1])
+    D2_s = s * D @ D
 
     # define loss function
     def loss_function(weights, residuals, z):
-        def second_deriv(z):
-            return D @ z
-
         S = np.sum(weights * residuals**2)
-        S += s * sum(second_deriv(z) ** 2)
+        S += s * sum((D @ z) ** 2)
         return S
 
     prev_loss = 0  # intial loss
@@ -71,8 +70,8 @@ def als_psalsa(
     # iterate z = (W + smoothness * D'D)^-1 W y until solved
     while not converged and iterations < 20:
         iterations += 1
-        W = np.diag(weights)
-        z = np.linalg.inv(W + s * D.T @ D).dot(weights * signal)
+        W = diags([weights], [0])
+        z = spsolve(W + D2_s, (weights * signal))
         residuals = signal - z
         curr_loss = loss_function(weights, residuals, z)
         rel_loss = abs(curr_loss - prev_loss) / curr_loss

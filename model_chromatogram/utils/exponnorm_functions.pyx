@@ -21,34 +21,41 @@ def scaled_exponnorm_scaler(double x, double h, double K, double loc=0, double s
 # Expose the functions to Python using memoryviews
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def exponnorm_array(np.ndarray[np.float64_t, ndim=1] x, double K, double loc=0, double scale=1):
+def exponnorm_array(double[::1] x, double K, double loc=0, double scale=1):
     cdef:
         int n = x.shape[0]
         np.ndarray[np.double_t, ndim=1] result = np.zeros(n, dtype=np.double)
         int i
         double y, vals
+        double SQRT2 = sqrt(2)
+        double coeff = 1 / (2 * K**2)
+        double adj = 1/(2 * K * scale)
+
 
     for i in range(n):
         y = (x[i] - loc) / scale
-        vals = 1 / (2 * K**2) - y / K
-        vals += log(erfc(((1 / K) - y) / sqrt(2)))
-        result[i] = exp(vals) / (2 * K * scale)
+        vals = coeff - y / K
+        vals += log(erfc(((1 / K) - y) / SQRT2))
+        result[i] = exp(vals) * adj
 
     return result
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def scaled_exponnorm_array(np.ndarray[np.float64_t, ndim=1] x, double h, double K, double loc=0, double scale=1):
+def scaled_exponnorm_array(double[::1] x, double h, double K, double loc=0, double scale=1):
     cdef:
         int n = x.shape[0]
         np.ndarray[np.double_t, ndim=1] result = np.zeros(n, dtype=np.double)
         int i
         double y, vals
+        double SQRT2 = sqrt(2)
+        double coeff = 1 / (2 * K**2)
+        double adj = h/(2 * K * scale)
 
     for i in range(n):
         y = (x[i] - loc) / scale
-        vals = 1 / (2 * K**2) - y / K
-        vals += log(erfc(((1 / K) - y) / sqrt(2)))
-        result[i] = h * exp(vals) / (2 * K * scale)
+        vals = coeff - y / K
+        vals += log(erfc(((1 / K) - y) / SQRT2))
+        result[i] = adj * exp(vals)
 
     return result

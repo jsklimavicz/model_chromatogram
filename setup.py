@@ -3,10 +3,14 @@ from Cython.Build import cythonize
 import numpy
 import os
 
-pyx_files = [
-    os.path.join("model_chromatogram", "utils", "autocorr_data.pyx"),
-    os.path.join("model_chromatogram", "utils", "exponnorm_functions.pyx"),
+files = [
+    "autocorr_data.pyx",
+    "exponnorm_functions.pyx",
 ]
+
+pyx_files = []
+for file in files:
+    pyx_files.append(os.path.join("model_chromatogram", "utils", file))
 
 # Define the setup
 setup(
