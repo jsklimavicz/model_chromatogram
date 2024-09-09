@@ -95,13 +95,13 @@ with Profile() as profile:
 
 # df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
 # df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
-# peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
+peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
 # # peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
 
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
-# peak_finder.plot_peaks()
-# plt.show()
+peak_finder.plot_peaks()
+plt.show()
 
 
 # plt.savefig("./image.png", transparent=True)

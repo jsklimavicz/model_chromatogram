@@ -4,6 +4,7 @@ from model_chromatogram.user_parameters import *
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from model_chromatogram.utils import create_autocorrelated_data
 
 
 class Chromatogram:
@@ -117,37 +118,15 @@ class Baseline(Chromatogram):
         self.noise_level = noise_level
         self.create_baseline()
 
-    def __create_autocorrelated_data(
-        self, sigma, corr=BASELINE_AUTOCORRELATION_PARAMETER
-    ):
-        """
-        Method for generating baseline noise using an AR(1) model (1-parameter autoregressive model).
-
-        Args:
-            sigma (float): Standard deviation of the gaussian noise in the baseline.
-            corr (float): Correlation parameter for the AR(1) model. Defines how much the current noise value depends on the previous noise value in the baseline. Must satisfy 0 < corr < 1.
-        """
-        if not (0 < corr < 1):
-            raise ChromatogramError(
-                f"BASELINE_AUTOCORRELATION_PARAMETER must be set between 0 and 1, exclusive, but is set to {corr}."
-            )
-
-        # s0 = self.signal[0]
-        # self.signal *= 1 - corr
-        # self.signal[0] = s0
-        eps = np.sqrt((sigma**2) * (1 - corr**2))
-        vals = np.random.normal(loc=0, scale=eps, size=len(self.signal))
-        for ind in range(1, len(self.signal)):
-            vals[ind] += corr * vals[ind - 1]
-        self.signal += vals
-
     def create_baseline(self):
         """
-        Creates the baseline.
+        Creates the baseline. Uses a method for generating baseline noise using an AR(1) model (1-parameter autoregressive model).
         """
         # to account for fact 95% of samples from normal distribution are within 1.96 std
         sigma = self.noise_level / 1.96
-        self.__create_autocorrelated_data(sigma)
+        corr = BASELINE_AUTOCORRELATION_PARAMETER
+        noise = create_autocorrelated_data(len(self.signal), sigma, corr)
+        self.signal += noise
 
 
 class ChromatogramError(ValueError):

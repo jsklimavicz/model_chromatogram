@@ -175,26 +175,33 @@ class Compound:
         Rf *= 2 + np.tanh((self.logD / 2 - 3) / (1 + np.exp(col_p * self.logD)))
         Rf *= np.exp((solv_p / 10) ** 1.5 + (1 + np.arcsinh(self.logD / 2 - 3)) / 2)
 
+        def rational_func(x):
+            return 2 / (1 + np.exp(-2 * x)) - 1
+
         # solvent/column H-bond acidity interaction with compound H-bond acceptors
         solv_a = solvent_profiles["hb_acidity"].to_numpy()
         col_a = col_param.a
         a = solv_a * self.h_acceptors**2 / (10 * col_a)
-        Rf *= np.tanh(a * np.exp(a) + 1)
+        # Rf *= np.tanh(a * np.exp(a) + 1)
+        Rf *= rational_func(a * np.exp(a) + 1)
 
         # solvent/column H-bond basicity interaction with compound H-bond donors
         solv_b = solvent_profiles["hb_basicity"].to_numpy()
         col_b = col_param.b
         b = solv_b * self.h_donors**2 / (10 * col_b)
-        Rf *= np.tanh(b * np.exp(b) + 1)
+        # Rf *= np.tanh(b * np.exp(b) + 1)
+        Rf *= rational_func(b * np.exp(b) + 1)
 
         # column interaction with size of compounds
-        Rf *= 2 + np.tanh(2 * col_param.s_star * self.mw ** (1 / 3))
+        # Rf *= 2 + np.tanh(2 * col_param.s_star * self.mw ** (1 / 3))
+        Rf *= 2 + rational_func(2 * col_param.s_star * self.mw ** (1 / 3))
 
         # solvent/column dielectric interaction with compound ratio of polar surface area
         solv_d = solvent_profiles["dielectric"].to_numpy()
         psa_v = self.tpsa**0.5 / self.mw ** (1 / 3)
         d = solv_d * psa_v / col_p
-        Rf *= np.tanh(d * np.exp(d) + 1)
+        # Rf *= np.tanh(d * np.exp(d) + 1)
+        Rf *= rational_func(d * np.exp(d) + 1)
 
         Rf += 1  # add minimal retention factor of 1
 
