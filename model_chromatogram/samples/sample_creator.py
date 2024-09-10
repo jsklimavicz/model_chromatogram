@@ -3,6 +3,7 @@ from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 
 import numpy as np
 from scipy.linalg import eig, inv
+from datetime import datetime, timedelta
 
 
 class SampleCreator:
@@ -78,6 +79,8 @@ class SampleCreator:
         time_points: np.array,
         compound_mapping: list[dict],
         compound_name_mapping: dict = None,
+        base_name: str = "test",
+        start_date: datetime | None = None,
     ) -> list[Sample]:
         # Get the compound names and initial concentrations
         compound_names = set()
@@ -108,13 +111,18 @@ class SampleCreator:
             compound_aliases = [compound_name_mapping[name] for name in compound_names]
         else:
             compound_aliases = None
-        for concentration_set in zip(concentrations_over_time, time_points):
+        for concentration_set, time in zip(concentrations_over_time, time_points):
+            if start_date is not None:
+                sample_time = start_date + timedelta(days=time)
+            else:
+                sample_time = datetime.now()
             sample = Sample(
-                name="test",
+                name=f"{base_name}_{time}",
                 compound_id_list=compound_names,
-                compound_concentration_list=concentration_set[0],
+                compound_concentration_list=concentration_set,
                 compound_alias=compound_aliases,
                 concentration_unit=4,
+                creation_date=sample_time,
             )
             sample_list.append(sample)
 

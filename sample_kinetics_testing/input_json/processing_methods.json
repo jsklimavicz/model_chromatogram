@@ -24,15 +24,15 @@
         "resolution_reference": "TS-8391",
         "peak_identification": [
             {
-                "min_time": 3.7,
-                "max_time": 3.9,
+                "min_time": 4.6,
+                "max_time": 5.1,
                 "method": "largest",
                 "name": "sec-butyric acid",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.079255282,
@@ -67,7 +67,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.032525247,
@@ -130,15 +130,15 @@
                 ]
             },
             {
-                "min_time": 6.7,
-                "max_time": 7.1,
+                "min_time": 8.4,
+                "max_time": 8.8,
                 "method": "largest",
                 "name": "dihydroxytetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.055700617,
@@ -193,7 +193,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.070151535,
@@ -272,15 +272,15 @@
                 ]
             },
             {
-                "min_time": 9.7,
-                "max_time": 10.1,
+                "min_time": 12.2,
+                "max_time": 12.6,
                 "method": "largest",
                 "name": "TS-0195A",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.029412379,
@@ -331,7 +331,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.144202999,
@@ -402,15 +402,15 @@
                 ]
             },
             {
-                "min_time": 8.3,
-                "max_time": 8.7,
+                "min_time": 9.9,
+                "max_time": 10.3,
                 "method": "largest",
                 "name": "TS-9931",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.090841057,
@@ -457,7 +457,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.050319228,
@@ -536,15 +536,15 @@
                 ]
             },
             {
-                "min_time": 7.9,
-                "max_time": 8.3,
+                "min_time": 9.3,
+                "max_time": 9.8,
                 "method": "largest",
                 "name": "5-hydroxytetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.072202159,
@@ -599,7 +599,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.03930234,
@@ -678,15 +678,15 @@
                 ]
             },
             {
-                "min_time": 9.1,
-                "max_time": 9.5,
+                "min_time": 10.6,
+                "max_time": 11,
                 "method": "largest",
                 "name": "tetracinib des-sec-butyrate",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.152064698,
@@ -741,7 +741,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.100728246,
@@ -820,15 +820,15 @@
                 ]
             },
             {
-                "min_time": 13.4,
-                "max_time": 13.8,
+                "min_time": 16.45,
+                "max_time": 16.92,
                 "method": "largest",
                 "name": "dehydrotetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.094118395,
@@ -883,7 +883,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.194384036,
@@ -962,15 +962,15 @@
                 ]
             },
             {
-                "min_time": 14.0,
-                "max_time": 14.4,
+                "min_time": 17.2,
+                "max_time": 17.75,
                 "method": "largest",
                 "name": "TS-8829",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.056150849,
@@ -1025,7 +1025,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.097933326,
@@ -1104,15 +1104,15 @@
                 ]
             },
             {
-                "min_time": 11.9,
-                "max_time": 12.3,
+                "min_time": 13.9,
+                "max_time": 14.4,
                 "method": "largest",
                 "name": "tetracinib",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.204873279,
@@ -1167,7 +1167,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.363611565,
@@ -1242,15 +1242,15 @@
                 ]
             },
             {
-                "min_time": 17.7,
-                "max_time": 18.1,
+                "min_time": 21.6,
+                "max_time": 22.2,
                 "method": "largest",
                 "name": "tetracinib acetate",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.039878433,
@@ -1301,7 +1301,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.069684785,
@@ -1380,15 +1380,15 @@
                 ]
             },
             {
-                "min_time": 16.25,
-                "max_time": 16.65,
+                "min_time": 18.25,
+                "max_time": 18.75,
                 "method": "largest",
                 "name": "TS-8830",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.06014633,
@@ -1435,7 +1435,7 @@
                     {
                         "channel": "UV_VIS_2",
                         "type": "linear",
-                        "amount_unit": "umol/mL",
+                        "amount_unit": "mg/mL",
                         "points": [
                             {
                                 "area": 0.03235687,

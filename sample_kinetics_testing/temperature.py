@@ -53,7 +53,7 @@ def daily_temp_variation(date):
     """Models daily temperature fluctuation of 5°C with added randomness"""
     start_of_day = datetime(date.year, date.month, date.day, 0, 0, 0)
     time_difference = date - start_of_day
-    day_fraction = (time_difference % SECONDS_PER_DAY) / SECONDS_PER_DAY
+    day_fraction = (time_difference.seconds % SECONDS_PER_DAY) / SECONDS_PER_DAY
     daily_temp = daily_fluctuation * np.sin(2 * np.pi * day_fraction)
 
     # Adding some higher harmonics (randomness)

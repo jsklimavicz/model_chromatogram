@@ -20,17 +20,17 @@ from model_chromatogram import (
 folder = "output11"
 
 cmpds = [
-    "79-11-8",  # 3.77         1
-    "304-21-2",  # 6.859       2
-    "94-59-7",  # 9.837        6
-    "93-76-5",  # 8.436        4
-    "773-76-2",  # 8.114       3
-    "491-78-1",  # 9.235       5
-    "58144-64-2",  # 13.514    8
-    "58144-68-6",  # 14.195    9
-    "90094-11-4",  # 11.989    7
-    "117-89-5",  # 17.853      11
-    "3075-84-1",  # 16.386     10
+    "79-11-8",  # 5.444         1
+    "304-21-2",  # 9.241      2
+    "94-59-7",  # 12.162       6
+    "93-76-5",  # 11.325        4
+    "773-76-2",  # 9.965       3
+    "491-78-1",  # 11,650      5
+    "58144-64-2",  # 16.120    8
+    "58144-68-6",  # 16.843    9
+    "90094-11-4",  # 15.121    7
+    "117-89-5",  # 21.111      11
+    "3075-84-1",  # 17.898     10
 ]
 conc = np.array([1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
 
@@ -62,7 +62,7 @@ sample = Sample(
     name=f"tetracinib_degradation_standard",
     compound_id_list=cmpds,
     compound_concentration_list=conc,
-    concentration_unit=1,
+    concentration_unit=4,
 )
 
 sequence = Sequence(
@@ -73,25 +73,18 @@ sequence = Sequence(
 )
 
 
-from cProfile import Profile
-from pstats import Stats
+curr_injection = Injection(
+    sample=sample,
+    method=validation_method,
+    processing_method=validation_processing,
+    sequence=sequence,
+    system=system,
+    user="James",
+    injection_time=datetime.datetime.now(),
+)
 
-with Profile() as profile:
-    for _ in range(100):
-        curr_injection = Injection(
-            sample=sample,
-            method=validation_method,
-            processing_method=validation_processing,
-            sequence=sequence,
-            system=system,
-            user="James",
-            injection_time=datetime.datetime.now(),
-        )
+peak_finder = curr_injection.find_peaks("UV_VIS_1")
 
-        peak_finder = curr_injection.find_peaks("UV_VIS_1")
-
-    with open("stats.prof", "w") as f:
-        Stats(profile, stream=f).strip_dirs().sort_stats("cumtime").print_stats()
 
 # df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
 # df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)

@@ -7,8 +7,8 @@ class Sample:
     def __init__(
         self,
         name: str,
-        compound_id_list: list[str] | None,
-        compound_concentration_list: list[float] | None,
+        compound_id_list: list[str] | None = None,
+        compound_concentration_list: list[float] | None = None,
         creation_date: datetime.datetime | None = None,
         compound_alias: list[str] | None = None,
         concentration_unit=4,
@@ -98,11 +98,11 @@ class Sample:
 
     def print_compound_list(self):
         print(
-            f'{"compound name": <20}{" "}{"CAS ":<12}\t{"RetV "}\t{"MW ":<8}\t{"Conc. "}\t{"mM"}'
+            f'{"compound name": <20}{" "}{"CAS ":<12}\t{"logp "}\t{"MW ":<8}\t{"Conc. "}\t{"mM"}'
         )
         for compound in self.compounds:
             print(
-                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.default_retention_CV,3):0.2f}\t{round(compound.mw,3):0.3f}  \t{round(compound.concentration,3):0.3f}\t{round(compound.m_molarity,3):0.3f}'
+                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.intrinsic_log_p,3):0.2f}\t{round(compound.mw,3):0.3f}  \t{round(compound.concentration,3):0.3f}\t{round(compound.m_molarity,3):0.3f}'
             )
 
     def __iter__(self):

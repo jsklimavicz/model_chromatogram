@@ -2,8 +2,8 @@
     {
         "name": "tetracinib_gradient",
         "run_time": 30,
-        "buffer_ph": 6.9,
-        "column_temperature": 318,
+        "buffer_ph": 7,
+        "column_temperature": 298,
         "mobile_phases": [
             {
                 "name": "water",
