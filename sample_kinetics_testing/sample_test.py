@@ -147,7 +147,7 @@ for day in time_points:
             if system.name == "Hayden":
                 temp = get_temp(time) + 273.15
             else:
-                temp = 298 + random.uniform(-2, 2)
+                temp = 298 + random.uniform(-1, 1)
             validation_method.temperature = temp
 
             curr_injection = Injection(
@@ -175,21 +175,12 @@ folder = "output_test"
 print("saving injections...")
 
 
-def process_injection(injection, folder):
+for i, injection in enumerate(injection_list):
+    if i % 20 == 0:
+        print(f"Saving injection {i}")
     inj_dict = injection.to_dict()
     path = f'./{folder}/{get(inj_dict, "runs.0.sequence.url")}'
     file_name = f'./{folder}/{get(inj_dict, "runs.0.injection_url")}'
     Path(path).mkdir(parents=True, exist_ok=True)
     with open(file_name, "w") as f:
         json.dump(inj_dict, f)
-
-
-# Assuming injection_list and folder are defined
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    futures = [
-        executor.submit(process_injection, injection, folder)
-        for injection in injection_list
-    ]
-
-# Optionally wait for all tasks to complete
-concurrent.futures.wait(futures)

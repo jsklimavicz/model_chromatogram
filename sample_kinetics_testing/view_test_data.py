@@ -57,7 +57,7 @@ df["injection_time"] = pd.to_datetime(df["injection_time"])
 system_names = df["system_name"].unique()
 
 # Set up the subplots in a 4x2 grid
-fig, axes = plt.subplots(1, 2, figsize=(16, 10), sharex=True)
+fig, axes = plt.subplots(1, 2, figsize=(16, 10), sharex=True, sharey=True)
 axes = axes.flatten()
 
 # Determine the global y-axis limits
