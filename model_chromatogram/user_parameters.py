@@ -42,7 +42,7 @@ INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE = (
 
 ## Background Noise Parameters
 BACKGROUND_MEAN = 0  #
-BASELINE_NOISE = 0.15 * math.sqrt(SAMPLE_RATE)  # Standard deviation of background noise
+BASELINE_NOISE = 0.2 * math.sqrt(SAMPLE_RATE)  # Standard deviation of background noise
 BASELINE_AUTOCORRELATION_PARAMETER = math.sqrt(1 / SAMPLE_RATE)
 BASELINE_MULTIPLIER = 2  # multiplier for amplitude of background
 

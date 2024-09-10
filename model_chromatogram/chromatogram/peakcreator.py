@@ -1,7 +1,7 @@
 from numpy.random import uniform
 import math
 
-from model_chromatogram.utils import exponnorm, exponnorm_scaler
+from model_chromatogram.utils import exponnorm, exponnorm_scaler, scaled_exponnorm
 from scipy.optimize import minimize_scalar
 from model_chromatogram.compounds import Compound
 import numpy as np
@@ -32,35 +32,6 @@ class PeakCreator:
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE
         )
 
-    def __find_exponnorm_mode(
-        self, sigma: float, asymmetry: float, return_fun: bool = False
-    ) -> None:
-        """
-        Finds the mode/peak of an exponentially-modified gaussian.
-
-        Args:
-            sigma (float): the standard deviation of the base gaussian curve
-            asymmetry (float): the factor provided to exponnorm to make asymmetric peaks.
-            return_fun (bool): If `True`, returns both the x-value and function value of the mode; otherwise, returns only the x-value.
-
-        Returns:
-            x (float): The x-value of the distribution maximum
-
-            fun (float): Optional when `return_fun == True`, the distribution value at `x`.
-        """
-
-        # Define a function that returns the negative PDF (to maximize)
-        def neg_pdf(x):
-            # return -exponnorm.pdf(x, scale=sigma, K=asymmetry)
-            return -exponnorm_scaler(x, scale=sigma, K=asymmetry)
-
-        # Use optimization to find the mode
-        result = minimize_scalar(neg_pdf, tol=1e-4)
-        if return_fun:
-            return result.x, -result.fun
-        else:
-            return result.x
-
     def compound_peak(self, compound: Compound, times: np.array) -> np.array:
         """
         Creates the signal for a compound peak.
@@ -84,13 +55,6 @@ class PeakCreator:
             compound=compound,
         )
 
-        # return signal array
-        # raw_signal = exponnorm.pdf(
-        #     times,
-        #     K=peak_dict["asymmetry"],
-        #     loc=peak_dict["time"],
-        #     scale=peak_dict["width"],
-        # )
         raw_signal = exponnorm(
             times,
             K=peak_dict["asymmetry"],
@@ -121,12 +85,14 @@ class PeakCreator:
         def height_change_for_broadening(
             base_sigma, curr_sigma, base_asymmetry, curr_asymmetry
         ):
-            mode, curr_fun = self.__find_exponnorm_mode(
-                curr_sigma, curr_asymmetry, return_fun=True
-            )
-            _, base_fun = self.__find_exponnorm_mode(
-                base_sigma, base_asymmetry, return_fun=True
-            )
+
+            curr_times = np.arange(0, max(base_sigma, curr_sigma), 0.0001)
+            curr_signal = exponnorm(curr_times, curr_asymmetry, scale=curr_sigma)
+            base_signal = exponnorm(curr_times, base_asymmetry, scale=base_sigma)
+            curr_fun = np.max(curr_signal)
+            base_fun = np.max(base_signal)
+            mode = curr_times[np.argmax(curr_signal)]
+
             return curr_fun / base_fun, mode
 
         base_sigma = base_width / (2 * math.sqrt(2 * math.log(2)))
