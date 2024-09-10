@@ -6,7 +6,7 @@ cimport cython
 # Define the exponnorm function in Cython for scalar inputs
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def exponnorm_scaler(double x, double K, double loc=0, double scale=1):
+def exponnorm_scalar(double x, double K, double loc=0, double scale=1):
     cdef double y = (x - loc) / scale
     cdef double vals = 1 / (2 * K**2) - y / K
     vals += log(erfc(((1 / K) - y) / sqrt(2)))
@@ -15,8 +15,8 @@ def exponnorm_scaler(double x, double K, double loc=0, double scale=1):
 # Define the scaled_exponnorm function in Cython for scalar inputs
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def scaled_exponnorm_scaler(double x, double h, double K, double loc=0, double scale=1):
-    return h * exponnorm_scaler(x, K=K, loc=loc, scale=scale)
+def scaled_exponnorm_scalar(double x, double h, double K, double loc=0, double scale=1):
+    return h * exponnorm_scalar(x, K=K, loc=loc, scale=scale)
 
 # Expose the functions to Python using memoryviews
 @cython.boundscheck(False)

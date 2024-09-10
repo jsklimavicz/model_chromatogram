@@ -1,6 +1,9 @@
 import numpy as np
-from scipy.interpolate import CubicSpline
-from model_chromatogram.utils import exponnorm, scaled_exponnorm
+from model_chromatogram.utils import (
+    exponnorm,
+    scaled_exponnorm,
+    scaled_exponnorm_scalar,
+)
 from scipy.stats import norm
 from scipy.optimize import curve_fit, brentq
 
@@ -202,10 +205,10 @@ class Peak:
         self.height = np.max(self.baselined_peak_signal)
         self.relative_height = None
         self.retention_index = np.argmax(self.baselined_peak_signal) + self.start_index
-        time_window = self.times[self.retention_index - 10 : self.retention_index + 10]
-        signal_window = self.raw_signal[
-            self.retention_index - 10 : self.retention_index + 10
-        ]
+        st = max(0, self.retention_index - 10)
+        end = min(self.retention_index + 10, len(self.times))
+        time_window = self.times[st:end]
+        signal_window = self.raw_signal[st:end]
 
         def quadratic(x, a, b, c):
             return a * x**2 + b * x + c
@@ -249,7 +252,7 @@ class Peak:
         val = height * self.height / 100
 
         def y_shifted_emg(t):
-            return scaled_exponnorm(t, *self.curve_params) - val
+            return scaled_exponnorm_scalar(t, *self.curve_params) - val
 
         std = np.sqrt(self.moment_2)
         slack = 10 * std
@@ -287,10 +290,6 @@ class Peak:
         fw = right_time - left_time
         return lw, rw, fw
 
-    def _exponnorm_curve(self, t):
-        h, K, loc, scale = self.curve_params
-        return h * exponnorm(t, K=K, loc=loc, scale=scale)
-
     def __fit_EMG_curve(self, t_array, signal_array):
 
         guess = self.standard_deviation
@@ -299,10 +298,6 @@ class Peak:
             t_array,
             signal_array,
             p0=(self.height / 10, 1, self.retention_time - 0.02, 0.75 * guess),
-            # bounds=(
-            #     [0, 0, self.retention_time - 20 * guess, guess / 3],
-            #     [np.inf, 5, self.retention_time + 20 * guess, 5 * guess],
-            # ),
         )
 
     @_calculate_widths_exception
@@ -310,26 +305,22 @@ class Peak:
 
         self.__fit_EMG_curve(self.peak_times, self.baselined_peak_signal)
         t_list = np.linspace(self.start_time - self.dt, self.end_time + self.dt, 202)
-        # t_vals = self._exponnorm_curve(t_list)
         t_vals = scaled_exponnorm(t_list, *self.curve_params)
         vals_d2 = np.diff(np.diff(t_vals))
-        d2_spline = CubicSpline(
-            t_list[1:-1],
-            vals_d2,
-        )
-        r = d2_spline.roots(extrapolate=False)
-        self.left_poi = r[0]
-        self.right_poi = r[1]
+
+        sub_zero = np.where(vals_d2 < 0)[0]
+        first_cross = sub_zero[0]
+        last_cross = sub_zero[-1]
 
         times = np.array(
             [
-                self.left_poi - self.dt / 2,
-                self.left_poi + self.dt / 2,
-                self.right_poi - self.dt / 2,
-                self.right_poi + self.dt / 2,
+                t_list[first_cross],
+                t_list[first_cross + 1],
+                t_list[last_cross],
+                t_list[last_cross + 1],
             ]
         )
-        # vals = self._exponnorm_curve(times)
+
         vals = scaled_exponnorm(times, *self.curve_params)
 
         def find_x_intercept(x0, y0, x1, y1):

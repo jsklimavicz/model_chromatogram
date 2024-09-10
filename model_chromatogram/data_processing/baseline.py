@@ -42,7 +42,7 @@ def als_psalsa(
     size = len(time)
 
     # set initial z values
-    z = np.mean(signal) * np.ones_like(signal)
+    z = (signal[-1] * signal[0]) * np.ones_like(signal)
     residuals = signal - z
 
     def get_weights(residuals):

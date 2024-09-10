@@ -1,6 +1,3 @@
-from scipy.interpolate import CubicSpline
-from scipy.integrate import quad
-from scipy.optimize import fsolve
 import numpy as np
 from pydash import get as _get
 import pandas as pd
@@ -206,8 +203,11 @@ class Compound:
         Rf += 1  # add minimal retention factor of 1
 
         # add symmetric deviation depending on stationary phase retention of ions
-        self.asymmetry_addition = self.average_charge * np.interp(
-            solvent_ph, (2.8, 7), (col_param.c7, col_param.c28)
+        c7 = col_param.c7
+        c28 = col_param.c28
+
+        self.asymmetry_addition = self.average_charge * (
+            c28 + (c7 - c28) / (7 - 2.8) * (solvent_ph - 2.8)
         )
 
         return Rf
@@ -253,7 +253,17 @@ class Compound:
         flow = solvent_profiles["flow"].to_numpy() / column.volume
 
         move_ratio = np.cumsum(flow / Rf) * (time[1] - time[0]) - 1
-        retention_time = np.interp(0, move_ratio, time)
+
+        try:
+            last_neg_ind = len(move_ratio[move_ratio < 0])
+            switch_vals = move_ratio[last_neg_ind : last_neg_ind + 2]
+            switch_times = time[last_neg_ind : last_neg_ind + 2]
+
+            retention_time = switch_times[0] + (-switch_vals[0]) * (
+                switch_times[1] - switch_times[0]
+            ) / (switch_vals[1] - switch_vals[0])
+        except IndexError as e:
+            retention_time = time[-1] + 5
 
         self.retention_time = retention_time
         return retention_time
