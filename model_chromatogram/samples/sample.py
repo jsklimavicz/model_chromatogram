@@ -1,6 +1,7 @@
 from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 from random import uniform
 import datetime
+from copy import copy
 
 
 class Sample:
@@ -16,6 +17,7 @@ class Sample:
         random_named_concentration_range: list[float] = [0, 1],
         n_unknown_peaks: int = 0,
         unknown_concentration_range: list[float] = [0, 1],
+        location=None,
     ) -> None:
         """
         Creates a sample with a list of compounds.
@@ -82,6 +84,7 @@ class Sample:
 
         self.compounds = [*self.compounds, *random_peaks, *unknown_peaks]
         self.compounds.sort(key=lambda x: x.intrinsic_log_p)
+        self.location = location
 
     def output_sample_dict(self):
         self_dict = {
@@ -107,3 +110,21 @@ class Sample:
 
     def __iter__(self):
         return iter(self.compounds)
+
+    def __copy__(self):
+        new_cmpd = Sample(name=self.name)
+        for compound in self:
+            new_cmpd.compounds.append(compound)
+        new_cmpd.name = self.name
+        new_cmpd.creation_date = self.creation_date
+        new_cmpd.location = self.location
+        return new_cmpd
+
+    def __deepcopy__(self):
+        new_cmpd = Sample(name=self.name)
+        for compound in self:
+            new_cmpd.compounds.append(copy(compound))
+        new_cmpd.name = self.name
+        new_cmpd.creation_date = self.creation_date
+        new_cmpd.location = self.location
+        return new_cmpd
