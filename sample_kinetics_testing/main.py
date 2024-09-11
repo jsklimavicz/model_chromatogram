@@ -1,100 +1,36 @@
-import json
-from pathlib import Path
-import numpy as np
-import pandas as pd
-import random
-import datetime
-import holidays
-import concurrent.futures
-from pydash import get as get_
-
 from model_chromatogram import (
+    Sample,
+    SampleCreator,
+    Injection,
     InstrumentMethod,
     ProcessingMethod,
-    Sample,
-    Injection,
     Sequence,
     System,
 )
+import numpy as np
+import json, random
+from pydash import get
+from datetime import datetime, timedelta
+from sample_kinetics_testing.temperature import simulate_room_temperature as get_temp
 
-folder = "output11"
-
-cmpds = [
-    "79-11-8",  # 5.444         1
-    "304-21-2",  # 9.241      2
-    "94-59-7",  # 12.162       6
-    "93-76-5",  # 11.325        4
-    "773-76-2",  # 9.965       3
-    "491-78-1",  # 11,650      5
-    "58144-64-2",  # 16.120    8
-    "58144-68-6",  # 16.843    9
-    "90094-11-4",  # 15.121    7
-    "117-89-5",  # 21.111      11
-    "3075-84-1",  # 17.898     10
-]
-conc = np.array([1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
-
-
-with open("./sample_kinetics_testing/input_json/instrument_methods.json") as f:
-    method_list = json.load(f)
-
-with open("./sample_kinetics_testing/input_json/processing_methods.json") as f:
-    processing_method_list = json.load(f)
-
-
-with open("./sample_kinetics_testing/input_json/systems.json") as f:
-    systems_json = json.load(f)
-system = System(**systems_json[0])
-
-validation_method = None
-for method in method_list:
-    if get_(method, "name") == "tetracinib_gradient":
-        validation_method = InstrumentMethod(**method)
-        break
-
-validation_processing = None
-for method in processing_method_list:
-    if get_(method, "name") == "tetracinib_stability_quant":
-        validation_processing = ProcessingMethod(**method)
-        break
-
-sample = Sample(
-    name=f"tetracinib_degradation_standard",
-    compound_id_list=cmpds,
-    compound_concentration_list=conc,
-    concentration_unit=4,
-)
-
-sequence = Sequence(
-    "tetracinib_stability",
-    f"{system.name.upper()}",
-    start_time=datetime.datetime.now(),
-    url="",
-)
-
-
-curr_injection = Injection(
-    sample=sample,
-    method=validation_method,
-    processing_method=validation_processing,
-    sequence=sequence,
-    system=system,
-    user="James",
-    injection_time=datetime.datetime.now(),
-)
-
-peak_finder = curr_injection.find_peaks("UV_VIS_1")
-
-
-# df: pd.DataFrame = curr_injection.get_chromatogram_data("UV_VIS_2", pandas=True)
-# df.to_csv("./sample_kinetics_testing/chromatogram.csv", index=False)
-peak_finder.save_peaks("./sample_kinetics_testing/peaks3.csv")
-# # peak_finder.plot_peaks(second_derivative=True, first_derivative=True, smoothed=True)
-
+import concurrent.futures
+from pathlib import Path
 import matplotlib.pyplot as plt
 
-peak_finder.plot_peaks(show_spline=True, highlight_peaks=True)
-plt.show()
+sample_creator = SampleCreator()
+
+with open("./sample_kinetics_testing/kinetics_scitetracine.json", "r") as f:
+    kinetics = json.load(f)
 
 
-# plt.savefig("./image.png", transparent=True)
+conditions = get(kinetics, "conditions")
+compound_name_mapping = get(kinetics, "compound_name_mapping")
+sample_name_base = get(kinetics, "sample_base")
+
+for condition in conditions:
+    title = f"{sample_name_base}_{get(condition, 'conditions')}"
+    compound_mapping = get(condition, "compound_mapping")
+    sample_creator.plot_kinetics(
+        compound_mapping, start_day=0, end_day=365, title=title
+    )
+    plt.show()

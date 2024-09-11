@@ -15,6 +15,7 @@ from sample_kinetics_testing.temperature import simulate_room_temperature as get
 
 import concurrent.futures
 from pathlib import Path
+from copy import copy, deepcopy
 
 sample_creator = SampleCreator()
 
@@ -26,10 +27,10 @@ conditions = get(kinetics, "conditions")
 compound_name_mapping = get(kinetics, "compound_name_mapping")
 sample_name_base = get(kinetics, "sample_base")
 
-full_sample_list = []
+full_sample_list: list[Sample] = []
 initial_date = datetime(2022, 2, 14, 8, 30, 0)
 
-time_points = [0, 2, 5, *np.arange(7, 365, 7).tolist()]
+time_points = [0, 4, *np.arange(7, 365, 7).tolist()]
 
 for condition in conditions:
     sample_name = f"{sample_name_base}_{get(condition, 'conditions')}_day"
@@ -75,16 +76,16 @@ temps_sequence = Sequence(
 sequences = [stable_sequence, temps_sequence]
 users = ["Niels Bohr", "James Maxwell"]
 
-validation_method = None
+tetrascinib_method = None
 for method in method_list:
     if get(method, "name") == "tetracinib_gradient":
-        validation_method = InstrumentMethod(**method)
+        tetrascinib_method = InstrumentMethod(**method)
         break
 
-validation_processing = None
+tetrascinib_processing = None
 for method in processing_method_list:
     if get(method, "name") == "tetracinib_stability_quant":
-        validation_processing = ProcessingMethod(**method)
+        tetrascinib_processing = ProcessingMethod(**method)
         break
 
 
@@ -117,7 +118,6 @@ standard_low = Sample(
 )
 
 blank_sample = Sample("blank")
-blank2_sample = Sample("blank2")
 
 injection_list = []
 
@@ -137,10 +137,21 @@ for day in time_points:
     # run blank injection
 
     # day's injections
-    curr_samples = [blank_sample, standard_low, standard, blank2_sample]
+    curr_samples = [blank_sample, standard_low, standard, blank_sample]
     for sample in full_sample_list:
         if start_range <= datetime.fromisoformat(sample.creation_date) < end_range:
+            rep2 = copy(sample)
+            large_inject_rep1 = copy(sample)
+            large_inject_rep2 = copy(sample)
+            sample.name += "_rep1"
+            rep2.name += "_rep2"
+            large_inject_rep1.name += "high_vol_rep1"
+            large_inject_rep2.name += "high_vol_rep2"
             curr_samples.append(sample)
+            curr_samples.append(rep2)
+            curr_samples.append(large_inject_rep1)
+            curr_samples.append(large_inject_rep2)
+            curr_samples.append(blank_sample)
 
     for sample in curr_samples:
         for system, sequence, user, time in zip(systems, sequences, users, times):
@@ -148,12 +159,20 @@ for day in time_points:
                 temp = get_temp(time) + 273.15
             else:
                 temp = 298 + random.uniform(-1, 1)
-            validation_method.temperature = temp
+            tetrascinib_method.temperature = temp
+
+            if "high_vol" in sample.name:
+                inject_vol = 10
+            else:
+                inject_vol = 1
+            tetrascinib_processing["sample_introduction"][
+                "injection_volume"
+            ] = inject_vol
 
             curr_injection = Injection(
                 sample=sample,
-                method=validation_method,
-                processing_method=validation_processing,
+                method=tetrascinib_method,
+                processing_method=tetrascinib_processing,
                 sequence=sequence,
                 system=system,
                 user=user,
@@ -166,7 +185,7 @@ for day in time_points:
         for time in times:
             new_times.append(
                 time
-                + timedelta(minutes=validation_method.run_time)
+                + timedelta(minutes=tetrascinib_method.run_time)
                 + timedelta(seconds=random.randint(5, 30))
             )
         times = new_times
