@@ -4,6 +4,7 @@ from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 import numpy as np
 from scipy.linalg import eig, inv
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
 
 class SampleCreator:
@@ -74,15 +75,9 @@ class SampleCreator:
 
         return np.real(np.array(C_t))
 
-    def product_stability_samples(
-        self,
-        time_points: np.array,
-        compound_mapping: list[dict],
-        compound_name_mapping: dict = None,
-        base_name: str = "test",
-        start_date: datetime | None = None,
-    ) -> list[Sample]:
-        # Get the compound names and initial concentrations
+    def _initial_kinetics_setup(
+        self, time_points: np.array, compound_mapping: list[dict]
+    ):
         compound_names = set()
         for reaction in compound_mapping:
             compound_names.add(reaction["initial_compound"])
@@ -105,6 +100,39 @@ class SampleCreator:
         # Solve the system using linear algebra
         concentrations_over_time = self._solve_reaction_ODE(
             time_points, A, initial_concentrations
+        )
+
+        return compound_names, concentrations_over_time
+
+    def plot_kinetics(
+        self, compound_mapping, start_day, end_day, n_points=1001, title=None, **kwargs
+    ):
+        times = np.linspace(start_day, end_day, n_points)
+        compound_names, concentrations_over_time = self._initial_kinetics_setup(
+            time_points=times, compound_mapping=compound_mapping
+        )
+        plt.figure(figsize=(10, 8))
+        for name, conc_list in zip(compound_names, concentrations_over_time.T):
+            plt.plot(times, conc_list, label=name)
+
+        plt.xlabel("Time")
+        plt.ylabel("Concentration")
+        if title is not None:
+            plt.title(f"{title}")
+        plt.legend()
+        plt.grid(True)
+
+    def product_stability_samples(
+        self,
+        time_points: np.array,
+        compound_mapping: list[dict],
+        compound_name_mapping: dict = None,
+        base_name: str = "test",
+        start_date: datetime | None = None,
+    ) -> list[Sample]:
+        # Get the compound names and initial concentrations
+        compound_names, concentrations_over_time = self._initial_kinetics_setup(
+            time_points=time_points, compound_mapping=compound_mapping
         )
         sample_list: list[Sample] = []
         if compound_name_mapping:
