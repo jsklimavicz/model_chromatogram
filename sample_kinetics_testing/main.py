@@ -31,6 +31,10 @@ for condition in conditions:
     title = f"{sample_name_base}_{get(condition, 'conditions')}"
     compound_mapping = get(condition, "compound_mapping")
     sample_creator.plot_kinetics(
-        compound_mapping, start_day=0, end_day=365, title=title
+        compound_mapping,
+        start_day=0,
+        end_day=365,
+        title=title,
+        compound_name_mapping=compound_name_mapping,
     )
     plt.show()

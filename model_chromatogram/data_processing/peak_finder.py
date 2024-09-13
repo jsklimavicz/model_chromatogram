@@ -387,6 +387,7 @@ class PeakFinder:
             max_time = identification["max_time"]
             name = identification["name"]
             calibration_sets = identification.get("calibration", None)
+            method = identification["method"].lower()
 
             # Find the largest peak within the specified time range
             filtered_peaks: list[Peak] = [
@@ -396,8 +397,16 @@ class PeakFinder:
             ]
 
             if filtered_peaks:
-                largest_peak = max(filtered_peaks, key=lambda p: p.area)
-                largest_peak.name = name
+                if method == "largest":
+                    named_peak = max(filtered_peaks, key=lambda p: p.area)
+                elif method in ["first", "earliest"]:
+                    named_peak = min(filtered_peaks, key=lambda p: p.retention_time)
+                elif method in ["last", "latest"]:
+                    named_peak = max(filtered_peaks, key=lambda p: p.retention_time)
+                else:
+                    break
+
+                named_peak.name = name
 
                 # If calibration data is present, calculate the amount
                 if calibration_sets:
@@ -406,14 +415,19 @@ class PeakFinder:
                             calibration["channel"] == self.channel_name
                             and calibration["type"] == "linear"
                         ):
-                            areas = [point["area"] for point in calibration["points"]]
-                            amounts = [
-                                point["amount"] for point in calibration["points"]
-                            ]
+                            try:
+                                areas = [
+                                    point["area"] for point in calibration["points"]
+                                ]
+                                amounts = [
+                                    point["amount"] for point in calibration["points"]
+                                ]
 
-                            # Perform linear regression to find the relationship
-                            slope, intercept, _, _, _ = linregress(areas, amounts)
+                                # Perform linear regression to find the relationship
+                                slope, intercept, _, _, _ = linregress(areas, amounts)
 
-                            # Calculate the amount based on the peak area
-                            largest_peak.amount = slope * largest_peak.area + intercept
-                            largest_peak.amount_unit = calibration["amount_unit"]
+                                # Calculate the amount based on the peak area
+                                named_peak.amount = slope * named_peak.area + intercept
+                                named_peak.amount_unit = calibration["amount_unit"]
+                            except:
+                                continue

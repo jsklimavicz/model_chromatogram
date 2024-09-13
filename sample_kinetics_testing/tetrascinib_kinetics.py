@@ -13,7 +13,7 @@ from pydash import get
 from datetime import datetime, timedelta
 from sample_kinetics_testing.temperature import simulate_room_temperature as get_temp
 
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from copy import copy, deepcopy
 
@@ -145,8 +145,8 @@ for day in time_points:
             large_inject_rep2 = copy(sample)
             sample.name += "_rep1"
             rep2.name += "_rep2"
-            large_inject_rep1.name += "high_vol_rep1"
-            large_inject_rep2.name += "high_vol_rep2"
+            large_inject_rep1.name += "_high_vol_rep1"
+            large_inject_rep2.name += "_high_vol_rep2"
             curr_samples.append(sample)
             curr_samples.append(rep2)
             curr_samples.append(large_inject_rep1)
@@ -165,9 +165,7 @@ for day in time_points:
                 inject_vol = 10
             else:
                 inject_vol = 1
-            tetrascinib_processing["sample_introduction"][
-                "injection_volume"
-            ] = inject_vol
+            tetrascinib_method.set_injection_volume(inject_vol)
 
             curr_injection = Injection(
                 sample=sample,
@@ -190,13 +188,20 @@ for day in time_points:
             )
         times = new_times
 
+        for system in systems:
+            if system.column.failed:
+                print(f"Replacing column on {system.name}")
+                column_var = system.column.inherent_rt_diff
+                system.replace_column()
+                system.column.inherent_rt_diff = column_var
+
 folder = "output_test"
 print("saving injections...")
 
 
-for i, injection in enumerate(injection_list):
-    if i % 20 == 0:
-        print(f"Saving injection {i}")
+for ind, injection in enumerate(injection_list):
+    if ind % 100 == 0:
+        print(f"Saving file {ind} out of {len(injection_list)}")
     inj_dict = injection.to_dict()
     path = f'./{folder}/{get(inj_dict, "runs.0.sequence.url")}'
     file_name = f'./{folder}/{get(inj_dict, "runs.0.injection_url")}'

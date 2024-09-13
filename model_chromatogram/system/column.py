@@ -106,7 +106,7 @@ class Column:
         self.volume = self.nominal_volume * 0.65  # porosity adjustment
 
     def inject(self, count=1):
-        for i in range(count):
+        for _ in range(count):
             self.injection_count += 1
             self.__check_for_failure()
         if self.failed:

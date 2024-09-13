@@ -2,7 +2,7 @@
     "sample_base": "scitetrazine_stability",
     "compound_name_mapping": {
         "773-76-2": "scitetrazine",
-        "7245-05-2": "TS-575",
+        "61530-11-8": "TS-575",
         "67766-78-3": "scitetrazine hydrate",
         "1617-90-9": "scitetrazine condensation pdt",
         "137-58-6": "scitetrazine free acid",
@@ -434,7 +434,7 @@
                     "compounds": [
                         "67766-78-3",
                         "42079-78-7",
-                        "7245-05-2",
+                        "61530-11-8",
                         "137-58-6"
                     ],
                     "k": [
@@ -465,7 +465,7 @@
                     "compounds": [
                         "67766-78-3",
                         "42079-78-7",
-                        "7245-05-2",
+                        "61530-11-8",
                         "137-58-6"
                     ],
                     "k": [

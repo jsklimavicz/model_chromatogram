@@ -2,8 +2,8 @@ import os, json
 import pandas as pd
 from pydash import get
 
-data = []
-root_dir = "./output_test"
+# data = []
+# root_dir = "./ph_test"
 
 
 # def extract_data_from_json(data):
@@ -41,14 +41,14 @@ root_dir = "./output_test"
 #             all_data = [*all_data, *extracted_data]
 
 # df = pd.DataFrame.from_dict(all_data)
-# df.to_csv("./temp_testing.csv", index=False)
+# df.to_csv("./ph_testing.csv", index=False)
 
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the DataFrame
-df = pd.read_csv("temp_testing.csv")
+df = pd.read_csv("ph_testing.csv")
 
 # Convert 'injection_time' to datetime
 df["injection_time"] = pd.to_datetime(df["injection_time"])
@@ -61,8 +61,8 @@ fig, axes = plt.subplots(1, 2, figsize=(16, 10), sharex=True, sharey=True)
 axes = axes.flatten()
 
 # Determine the global y-axis limits
-y_min = df["retention_time"].min()
-y_max = df["retention_time"].max()
+y_min = df["resolution_usp_next_main"].min()
+y_max = df["resolution_usp_next_main"].max()
 
 # Iterate over system names and create a subplot for each
 for i, system_name in enumerate(system_names):
@@ -70,7 +70,7 @@ for i, system_name in enumerate(system_names):
     sns.scatterplot(
         data=df[df["system_name"] == system_name],
         x="injection_time",
-        y="retention_time",
+        y="resolution_usp_next_main",
         hue="name",
         ax=ax,
     )
@@ -108,7 +108,9 @@ columns_to_plot = [
 ]
 
 # Filter the data for system "Cori"
-df_cori = df[df["system_name"] == "Hayden"]
+df_cori = df[
+    (df["name"] == "TS-576B") & (df["injection_name"] == "scitetrazine_standard")
+]
 
 # Set up the subplots in a 4x3 grid
 fig, axes = plt.subplots(4, 3, figsize=(16, 10), sharex=True)
@@ -130,17 +132,8 @@ for i, column in enumerate(columns_to_plot):
     ax.set_ylabel(column.replace("_", " ").title())
     ax.tick_params(axis="x", rotation=45)
 
-# Place the legend outside the subplots, only once
-handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(
-    handles,
-    labels,
-    title="Column Serial Number",
-    loc="lower left",
-    bbox_to_anchor=(0, 0),
-)
 
 # Adjust layout and save the figure
 plt.tight_layout()
-plt.savefig("Hayden_System_Subplots_Single_Legend.png")
+plt.savefig("Lonsdale-2_Subplots_Single_Legend.png")
 plt.show()

@@ -105,7 +105,14 @@ class SampleCreator:
         return compound_names, concentrations_over_time
 
     def plot_kinetics(
-        self, compound_mapping, start_day, end_day, n_points=1001, title=None, **kwargs
+        self,
+        compound_mapping,
+        start_day,
+        end_day,
+        n_points=1001,
+        title=None,
+        compound_name_mapping=None,
+        **kwargs,
     ):
         times = np.linspace(start_day, end_day, n_points)
         compound_names, concentrations_over_time = self._initial_kinetics_setup(
@@ -113,7 +120,11 @@ class SampleCreator:
         )
         plt.figure(figsize=(10, 8))
         for name, conc_list in zip(compound_names, concentrations_over_time.T):
-            plt.plot(times, conc_list, label=name)
+            if compound_name_mapping is not None:
+                label = compound_name_mapping[name]
+            else:
+                label = name
+            plt.plot(times, conc_list, label=label)
 
         plt.xlabel("Time")
         plt.ylabel("Concentration")

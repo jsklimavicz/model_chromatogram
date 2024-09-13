@@ -240,11 +240,15 @@ class InstrumentMethod:
             print(f"Column not found. Available columnes are {columns}")
             raise
 
+    def set_injection_volume(self, new_volume):
+        self.injection_volume = new_volume
+        self.sample_introduction["injection_volume"] = new_volume
+
     def todict(self):
         """Converts the instrument method to a json-serializable dict
 
         Returns:
-            out (dict): json-serializable dictionary of the the insrument method.
+            out (dict): json-serializable dictionary of the the instrument method.
         """
         method_dict = {
             "name": self.name,

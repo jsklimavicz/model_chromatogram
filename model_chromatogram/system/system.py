@@ -20,7 +20,9 @@ class System:
         if column is None:
             column_dict = self.column.todict()
             column_dict["serial_number"] = serial_number
-            self.column = Column(**column_dict)
+            new_column = Column(**column_dict)
+            new_column.parameters = self.column.parameters
+            self.column = new_column
             self.column.injection_count = 0
         else:
             self.column = column

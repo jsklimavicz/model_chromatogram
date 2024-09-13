@@ -32,6 +32,8 @@ class PeakCreator:
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE
         )
 
+        self.base_width = DEFAULT_PEAK_WIDTH * self.column.length / 150
+
     def compound_peak(self, compound: Compound, times: np.array) -> np.array:
         """
         Creates the signal for a compound peak.
@@ -51,7 +53,6 @@ class PeakCreator:
         peak_dict = self.peak(
             retention_time=compound.retention_time,
             base_asymmetry=peak_asymmetry,
-            base_width=DEFAULT_PEAK_WIDTH,
             compound=compound,
         )
 
@@ -72,7 +73,6 @@ class PeakCreator:
         compound: Compound,
         height: float = 1,
         name: str = None,
-        base_width: float = DEFAULT_PEAK_WIDTH,
         base_asymmetry: float = DEFAULT_BASE_ASYMMETRY,
     ) -> dict:
         """
@@ -95,7 +95,7 @@ class PeakCreator:
 
             return curr_fun / base_fun, mode
 
-        base_sigma = base_width / (2 * math.sqrt(2 * math.log(2)))
+        base_sigma = self.base_width / (2 * math.sqrt(2 * math.log(2)))
         curr_sigma = (
             base_sigma * math.pow(WIDENING_CONSTANT, retention_time)
             + self.column_broadening
