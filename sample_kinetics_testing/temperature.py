@@ -11,11 +11,6 @@ SECONDS_PER_YEAR = 365 * SECONDS_PER_DAY
 average_winter_temp = 16  # °C
 average_summer_temp = 21  # °C
 daily_fluctuation = 2  # °C
-high_temp_limit = 25  # °C (AC kicks in)
-low_temp_limit = 17  # °C (heating kicks in)
-target_temp = 21  # °C (target temp for heating/cooling)
-cooling_time = 1200  # 1 hour in seconds
-heating_time = 1200  # 1 hour in seconds
 
 
 # Exponential decay constant (rate of heating/cooling)
@@ -67,12 +62,6 @@ def daily_temp_variation(date):
     harmonics += 0.7 * np.sin(np.pi * day_fraction + np.random.randn() * 0.1)
 
     return daily_temp + harmonics * daily_fluctuation
-
-
-def adjust_for_heating_cooling(current_temp, target_temp, active_time, tau):
-    """Adjust temperature towards target with exponential decay"""
-    time_fraction = exp_decay(active_time, tau)
-    return target_temp + (current_temp - target_temp) * time_fraction
 
 
 def simulate_room_temperature(date: datetime):

@@ -2,8 +2,9 @@ import os, json
 import pandas as pd
 from pydash import get
 
-# data = []
-# root_dir = "./ph_test"
+data = []
+root_dir = "./output/temperature"
+csv_file = "temperature_testing.csv"
 
 
 # def extract_data_from_json(data):
@@ -41,28 +42,35 @@ from pydash import get
 #             all_data = [*all_data, *extracted_data]
 
 # df = pd.DataFrame.from_dict(all_data)
-# df.to_csv("./ph_testing.csv", index=False)
+# df.to_csv(csv_file, index=False)
 
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the DataFrame
-df = pd.read_csv("ph_testing.csv")
+df = pd.read_csv(csv_file)
 
 # Convert 'injection_time' to datetime
 df["injection_time"] = pd.to_datetime(df["injection_time"])
+
+df["system_name"] = df["system_name"].replace("Singer", "Lonsdale")
 
 # Get the list of unique system names
 system_names = df["system_name"].unique()
 
 # Set up the subplots in a 4x2 grid
-fig, axes = plt.subplots(1, 2, figsize=(16, 10), sharex=True, sharey=True)
+fig, axes = plt.subplots(
+    1, len(system_names), figsize=(16, 10), sharex=True, sharey=True
+)
 axes = axes.flatten()
 
+# metric = "resolution_usp_next_main"
+metric = "retention_time"
+
 # Determine the global y-axis limits
-y_min = df["resolution_usp_next_main"].min()
-y_max = df["resolution_usp_next_main"].max()
+y_min = df[metric].min()
+y_max = df[metric].max()
 
 # Iterate over system names and create a subplot for each
 for i, system_name in enumerate(system_names):
@@ -70,13 +78,13 @@ for i, system_name in enumerate(system_names):
     sns.scatterplot(
         data=df[df["system_name"] == system_name],
         x="injection_time",
-        y="resolution_usp_next_main",
+        y=metric,
         hue="name",
         ax=ax,
     )
-    ax.set_title(f"Resolution over Time - {system_name}")
+    ax.set_title(f"{metric} over Time - {system_name}")
     ax.set_xlabel("Injection Time")
-    ax.set_ylabel("Resolution USP")
+    ax.set_ylabel(metric)
     ax.set_ylim(y_min, y_max)  # Set consistent y-axis limits
     ax.legend(title="Column Serial Number", loc="lower left", bbox_to_anchor=(0, 0))
     ax.tick_params(axis="x", rotation=45)
