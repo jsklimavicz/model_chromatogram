@@ -15,7 +15,7 @@ from model_chromatogram.user_parameters import (
     PEAK_LIMIT,
     MINIMUM_HEIGHT_METHOD,
 )
-from pydash import get as _get
+from pydash import get as get_, set_
 from scipy.stats import linregress
 import itertools
 
@@ -62,7 +62,7 @@ class PeakFinder:
 
     def __parse_processing_method(self):
         def set_param(mapping, default):
-            fetched_val = _get(self.processing_method.kwargs, mapping)
+            fetched_val = get_(self.processing_method.kwargs, mapping)
             if fetched_val == None:
                 fetched_val = default
             return fetched_val
@@ -181,7 +181,7 @@ class PeakFinder:
         Calculates a baseline approximation using the psalsa asymmetric least squares algorithm, and stores a cubic spline of the baseline.
         """
 
-        baseline_params = _get(
+        baseline_params = get_(
             self.processing_method.kwargs, "detection_parameters.baseline"
         )
         baseline_time, baseline_vals = als_psalsa(
@@ -380,7 +380,7 @@ class PeakFinder:
         return self.peaks[index]
 
     def name_peaks(self):
-        peak_names = _get(self.processing_method, "peak_identification")
+        peak_names = get_(self.processing_method, "peak_identification")
 
         for identification in peak_names:
             min_time = identification["min_time"]
@@ -424,10 +424,17 @@ class PeakFinder:
                                 ]
 
                                 # Perform linear regression to find the relationship
-                                slope, intercept, _, _, _ = linregress(areas, amounts)
+                                slope, intercept, rvalue, _, _ = linregress(
+                                    areas, amounts
+                                )
 
                                 # Calculate the amount based on the peak area
                                 named_peak.amount = slope * named_peak.area + intercept
                                 named_peak.amount_unit = calibration["amount_unit"]
+                                set_(calibration, "coefficient_A", slope)
+                                set_(calibration, "coefficient_B", intercept)
+                                set_(calibration, "formula", "Ax+B")
+                                set_(calibration, "rvalue", rvalue)
+
                             except:
                                 continue
