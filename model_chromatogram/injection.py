@@ -186,7 +186,11 @@ class Injection:
                 }
             ],
             "samples": [
-                {"name": self.sample.name, "creation_date": self.sample.creation_date}
+                {
+                    "name": self.sample.name,
+                    "creation_date": self.sample.creation_date,
+                    "location": self.sample.location,
+                }
             ],
             "results": [],
             "datacubes": [],
