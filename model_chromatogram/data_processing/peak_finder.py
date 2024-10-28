@@ -18,6 +18,7 @@ from model_chromatogram.user_parameters import (
 from pydash import get as get_, set_
 from scipy.stats import linregress
 import itertools
+from statistics import linear_regression
 
 
 class PeakFinder:
@@ -411,10 +412,7 @@ class PeakFinder:
                 # If calibration data is present, calculate the amount
                 if calibration_sets:
                     for calibration in calibration_sets:
-                        if (
-                            calibration["channel"] == self.channel_name
-                            and calibration["type"] == "linear"
-                        ):
+                        if calibration["channel"] == self.channel_name:
                             try:
                                 areas = [
                                     point["area"] for point in calibration["points"]
@@ -422,19 +420,32 @@ class PeakFinder:
                                 amounts = [
                                     point["amount"] for point in calibration["points"]
                                 ]
-
-                                # Perform linear regression to find the relationship
-                                slope, intercept, rvalue, _, _ = linregress(
-                                    areas, amounts
-                                )
-
-                                # Calculate the amount based on the peak area
-                                named_peak.amount = slope * named_peak.area + intercept
-                                named_peak.amount_unit = calibration["amount_unit"]
-                                set_(calibration, "coefficient_A", slope)
-                                set_(calibration, "coefficient_B", intercept)
-                                set_(calibration, "formula", "Ax+B")
-                                set_(calibration, "rvalue", rvalue)
-
                             except:
                                 continue
+
+                            calibration_fit(calibration, named_peak)
+
+
+def calibration_fit(calibration, peak: Peak):
+    areas = [point["area"] for point in calibration["points"]]
+    amounts = [point["amount"] for point in calibration["points"]]
+    if calibration["type"] == "linear":
+        fit_dict = lin_fit(areas, amounts, peak)
+    else:
+        fit_dict = {}
+
+    for key, value in fit_dict.items():
+        set_(calibration, key, value)
+    peak.amount_unit = calibration["amount_unit"]
+
+
+def lin_fit(areas, amounts, peak: Peak):
+    slope, intercept, rvalue, _, _ = linregress(areas, amounts)
+    fit_dict = {
+        "coefficient_A": slope,
+        "coefficient_B": intercept,
+        "formula": "Ax+B",
+        "rvalue": rvalue,
+    }
+    peak.amount = slope * peak.area + intercept
+    return fit_dict
