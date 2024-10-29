@@ -30,7 +30,7 @@ sample_name_base = get(kinetics, "sample_base")
 full_sample_list: list[Sample] = []
 initial_date = datetime(2022, 2, 14, 8, 30, 0)
 
-time_points = [*np.arange(371, 460, 7).tolist()]
+time_points = [0, 4, *np.arange(7, 365, 7).tolist()]
 
 for condition in conditions:
     sample_name = f"{sample_name_base}_{get(condition, 'conditions')}_day"
@@ -61,17 +61,17 @@ system_temps = System(**systems_json[1])
 systems = [system_stable, system_temps]
 
 stable_sequence = Sequence(
-    name="batch_39930_extended_testing",
+    name="batch_39930",
     datavault="TETRASCIENCE",
     start_time=initial_date + timedelta(seconds=43),
-    url=f"TETRASCIENCE/{system_stable.name.upper()}/tetracinib_stability/batch_39930_extended_testing",
+    url=f"TETRASCIENCE/{system_stable.name.upper()}/tetracinib_stability/batch_39930",
 )
 
 temps_sequence = Sequence(
-    name="batch_39931_extended_testing",
+    name="batch_39931",
     datavault=system_temps.name.upper(),
     start_time=initial_date + timedelta(seconds=3679),
-    url=f"TETRASCIENCE/{system_temps.name.upper()}/tetracinib_stability/batch_39931_extended_testing",
+    url=f"TETRASCIENCE/{system_temps.name.upper()}/tetracinib_stability/batch_39931",
 )
 sequences = [stable_sequence, temps_sequence]
 users = ["Niels Bohr", "James Maxwell"]
@@ -156,8 +156,7 @@ for day in time_points:
     for sample in curr_samples:
         for system, sequence, user, time in zip(systems, sequences, users, times):
             if system.name == "Hayden":
-                # temp = get_temp(time) + 273.15
-                temp = 288 + random.uniform(-1, 1)
+                temp = get_temp(time) + 273.15
             else:
                 temp = 298 + random.uniform(-1, 1)
             tetrascinib_method.temperature = temp
@@ -196,7 +195,7 @@ for day in time_points:
                 system.replace_column()
                 system.column.inherent_rt_diff = column_var
 
-folder = "output_test_reset"
+folder = "output_test"
 print("saving injections...")
 
 
