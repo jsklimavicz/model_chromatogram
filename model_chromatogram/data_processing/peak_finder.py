@@ -31,6 +31,7 @@ class PeakFinder:
         timepoints: np.array,
         signal: np.array,
         processing_method: ProcessingMethod,
+        sample_introduction: dict,
         channel_name: str = None,
     ) -> None:
         """
@@ -52,6 +53,7 @@ class PeakFinder:
         """
         self.processing_method = processing_method
         self.channel_name = channel_name
+        self.sample_introduction = sample_introduction
         self.__parse_processing_method()
         self.timepoints = timepoints
         self.n_points = len(timepoints)
@@ -423,10 +425,12 @@ class PeakFinder:
                             except:
                                 continue
 
-                            calibration_fit(calibration, named_peak)
+                            calibration_fit(
+                                calibration, named_peak, self.sample_introduction
+                            )
 
 
-def calibration_fit(calibration, peak: Peak):
+def calibration_fit(calibration, peak: Peak, sample_introduction):
     areas = [point["area"] for point in calibration["points"]]
     amounts = [point["amount"] for point in calibration["points"]]
     if calibration["type"] == "linear":
@@ -436,6 +440,9 @@ def calibration_fit(calibration, peak: Peak):
 
     for key, value in fit_dict.items():
         set_(calibration, key, value)
+    peak.amount *= (
+        sample_introduction["dilution_factor"] / sample_introduction["injection_volume"]
+    )
     peak.amount_unit = calibration["amount_unit"]
 
 

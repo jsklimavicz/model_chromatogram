@@ -22,6 +22,7 @@ class Injection:
         system: System,
         user: str | None = "admin",
         injection_time: datetime.datetime | None = None,
+        init_setup=False,
     ) -> None:
         self.sample: Sample = sample
         self.user = user
@@ -33,6 +34,7 @@ class Injection:
         self.processing_method = processing_method
         self.system: System = system
         self.sequence = sequence
+        self.init_setup = init_setup
         self.__add_to_sequence()
         self.system.inject()
         self.peak_creator = PeakCreator(system=self.system)
@@ -67,6 +69,7 @@ class Injection:
                 solvent_profiles=self.method.profile_table,
                 solvent_ph=self.method.ph,
                 temperature=self.method.temperature,
+                init_setup=self.init_setup,
             )
 
     def __create_chromatograms(self):
@@ -138,6 +141,7 @@ class Injection:
         peak_finder = PeakFinder(
             *self.get_chromatogram_data(channel_name, pandas=False),
             processing_method=self.processing_method,
+            sample_introduction=self.method.sample_introduction,
             channel_name=channel_name
         )
         for ind, result in enumerate(self.dict["results"]):

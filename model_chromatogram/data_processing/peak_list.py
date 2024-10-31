@@ -83,10 +83,15 @@ class PeakList:
         # calculate relative area and height
         if globals:
             total_area = sum(peak.area for peak in self.peaks)
+            total_amount = sum(peak.amount if peak.amount else 0 for peak in self.peaks)
             total_height = sum(peak.height for peak in self.peaks)
             for peak in self.peaks:
                 peak.relative_area = 100 * peak.area / total_area
                 peak.relative_height = 100 * peak.height / total_height
+                try:
+                    peak.relative_amount = 100 * peak.amount / total_amount
+                except:
+                    pass
 
         # calculate resolution
 
