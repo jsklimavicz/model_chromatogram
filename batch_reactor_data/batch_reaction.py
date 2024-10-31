@@ -183,7 +183,6 @@ class BatchReaction:
 
     def plot_kinetics_with_reactions(
         self,
-        compound_mapping,
         title=None,
         compound_name_mapping=None,
         **kwargs,
@@ -206,7 +205,9 @@ class BatchReaction:
         plt.ylabel("Concentration (mmol/L)")
         if title is not None:
             plt.title(f"{title}")
-        plt.legend()
+
+        ncol = len(sorted_compound_indices) // 10 + 1
+        plt.legend(ncol=ncol)
         plt.grid(True)
         plt.show()
 
@@ -306,128 +307,115 @@ class BatchReaction:
         return concentration_list
 
 
-N_vals = []
-for i in range(1000):
+# Define the reaction network
+compound_mapping = [
+    {"reactants": ["A", "B"], "products": ["C"], "k": 32},
+    {"reactants": ["A", "B"], "products": ["C2"], "k": 0.91},
+    {"reactants": ["B"], "products": ["D"], "k": 0.02},
+    {"reactants": ["D", "D"], "products": ["D2"], "k": 0.1},
+    {"reactants": ["B", "B"], "products": ["M"], "k": 0.48},
+    {"reactants": ["B"], "products": ["E1"], "k": 0.014},
+    {"reactants": ["E1"], "products": ["B"], "k": 0.01},
+    {"reactants": ["B"], "products": ["E2"], "k": 0.013},
+    {"reactants": ["E2"], "products": ["B"], "k": 0.015},
+    {"reactants": ["A", "D"], "products": ["F"], "k": 0.7},
+    {"reactants": ["F"], "products": ["C", "G"], "k": 0.07},
+    {"reactants": ["H", "C"], "products": ["I"], "k": 52},
+    {"reactants": ["H", "C2"], "products": ["I2"], "k": 67},
+    {"reactants": ["I", "H"], "products": ["J"], "k": 0.3},
+    {"reactants": ["I", "H"], "products": ["K"], "k": 0.4},
+    {"reactants": ["M", "H"], "products": ["N"], "k": 0.71},  # Toxic impurity
+    {"reactants": ["B", "H"], "products": ["O"], "k": 0.54},
+]
 
-    # Define the reaction network
-    compound_mapping = [
-        {"reactants": ["A", "B"], "products": ["C"], "k": 32},
-        {"reactants": ["A", "B"], "products": ["C2"], "k": 0.91},
-        {"reactants": ["B"], "products": ["D"], "k": 0.02},
-        {"reactants": ["D", "D"], "products": ["D2"], "k": 0.1},
-        {"reactants": ["B", "B"], "products": ["M"], "k": 0.48},
-        {"reactants": ["B"], "products": ["E1"], "k": 0.014},
-        {"reactants": ["E1"], "products": ["B"], "k": 0.01},
-        {"reactants": ["B"], "products": ["E2"], "k": 0.013},
-        {"reactants": ["E2"], "products": ["B"], "k": 0.015},
-        {"reactants": ["A", "D"], "products": ["F"], "k": 0.7},
-        {"reactants": ["F"], "products": ["C", "G"], "k": 0.07},
-        {"reactants": ["H", "C"], "products": ["I"], "k": 52},
-        {"reactants": ["H", "C2"], "products": ["I2"], "k": 67},
-        {"reactants": ["I", "H"], "products": ["J"], "k": 0.3},
-        {"reactants": ["I", "H"], "products": ["K"], "k": 0.4},
-        {"reactants": ["M", "H"], "products": ["N"], "k": 0.71},  # Toxic impurity
-        {"reactants": ["B", "H"], "products": ["O"], "k": 0.54},
-    ]
+modifier = np.clip(np.random.normal(1, 0.01), 0.95, 1.05)
+N_mod = np.clip(np.random.normal(1.02, 0.02), 0.98, 1.08)
+l = np.random.uniform(0, 1)
+if l > 0.95:
+    l = 1.4
+else:
+    l = 1
+for rxn in compound_mapping:
+    rxn["k"] *= modifier * np.clip(np.random.normal(1, 0.02), 0.93, 1.07)
+    if (rxn["reactants"] == ["M", "H"]) or rxn["reactants"] == ["B", "B"]:
+        rxn["k"] *= N_mod * l
 
-    modifier = np.clip(np.random.normal(1, 0.01), 0.95, 1.05)
-    N_mod = np.clip(np.random.normal(1.02, 0.02), 0.98, 1.08)
-    l = np.random.uniform(0, 1)
-    if l > 0.95:
-        l = 1.4
-    else:
-        l = 1
-    for rxn in compound_mapping:
-        rxn["k"] *= modifier * np.clip(np.random.normal(1, 0.02), 0.93, 1.07)
-        if (rxn["reactants"] == ["M", "H"]) or rxn["reactants"] == ["B", "B"]:
-            rxn["k"] *= N_mod * l
+# Initial concentrations (mol/L) for A
+initial_concentrations = {
+    "A": 0.050,
+}  # Assume other compounds start at 0 concentration
+initial_volume = 100  # Initial volume in liters
 
-    # Initial concentrations (mol/L) for A
-    initial_concentrations = {
-        "A": 0.050,
-    }  # Assume other compounds start at 0 concentration
-    initial_volume = 100  # Initial volume in liters
+# Define additions for complex scenario with volume changes
+additions = [
+    # Add B over time with volume increase
+    {
+        "type": "continuous",
+        "start_time": 0,
+        "end_time": 5,
+        "rate": {
+            "B": 1.1 * np.clip(np.random.normal(1, 0.02), 0.97, 1.05)
+        },  # mol/day added
+        "volume_rate": 5,  # L/day added
+    },
+    {
+        "type": "continuous",
+        "start_time": 20,
+        "end_time": 22,
+        "rate": {
+            "H": 2.55 * np.clip(np.random.normal(1, 0.02), 0.97, 1.05)
+        },  # mol/day added
+        "volume_rate": 5,  # L/day added
+    },
+]
 
-    # Define additions for complex scenario with volume changes
-    additions = [
-        # Add B over time with volume increase
-        {
-            "type": "continuous",
-            "start_time": 0,
-            "end_time": 5,
-            "rate": {
-                "B": 1.1 * np.clip(np.random.normal(1, 0.02), 0.97, 1.05)
-            },  # mol/day added
-            "volume_rate": 5,  # L/day added
-        },
-        {
-            "type": "continuous",
-            "start_time": 20,
-            "end_time": 22,
-            "rate": {
-                "H": 2.55 * np.clip(np.random.normal(1, 0.02), 0.97, 1.05)
-            },  # mol/day added
-            "volume_rate": 5,  # L/day added
-        },
-    ]
+# Compound name mapping
+compound_name_mapping = {
+    "A": "Compound A",
+    "B": "Compound B",
+    "C": "Compound C",
+    "C2": "Compound C2",
+    "D": "Compound D",
+    "D2": "Compound D2",
+    "E1": "Compound E1",
+    "E2": "Compound E2",
+    "F": "Compound F",
+    "G": "Compound G",
+    "H": "Compound H",
+    "I": "Compound I",
+    "I2": "Compound I2",
+    "J": "Compound J",
+    "K": "Compound K",
+    "M": "Compound M",
+    "N": "Compound N",
+    "O": "Compound O",
+}
 
-    # Compound name mapping
-    compound_name_mapping = {
-        "A": "Compound A",
-        "B": "Compound B",
-        "C": "Compound C",
-        "C2": "Compound C2",
-        "D": "Compound D",
-        "D2": "Compound D2",
-        "E1": "Compound E1",
-        "E2": "Compound E2",
-        "F": "Compound F",
-        "G": "Compound G",
-        "H": "Compound H",
-        "I": "Compound I",
-        "I2": "Compound I2",
-        "J": "Compound J",
-        "K": "Compound K",
-        "M": "Compound M",
-        "N": "Compound N",
-        "O": "Compound O",
-    }
+# Instantiate the SampleCreator with most arguments
 
-    # Instantiate the SampleCreator with most arguments
+sample_creator = BatchReaction(
+    initial_concentrations=initial_concentrations,
+    initial_volume=initial_volume,
+    additions=additions,
+    start_day=0,
+    end_day=40,
+    n_points=801,
+)
 
-    sample_creator = BatchReaction(
-        initial_concentrations=initial_concentrations,
-        initial_volume=initial_volume,
-        additions=additions,
-        start_day=0,
-        end_day=40,
-        n_points=801,
-    )
+# Plot the kinetics
 
-    # Plot the kinetics
+sample_creator.plot_kinetics_with_reactions(
+    title="Model batch reaction",
+    compound_name_mapping=compound_name_mapping,
+)
 
-    # sample_creator.plot_kinetics_with_reactions(
-    #     compound_mapping=compound_mapping,
-    #     title="Complex Reaction Network with Additions and Equilibration",
-    #     compound_name_mapping=compound_name_mapping,
-    # )
-
-    # Get concentrations at specific time points
-    time_points = [40]
-    concentrations_at_times = sample_creator.get_concentrations_at_times(
-        time_points, sort="conc", asc=False, normalize="I"
-    )
-    # for t, concentrations in zip(time_points, concentrations_at_times):
-    #     print(f"Time {t} days:")
-    #     for name, conc in concentrations.items():
-    #         print(f"  {name}: {conc:.4f} mmol/L")
-    #     print()
-    conc = concentrations_at_times[0]
-    N_vals.append(conc["N"])
-
-N_vals.sort()
-import seaborn as sns
-
-sns.set_style("whitegrid")
-sns.kdeplot(np.array(N_vals), bw=0.05)
-plt.show()
+# Get concentrations at specific time points
+time_points = [40]
+concentrations_at_times = sample_creator.get_concentrations_at_times(
+    time_points, sort="conc", asc=False, normalize="I"
+)
+# for t, concentrations in zip(time_points, concentrations_at_times):
+#     print(f"Time {t} days:")
+#     for name, conc in concentrations.items():
+#         print(f"  {name}: {conc:.4f} mmol/L")
+#     print()
