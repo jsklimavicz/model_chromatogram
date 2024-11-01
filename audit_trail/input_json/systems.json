@@ -1,0 +1,94 @@
+[
+    {
+        "name": "SystemA",
+        "software": "Empower",
+        "manufacturer": "Waters",
+        "modules": [],
+        "column": {
+            "inner_diameter": {
+                "value": 2,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 80,
+                "unit": "mm"
+            },
+            "injection_count": 38,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            },
+            "parameters_id": 2
+        },
+        "system_retention_time_offset": 0.00
+    },
+    {
+        "name": "SystemB",
+        "software": "Empower",
+        "manufacturer": "Waters",
+        "modules": [],
+        "column": {
+            "inner_diameter": {
+                "value": 2,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 80,
+                "unit": "mm"
+            },
+            "injection_count": 551,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            },
+            "parameters_id": 77
+        },
+        "system_retention_time_offset": 0.012
+    },
+    {
+        "name": "System_C",
+        "software": "Empower",
+        "manufacturer": "Waters",
+        "modules": [],
+        "column": {
+            "inner_diameter": {
+                "value": 2,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 80,
+                "unit": "mm"
+            },
+            "injection_count": 294,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            },
+            "parameters_id": 77
+        },
+        "system_retention_time_offset": -0.008
+    },
+    {
+        "name": "System_D",
+        "software": "Empower",
+        "manufacturer": "Waters",
+        "modules": [],
+        "column": {
+            "inner_diameter": {
+                "value": 2,
+                "unit": "mm"
+            },
+            "length": {
+                "value": 80,
+                "unit": "mm"
+            },
+            "injection_count": 275,
+            "particle_size": {
+                "value": 5,
+                "unit": "um"
+            },
+            "parameters_id": 77
+        },
+        "system_retention_time_offset": 0.079
+    }
+]
