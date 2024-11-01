@@ -218,6 +218,7 @@ class Compound:
         solvent_profiles: pd.DataFrame,
         solvent_ph: float = 7.0,
         temperature=298,
+        init_setup=False,
     ):
         """
         Calculates the retention time of a compound based on column volume, solvent properties, and compound properties.
@@ -266,4 +267,8 @@ class Compound:
             retention_time = time[-1] + 5
 
         self.retention_time = retention_time
+
+        if init_setup:
+            print(f"{self.cas}: \t {self.retention_time}")
+
         return retention_time

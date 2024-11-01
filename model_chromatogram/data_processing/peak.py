@@ -23,6 +23,7 @@ class Peak:
         "end_baseline",
         "retention_baseline",
         "amount",
+        "relative_amount",
         "amount_unit",
         "relative_area",
         "height",
@@ -199,6 +200,7 @@ class Peak:
     def __calculate_area(self):
         self.area = np.sum(self.baselined_peak_signal) * self.dt
         self.relative_area = None
+        self.relative_amount = None
         self.capillary_electrophoresis_area = self.area / self.retention_time
 
     def __calculate_height_and_retention_time(self):

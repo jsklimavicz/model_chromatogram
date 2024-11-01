@@ -5,7 +5,7 @@ from .chromatogram import PeakCreator, Baseline, Chromatogram
 from .data_processing import Peak, als_psalsa, PeakList, PeakFinder
 from .methods import InstrumentMethod, ProcessingMethod
 from .user_parameters import *
-from .samples import Sample, SampleCreator
+from .samples import Sample, SampleCreator, BatchReaction
 from .injection import Injection
 from .sequence import Sequence
 
@@ -30,4 +30,5 @@ __all__ = [
     "ProcessingMethod",
     "SampleCreator",
     "Sequence",
+    "BatchReaction",
 ]
