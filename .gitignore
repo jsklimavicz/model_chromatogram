@@ -9,6 +9,7 @@ cache/*
 output.csv
 output*/*
 output*.zip
+batch_data/*
 
 # Icon must end with two \r
 Icon

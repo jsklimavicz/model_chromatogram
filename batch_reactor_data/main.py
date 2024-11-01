@@ -72,7 +72,7 @@ users = [
     "George Washington Carver",
 ]
 
-while curr_date < datetime(2024, 5, 2, 15, 24, 10):
+while curr_date < datetime(2024, 6, 2, 15, 24, 10):
 
     # Define the reaction network
     compound_mapping = [
