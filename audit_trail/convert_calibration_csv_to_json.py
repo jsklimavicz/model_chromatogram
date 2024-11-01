@@ -2,18 +2,18 @@ import pandas as pd
 import json
 from pydash import get
 
-output_file = "./batch_reactor_data/calibration_processing.json"
+output_file = "./audit_trail/calibration_processing.json"
 # calibration_data = csv_to_json(input_calibration_file)
 
 import json
 import pandas as pd
 
 # Load the JSON file
-with open("./batch_reactor_data/input_json/processing_methods.json", "r") as f:
+with open("./audit_trail/input_json/processing_methods.json", "r") as f:
     processing_methods = json.load(f)
 
 # Load the CSV file
-calibration_data = pd.read_csv("./batch_reactor_data/calibration.csv")
+calibration_data = pd.read_csv("./audit_trail/calibration.csv")
 
 
 # Function to group calibration data by channel

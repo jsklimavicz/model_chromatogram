@@ -38,7 +38,7 @@ blank = Sample(
     name=f"blank",
     compound_id_list=[],
     compound_concentration_list=[],
-    concentration_unit=4,
+    concentration_unit=2,
 )
 
 users = [
@@ -70,14 +70,14 @@ cas_list = [
     "531-59-9",
 ]
 
-conc_list = np.ones(len(cas_list)) * 10
+conc_list = np.ones(len(cas_list)) * 19.95
 
 sample = Sample("test", cas_list, conc_list, initial_date, concentration_unit=2)
 
 sequence = Sequence("test_sequence", "EMPOWER/test/", initial_date, url="EMPOWER/test/")
 
 
-system = system_list[0]
+system = system_list[-1]
 print(system.name)
 print(system.column.parameters.id)
 
@@ -89,9 +89,9 @@ curr_injection = Injection(
     system_list[0],
     user="James Klimavicz",
     injection_time=initial_date,
-    init_setup=True,
 )
 peak_finder = curr_injection.find_peaks("UV_VIS_1")
 curr_injection.plot_chromatogram("UV_VIS_1")
+peak_finder.save_peaks()
 
 plt.show()

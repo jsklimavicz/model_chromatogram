@@ -1,6 +1,6 @@
 [
     {
-        "name": "TS-304 bulk batch",
+        "name": "TS-613 Calibration Standard 2.0 ug/mL",
         "detection_parameters": {
             "background_noise_range": {
                 "minimum": 0,
@@ -21,151 +21,902 @@
                 "rel_tol": 1e-06
             }
         },
-        "resolution_reference": "TS-8391",
+        "resolution_reference": "TS-613",
         "peak_identification": [
             {
                 "min_time": 6.6,
                 "max_time": 6.8,
                 "method": "largest",
                 "name": "2-glucosyl-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 7.29954228,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 7.296815311,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.726918061,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.72432569,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.072028466,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.067240874,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.213352684,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 2.183125615,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 2.180859438,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 21.93436014,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 73.10668936,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 73.10514188,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 7.24,
                 "max_time": 7.44,
                 "method": "largest",
                 "name": "TS-613 3-glucuronide",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 3.48229177,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 3.485358444,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.33998571,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.346991356,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.029915289,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.034833995,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.101881533,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 1.040537908,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 1.041863934,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 10.49037872,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 34.98010135,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 34.97962835,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 7.52,
                 "max_time": 7.72,
                 "method": "largest",
                 "name": "TS-613 2-sulfate",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 0.651580078,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.642661548,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.059775816,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.061306817,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.184320002,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.193418569,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 1.972704867,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 6.598219144,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 6.604340954,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 8.06,
                 "max_time": 8.26,
                 "method": "largest",
                 "name": "TS-613 2-glucuronide",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 5.961661458,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 5.95018015,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.589369186,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.579182908,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.061704573,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.059002005,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.167034141,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 1.779158477,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 1.781299049,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 17.85439805,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 59.47254014,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 59.48679118,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 8.27,
                 "max_time": 8.47,
                 "method": "largest",
                 "name": "4,5-dihydroxy-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 2.246007876,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 2.253200228,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.218595398,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.218285644,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.055415838,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 0.653373465,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.666529612,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 6.755514017,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 22.60364158,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 22.59927955,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 8.91,
                 "max_time": 9.11,
                 "method": "largest",
                 "name": "4a-hydroxy-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 4.398363578,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 4.402600304,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.430616798,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.430044307,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.03957597,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.036963533,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.123089871,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 1.315155327,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 1.320643362,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 13.20485152,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 44.04744234,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 44.04546972,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 9.23,
                 "max_time": 9.43,
                 "method": "largest",
                 "name": "TS-613 hydrolysis pdt A",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 1.234858106,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 1.232487654,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.121970832,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.120177532,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.034668776,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 0.370842056,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.36665041,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 3.723694998,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 12.40926299,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 12.41271756,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 11.01,
                 "max_time": 11.21,
                 "method": "largest",
                 "name": "3'-hydroxy-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 2.080255545,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 2.070566566,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.2002226,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.201052926,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.06712541,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 0.621562099,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.618366898,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 6.239560079,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 20.81850231,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 20.81200781,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 11.31,
                 "max_time": 11.51,
                 "method": "largest",
                 "name": "5'-hydroxy-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 3.072416325,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 3.070357081,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.30098993,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.3029057,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.023425045,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.02444719,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.081469532,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 0.924201497,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.910741521,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 9.237976198,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 30.81536382,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 30.87162759,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 11.58,
                 "max_time": 11.78,
                 "method": "largest",
                 "name": "2'-hydroxy-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 7.096369015,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 7.113171036,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.711698433,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.713883564,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.065317512,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.062704642,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.204958834,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 2.13101258,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 2.122163304,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 21.33468797,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 71.07041134,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 71.11047028,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 12.05,
                 "max_time": 12.25,
                 "method": "largest",
                 "name": "TS-613 free acid",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 1.100515717,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 1.110921926,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.116332433,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.104699002,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.33039763,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.326793885,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 3.321597327,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 11.1075228,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 11.13448486,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 12.3,
                 "max_time": 12.5,
                 "method": "largest",
                 "name": "des-chloro-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 2.283538481,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 2.290078608,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.231241201,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.224952105,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.062514989,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 0.683456528,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.682283022,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 6.860246982,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 22.88818081,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 22.92243591,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 12.83,
                 "max_time": 13.03,
                 "method": "largest",
                 "name": "TS-613 hydrolysis pdt B",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 3.001440111,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 3.007512872,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.295563172,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.304614984,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.031886254,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.036159363,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.097316086,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 0.909886958,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 0.895253805,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 8.983258147,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 29.90037423,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 29.88931467,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 13.53,
                 "max_time": 13.73,
                 "method": "largest",
                 "name": "dehydro-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 3.39585171,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 3.388145172,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.330493729,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.33144169,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.01791042,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.015963795,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.093846689,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 1.012159424,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 1.008647668,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 10.19101063,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 33.99226388,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 33.98438767,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 14.38,
                 "max_time": 14.58,
                 "method": "largest",
                 "name": "4,5-epoxy-TS-613",
-                "calibration": []
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 4.933558205,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 4.926107939,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.479766227,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.486568057,
+                                "amount": 1.0
+                            },
+                            {
+                                "area": 0.046808275,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.047516732,
+                                "amount": 0.1
+                            },
+                            {
+                                "area": 0.141329776,
+                                "amount": 0.3
+                            },
+                            {
+                                "area": 1.469354444,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 1.476724806,
+                                "amount": 3.0
+                            },
+                            {
+                                "area": 14.8106905,
+                                "amount": 30.0
+                            },
+                            {
+                                "area": 49.36246085,
+                                "amount": 100.0
+                            },
+                            {
+                                "area": 49.37981117,
+                                "amount": 100.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "min_time": 16.25,
                 "max_time": 16.45,
                 "method": "largest",
                 "name": "TS-613",
-                "calibration": []
-            }
-        ]
-    },
-    {
-        "name": "TS-304 bulk batch high volume",
-        "detection_parameters": {
-            "background_noise_range": {
-                "minimum": 0,
-                "maximum": 250
-            },
-            "noise_threshold_multiplier": 5,
-            "peak_limit": 10,
-            "minimum_height": {
-                "type": "baseline_noise_multiplier",
-                "value": 3
-            },
-            "minimum_area": 0.003,
-            "baseline": {
-                "sr": 10,
-                "p": 0.001,
-                "s": 0.5,
-                "k": 2,
-                "rel_tol": 1e-06
-            }
-        },
-        "resolution_reference": "TS-8391",
-        "peak_identification": [
-            {
-                "min_time": 7.5,
-                "max_time": 7.7,
-                "method": "largest",
-                "name": "TS-302 urea",
                 "calibration": [
                     {
                         "channel": "UV_VIS_1",
@@ -173,843 +924,52 @@
                         "amount_unit": "umol/mL",
                         "points": [
                             {
-                                "area": 16.32462388,
+                                "area": 8.397873057,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 8.394369131,
+                                "amount": 10.0
+                            },
+                            {
+                                "area": 0.831393874,
                                 "amount": 1.0
                             },
                             {
-                                "area": 16.3310821,
+                                "area": 0.823918172,
                                 "amount": 1.0
                             },
                             {
-                                "area": 1.615290765,
+                                "area": 0.079673842,
                                 "amount": 0.1
                             },
                             {
-                                "area": 1.630690785,
+                                "area": 0.075214091,
                                 "amount": 0.1
                             },
                             {
-                                "area": 0.152933201,
-                                "amount": 0.01
+                                "area": 0.243261446,
+                                "amount": 0.3
                             },
                             {
-                                "area": 0.153627705,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.036822643,
-                                "amount": 0.003
-                            },
-                            {
-                                "area": 0.478591237,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 49.03615016,
+                                "area": 2.50914098,
                                 "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 8.35,
-                "max_time": 8.55,
-                "method": "largest",
-                "name": "Amine A-391",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 10.45591105,
-                                "amount": 1.0
                             },
                             {
-                                "area": 10.4674238,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.038836428,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.042966256,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.099253756,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.096215538,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.30619929,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 31.42239103,
+                                "area": 2.512916032,
                                 "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 12.9,
-                "max_time": 13.1,
-                "method": "largest",
-                "name": "R-005 urea",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 4.964645984,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 4.95611054,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 0.471154276,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.482723444,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.041731413,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.058165835,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.137542631,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 14.88354471,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 9.95,
-                "max_time": 10.15,
-                "method": "largest",
-                "name": "R-005 biuret",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 13.42807707,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 13.4232641,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.33468909,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.323131814,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.121105275,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.122200773,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.033419547,
-                                "amount": 0.003
-                            },
-                            {
-                                "area": 0.40075378,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 40.30001569,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 15.55,
-                "max_time": 15.75,
-                "method": "largest",
-                "name": "epi-TS-304",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 28.2689905,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 28.2804653,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 2.811653796,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 2.816086441,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.272511165,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.272062688,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.074359764,
-                                "amount": 0.003
-                            },
-                            {
-                                "area": 0.833255739,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 84.84675886,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 14.1,
-                "max_time": 14.3,
-                "method": "largest",
-                "name": "3,4-dehydro-R-005",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 12.25912561,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 12.2549273,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.216808111,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.21728243,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.108485134,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.120035696,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.356495408,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 36.80692694,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 10.7,
-                "max_time": 10.9,
-                "method": "largest",
-                "name": "R-005 isocyanate precursor",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 3.42977879,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 3.42267426,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 0.332449271,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.337714356,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.024210651,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.027012734,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.097913143,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 10.28998035,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 15.1,
-                "max_time": 15.3,
-                "method": "largest",
-                "name": "TS-302",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 12.99707667,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 12.9987465,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.275122798,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.291868707,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.114256537,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.115039851,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.023689486,
-                                "amount": 0.003
-                            },
-                            {
-                                "area": 0.377957204,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 39.01718035,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 16.55,
-                "max_time": 16.75,
-                "method": "largest",
-                "name": "epi-TS-302",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 9.367848471,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 9.38424907,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 0.940768819,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.924546289,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.090352729,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.084713226,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.265095681,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 28.10056767,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 17.15,
-                "max_time": 17.35,
-                "method": "largest",
-                "name": "R-007",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 2.232236834,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 2.24013579,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 0.21764843,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.227329912,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.056977656,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 6.696995255,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 17.9,
-                "max_time": 18.1,
-                "method": "largest",
-                "name": "oxazol-2-ylamino-TS-304",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 10.46014251,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 10.4872005,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.033618254,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.031711075,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.094022371,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.090980881,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.299781529,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 31.45993468,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 14.6,
-                "max_time": 14.8,
-                "method": "largest",
-                "name": "TS-304 ring closure b",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 8.629763492,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 8.63984139,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 0.848704106,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.849846873,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.075783137,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.077305801,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.252119132,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 25.93706135,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 24.45,
-                "max_time": 24.65,
-                "method": "largest",
-                "name": "2,3-dehydro-R-005",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 17.76522539,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 17.7672078,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.774577333,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.765504436,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.175732228,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.170263484,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.046820564,
-                                "amount": 0.003
-                            },
-                            {
-                                "area": 0.510636794,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 53.31188431,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 24.45,
-                "max_time": 24.65,
-                "method": "largest",
-                "name": "TS-304 ring closure c",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 11.01036022,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 11.0028813,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.086150242,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.099997169,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.088862738,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.107167289,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.314047768,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 33.06467172,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 12.0,
-                "max_time": 12.2,
-                "method": "largest",
-                "name": "R-005 dimer",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 2.247662403,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 2.24684135,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 0.217399262,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.226953908,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.064973727,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 6.751492586,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 16.85,
-                "max_time": 17.05,
-                "method": "largest",
-                "name": "2,3-dehydro-R-005",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 17.76522539,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 17.7672078,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.774577333,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.765504436,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.175732228,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.170263484,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.046820564,
-                                "amount": 0.003
-                            },
-                            {
-                                "area": 0.510636794,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 53.31188431,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 16.1,
-                "max_time": 16.3,
-                "method": "largest",
-                "name": "TS-304 N-oxide",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 11.15496224,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 11.1589887,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.096185099,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.114446724,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.10061232,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.102685243,
-                                "amount": 0.01
-                            },
-                            {
-                                "area": 0.329738878,
-                                "amount": 0.03
-                            },
-                            {
-                                "area": 33.48687634,
-                                "amount": 3.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "min_time": 21.2,
-                "max_time": 21.5,
-                "method": "largest",
-                "name": "N-nitroso TS-304",
-                "calibration": [
-                    {
-                        "channel": "UV_VIS_1",
-                        "type": "linear",
-                        "amount_unit": "umol/mL",
-                        "points": [
-                            {
-                                "area": 15.00933776,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 15.0230995,
-                                "amount": 1.0
-                            },
-                            {
-                                "area": 1.49893723,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 1.499925951,
-                                "amount": 0.1
-                            },
-                            {
-                                "area": 0.131955383,
-                                "amount": 0.01
                             },
                             {
-                                "area": 0.140276416,
-                                "amount": 0.01
+                                "area": 25.19713093,
+                                "amount": 30.0
                             },
                             {
-                                "area": 0.440804685,
-                                "amount": 0.03
+                                "area": 84.01911768,
+                                "amount": 100.0
                             },
                             {
-                                "area": 45.08893551,
-                                "amount": 3.0
+                                "area": 84.02855919,
+                                "amount": 100.0
                             }
                         ]
                     }

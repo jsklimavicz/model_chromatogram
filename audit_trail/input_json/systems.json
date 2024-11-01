@@ -1,6 +1,6 @@
 [
     {
-        "name": "SystemA",
+        "name": "Wu",
         "software": "Empower",
         "manufacturer": "Waters",
         "modules": [],
@@ -23,7 +23,7 @@
         "system_retention_time_offset": 0.00
     },
     {
-        "name": "SystemB",
+        "name": "Johnson",
         "software": "Empower",
         "manufacturer": "Waters",
         "modules": [],
@@ -41,12 +41,12 @@
                 "value": 5,
                 "unit": "um"
             },
-            "parameters_id": 77
+            "parameters_id": 2
         },
         "system_retention_time_offset": 0.012
     },
     {
-        "name": "System_C",
+        "name": "Mangold",
         "software": "Empower",
         "manufacturer": "Waters",
         "modules": [],
@@ -64,12 +64,12 @@
                 "value": 5,
                 "unit": "um"
             },
-            "parameters_id": 77
+            "parameters_id": 2
         },
         "system_retention_time_offset": -0.008
     },
     {
-        "name": "System_D",
+        "name": "Merian",
         "software": "Empower",
         "manufacturer": "Waters",
         "modules": [],
@@ -87,7 +87,7 @@
                 "value": 5,
                 "unit": "um"
             },
-            "parameters_id": 77
+            "parameters_id": 2
         },
         "system_retention_time_offset": 0.079
     }
