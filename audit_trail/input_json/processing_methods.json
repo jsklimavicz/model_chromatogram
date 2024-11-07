@@ -12,7 +12,7 @@
                 "type": "baseline_noise_multiplier",
                 "value": 5
             },
-            "minimum_area": 0.005,
+            "minimum_area": 0.02,
             "baseline": {
                 "sr": 10,
                 "p": 0.001,

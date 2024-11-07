@@ -188,12 +188,15 @@ sample = Sample(
 
 sequence = Sequence("Test", "test", datetime.now(), "test")
 
-for i in range(1000):
+inj = InstrumentMethod(**instrument_method)
+p = ProcessingMethod(**processing_method)
+
+for i in range(10000):
 
     curr_injection = Injection(
         sample,
-        InstrumentMethod(**instrument_method),
-        ProcessingMethod(**processing_method),
+        inj,
+        p,
         sequence,
         system,
         user="James Klimavicz",
@@ -205,6 +208,13 @@ for i in range(1000):
     if i % 100 == 0:
         print(i)
         system.replace_column()
+
+from collections import Counter
+
+counts = Counter(a)
+count_list = list(counts.items())
+print(count_list)
+
 
 plt.hist(a, len(set(a)))
 plt.show()
