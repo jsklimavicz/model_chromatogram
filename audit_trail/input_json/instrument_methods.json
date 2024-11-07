@@ -1,8 +1,8 @@
 [
     {
-        "name": "TS-304 bulk batch analysis",
-        "run_time": 25,
-        "buffer_ph": 2.0,
+        "name": "TS-613 metabolite analysis",
+        "run_time": 20,
+        "buffer_ph": 2.05,
         "column_temperature": 298,
         "mobile_phases": [
             {
@@ -26,8 +26,8 @@
             {
                 "time": 0.0,
                 "flow": 0.1,
-                "percent_a": 99,
-                "percent_b": 1,
+                "percent_a": 99.5,
+                "percent_b": 0.5,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
@@ -44,17 +44,8 @@
             {
                 "time": 10.0,
                 "flow": 0.1,
-                "percent_a": 95.0,
-                "percent_b": 5.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5
-            },
-            {
-                "time": 25.0,
-                "flow": 0.1,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
+                "percent_a": 97.0,
+                "percent_b": 3.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5
@@ -62,8 +53,8 @@
             {
                 "time": 20.0,
                 "flow": 0.1,
-                "percent_a": 50.0,
-                "percent_b": 50.0,
+                "percent_a": 90.0,
+                "percent_b": 10.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5

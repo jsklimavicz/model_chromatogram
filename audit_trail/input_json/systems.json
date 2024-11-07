@@ -47,9 +47,36 @@
     },
     {
         "name": "Mangold",
-        "software": "Empower",
-        "manufacturer": "Waters",
-        "modules": [],
+        "software": "Chromeleon",
+        "manufacturer": "ThermoFisher",
+        "modules": [
+            {
+                "name": "Sampler",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Autosampler",
+                "detector_type": null,
+                "part_number": "VC-A13-A-02",
+                "serial_number": "22995020"
+            },
+            {
+                "name": "PumpModule.Pump",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Pump",
+                "detector_type": null,
+                "part_number": "VC-P20-A-01",
+                "serial_number": "2347843"
+            },
+            {
+                "name": "UV",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Detector",
+                "detector_type": "UV-Vis",
+                "part_number": "VF-D11-A-01",
+                "serial_number": "2774366",
+                "firmware_version": "1.10.0",
+                "driver_version": "7.3.2.10759"
+            }
+        ],
         "column": {
             "inner_diameter": {
                 "value": 2,
@@ -66,7 +93,7 @@
             },
             "parameters_id": 2
         },
-        "system_retention_time_offset": -0.008
+        "system_retention_time_offset": -0.018
     },
     {
         "name": "Merian",
@@ -89,6 +116,6 @@
             },
             "parameters_id": 2
         },
-        "system_retention_time_offset": 0.079
+        "system_retention_time_offset": 0.07
     }
 ]

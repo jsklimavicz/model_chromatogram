@@ -24,8 +24,8 @@
         "resolution_reference": "TS-613",
         "peak_identification": [
             {
-                "min_time": 6.6,
-                "max_time": 6.8,
+                "min_time": 6.61,
+                "max_time": 6.81,
                 "method": "largest",
                 "name": "2-glucosyl-TS-613",
                 "calibration": [
@@ -150,8 +150,8 @@
                 ]
             },
             {
-                "min_time": 7.52,
-                "max_time": 7.72,
+                "min_time": 7.53,
+                "max_time": 7.73,
                 "method": "largest",
                 "name": "TS-613 2-sulfate",
                 "calibration": [
@@ -201,8 +201,8 @@
                 ]
             },
             {
-                "min_time": 8.06,
-                "max_time": 8.26,
+                "min_time": 8.11,
+                "max_time": 8.31,
                 "method": "largest",
                 "name": "TS-613 2-glucuronide",
                 "calibration": [
@@ -264,8 +264,8 @@
                 ]
             },
             {
-                "min_time": 8.27,
-                "max_time": 8.47,
+                "min_time": 8.3,
+                "max_time": 8.5,
                 "method": "largest",
                 "name": "4,5-dihydroxy-TS-613",
                 "calibration": [
@@ -319,8 +319,8 @@
                 ]
             },
             {
-                "min_time": 8.91,
-                "max_time": 9.11,
+                "min_time": 8.94,
+                "max_time": 9.14,
                 "method": "largest",
                 "name": "4a-hydroxy-TS-613",
                 "calibration": [
@@ -382,8 +382,8 @@
                 ]
             },
             {
-                "min_time": 9.23,
-                "max_time": 9.43,
+                "min_time": 9.26,
+                "max_time": 9.46,
                 "method": "largest",
                 "name": "TS-613 hydrolysis pdt A",
                 "calibration": [
@@ -437,8 +437,8 @@
                 ]
             },
             {
-                "min_time": 11.01,
-                "max_time": 11.21,
+                "min_time": 11.05,
+                "max_time": 11.25,
                 "method": "largest",
                 "name": "3'-hydroxy-TS-613",
                 "calibration": [
@@ -492,8 +492,8 @@
                 ]
             },
             {
-                "min_time": 11.31,
-                "max_time": 11.51,
+                "min_time": 11.35,
+                "max_time": 11.55,
                 "method": "largest",
                 "name": "5'-hydroxy-TS-613",
                 "calibration": [
@@ -555,8 +555,8 @@
                 ]
             },
             {
-                "min_time": 11.58,
-                "max_time": 11.78,
+                "min_time": 11.62,
+                "max_time": 11.82,
                 "method": "largest",
                 "name": "2'-hydroxy-TS-613",
                 "calibration": [
@@ -618,8 +618,8 @@
                 ]
             },
             {
-                "min_time": 12.05,
-                "max_time": 12.25,
+                "min_time": 12.1,
+                "max_time": 12.3,
                 "method": "largest",
                 "name": "TS-613 free acid",
                 "calibration": [
@@ -669,8 +669,8 @@
                 ]
             },
             {
-                "min_time": 12.3,
-                "max_time": 12.5,
+                "min_time": 12.35,
+                "max_time": 12.55,
                 "method": "largest",
                 "name": "des-chloro-TS-613",
                 "calibration": [
@@ -724,8 +724,8 @@
                 ]
             },
             {
-                "min_time": 12.83,
-                "max_time": 13.03,
+                "min_time": 12.9,
+                "max_time": 13.1,
                 "method": "largest",
                 "name": "TS-613 hydrolysis pdt B",
                 "calibration": [
@@ -787,8 +787,8 @@
                 ]
             },
             {
-                "min_time": 13.53,
-                "max_time": 13.73,
+                "min_time": 13.63,
+                "max_time": 13.83,
                 "method": "largest",
                 "name": "dehydro-TS-613",
                 "calibration": [
@@ -850,8 +850,8 @@
                 ]
             },
             {
-                "min_time": 14.38,
-                "max_time": 14.58,
+                "min_time": 14.48,
+                "max_time": 14.68,
                 "method": "largest",
                 "name": "4,5-epoxy-TS-613",
                 "calibration": [
@@ -913,8 +913,8 @@
                 ]
             },
             {
-                "min_time": 16.25,
-                "max_time": 16.45,
+                "min_time": 16.35,
+                "max_time": 16.55,
                 "method": "largest",
                 "name": "TS-613",
                 "calibration": [
