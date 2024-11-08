@@ -369,7 +369,7 @@ additions = [
     },
 ]
 
-# Compound name mapping
+# Compound name mappingTo
 compound_name_mapping = {
     "A": "Compound A",
     "B": "Compound B",

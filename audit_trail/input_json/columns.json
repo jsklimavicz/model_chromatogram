@@ -1,0 +1,19 @@
+[
+    {
+        "inner_diameter": {
+            "value": 4.6,
+            "unit": "mm"
+        },
+        "length": {
+            "value": 150,
+            "unit": "mm"
+        },
+        "serial_number": "00882945-M",
+        "injection_count": 0,
+        "particle_size": {
+            "value": 5,
+            "unit": "um"
+        },
+        "parameters_id": 1
+    }
+]
