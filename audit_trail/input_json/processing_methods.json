@@ -1,6 +1,6 @@
 [
     {
-        "name": "TS-613 Calibration Standard 2.0 ug/mL",
+        "name": "TS-613 Calibration Standard",
         "detection_parameters": {
             "background_noise_range": {
                 "minimum": 0,
@@ -264,8 +264,8 @@
                 ]
             },
             {
-                "min_time": 8.3,
-                "max_time": 8.5,
+                "min_time": 8.31,
+                "max_time": 8.51,
                 "method": "largest",
                 "name": "4,5-dihydroxy-TS-613",
                 "calibration": [

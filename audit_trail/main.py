@@ -53,10 +53,11 @@ method_creation_by_system = {
             "Johann Heinrich Pott",
             "Jöns Jacob Berzelius",
         ],
-        "sample_name_high": "TS-613 - 2 ug/ml standard",
-        "sample_name_low": "TS-613 - 0.2 ug/ml standard",
+        "sample_name_high": "TS-613 - 2 ug/ml standard - ",
+        "sample_name_low": "TS-613 - 0.2 ug/ml standard - ",
         "sequence_name": "TS-613 SST",
         "method_name": "TS-613 metabolite analysis",
+        "datetime_str": "%y %b %d",
     },
     "Johnson": {
         "method": {
@@ -70,10 +71,11 @@ method_creation_by_system = {
             "Hans Christian Ørsted",
             "Peter Jacob Hjelm",
         ],
-        "sample_name_high": "TS-613_standard_high",
-        "sample_name_low": "TS-613_standard_low",
+        "sample_name_high": "TS-613_standard_high_",
+        "sample_name_low": "TS-613_standard_low_",
         "sequence_name": "TS-613 standards",
         "method_name": "TS-613 metabolites",
+        "datetime_str": "%Y%m%d",
     },
     "Mangold": {
         "method": {
@@ -87,10 +89,11 @@ method_creation_by_system = {
             "Carl Wilhelm Scheele",
             "Johan Gottlieb Gahn",
         ],
-        "sample_name_high": "TS-613 standard 2 ug",
-        "sample_name_low": "TS-613 standard 0.2 ug",
+        "sample_name_high": "TS-613 standard 2 ug ",
+        "sample_name_low": "TS-613 standard 0.2 ug ",
         "sequence_name": "TS-613 calibration",
         "method_name": "TS-613 metabolite study",
+        "datetime_str": "%Y%m%d",
     },
     "Merian": {
         "method": {
@@ -104,10 +107,11 @@ method_creation_by_system = {
             "William Cruickshank",
             "Eugène-Melchior Péligot",
         ],
-        "sample_name_high": "TS-613 2 ug/ml",
-        "sample_name_low": "TS-613 0.2 ug/ml",
+        "sample_name_high": "TS-613 2 ug/ml ",
+        "sample_name_low": "TS-613 0.2 ug/ml ",
         "sequence_name": "TS-613 system suitability",
         "method_name": "TS-613 metabolites",
+        "datetime_str": "%m/%d/%Y",
     },
 }
 
@@ -171,27 +175,14 @@ def generate_random_time(date):
 
 folder = "output"
 rmdir(Path(folder))
-system_list = [system_list[-1]]
+# system_list = [system_list[-1]]
 for ind, system in enumerate(system_list):
     initial_date = datetime(2023, 2, 13, 8, 0, 0)
 
     system_name = system.name
     system_lib = method_creation_by_system[system_name]
     sequence_name = "calibration_standards"
-    sample_high = Sample(
-        system_lib["sample_name_high"],
-        cas_list,
-        conc_list,
-        initial_date,
-        concentration_unit=2,
-    )
-    sample_low = Sample(
-        system_lib["sample_name_low"],
-        cas_list,
-        conc_list,
-        initial_date,
-        concentration_unit=2,
-    )
+
     set_(instrument_method, "name", system_lib["method_name"])
     set_(instrument_method, "creation", system_lib["method"])
     set_(instrument_method, "last_update", system_lib["method"])
@@ -209,6 +200,9 @@ for ind, system in enumerate(system_list):
     im = InstrumentMethod(**instrument_method)
     pm = ProcessingMethod(**processing_method)
 
+    default_rt_offset = system.retention_time_offset
+    week = 0
+    inj_count = 0
     while initial_date < datetime(2024, 10, 21, 0, 0, 0):
         first_day = random.choice([0, 1])  # Monday = 0, Tuesday = 1
         datetime1 = generate_random_time(initial_date + timedelta(days=first_day))
@@ -219,7 +213,7 @@ for ind, system in enumerate(system_list):
             user = random.choice(system_lib["users"])
             blank_repeat = False
             random_val = np.random.uniform()
-            if (system.name == "Merian" and random_val < 0.1) or random_val < 0.02:
+            if (system.name == "Merian" and random_val < 0.1) or random_val < 0.01:
                 blank = Sample(
                     "blank",
                     None,
@@ -231,38 +225,61 @@ for ind, system in enumerate(system_list):
                 blank_repeat = True
             else:
                 blank = true_blank
+            mult = 19.95 + np.random.normal(0, 0.01)
+            sample_high = Sample(
+                f'{system_lib["sample_name_high"]}{dt.strftime(system_lib["datetime_str"])}',
+                cas_list,
+                np.ones(len(cas_list)) * mult,
+                initial_date,
+                concentration_unit=2,
+            )
+            sample_low = Sample(
+                f'{system_lib["sample_name_low"]}{dt.strftime(system_lib["datetime_str"])}',
+                cas_list,
+                np.ones(len(cas_list)) * mult / 10,
+                initial_date,
+                concentration_unit=2,
+            )
+            system.inject(random.randint(10, 31))
+            if system.column.failed:
+                system.replace_column()
             for sample in [blank, sample_low, sample_high]:
-                reject_injection = True
                 reinject_count = 0
-                while reject_injection:
+                system.retention_time_offset = default_rt_offset
+                while reinject_count < 4:
                     inj, peak_count = create_injection(
                         sample,
                         im,
-                        pm,
+                        ProcessingMethod(**processing_method),
                         sequence,
                         system,
                         user,
                         dt,
                     )
-                    inj.find_peaks("UV_VIS_1")
+                    peaks = inj.find_peaks("UV_VIS_1")
                     injections.append(inj)
                     dt += timedelta(minutes=im.run_time + np.random.uniform(0.05, 0.2))
                     if (peak_count == 0 and sample.name == "blank") or peak_count == 16:
                         test = np.random.uniform()
                         if test < 0.99:
-                            reject_injection = False
-                        if system.name == "Merian":
-                            system.retention_time_offset = 0.07
-                    elif system.name == "Merian":
-                        system.retention_time_offset = 0.08
-                    else:
-                        pass
+                            blank_repeat = False
+                            break
+                    elif sample.name != "blank" and system.name == "Merian":
+                        system.retention_time_offset = np.clip(
+                            system.retention_time_offset
+                            + np.random.uniform(-0.0005, 0.0005),
+                            default_rt_offset - 0.002,
+                            default_rt_offset + 0.002,
+                        )
                     if blank_repeat:
                         sample = true_blank
-                    if system.column.failed:
-                        system.replace_column()
+                        blank_repeat = False
+                    reinject_count += 1
 
         initial_date += timedelta(days=7)
+        week += 1
+        print(f"Week: {week}; Weekly injections: {len(injections) - inj_count}")
+        inj_count = len(injections)
 
     print(f"saving injections for {system.name}...")
 
