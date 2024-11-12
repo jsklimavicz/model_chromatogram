@@ -194,6 +194,7 @@ class Injection:
                     "name": self.sample.name,
                     "creation_date": self.sample.creation_date,
                     "location": self.sample.location,
+                    "type": self.sample.type,
                 }
             ],
             "results": [],
