@@ -2,9 +2,36 @@ from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 from random import uniform
 import datetime
 from copy import copy
+from typing import Literal
+
+ALLOWED_TYPES = [
+    "Unknown",
+    "Standard",
+    "Blank",
+    "Check Standard",
+    "QC Sample",
+    "Calibration Standard",
+    "Matrix",
+    "Spiked",
+    "Unspiked",
+    "RF Internal Standard",
+]
+LITERAL_ALLOWED_TYPES = Literal[
+    "Unknown",
+    "Standard",
+    "Blank",
+    "Check Standard",
+    "QC Sample",
+    "Calibration Standard",
+    "Matrix",
+    "Spiked",
+    "Unspiked",
+    "RF Internal Standard",
+]
 
 
 class Sample:
+
     def __init__(
         self,
         name: str,
@@ -18,6 +45,8 @@ class Sample:
         n_unknown_peaks: int = 0,
         unknown_concentration_range: list[float] = [0, 1],
         location=None,
+        type_: LITERAL_ALLOWED_TYPES = "Unknown",
+        **kwargs,
     ) -> None:
         """
         Creates a sample with a list of compounds.
@@ -41,6 +70,13 @@ class Sample:
         """
 
         self.name: str = name
+
+        self.type = kwargs.get("type") or type_
+        if self.type not in ALLOWED_TYPES:
+            raise ValueError(
+                f"Invalid sample type: {self.type}. Must be one of {LITERAL_ALLOWED_TYPES}"
+            )
+
         if isinstance(creation_date, datetime.datetime):
             self.creation_date = creation_date.isoformat()
         else:
@@ -96,6 +132,7 @@ class Sample:
             ),
             "random_peaks": 0,
             "max_random_amount": 0,
+            "type": self.type,
         }
         return self_dict
 
