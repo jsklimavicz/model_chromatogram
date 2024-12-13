@@ -1,5 +1,17 @@
-import numpy as np
 from model_chromatogram.system import Column, random_column_serial_number
+from pydash import get as get_, set_
+import uuid
+
+
+class Module:
+    def __init__(self, name, type, **kwargs) -> None:
+        self.pk = str(uuid.uuid4())
+        self.name = name
+        self.type = type
+        self.kwargs = kwargs
+
+    def todict(self):
+        return {"name": self.name, "pk": self.pk, "type": self.type, **self.kwargs}
 
 
 class System:
@@ -9,7 +21,11 @@ class System:
         self.name = name
         self.column = Column(**column)
         self.retention_time_offset = system_retention_time_offset
+        self.modules = [Module(item for item in get_(kwargs, "modules"))]
+        kwargs.pop("modules")
         self.kwargs = {"name": name, "column": self.column.todict(), **kwargs}
+        for module in get_(self.kwargs, "modules"):
+            set_(module, "pk", str(uuid.uuid4()))
 
     def get_column(self):
         return self.column
@@ -41,4 +57,5 @@ class System:
         d["column"] = self.column.todict()
         if "system_retention_time_offset" in d.keys():
             d.pop("system_retention_time_offset")
+        d["modules"] = [module.todict() for module in self.modules]
         return d
