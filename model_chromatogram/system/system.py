@@ -24,11 +24,14 @@ class System:
         self.modules = [Module(item for item in get_(kwargs, "modules"))]
         kwargs.pop("modules")
         self.kwargs = {"name": name, "column": self.column.todict(), **kwargs}
-        for module in get_(self.kwargs, "modules"):
-            set_(module, "pk", str(uuid.uuid4()))
 
     def get_column(self):
         return self.column
+
+    def lookup_module(self, name):
+        for module in self.modules:
+            if name == module.name:
+                return module
 
     def replace_column(self, column: Column | None = None, serial_number=None):
         if serial_number is None:
