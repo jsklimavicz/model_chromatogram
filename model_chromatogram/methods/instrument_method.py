@@ -1,4 +1,5 @@
 from model_chromatogram.compounds import SOLVENT_LIBRARY, Solvent
+from model_chromatogram.system import System
 from pydash import get as _get
 from model_chromatogram.user_parameters import *
 import numpy as np
@@ -16,6 +17,7 @@ class InstrumentMethod:
         mobile_phases,
         mobile_phase_gradient_steps,
         detection,
+        system: System,
         buffer_ph: float = 7.0,
         column_temperature: float = 298,
         sample_rate: float = SAMPLE_RATE,
@@ -28,7 +30,7 @@ class InstrumentMethod:
 
         Args:
             name (str): The name of the instrument method.
-            mobile_phases (list): A list of dictionaries for the mobile phases. Each dictionary must have a `name` (str) and an `id` (str); permitted values for `id` are the case-insensitve `a`, `b`, `c`, and `d`. The value for `name` must match a name, ID, or CAS number in the `solvent_library.csv` file.
+            mobile_phases (list): A list of dictionaries for the mobile phases. Each dictionary must have a `name` (str) and an `id` (str); permitted values for `id` are the case-insensitive `a`, `b`, `c`, and `d`. The value for `name` must match a name, ID, or CAS number in the `solvent_library.csv` file.
             mobile_phase_gradient_steps (list): A list of dictionaries outlining the steps in gradient table. Each dictionary can have:
                 "time": float
                 "flow": float
@@ -39,6 +41,7 @@ class InstrumentMethod:
                 "curve": int (1-9)
             where `time`, `flow`, and `percent_b` are mandatory; `percent_a` is determined by subtracting the other percentages from 100, and the `curve` parameter (default: 5) describes the interpolation method between two time points.
             detection: A dictionary containing detection parameters. Current supported is the `uv_vis_parameters` key, where the value is a `list` of `dict`s, where each dict has a `channel_name` (str) and a `wavelength` (float).
+            system (System): A chromatography system object.
             sample_rate (float): Number of samples per second. Default global SAMPLE_RATE.
             run_time (float): Length of the run (in minutes). Default global RUN_LENGTH.
         """
@@ -49,6 +52,9 @@ class InstrumentMethod:
         self.run_time: float = run_time
         self.sample_rate: float = sample_rate
         self.detection: dict = detection
+        for channel in self.detection:
+            module = system.lookup_module(channel["detector_name"])
+            channel["fk_module"] = module.pk if module else None
         self.sample_introduction: dict = sample_introduction
         self.__extract_sample_introduction_values()
         self.mobile_phases: list = mobile_phases
