@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from model_chromatogram.utils import create_autocorrelated_data
+import uuid
 
 
 class Chromatogram:
@@ -22,6 +23,7 @@ class Chromatogram:
             times (np.array): array of times in minutes at which to generate chromatogram data.
             initial_values (np.array): array of initial signal values to add peaks to.
         """
+        self.uuid = str(uuid.uuid4())
         self.times: np.array = times
         self.signal: np.array = initial_values
         self.saturated_signal: np.array = self.signal
