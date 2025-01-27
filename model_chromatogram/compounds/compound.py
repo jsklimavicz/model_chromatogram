@@ -51,13 +51,13 @@ class Compound:
     def __set_initial_float(self, key, default=0):
         try:
             return float(_get(self.kwargs, key))
-        except:
+        except ValueError:
             return default
 
     def set_uv_spectrum(self):
         try:
             self.spectrum = UVSpectrum(self.cas)
-        except:
+        except Exception:
             # default UV spectrum
             self.spectrum = UVSpectrum("63-74-1")
 
@@ -100,7 +100,9 @@ class Compound:
     def calculate_logD(self, pH_value: float):
         """Calculates logD (distribution coefficient) of the compound at the provided pH.
 
-        Acidic and basic pka values are used to generate a list of microspecies, and calculate their proportions and charges. This information is then used to calculate the logD, average charge of the microspecies at the given pH, and a broadening factor for the peak that depends on the distribution of the microspecies.
+        Acidic and basic pka values are used to generate a list of microspecies, and calculate their proportions and
+        charges. This information is then used to calculate the logD, average charge of the microspecies at the given
+        pH, and a broadening factor for the peak that depends on the distribution of the microspecies.
 
         Args:
             pH_value (float): pH value at which to calculate the logD.
@@ -155,9 +157,11 @@ class Compound:
         """Calculate a retention factor based on compound, solvent, and stationary phase parameters.
 
         Args:
-            solvent_profiles (pd.DataFrame): DataFrame of solvent profiles with columns for `polarity`, `hb_acidity`, `hb_basicity`, and `dielectric`.
+            solvent_profiles (pd.DataFrame): DataFrame of solvent profiles with columns for `polarity`, `hb_acidity`,
+            `hb_basicity`, and `dielectric`.
             solvent_ph (float): pH of the buffered solvent
-            col_param (ColumnParameters): A `ColumnParameters` object containing attribute for the hydrophobic subtraction model.
+            col_param (ColumnParameters): A `ColumnParameters` object containing attribute for the hydrophobic
+            subtraction model.
 
         Returns:
             Rf (np.array): An array of retention factor values for each set of solvent profile points.
@@ -257,13 +261,14 @@ class Compound:
 
         try:
             last_neg_ind = len(move_ratio[move_ratio < 0])
-            switch_vals = move_ratio[last_neg_ind : last_neg_ind + 2]
-            switch_times = time[last_neg_ind : last_neg_ind + 2]
+            end_index = last_neg_ind + 2
+            switch_vals = move_ratio[last_neg_ind:end_index]
+            switch_times = time[last_neg_ind:end_index]
 
             retention_time = switch_times[0] + (-switch_vals[0]) * (
                 switch_times[1] - switch_times[0]
             ) / (switch_vals[1] - switch_vals[0])
-        except IndexError as e:
+        except IndexError:
             retention_time = time[-1] + 5
 
         self.retention_time = retention_time

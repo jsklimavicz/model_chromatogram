@@ -1,7 +1,12 @@
 from model_chromatogram.compounds import SOLVENT_LIBRARY, Solvent
 from model_chromatogram.system import System
 from pydash import get as _get
-from model_chromatogram.user_parameters import *
+from model_chromatogram.user_parameters import (
+    SOLVENT_PROFILE_CONVOLUTION_WIDTH,
+    BASELINE_MULTIPLIER,
+    SAMPLE_RATE,
+    RUN_LENGTH,
+)
 import numpy as np
 from scipy import signal
 import pandas as pd
@@ -30,17 +35,24 @@ class InstrumentMethod:
 
         Args:
             name (str): The name of the instrument method.
-            mobile_phases (list): A list of dictionaries for the mobile phases. Each dictionary must have a `name` (str) and an `id` (str); permitted values for `id` are the case-insensitive `a`, `b`, `c`, and `d`. The value for `name` must match a name, ID, or CAS number in the `solvent_library.csv` file.
-            mobile_phase_gradient_steps (list): A list of dictionaries outlining the steps in gradient table. Each dictionary can have:
-                "time": float
-                "flow": float
-                "percent_a": float
-                "percent_b": float
-                "percent_c": float
-                "percent_d": float
-                "curve": int (1-9)
-            where `time`, `flow`, and `percent_b` are mandatory; `percent_a` is determined by subtracting the other percentages from 100, and the `curve` parameter (default: 5) describes the interpolation method between two time points.
-            detection: A dictionary containing detection parameters. Current supported is the `uv_vis_parameters` key, where the value is a `list` of `dict`s, where each dict has a `channel_name` (str) and a `wavelength` (float).
+            mobile_phases (list): A list of dictionaries for the mobile phases. Each dictionary must have a `name`
+                (str) and an `id` (str); permitted values for `id` are the case-insensitive `a`, `b`, `c`, and `d`. The
+                value for `name` must match a name, ID, or CAS number in the `solvent_library.csv` file.
+            mobile_phase_gradient_steps (list): A list of dictionaries outlining the steps in gradient table. Each
+                dictionary can have:
+                    "time": float
+                    "flow": float
+                    "percent_a": float
+                    "percent_b": float
+                    "percent_c": float
+                    "percent_d": float
+                    "curve": int (1-9)
+                where `time`, `flow`, and `percent_b` are mandatory; `percent_a` is determined by subtracting the other
+                percentages from 100, and the `curve` parameter (default: 5) describes the interpolation method between
+                two time points.
+            detection: A dictionary containing detection parameters. Current supported is the `uv_vis_parameters` key,
+                where the value is a `list` of `dict`s, where each dict has a `channel_name` (str) and a `wavelength`
+                (float).
             system (System): A chromatography system object.
             sample_rate (float): Number of samples per second. Default global SAMPLE_RATE.
             run_time (float): Length of the run (in minutes). Default global RUN_LENGTH.
@@ -85,12 +97,15 @@ class InstrumentMethod:
         convolution_width: float = SOLVENT_PROFILE_CONVOLUTION_WIDTH,
     ):
         """
-        Convolves a signal with a Tukey window to produce a more realistic solvent profile curve, instead of discontinuities in the derivative. Input array is padded with constant values on the right end only to produce an outut with the same length as the input.
+        Convolves a signal with a Tukey window to produce a more realistic solvent profile curve, instead of
+        discontinuities in the derivative. Input array is padded with constant values on the right end only to produce
+        an outut with the same length as the input.
 
         Args:
             y (np.array): Array of samples to convolve
             sample_rate (float): Number of samples per second. Default global SAMPLE_RATE.
-            convolution_width (float): Width of the convolution window in minutes. Default global SOLVENT_PROFILE_CONVOLUTION_WIDTH
+            convolution_width (float): Width of the convolution window in minutes. Default global
+                SOLVENT_PROFILE_CONVOLUTION_WIDTH
 
         Returns:
             filtered (np.array): The convolved signal values
@@ -126,7 +141,8 @@ class InstrumentMethod:
             grad_x (np.array): array of grandient table time values
             grad_y (np.array): array of grandient table y values
             convolve (bool): Specifies whether to convolve the profile (True) or not (False)
-            set_zero_time (bool): Specifies whether to set the start point of the profile to the initial value (True) or not (False)
+            set_zero_time (bool): Specifies whether to set the start point of the profile to the initial value (True)
+            or not (False)
 
         Returns:
             y (np.array): The array of signal values
@@ -161,7 +177,10 @@ class InstrumentMethod:
 
     def __create_composite_profiles(self):
         """
-        Helper function to create profiles for the solvent parameters "hb_acidity", "hb_basicity", "dipolarity", "polarity", and "dielelectric", which affect how quickly compounds elute from the column. This function assumes that there is a linear relation between these parameters and the percentage of solvent, which is unlikely to be true in the real world, but is still a useful approximation here.
+        Helper function to create profiles for the solvent parameters "hb_acidity", "hb_basicity", "dipolarity",
+        "polarity", and "dielelectric", which affect how quickly compounds elute from the column. This function assumes
+        that there is a linear relation between these parameters and the percentage of solvent, which is unlikely to be
+        true in the real world, but is still a useful approximation here.
         """
 
         solvents = [_get(solvent, "solvent") for solvent in self.mobile_phases]

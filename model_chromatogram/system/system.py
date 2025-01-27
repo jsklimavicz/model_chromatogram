@@ -1,5 +1,5 @@
 from model_chromatogram.system import Column, random_column_serial_number
-from pydash import get as get_, set_
+from pydash import get as get_
 import uuid
 
 

@@ -1,6 +1,5 @@
 import numpy as np
 from model_chromatogram.utils import (
-    exponnorm,
     scaled_exponnorm,
     scaled_exponnorm_scalar,
 )
@@ -244,7 +243,7 @@ class Peak:
         def calculate_widths(self, *args, **kwargs):
             try:
                 return func(self, *args, **kwargs)
-            except (IndexError, ValueError, RuntimeError) as e:
+            except (IndexError, ValueError, RuntimeError):
                 return None, None, None
 
         return calculate_widths

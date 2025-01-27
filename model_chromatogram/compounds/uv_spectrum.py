@@ -30,7 +30,7 @@ class UVSpectrum:
                         start_read = True
             self.wavelengths = np.array(self.wavelengths)
             self.log_epsilon = np.array(self.log_epsilon)
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             print(f"Check if the jdx file for CAS {self.cas} is in this directory.")
             raise
 

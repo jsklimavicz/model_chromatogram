@@ -1,5 +1,7 @@
 import numpy as np
-import random, csv, string
+import random
+import csv
+import string
 from model_chromatogram.user_parameters import (
     DEFAULT_BASE_ASYMMETRY,
     DEFAULT_PEAK_WIDTH,
@@ -35,7 +37,7 @@ class Parameters:
     def __get_float_value(self, field_name, default):
         try:
             return float(get(self.parameter_dict, field_name, default))
-        except:
+        except ValueError:
             return default
 
     def todict(self):

@@ -61,14 +61,23 @@
             }
         ],
         "detection": {
+            "gain": 1,
             "uv_vis_parameters": [
                 {
+                    "detector_name": "UV",
                     "name": "UV_VIS_1",
-                    "wavelength": 230
+                    "wavelength": 230,
+                    "bandwidth": 4,
+                    "reference_wavelength": 500,
+                    "reference_bandwidth": 4
                 },
                 {
+                    "detector_name": "UV",
                     "name": "UV_VIS_2",
-                    "wavelength": 254
+                    "wavelength": 254,
+                    "bandwidth": 4,
+                    "reference_wavelength": null,
+                    "reference_bandwidth": null
                 }
             ]
         },

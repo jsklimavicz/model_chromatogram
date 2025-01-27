@@ -7,10 +7,10 @@ from model_chromatogram import (
     System,
 )
 import numpy as np
-import json, random
+import json
+import random
 from pydash import get as get_, set_
 from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
 from pathlib import Path
 
 
@@ -23,7 +23,7 @@ def rmdir(directory):
             else:
                 item.unlink()
         directory.rmdir()
-    except:
+    except Exception:
         pass
 
 
@@ -116,7 +116,7 @@ method_creation_by_system = {
 }
 
 true_blank = Sample(
-    name=f"blank",
+    name="blank",
     compound_id_list=[],
     compound_concentration_list=[],
     concentration_unit=2,
@@ -146,7 +146,13 @@ conc_list = np.ones(len(cas_list)) * 19.95
 
 
 def create_injection(
-    sample, instrument_method, processing_method, sequence, system, user, injection_time
+    sample,
+    instrument_method,
+    processing_method,
+    sequence,
+    system,
+    user,
+    injection_time,
 ):
     curr_injection = Injection(
         sample,
@@ -159,12 +165,12 @@ def create_injection(
     )
     peak_finder = curr_injection.find_peaks("UV_VIS_1")
     named_peak_count = len(
-        [peak.name for peak in peak_finder.peaks.peaks if peak.name is not None]
+        [p.name for p in peak_finder.peaks.peaks if p.name is not None]
     )
     return (curr_injection, named_peak_count)
 
 
-def generate_random_time(date):
+def generate_time(date):
     """Generate a random time between 8 AM and 4 PM on a given date."""
     hour = random.randint(8, 15)  # 8 AM to 3 PM for starting hour
     minute = random.randint(0, 59)
@@ -205,9 +211,9 @@ for ind, system in enumerate(system_list):
     inj_count = 0
     while initial_date < datetime(2024, 10, 21, 0, 0, 0):
         first_day = random.choice([0, 1])  # Monday = 0, Tuesday = 1
-        datetime1 = generate_random_time(initial_date + timedelta(days=first_day))
-        second_day = random.randint(first_day + 2, 4)  # Weekday (Wednesday to Friday)
-        datetime2 = generate_random_time(initial_date + timedelta(days=second_day))
+        datetime1 = generate_time(initial_date + timedelta(days=first_day))
+        second_day = random.randint(first_day + 2, 4)  # Weekday (W to F)
+        datetime2 = generate_time(initial_date + timedelta(days=second_day))
 
         for dt in [datetime1, datetime2]:
             user = random.choice(system_lib["users"])
@@ -227,7 +233,8 @@ for ind, system in enumerate(system_list):
                 blank = true_blank
             mult = 19.95 + np.random.normal(0, 0.01)
             sample_high = Sample(
-                f'{system_lib["sample_name_high"]}{dt.strftime(system_lib["datetime_str"])}',
+                f'{system_lib["sample_name_high"]}'
+                + f'{dt.strftime(system_lib["datetime_str"])}',
                 cas_list,
                 np.ones(len(cas_list)) * mult,
                 initial_date,

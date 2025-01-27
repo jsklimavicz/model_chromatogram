@@ -18,7 +18,6 @@ from model_chromatogram.user_parameters import (
 from pydash import get as get_, set_
 from scipy.stats import linregress
 import itertools
-from statistics import linear_regression
 
 
 class PeakFinder:
@@ -66,7 +65,7 @@ class PeakFinder:
     def __parse_processing_method(self):
         def set_param(mapping, default):
             fetched_val = get_(self.processing_method.kwargs, mapping)
-            if fetched_val == None:
+            if fetched_val is None:
                 fetched_val = default
             return fetched_val
 
@@ -181,7 +180,8 @@ class PeakFinder:
 
     def __find_baseline(self):
         """
-        Calculates a baseline approximation using the psalsa asymmetric least squares algorithm, and stores a cubic spline of the baseline.
+        Calculates a baseline approximation using the psalsa asymmetric least squares algorithm, and stores a cubic
+        spline of the baseline.
         """
 
         baseline_params = get_(
@@ -222,13 +222,16 @@ class PeakFinder:
     def find_peaks(self):
         """
         Works in three steps:
-            1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple of the noise in the second derivative
-            2. expand these regions to where the second derivative goes above positive multiple of the threshold and back down again
+            1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple
+                of the noise in the second derivative
+            2. expand these regions to where the second derivative goes above positive multiple of the threshold and
+                back down again
             3. contract overlapping regions to a local max or min in the second derivative
         This function populates the `self.peaks` array.
 
         Args:
-            noise_multiplier (float): multiplier for threshold of signal detection. Higher values result in fewer peaks detected.
+            noise_multiplier (float): multiplier for threshold of signal detection. Higher values result in fewer peaks
+                detected.
 
         """
         self.d2_sigma = self.noise_threshold_multiplier * self.d2_ave_noise
@@ -422,11 +425,15 @@ class PeakFinder:
                                 amounts = [
                                     point["amount"] for point in calibration["points"]
                                 ]
-                            except:
+                                if areas is None or amounts is None:
+                                    continue
+                            except Exception:
                                 continue
 
                             calibration_fit(
-                                calibration, named_peak, self.sample_introduction
+                                calibration,
+                                named_peak,
+                                self.sample_introduction,
                             )
 
 

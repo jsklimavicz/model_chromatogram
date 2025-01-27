@@ -54,19 +54,26 @@ class Sample:
         Args:
             name (str): The name of the sample.
             compound_id_list (list[str]): A list of compound identifiers for finding compounds in the COMPOUND_LIBRARY
-            compound_concentration_list (list[float]): A list of concentrations in the same order as the `compound_id_list`.
+            compound_concentration_list (list[float]): A list of concentrations in the same order as the
+                `compound_id_list`.
             creation_date (datetime): Date that the sample was created.
-            compound_alias (list[str]): A list of names to label the compounds in the sample as. These are the names that will be used in processing methods to label peaks.
-            concentration_unit (int): An int to signify which units are used for the concentration of the input concentrations.
-                1: mg/ml (part per thousand w/v)
-                2: ug/ml (ppm w/v)
-                3: ng/ml (ppb w/v)
-                4: umol/ml (or mM)
-                5: nmol/ml (or uM)
-            n_random_named_peaks (int): Number of random compounds to add to the sample, where each peak is assigned a code name.
-            random_named_concentration_range (list[float]): 2-element list containing the min and max concentration values for a randomly added named compound.
-            n_unknown_peaks (int): Number of unknown compounds to add to the sample, where each peak is assigned the name "unknown".
-            random_unknown_range (list[float]): 2-element list containing the min and max concentration values for unknown compounds.
+            compound_alias (list[str]): A list of names to label the compounds in the sample as. These are the names
+                that will be used in processing methods to label peaks.
+            concentration_unit (int): An int to signify which units are used for the concentration of the input
+                concentrations.
+                    1: mg/ml (part per thousand w/v)
+                    2: ug/ml (ppm w/v)
+                    3: ng/ml (ppb w/v)
+                    4: umol/ml (or mM)
+                    5: nmol/ml (or uM)
+            n_random_named_peaks (int): Number of random compounds to add to the sample, where each peak is assigned a
+                code name.
+            random_named_concentration_range (list[float]): 2-element list containing the min and max concentration
+                values for a randomly added named compound.
+            n_unknown_peaks (int): Number of unknown compounds to add to the sample, where each peak is assigned the
+                name "unknown".
+            random_unknown_range (list[float]): 2-element list containing the min and max concentration values for
+                unknown compounds.
         """
 
         self.name: str = name
@@ -142,7 +149,9 @@ class Sample:
         )
         for compound in self.compounds:
             print(
-                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.intrinsic_log_p,3):0.2f}\t{round(compound.mw,3):0.3f}  \t{round(compound.concentration,3):0.3f}\t{round(compound.m_molarity,3):0.3f}'
+                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.intrinsic_log_p, 3):0.2f}\t'
+                + f"{round(compound.mw, 3):0.3f}  \t{round(compound.concentration, 3):0.3f}\t"
+                + f"{round(compound.m_molarity, 3):0.3f}"
             )
 
     def __iter__(self):

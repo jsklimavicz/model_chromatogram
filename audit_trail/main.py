@@ -7,10 +7,10 @@ from model_chromatogram import (
     System,
 )
 import numpy as np
-import json, random
+import json
+import random
 from pydash import get as get_, set_
 from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
 from pathlib import Path
 
 
@@ -23,7 +23,7 @@ def rmdir(directory):
             else:
                 item.unlink()
         directory.rmdir()
-    except:
+    except Exception:
         pass
 
 
@@ -116,7 +116,7 @@ method_creation_by_system = {
 }
 
 true_blank = Sample(
-    name=f"blank",
+    name="blank",
     compound_id_list=[],
     compound_concentration_list=[],
     concentration_unit=2,
