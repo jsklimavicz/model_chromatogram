@@ -1,0 +1,22 @@
+[
+    {
+        "sequence_name": "method_testing",
+        "instrument": "James's Instrument",
+        "datavault": "",
+        "sequence_url": "",
+        "start_time": "",
+        "injections": [
+            {
+                "sample_name": "",
+                "sample_position": "",
+                "sample_value": "",
+                "injection_volume": "",
+                "injection_type": "",
+                "calibration_level": "",
+                "instrument_method": "",
+                "processing_method": "",
+                "injection_time": ""
+            }
+        ]
+    }
+]

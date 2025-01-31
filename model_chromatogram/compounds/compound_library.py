@@ -5,6 +5,7 @@ from model_chromatogram.compounds import Compound
 import warnings
 import pickle
 from copy import copy
+from pathlib import Path
 
 
 class CompoundLibrary:
@@ -14,7 +15,8 @@ class CompoundLibrary:
 
     def __init__(self) -> None:
         """
-        Creates new instance of library by reading from the csv file. Each line in the csv file must be a valid compound for the Compound class.
+        Creates new instance of library by reading from the csv file. Each line in the csv file must be a valid
+        compound for the Compound class.
         """
         self.compounds: list[Compound] = []
         with open(
@@ -37,7 +39,8 @@ class CompoundLibrary:
             field (str): the field the look for the ID in.
 
         Returns:
-            out (None|Compound): a `Compound` object if the id is found in the specified field for a compound in the compound library; else, None.
+            out (None|Compound): a `Compound` object if the id is found in the specified field for a compound in the
+            compound library; else, None.
         """
         for compound in self.compounds:
             if isinstance(compound.kwargs[field], list):
@@ -54,17 +57,19 @@ class CompoundLibrary:
         Args:
             id (str): the ID of the compound to look up in the library. Must be one of `"id"`, `"name"`, or `"cas"`
             field (str): the field the look for the ID in. Default = `"id"`.
-            enforce_field (bool): Determines whether we look *only* in the specified `field` (`True`) or in al fields (`False`, default).
+            enforce_field (bool): Determines whether we look *only* in the specified `field` (`True`) or in al fields
+            (`False`, default).
 
         Returns:
-            out (None|Compound): a `Compound` object if the id is found in the specified field for a compound in the compound library; else,`None`.
+            out (None|Compound): a `Compound` object if the id is found in the specified field for a compound in the
+            compound library; else,`None`.
         """
         methods = ["id", "name", "cas"]
         try:
             methods.remove(field)
         except ValueError as e:
             print(f"field argument for library lookup must be one of {methods}")
-            raise
+            raise e
         compound = self.__lookup(id, field)
         if compound is not None:
             return compound
@@ -103,14 +108,19 @@ class CompoundLibrary:
         prefix: str = IMP_PEAK_PREFIX,
     ) -> list[Compound]:
         """
-        Retrieves a list of compounds from the compound library, with the option to exclude compounds based on CAS number.
+        Retrieves a list of compounds from the compound library, with the option to exclude compounds based on CAS
+        number.
 
         Args:
             count (int): The number of compounds to retrieve.
             cas_exclude_list (list[str]): List of CAS numbers to exclude from the random sample.
-            set_unknown (bool): If True, returns a list of compounds with "unknown" as the name. This overrides the args `replace_names` and `prefix`.
-            replace_names (bool): Whether to replace the names in the library with a code, e.g. "ABC-123". The prefrix of the code (here, "ABC") is set by `prefix`, while the length of the numeric code is set by `RANDOM_PEAK_ID_DIGITS`.
-            prefix (str): The initial string component of a compound ID code. The default is set by the user parameter `IMP_PEAK_PREFIX`
+            set_unknown (bool): If True, returns a list of compounds with "unknown" as the name. This overrides the
+                args `replace_names` and `prefix`.
+            replace_names (bool): Whether to replace the names in the library with a code, e.g. "ABC-123". The prefrix
+                of the code (here, "ABC") is set by `prefix`, while the length of the numeric code is set by
+                `RANDOM_PEAK_ID_DIGITS`.
+            prefix (str): The initial string component of a compound ID code. The default is set by the user parameter
+                `IMP_PEAK_PREFIX`
 
         Returns:
             compounds (list[Compound]): a list of compounds as requested.
@@ -130,7 +140,8 @@ class CompoundLibrary:
                 return compound_return
 
         warnings.warn(
-            "More compounds requested than are available in the library with the given exclusion list. Retunring the compounds available."
+            "More compounds requested than are available in the library with the given exclusion list. "
+            "Returning the compounds available."
         )
         return compound_return
 
@@ -139,8 +150,6 @@ class CompoundLibraryWarning(UserWarning):
     pass
 
 
-from pathlib import Path
-
 Path("./cache/").mkdir(exist_ok=True)
 
 try:
@@ -148,7 +157,7 @@ try:
         COMPOUND_LIBRARY = pickle.load(f)
         if not isinstance(COMPOUND_LIBRARY, CompoundLibrary):
             raise TypeError("Loaded library is not a CompoundLibrary.")
-except (TypeError, FileNotFoundError, EOFError) as e:
+except (TypeError, FileNotFoundError, EOFError):
     # create compound library to call
     COMPOUND_LIBRARY = CompoundLibrary()
     with open("./cache/compound_library.obj", "wb") as f:

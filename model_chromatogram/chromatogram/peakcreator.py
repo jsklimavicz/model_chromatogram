@@ -1,23 +1,36 @@
 from numpy.random import uniform
 import math
 
-from model_chromatogram.utils import exponnorm, exponnorm_scalar, scaled_exponnorm
-from scipy.optimize import minimize_scalar
+from model_chromatogram.utils import exponnorm
 from model_chromatogram.compounds import Compound
 import numpy as np
-from model_chromatogram.system import Column, System
+from model_chromatogram.system import System
 
-from model_chromatogram.user_parameters import *
+from model_chromatogram.user_parameters import (
+    DEFAULT_BASE_ASYMMETRY,
+    DEFAULT_PEAK_WIDTH,
+    OVERALL_HEIGHT_RANDOM_NOISE,
+    RETENTION_TIME_RANDOM_OFFSET_MAX,
+    SIGNAL_MULTIPLIER,
+    WIDENING_CONSTANT,
+    ASYMMETRY_DEPENDENCE_ON_RETENTION_TIME,
+    INDIVIDUAL_HEIGHT_RANDOM_NOISE,
+    INDIVIDUAL_RETENTION_TIME_RANDOM_NOISE,
+)
 
 
 class PeakCreator:
     """
-    Class designed to create peak signals based on peak-specific information and user-defined parameters. Generated peaks have an exponentially-modified gaussian shape to mimic peak asymmetry. Only one PeakCreator should be used per injection to ensure that injection-specific variations in retention time and peak height/area remain constant within an injection.
+    Class designed to create peak signals based on peak-specific information and user-defined parameters. Generated
+    peaks have an exponentially-modified gaussian shape to mimic peak asymmetry. Only one PeakCreator should be used
+    per injection to ensure that injection-specific variations in retention time and peak height/area remain constant
+    within an injection.
     """
 
     def __init__(self, system: System) -> None:
         """
-        Class designed to create peak signals based on peak-specific information and user-defined parameters. Sets the injection-specific parameters.
+        Class designed to create peak signals based on peak-specific information and user-defined parameters. Sets the
+        injection-specific parameters.
         """
         self.system = system
         self.column = system.get_column()
@@ -115,7 +128,9 @@ class PeakCreator:
             base_sigma, curr_sigma, base_asymmetry, asymmetry
         )
 
-        # calculate a modified height based on original height, the peak broadening factor, the injection-specific height modifier, the user-defined signal multiplier, and a random number close to 1 for variation in peak height within a run.
+        # calculate a modified height based on original height, the peak broadening factor, the injection-specific
+        # height modifier, the user-defined signal multiplier, and a random number close to 1 for variation in peak
+        # height within a run.
         mod_height = (
             height
             * peak_broadening_height_factor

@@ -1,9 +1,8 @@
 from pydash import get as _get
-from pydash import set_
 
 from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
 from model_chromatogram.samples import Sample
-from model_chromatogram.chromatogram import Chromatogram, Baseline, PeakCreator
+from model_chromatogram.chromatogram import Baseline, PeakCreator
 from model_chromatogram.system import System
 import numpy as np
 import datetime
@@ -41,7 +40,7 @@ class Injection:
         self._create_self_dict()
         self.uv_wavelengths = []
         self.uv_channel_names = []
-        for channel in _get(self.method.detection, "uv_vis_parameters"):
+        for channel in self.method.detection:
             self.uv_wavelengths.append(_get(channel, "wavelength"))
             self.uv_channel_names.append(_get(channel, "name"))
         self.__calculate_compound_retention()
@@ -58,7 +57,8 @@ class Injection:
     def __calculate_compound_retention(self):
         """Iteratively calculates retention time for compounds.
 
-        Currently implemented to use the column parameters, solvent profiles, solvent ph, and temperature to calculate the retention times of each compound.
+        Currently implemented to use the column parameters, solvent profiles, solvent ph, and temperature to calculate
+        the retention times of each compound.
 
         Returns:
             None
@@ -91,7 +91,9 @@ class Injection:
     def __add_compounds(self):
         """Iteratively calculates signals for each peak.
 
-        For each compound, a signal is created across the whole chromatogram. Then for each chromatogram, these original signals are multiple by each compound's absorbance at each chromatogram's wavelength, and then these signals are added to each chromatogram.
+        For each compound, a signal is created across the whole chromatogram. Then for each chromatogram, these
+        original signals are multiple by each compound's absorbance at each chromatogram's wavelength, and then these
+        signals are added to each chromatogram.
 
         Additionally, output son components are created after the chromatograms are produced.
 
@@ -102,8 +104,8 @@ class Injection:
             compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
             compound_peak_signal /= self.method.dilution_factor
             compound_peak_signal *= self.method.injection_volume
-            max_absobances = compound.get_absorbance(self.uv_wavelengths)
-            for name, absorbance in zip(self.uv_channel_names, max_absobances):
+            max_absorbance = compound.get_absorbance(self.uv_wavelengths)
+            for name, absorbance in zip(self.uv_channel_names, max_absorbance):
                 self.chromatograms[name].add_compound_peak(
                     absorbance=absorbance, signal=compound_peak_signal
                 )
@@ -111,6 +113,7 @@ class Injection:
         for name, chromatogram in self.chromatograms.items():
             results_dict = {
                 "channel_name": name,
+                "fk_datacube": chromatogram.uuid,
                 "peaks": [],
                 "drift": chromatogram.signal[-1] - chromatogram.signal[0],
                 "signal_noise": np.mean(chromatogram.signal[0:50]),
@@ -123,6 +126,7 @@ class Injection:
             self.dict["results"].append(results_dict)
             datacube_dict = {
                 "channel": name,
+                "pk": chromatogram.uuid,
                 "wavelength": chromatogram.wavelength,
                 "times": chromatogram.times.tolist(),
                 "times_unit": "MinuteTime",

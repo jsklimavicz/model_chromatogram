@@ -1,5 +1,4 @@
 from model_chromatogram.samples import Sample
-from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 
 import numpy as np
 from scipy.linalg import eig, inv

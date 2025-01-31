@@ -27,15 +27,15 @@ def rmdir(directory):
         pass
 
 
-with open("./audit_trail/input_json/instrument_methods.json") as f:
+with open("./test/input_json/instrument_methods.json") as f:
     method_list = json.load(f)
 instrument_method = method_list[0]
 
-with open("./audit_trail/input_json/processing_methods.json") as f:
+with open("./test/input_json/processing_methods.json") as f:
     processing_method_list = json.load(f)
 processing_method = processing_method_list[0]
 
-with open("./audit_trail/input_json/systems.json") as f:
+with open("./test/input_json/systems.json") as f:
     systems_json = json.load(f)
 
 system_list = [System(**system) for system in systems_json]
@@ -146,7 +146,13 @@ conc_list = np.ones(len(cas_list)) * 19.95
 
 
 def create_injection(
-    sample, instrument_method, processing_method, sequence, system, user, injection_time
+    sample,
+    instrument_method,
+    processing_method,
+    sequence,
+    system,
+    user,
+    injection_time,
 ):
     curr_injection = Injection(
         sample,
@@ -159,12 +165,12 @@ def create_injection(
     )
     peak_finder = curr_injection.find_peaks("UV_VIS_1")
     named_peak_count = len(
-        [peak.name for peak in peak_finder.peaks.peaks if peak.name is not None]
+        [p.name for p in peak_finder.peaks.peaks if p.name is not None]
     )
     return (curr_injection, named_peak_count)
 
 
-def generate_random_time(date):
+def generate_time(date):
     """Generate a random time between 8 AM and 4 PM on a given date."""
     hour = random.randint(8, 15)  # 8 AM to 3 PM for starting hour
     minute = random.randint(0, 59)
@@ -205,9 +211,9 @@ for ind, system in enumerate(system_list):
     inj_count = 0
     while initial_date < datetime(2024, 10, 21, 0, 0, 0):
         first_day = random.choice([0, 1])  # Monday = 0, Tuesday = 1
-        datetime1 = generate_random_time(initial_date + timedelta(days=first_day))
-        second_day = random.randint(first_day + 2, 4)  # Weekday (Wednesday to Friday)
-        datetime2 = generate_random_time(initial_date + timedelta(days=second_day))
+        datetime1 = generate_time(initial_date + timedelta(days=first_day))
+        second_day = random.randint(first_day + 2, 4)  # Weekday (W to F)
+        datetime2 = generate_time(initial_date + timedelta(days=second_day))
 
         for dt in [datetime1, datetime2]:
             user = random.choice(system_lib["users"])
@@ -227,7 +233,8 @@ for ind, system in enumerate(system_list):
                 blank = true_blank
             mult = 19.95 + np.random.normal(0, 0.01)
             sample_high = Sample(
-                f'{system_lib["sample_name_high"]}{dt.strftime(system_lib["datetime_str"])}',
+                f'{system_lib["sample_name_high"]}'
+                + f'{dt.strftime(system_lib["datetime_str"])}',
                 cas_list,
                 np.ones(len(cas_list)) * mult,
                 initial_date,
@@ -292,49 +299,3 @@ for ind, system in enumerate(system_list):
         Path(path).mkdir(parents=True, exist_ok=True)
         with open(file_name, "w") as f:
             json.dump(inj_dict, f)
-
-
-# system = system_list[0]
-# system.retention_time_offset = 0.085
-# a = []
-
-# sample = Sample(
-#     "test",
-#     cas_list,
-#     conc_list,
-#     datetime.now(),
-#     concentration_unit=2,
-# )
-
-# sequence = Sequence("Test", "test", datetime.now(), "test")
-
-# inj = InstrumentMethod(**instrument_method)
-# p = ProcessingMethod(**processing_method)
-
-# for i in range(10000):
-
-#     curr_injection = Injection(
-#         sample,
-#         inj,
-#         p,
-#         sequence,
-#         system,
-#         user="James Klimavicz",
-#         injection_time=datetime.now(),
-#     )
-#     peak_finder = curr_injection.find_peaks("UV_VIS_1")
-#     a.append(len(peak_finder.peaks.peaks))
-
-#     if i % 100 == 0:
-#         print(i)
-#         system.replace_column()
-
-# from collections import Counter
-
-# counts = Counter(a)
-# count_list = list(counts.items())
-# print(count_list)
-
-
-# plt.hist(a, len(set(a)))
-# plt.show()
