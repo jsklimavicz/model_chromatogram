@@ -12,7 +12,14 @@
                 "type": "baseline_noise_multiplier",
                 "value": 10
             },
-            "minimum_area": 0.03
+            "minimum_area": 0.03,
+            "baseline": {
+                "sr": 10,
+                "p": 0.001,
+                "s": 0.5,
+                "k": 2,
+                "rel_tol": 1e-06
+            }
         },
         "resolution_reference": "TS-8391",
         "peak_identification": [

@@ -40,7 +40,7 @@ class Injection:
         self._create_self_dict()
         self.uv_wavelengths = []
         self.uv_channel_names = []
-        for channel in _get(self.method.detection, "uv_vis_parameters"):
+        for channel in self.method.detection:
             self.uv_wavelengths.append(_get(channel, "wavelength"))
             self.uv_channel_names.append(_get(channel, "name"))
         self.__calculate_compound_retention()
@@ -113,6 +113,7 @@ class Injection:
         for name, chromatogram in self.chromatograms.items():
             results_dict = {
                 "channel_name": name,
+                "fk_datacube": chromatogram.uuid,
                 "peaks": [],
                 "drift": chromatogram.signal[-1] - chromatogram.signal[0],
                 "signal_noise": np.mean(chromatogram.signal[0:50]),
@@ -125,6 +126,7 @@ class Injection:
             self.dict["results"].append(results_dict)
             datacube_dict = {
                 "channel": name,
+                "pk": chromatogram.uuid,
                 "wavelength": chromatogram.wavelength,
                 "times": chromatogram.times.tolist(),
                 "times_unit": "MinuteTime",
