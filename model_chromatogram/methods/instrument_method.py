@@ -10,6 +10,7 @@ from model_chromatogram.user_parameters import (
 import numpy as np
 from scipy import signal
 import pandas as pd
+from model_chromatogram.methods import calculate_pressure
 
 
 class InstrumentMethod:
@@ -65,6 +66,7 @@ class InstrumentMethod:
         self.run_time: float = run_time
         self.sample_rate: float = sample_rate
         self.detection: dict = detection
+        self.system: System = system
         for channel in self.detection:
             module = system.lookup_module(channel["detector_name"])
             channel["fk_module"] = module.pk if module else None
@@ -199,6 +201,12 @@ class InstrumentMethod:
                 self.profile_table[comp_property] += (
                     mult / 100 * self.profile_table[name]
                 )
+
+        pressure = calculate_pressure(
+            self.mobile_phases,
+            self.profile_table,
+            self.system,
+        )
 
     def get_uv_background(self, wavelength, set_zero_time=True):
         """
