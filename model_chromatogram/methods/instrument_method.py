@@ -226,6 +226,16 @@ class InstrumentMethod:
 
         return self.profile_table["time"], background * BASELINE_MULTIPLIER
 
+    def get_zero_background(self):
+        """
+        Returns a zeroed background signal.
+
+        Returns:
+            time (np.array): Array of time values
+            background (np.array): Array of zeros
+        """
+        return self.profile_table["time"], np.zeros_like(self.profile_table["time"])
+
     def get_times(self):
         """
         Aliased function specifically to return a list of times in the profile table.

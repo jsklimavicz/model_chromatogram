@@ -411,7 +411,7 @@
     },
     {
         "name": "column_quality_check",
-        "run_time": 820,
+        "run_time": 20,
         "mobile_phases": [
             {
                 "name": "water",
@@ -439,7 +439,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 298
+                "temperature": 25
             },
             {
                 "time": 3.0,
@@ -449,7 +449,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 298
+                "temperature": 25
             },
             {
                 "time": 8.0,
@@ -459,7 +459,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 298
+                "temperature": 25
             },
             {
                 "time": 10.0,
@@ -469,7 +469,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 318
+                "temperature": 45
             },
             {
                 "time": 15.0,
@@ -479,7 +479,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 318
+                "temperature": 50
             },
             {
                 "time": 15.0,
@@ -489,7 +489,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 318
+                "temperature": 50
             }
         ],
         "detection": [
@@ -497,13 +497,25 @@
                 "name": "UV_VIS_1",
                 "detector_name": "UV",
                 "wavelength": 250,
-                "bandwidth": 4
+                "bandwidth": 4,
+                "unit": "mAU"
             },
             {
                 "name": "UV_VIS_2",
                 "detector_name": "UV",
                 "wavelength": 270,
-                "bandwidth": 4
+                "bandwidth": 4,
+                "unit": "mAU"
+            },
+            {
+                "name": "Pressure",
+                "detector_name": "PumpModule.Pump",
+                "unit": "bar"
+            },
+            {
+                "name": "Temperature",
+                "detector_name": "Comp",
+                "unit": "C"
             }
         ],
         "creation": {

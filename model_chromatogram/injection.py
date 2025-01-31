@@ -1,4 +1,4 @@
-from pydash import get as _get
+from pydash import get as get_, set_
 
 from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
 from model_chromatogram.samples import Sample
@@ -9,6 +9,7 @@ import datetime
 from model_chromatogram.sequence import Sequence
 from model_chromatogram.data_processing import PeakFinder
 import uuid
+from model_chromatogram.user_parameters import BASELINE_NOISE
 
 
 class Injection:
@@ -41,8 +42,8 @@ class Injection:
         self.uv_wavelengths = []
         self.uv_channel_names = []
         for channel in self.method.detection:
-            self.uv_wavelengths.append(_get(channel, "wavelength"))
-            self.uv_channel_names.append(_get(channel, "name"))
+            self.uv_wavelengths.append(get_(channel, "wavelength"))
+            self.uv_channel_names.append(get_(channel, "name"))
         self.__calculate_compound_retention()
         self.__create_chromatograms()
         self.__add_compounds()
@@ -79,14 +80,24 @@ class Injection:
             None
         """
         self.chromatograms: dict = {}
-        # uv_channels
-        for wavelength, name in zip(self.uv_wavelengths, self.uv_channel_names):
-            times, signals = self.method.get_uv_background(wavelength)
+
+        for channel in self.method.detection:
+            if channel["detector_name"].lower() in ["uv", "pda", "fld", "mwd", "vwd"]:
+                times, signals = self.method.get_uv_background(
+                    get_(channel, "wavelength")
+                )
+                noise_level = BASELINE_NOISE
+            else:
+                times, signals = self.method.get_zero_background()
+                noise_level = BASELINE_NOISE / 2
             baseline = Baseline(
-                np.array(times), np.array(signals), wavelength=wavelength
+                np.array(times),
+                np.array(signals),
+                channel_settings=channel,
+                noise_level=noise_level,
             )
-            self.chromatograms[name] = baseline
-        self.times = times.to_numpy()
+            self.chromatograms[get_(channel, "name")] = baseline
+            self.times = times.to_numpy()
 
     def __add_compounds(self):
         """Iteratively calculates signals for each peak.
@@ -106,14 +117,24 @@ class Injection:
             compound_peak_signal *= self.method.injection_volume
             max_absorbance = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absorbance):
-                self.chromatograms[name].add_compound_peak(
-                    absorbance=absorbance, signal=compound_peak_signal
-                )
+                print(name, absorbance, type(absorbance), str(absorbance))
+                if absorbance is not None and str(absorbance) != "nan":
+                    self.chromatograms[name].add_compound_peak(
+                        absorbance=absorbance, signal=compound_peak_signal
+                    )
 
+        chromatograms = []
         for name, chromatogram in self.chromatograms.items():
+
+            if name.lower() in ["temp", "temperature"]:
+                chromatogram.signal += self.method.profile_table["temperature"].values
+
+            if name.lower() in ["pressure"]:
+                chromatogram.signal += self.method.profile_table["pressure"].values
+
             results_dict = {
                 "channel_name": name,
-                "fk_datacube": chromatogram.uuid,
+                "fk_chromatogram": chromatogram.uuid,
                 "peaks": [],
                 "drift": chromatogram.signal[-1] - chromatogram.signal[0],
                 "signal_noise": np.mean(chromatogram.signal[0:50]),
@@ -126,14 +147,29 @@ class Injection:
             self.dict["results"].append(results_dict)
             datacube_dict = {
                 "channel": name,
-                "pk": chromatogram.uuid,
-                "wavelength": chromatogram.wavelength,
+                "fk_chromatogram": chromatogram.uuid,
+                "wavelength": get_(
+                    chromatogram.detection_settings, "wavelength", default=None
+                ),
                 "times": chromatogram.times.tolist(),
                 "times_unit": "MinuteTime",
                 "signal": chromatogram.signal.tolist(),
-                "signal_unit": "MilliAbsorbanceUnit",
+                "signal_unit": get_(
+                    chromatogram.detection_settings, "unit", default=None
+                ),
             }
             self.dict["datacubes"].append(datacube_dict)
+
+            chromatogram_dict = {
+                "pk": chromatogram.uuid,
+                "channel_name": name,
+                "detector_device": get_(
+                    chromatogram.detection_settings, "detector_name"
+                ),
+                "fk_module": get_(chromatogram.detection_settings, "fk_module"),
+            }
+            chromatograms.append(chromatogram_dict)
+        set_(self.dict, "methods.0.chromatograms", chromatograms)
 
     def plot_chromatogram(self, channel_name, **kwargs):
         return self.chromatograms[channel_name].plot(**kwargs)
@@ -168,15 +204,15 @@ class Injection:
             "runs": [
                 {
                     "injection_time": self.injection_time.isoformat(),
-                    "injection_number": _get(seq_dict, "injection_number"),
-                    "injection_url": _get(seq_dict, "injection_url"),
+                    "injection_number": get_(seq_dict, "injection_number"),
+                    "injection_url": get_(seq_dict, "injection_url"),
                     "sequence": {
-                        "name": _get(seq_dict, "name"),
-                        "datavault": _get(seq_dict, "datavault"),
-                        "url": _get(seq_dict, "url"),
-                        "start_time": _get(seq_dict, "start_time"),
-                        "last_update_time": _get(seq_dict, "last_update_time"),
-                        "total_injections": _get(seq_dict, "total_injections"),
+                        "name": get_(seq_dict, "name"),
+                        "datavault": get_(seq_dict, "datavault"),
+                        "url": get_(seq_dict, "url"),
+                        "start_time": get_(seq_dict, "start_time"),
+                        "last_update_time": get_(seq_dict, "last_update_time"),
+                        "total_injections": get_(seq_dict, "total_injections"),
                     },
                 }
             ]
@@ -191,6 +227,7 @@ class Injection:
                 {
                     "injection": self.method.todict(),
                     "processing": self.processing_method.todict(),
+                    "chromatograms": [],
                 }
             ],
             "samples": [

@@ -21,6 +21,14 @@
                 "serial_number": "96014241"
             },
             {
+                "name": "Comp",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Column Compartment",
+                "detector_type": null,
+                "part_number": "VN-C10-A-01",
+                "serial_number": "228401"
+            },
+            {
                 "name": "UV",
                 "manufacturer": "Thermo Fisher Scientific Inc.",
                 "type": "Detector",
