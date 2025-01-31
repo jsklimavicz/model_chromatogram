@@ -1,0 +1,92 @@
+[
+    {
+        "name": "column performance test",
+        "detection_parameters": {
+            "background_noise_range": {
+                "minimum": 0,
+                "maximum": 250
+            },
+            "noise_threshold_multiplier": 10,
+            "peak_limit": 20,
+            "minimum_height": {
+                "type": "baseline_noise_multiplier",
+                "value": 10
+            },
+            "minimum_area": 0.03
+        },
+        "resolution_reference": "TS-8391",
+        "peak_identification": [
+            {
+                "min_time": 2.0,
+                "max_time": 2.5,
+                "method": "largest",
+                "name": "TS-8391"
+            },
+            {
+                "min_time": 3.6,
+                "max_time": 4.1,
+                "method": "largest",
+                "name": "klimavizinib",
+                "calibration": [
+                    {
+                        "channel": "UV_VIS_1",
+                        "type": "linear",
+                        "amount_unit": "umol/mL",
+                        "points": [
+                            {
+                                "area": 101.2,
+                                "amount": 2.5
+                            },
+                            {
+                                "area": 99.2,
+                                "amount": 2.5
+                            },
+                            {
+                                "area": 1002,
+                                "amount": 25
+                            },
+                            {
+                                "area": 987.4,
+                                "amount": 25
+                            },
+                            {
+                                "area": 10,
+                                "amount": 0.25
+                            },
+                            {
+                                "area": 9.3,
+                                "amount": 0.25
+                            },
+                            {
+                                "area": 9.2,
+                                "amount": 0.25
+                            },
+                            {
+                                "area": 0.913,
+                                "amount": 0.025
+                            },
+                            {
+                                "area": 1.01,
+                                "amount": 0.025
+                            },
+                            {
+                                "area": 4.989,
+                                "amount": 0.125
+                            },
+                            {
+                                "area": 5.12,
+                                "amount": 0.125
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "min_time": 5.9,
+                "max_time": 6.4,
+                "method": "largest",
+                "name": "caffeine"
+            }
+        ]
+    }
+]

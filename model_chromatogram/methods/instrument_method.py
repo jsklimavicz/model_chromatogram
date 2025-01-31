@@ -40,13 +40,14 @@ class InstrumentMethod:
                 value for `name` must match a name, ID, or CAS number in the `solvent_library.csv` file.
             mobile_phase_gradient_steps (list): A list of dictionaries outlining the steps in gradient table. Each
                 dictionary can have:
-                    "time": float
-                    "flow": float
+                    "time": float (in min)
+                    "flow": float (in mL/min)
                     "percent_a": float
                     "percent_b": float
                     "percent_c": float
                     "percent_d": float
                     "curve": int (1-9)
+                    "temperature": float (in Kelvin)
                 where `time`, `flow`, and `percent_b` are mandatory; `percent_a` is determined by subtracting the other
                 percentages from 100, and the `curve` parameter (default: 5) describes the interpolation method between
                 two time points.
@@ -169,7 +170,7 @@ class InstrumentMethod:
 
         self.profile_table = pd.DataFrame({"time": times})
 
-        keys = ["flow", *self.__solvent_percents]
+        keys = ["flow", "temperature", *self.__solvent_percents]
         for name in keys:
             self.profile_table[name] = self.__create_profile(
                 times, self.gradient_steps["time"], self.gradient_steps[name]

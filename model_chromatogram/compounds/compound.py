@@ -51,7 +51,7 @@ class Compound:
     def __set_initial_float(self, key, default=0):
         try:
             return float(_get(self.kwargs, key))
-        except ValueError:
+        except (ValueError, TypeError):
             return default
 
     def set_uv_spectrum(self):

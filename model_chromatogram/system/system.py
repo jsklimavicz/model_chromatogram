@@ -4,10 +4,10 @@ import uuid
 
 
 class Module:
-    def __init__(self, name, type, **kwargs) -> None:
+    def __init__(self, name=None, type_=None, **kwargs) -> None:
         self.pk = str(uuid.uuid4())
         self.name = name
-        self.type = type
+        self.type = type_
         self.kwargs = kwargs
 
     def todict(self):
@@ -21,7 +21,10 @@ class System:
         self.name = name
         self.column = Column(**column)
         self.retention_time_offset = system_retention_time_offset
-        self.modules = [Module(item for item in get_(kwargs, "modules"))]
+        modules_list = get_(kwargs, "modules")
+        for module in modules_list:
+            module["type_"] = module.pop("type")
+        self.modules = [Module(**item) for item in modules_list]
         kwargs.pop("modules")
         self.kwargs = {"name": name, "column": self.column.todict(), **kwargs}
 
