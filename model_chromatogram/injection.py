@@ -117,7 +117,6 @@ class Injection:
             compound_peak_signal *= self.method.injection_volume
             max_absorbance = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absorbance):
-                print(name, absorbance, type(absorbance), str(absorbance))
                 if absorbance is not None and str(absorbance) != "nan":
                     self.chromatograms[name].add_compound_peak(
                         absorbance=absorbance, signal=compound_peak_signal
@@ -125,29 +124,43 @@ class Injection:
 
         chromatograms = []
         for name, chromatogram in self.chromatograms.items():
-
+            diagnostic = False
             if name.lower() in ["temp", "temperature"]:
                 chromatogram.signal += self.method.profile_table["temperature"].values
+                chromatogram.signal = np.round(chromatogram.signal, 3)
+                diagnostic = True
 
             if name.lower() in ["pressure"]:
                 chromatogram.signal += self.method.profile_table["pressure"].values
+                if chromatogram.detection_settings["unit"].lower() == "psi":
+                    chromatogram.signal *= 14.7
+                    chromatogram.signal = np.round(chromatogram.signal, 2)
+                if chromatogram.detection_settings["unit"].lower() in ["mmhg", "torr"]:
+                    chromatogram.signal *= 750.062
+                    chromatogram.signal = np.round(chromatogram.signal, 1)
+                else:
+                    chromatogram.signal = np.round(chromatogram.signal, 3)
+                diagnostic = True
 
-            results_dict = {
-                "channel_name": name,
-                "fk_chromatogram": chromatogram.uuid,
-                "peaks": [],
-                "drift": chromatogram.signal[-1] - chromatogram.signal[0],
-                "signal_noise": np.mean(chromatogram.signal[0:50]),
-                "signal_statistic": {
-                    "minimum": chromatogram.signal.min(),
-                    "maximum": chromatogram.signal.max(),
-                    "average": np.mean(chromatogram.signal),
-                },
-            }
-            self.dict["results"].append(results_dict)
+            if not diagnostic:
+                results_dict = {
+                    "channel_name": name,
+                    "fk_chromatogram": chromatogram.uuid,
+                    "peaks": [],
+                    "drift": chromatogram.signal[-1] - chromatogram.signal[0],
+                    "signal_noise": np.mean(chromatogram.signal[0:50]),
+                    "signal_statistic": {
+                        "minimum": chromatogram.signal.min(),
+                        "maximum": chromatogram.signal.max(),
+                        "average": np.mean(chromatogram.signal),
+                    },
+                }
+                self.dict["results"].append(results_dict)
+
             datacube_dict = {
                 "channel": name,
                 "fk_chromatogram": chromatogram.uuid,
+                "diagnostic": diagnostic,
                 "wavelength": get_(
                     chromatogram.detection_settings, "wavelength", default=None
                 ),
