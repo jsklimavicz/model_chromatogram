@@ -419,15 +419,15 @@
             },
             {
                 "name": "THF",
-                "id": "B"
+                "id": "D"
             },
             {
                 "name": "methanol",
-                "id": "C"
+                "id": "B"
             },
             {
                 "name": "acetonitrile",
-                "id": "D"
+                "id": "C"
             }
         ],
         "mobile_phase_gradient_steps": [
@@ -444,10 +444,10 @@
             {
                 "time": 3.0,
                 "flow": 5.0,
-                "percent_a": 100.0,
-                "percent_b": 0.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
+                "percent_a": 70.0,
+                "percent_b": 10.0,
+                "percent_c": 10.0,
+                "percent_d": 10.0,
                 "curve": 5,
                 "temperature": 25
             },

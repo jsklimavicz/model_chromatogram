@@ -52,12 +52,14 @@ class Column:
         serial_number=None,
         injection_count=0,
         failure_risk_count=1000,
+        porosity=0.4,
         **kwargs,
     ) -> None:
         self.inner_diameter = get(inner_diameter, "value")
         self.inner_diameter_unit = get(inner_diameter, "unit")
         self.length = get(length, "value")
         self.length_unit = get(length, "unit")
+        self.porosity = porosity
         self.find_volume()
         if serial_number is None:
             self.serial_number = random_column_serial_number()
@@ -105,7 +107,7 @@ class Column:
     def find_volume(self):
         self.nominal_volume = (self.inner_diameter / 2) ** 2 * np.pi * self.length
         self.nominal_volume /= 1000  # mm^3 to mL conversion
-        self.volume = self.nominal_volume * 0.65  # porosity adjustment
+        self.volume = self.nominal_volume * self.porosity  # porosity adjustment
 
     def inject(self, count=1):
         for _ in range(count):

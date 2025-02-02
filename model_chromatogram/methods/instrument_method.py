@@ -1,3 +1,4 @@
+from model_chromatogram.methods.pressure import calculate_pressure
 from model_chromatogram.compounds import SOLVENT_LIBRARY, Solvent
 from model_chromatogram.system import System
 from pydash import get as _get
@@ -10,7 +11,6 @@ from model_chromatogram.user_parameters import (
 import numpy as np
 from scipy import signal
 import pandas as pd
-from model_chromatogram.methods import calculate_pressure
 
 
 class InstrumentMethod:
@@ -202,7 +202,7 @@ class InstrumentMethod:
                     mult / 100 * self.profile_table[name]
                 )
 
-        pressure = calculate_pressure(
+        self.profile_table["pressure"] = calculate_pressure(
             self.mobile_phases,
             self.profile_table,
             self.system,
