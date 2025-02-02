@@ -45,14 +45,14 @@
                 "unit": "mm"
             },
             "length": {
-                "value": 150,
+                "value": 100,
                 "unit": "mm"
             },
             "type": "C18",
             "serial_number": "00386184-P",
-            "injection_count": 843,
+            "injection_count": 67,
             "particle_size": {
-                "value": 5,
+                "value": 3,
                 "unit": "um"
             }
         },
