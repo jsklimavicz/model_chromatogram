@@ -16,7 +16,12 @@ class PressureDriver:
     acn_viscosity = AcetonitrileViscosity()
     thf_viscosity = TetrahydrofuranViscosity()
 
-    def __init__(self, system: System, solvent_profile: pd.DataFrame) -> None:
+    def __init__(
+        self,
+        system: System,
+        solvent_profile: pd.DataFrame,
+        column_permeability_factor=20,
+    ) -> None:
         self.column_length = system.column.length_mm * 1e-3  # in m
         self.particle_diameter = system.column.particle_diameter_um * 1e-6  # in m
         self.particle_sphericity = 0.95
@@ -28,6 +33,9 @@ class PressureDriver:
         time_delta = self.solvent_profile["time"][1] - self.solvent_profile["time"][0]
         self.solvent_profile["incremental_CV"] = (
             self.solvent_profile["flow"] * time_delta / system.column.volume
+        )
+        self.solvent_profile["incremental_length"] = (
+            self.solvent_profile["incremental_CV"] * self.column_length
         )
         # flow in cm**3/min, column inner_diameter in mm. Convert to m/s
         self.solvent_profile["superficial_velocity"] = (
@@ -51,12 +59,19 @@ class PressureDriver:
             )
         )
 
+        self.kozeny_carman_multiplier = (
+            column_permeability_factor
+            * 150
+            / (self.particle_diameter * self.particle_sphericity) ** 2
+            * (1 - self.porosity) ** 2
+            / (self.porosity**3)
+        )
+
     def kozeny_carman_pressure(
         self,
         viscosity: Union[float, np.array],
         velocity: float,
         length: Union[float, np.array],
-        permeability_factor=20,
     ) -> float:
         """Calculate the Kozeny-Carman factor.
 
@@ -67,18 +82,10 @@ class PressureDriver:
         Returns:
             float: The pressure drop across the section (in bar).
         """
-        viscosity *= 1e-3  # Pa s (kg m^-1 s^-1)
-
         # Kozeny–Carman equation for pressure drop
-        pressure = (150 * viscosity) / (
-            (self.particle_diameter * self.particle_sphericity) ** 2
-        )  # (kg m^-3 s^-1)
-        pressure *= (1 - self.porosity) ** 2 * velocity * length / (self.porosity**3)
-        # (kg m^-3 s^-1) * (m s^-1) * m  = kg m^-1 s^-2 = Pa
+        pressure = self.kozeny_carman_multiplier * viscosity * velocity * length
 
-        pressure *= permeability_factor
-
-        return pressure * 1e-5  # convert to bar
+        return pressure * 1e-8  # convert to bar
 
     def total_viscosity(self, meoh_x, acn_x, thf_x, temp, pressure) -> float:
         """Calculate the total viscosity of the mobile phase.
@@ -93,15 +100,30 @@ class PressureDriver:
         Returns:
             float: The viscosity of the mobile phase (in cP).
         """
-        meoh_nu = self.meoh_viscosity.interpolate_viscosity(pressure, temp, meoh_x)
-        acn_nu = self.acn_viscosity.interpolate_viscosity(pressure, temp, acn_x)
-        thf_nu = self.thf_viscosity.interpolate_viscosity(pressure, temp, thf_x)
-        water_meoh_x = 1 - (acn_x + thf_x)
-        return np.exp(
-            np.log(meoh_nu) * water_meoh_x
-            + np.log(acn_nu) * acn_x
-            + np.log(thf_nu) * thf_x
-        )
+        if meoh_x == 0:
+            meoh_nu = 1
+        else:
+            meoh_nu = self.meoh_viscosity.interpolate_viscosity(pressure, temp, meoh_x)
+
+        if acn_x == 0:
+            acn_nu = 1
+        else:
+            acn_nu = self.acn_viscosity.interpolate_viscosity(pressure, temp, acn_x)
+        if thf_x == 0:
+            thf_nu = 1
+        else:
+            thf_nu = self.thf_viscosity.interpolate_viscosity(pressure, temp, thf_x)
+
+        if meoh_nu == thf_nu == acn_nu == 1:
+            return self.meoh_viscosity.interpolate_viscosity(pressure, temp, meoh_x)
+
+        else:
+            water_meoh_x = 1 - (acn_x + thf_x)
+            return np.exp(
+                np.log(meoh_nu) * water_meoh_x
+                + np.log(acn_nu) * acn_x
+                + np.log(thf_nu) * thf_x
+            )
 
     def calculate_pressure_simple(self, tol=1e-5) -> None:
         """Calculate the pressure at each time point, treating the solvent composition as uniform across the column;
@@ -137,7 +159,9 @@ class PressureDriver:
 
         return pressures
 
-    def calculate_pressure_finite_difference(self, tol=1e-5) -> None:
+    def calculate_pressure_finite_difference(
+        self, tol=1e-5, recalculate_viscosities=False
+    ) -> None:
         """Calculate the pressure at each time point using a finite difference method.
 
         Args:
@@ -152,57 +176,75 @@ class PressureDriver:
         acn_x = self.solvent_profile["acn_x"].to_numpy()
         thf_x = self.solvent_profile["thf_x"].to_numpy()
         incremental_CV = self.solvent_profile["incremental_CV"].to_numpy()
+        incremental_lengths = self.solvent_profile["incremental_length"].to_numpy()
 
         pressure_guess = self.initial_pressure_guess
         pressures = np.zeros(len(temp))
         viscosities = np.zeros(len(temp))
         for i in range(len(temp)):
             delta = np.inf
+
+            column_fraction_accounted_for = 0
+            lower_index = i
+            column_unaccounted_for = 0
+            column_overaccounted_for = 0
+            while column_fraction_accounted_for < 1:
+                column_fraction_accounted_for += incremental_CV[lower_index]
+                if column_fraction_accounted_for >= 1:
+                    column_overaccounted_for = column_fraction_accounted_for - 1
+                    break
+                if lower_index == 0:
+                    column_unaccounted_for = 1 - column_fraction_accounted_for
+                    break
+                lower_index -= 1
+
+            upper_index = i + 1
+
             while delta > tol:
-                column_fraction_accounted_for = 0
-                lower_index = i
-                while column_fraction_accounted_for < 1:
-                    if lower_index == 0:
-                        break
-                    lower_index -= 1
-                    column_fraction_accounted_for += incremental_CV[lower_index]
+                if recalculate_viscosities:
+                    # viscosities for each segment
+                    curr_viscosities = self.total_viscosity(
+                        meoh_x[lower_index:upper_index],
+                        acn_x[lower_index:upper_index],
+                        thf_x[lower_index:upper_index],
+                        temp[lower_index:upper_index],
+                        pressure_guess,
+                    )
+                else:
+                    viscosities[i] = self.total_viscosity(
+                        meoh_x[i],
+                        acn_x[i],
+                        thf_x[i],
+                        temp[i],
+                        pressure_guess,
+                    )
+                    curr_viscosities = viscosities[lower_index:upper_index].copy()
 
-                upper_index = i + 1
-
-                vals = self.total_viscosity(
-                    meoh_x[lower_index:upper_index],
-                    acn_x[lower_index:upper_index],
-                    thf_x[lower_index:upper_index],
-                    temp[lower_index:upper_index],
-                    pressure_guess,
+                # incremental pressures for each segment
+                incremental_pressures = self.kozeny_carman_pressure(
+                    curr_viscosities,
+                    v[lower_index:upper_index],
+                    incremental_lengths[lower_index:upper_index],
                 )
 
-                viscosities[lower_index:upper_index] = vals
-
-                column_fraction_accounted_for = 0
-                pressure = 0
-                j = i
-                while column_fraction_accounted_for < 1:
-                    length = self.column_length * incremental_CV[j]
-                    incremental_pressure = self.kozeny_carman_pressure(
-                        viscosities[j], v[j], length
+                pressure = np.sum(incremental_pressures)
+                if column_unaccounted_for > 0:
+                    pressure += (
+                        column_unaccounted_for
+                        / (incremental_CV[lower_index])
+                        * incremental_pressures[0]
                     )
-                    if j == 0 or column_fraction_accounted_for + incremental_CV[j] > 1:
-                        pressure += (
-                            incremental_pressure
-                            * (1 - column_fraction_accounted_for)
-                            / incremental_CV[j]
-                        )
-                        break
-                    else:
-                        pressure += incremental_pressure
-                    j = max(j - 1, 0)
-                    column_fraction_accounted_for += incremental_CV[j]
+                elif column_overaccounted_for > 0:
+                    pressure -= (
+                        column_overaccounted_for
+                        / (incremental_CV[lower_index])
+                        * incremental_pressures[-1]
+                    )
+
                 delta = np.abs(pressure_guess - pressure)
                 pressure_guess = pressure
 
             pressures[i] = pressure_guess
-
         return pressures
 
 
