@@ -51,14 +51,14 @@ class PressureDriver:
             )
         )
 
-    def kozney_carman_pressure(
+    def kozeny_carman_pressure(
         self,
         viscosity: Union[float, np.array],
         velocity: float,
         length: Union[float, np.array],
         permeability_factor=20,
     ) -> float:
-        """Calculate the Kozney-Carman factor.
+        """Calculate the Kozeny-Carman factor.
 
         Args:
             viscosity (float): The viscosity of the mobile phase (in cP).
@@ -127,7 +127,7 @@ class PressureDriver:
                 viscosity_guess = self.total_viscosity(
                     meoh_x[i], acn_x[i], thf_x[i], temp[i], pressure_guess
                 )
-                pressure = self.kozney_carman_pressure(
+                pressure = self.kozeny_carman_pressure(
                     viscosity_guess, v[i], self.column_length
                 )
                 delta = np.abs(pressure_guess - pressure)
@@ -184,7 +184,7 @@ class PressureDriver:
                 j = i
                 while column_fraction_accounted_for < 1:
                     length = self.column_length * incremental_CV[j]
-                    incremental_pressure = self.kozney_carman_pressure(
+                    incremental_pressure = self.kozeny_carman_pressure(
                         viscosities[j], v[j], length
                     )
                     if j == 0 or column_fraction_accounted_for + incremental_CV[j] > 1:
