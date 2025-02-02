@@ -5,7 +5,7 @@ SAMPLE_RATE = 5  # in Hz; default if not specified in method
 RUN_LENGTH = 15  # in min; default if not specified in method
 FLOW_RATE = 5  # in ml/min; default if not specified in method
 SOLVENT_PROFILE_CONVOLUTION_WIDTH = (
-    1  # smooting of solvent profile from nominal, in units of min
+    0.25  # smooting of solvent profile from nominal, in units of min
 )
 
 ############################################################################################################

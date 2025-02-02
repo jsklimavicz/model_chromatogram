@@ -10,6 +10,8 @@ from model_chromatogram.injection import Injection
 from model_chromatogram.sequence import Sequence
 from model_chromatogram.system import System
 
+import matplotlib.pyplot as plt
+
 folder = "./test_output"
 
 
@@ -77,6 +79,8 @@ curr_injection = Injection(
 )
 curr_injection.find_peaks("UV_VIS_1")
 
+curr_injection.plot_chromatogram("Pressure")
+plt.show()
 
 inj_dict = curr_injection.to_dict()
 path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
