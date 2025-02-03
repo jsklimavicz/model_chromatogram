@@ -22,6 +22,23 @@ THF = {
 }
 
 
+class ViscosityInterpolator(RegularGridInterpolator):
+    def __init__(self, interp_tuple: tuple, values: np.array):
+        super().__init__(
+            interp_tuple,
+            values,
+            method="pchip",
+            bounds_error=False,
+            fill_value=None,
+        )
+
+    def __call__(self, x):
+        return super().__call__(x)
+
+    def interpolate(self, x):
+        return self(x)
+
+
 class ViscosityCalculator:
 
     path = "./model_chromatogram/methods/viscosity_data/"
@@ -87,12 +104,8 @@ class MethanolViscosity(ViscosityCalculator):
         viscosity_values = viscosity_grid.values.reshape(
             len(unique_temps), len(unique_x), len(unique_pressures)
         )
-        self.interpolator = RegularGridInterpolator(
-            (unique_temps, unique_x, unique_pressures),
-            viscosity_values,
-            method="cubic",
-            bounds_error=False,
-            fill_value=None,
+        self.interpolator = ViscosityInterpolator(
+            (unique_temps, unique_x, unique_pressures), viscosity_values
         )
 
     def interpolate_viscosity(self, pressure, temp, x):
@@ -130,12 +143,8 @@ class AcetonitrileViscosity(ViscosityCalculator):
         viscosity_values = viscosity_grid.values.reshape(
             len(unique_x), len(unique_pressures)
         )
-        self.interpolator = RegularGridInterpolator(
-            (unique_x, unique_pressures),
-            viscosity_values,
-            method="cubic",
-            bounds_error=False,
-            fill_value=None,
+        self.interpolator = ViscosityInterpolator(
+            (unique_x, unique_pressures), viscosity_values
         )
 
     def temperature_correction(
@@ -207,12 +216,8 @@ class TetrahydrofuranViscosity(ViscosityCalculator):
         viscosity_values = viscosity_grid.values.reshape(
             len(unique_temps), len(unique_x)
         )
-        self.interpolator = RegularGridInterpolator(
-            (unique_temps, unique_x),
-            viscosity_values,
-            method="cubic",
-            bounds_error=False,
-            fill_value=None,
+        self.interpolator = ViscosityInterpolator(
+            (unique_temps, unique_x), viscosity_values
         )
 
     def interpolate_viscosity(self, pressure, temp, x):

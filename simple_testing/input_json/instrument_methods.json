@@ -479,7 +479,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 40
+                "temperature": 90
             },
             {
                 "time": 15.0,
@@ -489,7 +489,7 @@
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 40
+                "temperature": 90
             }
         ],
         "detection": [
