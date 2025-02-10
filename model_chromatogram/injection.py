@@ -143,12 +143,14 @@ class Injection:
                 diagnostic = True
 
             if not diagnostic:
+                signal_start = chromatogram.signal[0:100]
+                signal_mean = np.mean(signal_start)
                 results_dict = {
                     "channel_name": name,
                     "fk_chromatogram": chromatogram.uuid,
                     "peaks": [],
                     "drift": chromatogram.signal[-1] - chromatogram.signal[0],
-                    "signal_noise": np.mean(chromatogram.signal[0:50]),
+                    "signal_noise": np.std(signal_start - signal_mean, ddof=0),
                     "signal_statistic": {
                         "minimum": chromatogram.signal.min(),
                         "maximum": chromatogram.signal.max(),
