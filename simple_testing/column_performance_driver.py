@@ -98,6 +98,8 @@ with open(f"./{folder}/profile.txt", "w") as f:
     f.write(sec.getvalue())
 
 curr_injection.plot_chromatogram("Pressure")
+plt.xlabel("Time (min)")
+plt.ylabel("Pressure (bar)")
 plt.show()
 
 inj_dict = curr_injection.to_dict()

@@ -419,77 +419,47 @@
             },
             {
                 "name": "THF",
-                "id": "D"
-            },
-            {
-                "name": "methanol",
                 "id": "B"
             },
             {
-                "name": "acetonitrile",
+                "name": "methanol",
                 "id": "C"
+            },
+            {
+                "name": "acetonitrile",
+                "id": "D"
             }
         ],
         "mobile_phase_gradient_steps": [
             {
                 "time": 0.0,
                 "flow": 1.0,
-                "percent_a": 100.0,
-                "percent_b": 0.0,
+                "percent_a": 99.0,
+                "percent_b": 1.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
                 "temperature": 30
             },
             {
-                "time": 0.0,
+                "time": 5.0,
                 "flow": 1.0,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
+                "percent_a": 99.0,
+                "percent_b": 1.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
                 "temperature": 30
-            },
-            {
-                "time": 8.0,
-                "flow": 1.0,
-                "percent_a": 85.0,
-                "percent_b": 15.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5,
-                "temperature": 30
-            },
-            {
-                "time": 10.0,
-                "flow": 1.0,
-                "percent_a": 80.0,
-                "percent_b": 20.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5,
-                "temperature": 40
-            },
-            {
-                "time": 12.0,
-                "flow": 1.0,
-                "percent_a": 85.0,
-                "percent_b": 15.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5,
-                "temperature": 90
             },
             {
                 "time": 15.0,
                 "flow": 1.0,
-                "percent_a": 90.0,
-                "percent_b": 10.0,
+                "percent_a": 0.0,
+                "percent_b": 100.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 90
+                "temperature": 30
             }
         ],
         "detection": [
