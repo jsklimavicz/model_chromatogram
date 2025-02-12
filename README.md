@@ -1,17 +1,24 @@
 # model_chromatogram
-For very mathematical chromatograms modelling. 
 
-For more inforamtion on the workings of the program and calculations, see `./docs/Chromatogram Model.pdf`. 
+For very mathematical chromatograms modelling.
 
-# Setup
+For more inforamtion on the workings of the program and calculations, see `./docs/Chromatogram Model.pdf`.
 
-A `pyproject.toml` is included; to install dependences, run 
-```
+## Setup
+
+### Poetry Install
+
+A `pyproject.toml` is included; to install dependences, run
+
+```bash
 poetry install
 ```
 
-Then, to create the appropriate cython modules, run 
-```
+### Cython Modules
+
+Then, to create the appropriate cython modules, run
+
+```bash
 python setup.py build_ext --inplace
 ```
 
@@ -41,6 +48,7 @@ Pkg.add("LsqFit")
 ```
 
 **NOTE**: The first time the code runs using julia, expect some level of setup as `juliacall` compiles some binaries. Later, the calls should be significantly faster.
+
 
 #### Don't want to use julia?
 
