@@ -2,6 +2,7 @@ import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 import pandas as pd
 from abc import abstractmethod
+
 from model_chromatogram.user_parameters import JULIA_PARAMTERS
 import os
 
@@ -11,7 +12,7 @@ if JULIA_PARAMTERS["julia"] is not None:
     from juliacall import Main as jl
 
     jl.include("./model_chromatogram/methods/viscosity.jl")
-    use_julia_fit = True
+    use_julia_fit = False
 else:
     use_julia_fit = False
 

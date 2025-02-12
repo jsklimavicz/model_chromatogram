@@ -2,7 +2,9 @@ import math
 
 # Julia Parameters
 JULIA_PARAMTERS = {
-    "julia": "/Applications/Julia-1.10.app/Contents/Resources/julia/bin/julia",  # Path to your system's Julia executable.
+    # Path to your system's Julia executable.
+    "julia": "/Applications/Julia-1.10.app/Contents/Resources/julia/bin/julia",
+    # "julia": None,
     "julia_pkg": "../juliapkg.json",  # Path to your JSON file with Julia package dependencies.
 }
 
