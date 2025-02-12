@@ -37,6 +37,19 @@ JULIA_PARAMTERS = {
 
 The executable path should have the dependencies `"CSV", "DataFrames", "LsqFit"` installed.
 
+This can be done in julia with
+
+```julia
+using Pkg
+
+Pkg.add("CSV")
+Pkg.add("DataFrames")
+Pkg.add("LsqFit")
+```
+
+**NOTE**: The first time the code runs using julia, expect some level of setup as `juliacall` compiles some binaries. Later, the calls should be significantly faster.
+
+
 #### Don't want to use julia?
 
 If you do not wish to use julia, set the julia path to `None`:

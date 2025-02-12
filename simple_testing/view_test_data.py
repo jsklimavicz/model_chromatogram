@@ -1,6 +1,9 @@
-import os, json
-import pandas as pd
+import os
+import json
 from pydash import get
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 data = []
 root_dir = "./output11"
@@ -38,10 +41,6 @@ for subdir, dirs, files in os.walk(root_dir):
 
 df = pd.DataFrame.from_dict(data)
 df.to_csv("./column_testing.csv", index=False)
-
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 # Load the DataFrame
 df = pd.read_csv("column_testing.csv")

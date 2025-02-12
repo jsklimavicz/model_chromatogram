@@ -302,7 +302,10 @@ def calculate_pressure(
         system.column.id_mm,
     ]
     if use_julia_fit:
-        pressure = jl.Pressure.pressure_driver(profile_table_copy, col_struct)
+        pressure = np.array(
+            jl.Pressure.pressure_driver(profile_table_copy, col_struct),
+            dtype=np.float64,
+        )
 
     else:
         pressure_driver = PressureDriver(system, profile_table_copy)
