@@ -1,5 +1,12 @@
 import math
 
+# Julia Parameters
+JULIA_PARAMTERS = {
+    "julia": "/Applications/Julia-1.10.app/Contents/Resources/julia/bin/julia",  # Path to your system's Julia executable.
+    "julia_pkg": "../juliapkg.json",  # Path to your JSON file with Julia package dependencies.
+}
+
+
 # Method Parameters
 SAMPLE_RATE = 5  # in Hz; default if not specified in method
 RUN_LENGTH = 15  # in min; default if not specified in method

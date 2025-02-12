@@ -2,6 +2,18 @@ import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 import pandas as pd
 from abc import abstractmethod
+from model_chromatogram.user_parameters import JULIA_PARAMTERS
+import os
+
+if JULIA_PARAMTERS["julia"] is not None:
+    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PARAMTERS["julia"]
+
+    from juliacall import Main as jl
+
+    jl.include("./model_chromatogram/methods/viscosity.jl")
+    use_julia_fit = True
+else:
+    use_julia_fit = False
 
 
 METHANOL = {
@@ -20,6 +32,10 @@ THF = {
     "density": 0.886,  # g/cm^3
     "mw": 72.11,  # g/mol
 }
+
+
+def viscosity(solvent, temp, x, pressure):
+    return jl.ViscosityModel.viscosity(solvent, float(temp), float(x), float(pressure))
 
 
 class ViscosityInterpolator(RegularGridInterpolator):
@@ -45,6 +61,7 @@ class ViscosityCalculator:
 
     def __init__(self) -> None:
         self._make_interpolator()
+        pass
 
     def compute_molar_fraction_from_percent(self, percent, solvent):
         f = percent / 100
@@ -93,20 +110,21 @@ class MethanolViscosity(ViscosityCalculator):
         super().__init__()
 
     def _make_interpolator(self):
-        df = pd.read_csv(self.path + self.file)
-        unique_temps = np.sort(df["temp"].unique())
-        unique_x = np.sort(df["x"].unique())
-        unique_pressures = np.sort(df["pressure"].unique())
-        df_sorted = df.sort_values(by=["temp", "x", "pressure"])
-        viscosity_grid = df_sorted.pivot_table(
-            index="temp", columns=["x", "pressure"], values="viscosity"
-        )
-        viscosity_values = viscosity_grid.values.reshape(
-            len(unique_temps), len(unique_x), len(unique_pressures)
-        )
-        self.interpolator = ViscosityInterpolator(
-            (unique_temps, unique_x, unique_pressures), viscosity_values
-        )
+        if not use_julia_fit:
+            df = pd.read_csv(self.path + self.file)
+            unique_temps = np.sort(df["temp"].unique())
+            unique_x = np.sort(df["x"].unique())
+            unique_pressures = np.sort(df["pressure"].unique())
+            df_sorted = df.sort_values(by=["temp", "x", "pressure"])
+            viscosity_grid = df_sorted.pivot_table(
+                index="temp", columns=["x", "pressure"], values="viscosity"
+            )
+            viscosity_values = viscosity_grid.values.reshape(
+                len(unique_temps), len(unique_x), len(unique_pressures)
+            )
+            self.interpolator = ViscosityInterpolator(
+                (unique_temps, unique_x, unique_pressures), viscosity_values
+            )
 
     def interpolate_viscosity(self, pressure, temp, x):
         """
@@ -120,7 +138,10 @@ class MethanolViscosity(ViscosityCalculator):
         Returns:
             float: The interpolated viscosity.
         """
-        return self.interpolator((temp, x, pressure))
+        if use_julia_fit:
+            return viscosity("meoh", temp, x, pressure)
+        else:
+            return self.interpolator((temp, x, pressure))
 
     def compute_molar_fraction_from_percent(self, percent):
         return super().compute_molar_fraction_from_percent(percent, METHANOL)
@@ -133,19 +154,20 @@ class AcetonitrileViscosity(ViscosityCalculator):
         super().__init__()
 
     def _make_interpolator(self):
-        df = pd.read_csv(self.path + self.file)
-        unique_x = np.sort(df["x"].unique())
-        unique_pressures = np.sort(df["pressure"].unique())
-        df_sorted = df.sort_values(by=["x", "pressure"])
-        viscosity_grid = df_sorted.pivot_table(
-            index="x", columns=["pressure"], values="viscosity"
-        )
-        viscosity_values = viscosity_grid.values.reshape(
-            len(unique_x), len(unique_pressures)
-        )
-        self.interpolator = ViscosityInterpolator(
-            (unique_x, unique_pressures), viscosity_values
-        )
+        if not use_julia_fit:
+            df = pd.read_csv(self.path + self.file)
+            unique_x = np.sort(df["x"].unique())
+            unique_pressures = np.sort(df["pressure"].unique())
+            df_sorted = df.sort_values(by=["x", "pressure"])
+            viscosity_grid = df_sorted.pivot_table(
+                index="x", columns=["pressure"], values="viscosity"
+            )
+            viscosity_values = viscosity_grid.values.reshape(
+                len(unique_x), len(unique_pressures)
+            )
+            self.interpolator = ViscosityInterpolator(
+                (unique_x, unique_pressures), viscosity_values
+            )
 
     def temperature_correction(
         self, T: float, T_ref: float = 25, alpha: float = 0.03
@@ -188,9 +210,12 @@ class AcetonitrileViscosity(ViscosityCalculator):
         Returns:
             float: The interpolated viscosity.
         """
-        visc = self.interpolator((x, pressure))
-        temp_corr = self.temperature_correction(temp)
-        return visc * temp_corr
+        if use_julia_fit:
+            return viscosity("acn", temp, x, pressure)
+        else:
+            visc = self.interpolator((x, pressure))
+            temp_corr = self.temperature_correction(temp)
+            return visc * temp_corr
 
     def calculate_pressure(self):
         pass
@@ -206,19 +231,20 @@ class TetrahydrofuranViscosity(ViscosityCalculator):
         super().__init__()
 
     def _make_interpolator(self):
-        df = pd.read_csv(self.path + self.file)
-        unique_temps = np.sort(df["temp"].unique())
-        unique_x = np.sort(df["x"].unique())
-        df_sorted = df.sort_values(by=["temp", "x"])
-        viscosity_grid = df_sorted.pivot_table(
-            index="temp", columns=["x"], values="viscosity"
-        )
-        viscosity_values = viscosity_grid.values.reshape(
-            len(unique_temps), len(unique_x)
-        )
-        self.interpolator = ViscosityInterpolator(
-            (unique_temps, unique_x), viscosity_values
-        )
+        if not use_julia_fit:
+            df = pd.read_csv(self.path + self.file)
+            unique_temps = np.sort(df["temp"].unique())
+            unique_x = np.sort(df["x"].unique())
+            df_sorted = df.sort_values(by=["temp", "x"])
+            viscosity_grid = df_sorted.pivot_table(
+                index="temp", columns=["x"], values="viscosity"
+            )
+            viscosity_values = viscosity_grid.values.reshape(
+                len(unique_temps), len(unique_x)
+            )
+            self.interpolator = ViscosityInterpolator(
+                (unique_temps, unique_x), viscosity_values
+            )
 
     def interpolate_viscosity(self, pressure, temp, x):
         """
@@ -232,9 +258,12 @@ class TetrahydrofuranViscosity(ViscosityCalculator):
         Returns:
             float: The interpolated viscosity.
         """
-        visc = self.interpolator((temp, x))
-        pressure_corr = self.pressure_correction(pressure)
-        return visc * pressure_corr
+        if use_julia_fit:
+            return viscosity("thf", temp, x, pressure)
+        else:
+            visc = self.interpolator((temp, x))
+            pressure_corr = self.pressure_correction(pressure)
+            return visc * pressure_corr
 
     def compute_molar_fraction_from_percent(self, percent):
         return super().compute_molar_fraction_from_percent(percent, THF)
