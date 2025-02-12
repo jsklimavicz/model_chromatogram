@@ -2,7 +2,7 @@
     "deps": [
         "CSV",
         "DataFrames",
-        "Interpolations"
+        "LsqFit"
     ],
     "compat": {
         "julia": "^=1.10",
