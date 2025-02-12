@@ -411,7 +411,7 @@
     },
     {
         "name": "column_quality_check",
-        "run_time": 20,
+        "run_time": 30,
         "mobile_phases": [
             {
                 "name": "water",
@@ -419,11 +419,11 @@
             },
             {
                 "name": "THF",
-                "id": "B"
+                "id": "C"
             },
             {
                 "name": "methanol",
-                "id": "C"
+                "id": "B"
             },
             {
                 "name": "acetonitrile",
@@ -456,6 +456,26 @@
                 "flow": 1.0,
                 "percent_a": 0.0,
                 "percent_b": 100.0,
+                "percent_c": 0.0,
+                "percent_d": 0.0,
+                "curve": 5,
+                "temperature": 30
+            },
+            {
+                "time": 25.0,
+                "flow": 1.0,
+                "percent_a": 0.0,
+                "percent_b": 100.0,
+                "percent_c": 0.0,
+                "percent_d": 0.0,
+                "curve": 5,
+                "temperature": 30
+            },
+            {
+                "time": 25.1,
+                "flow": 1.0,
+                "percent_a": 99.0,
+                "percent_b": 1.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
