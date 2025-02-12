@@ -18,8 +18,6 @@ import pstats
 import io
 from pstats import SortKey
 
-ob = cProfile.Profile()
-ob.enable()
 
 folder = "./test_output"
 
@@ -76,17 +74,25 @@ sequence = Sequence(
     name="test_sequence", datavault="JSK", start_time=current_date, url="JSK_test"
 )
 
-curr_injection = Injection(
-    sample=sample,
-    method=validation_method,
-    processing_method=validation_processing,
-    sequence=sequence,
-    system=system,
-    user=user,
-    injection_time=current_date,
-)
+ob = cProfile.Profile()
+ob.enable()
+for i in range(1):
+    for method in method_list:
+        if get_(method, "name") == "column_quality_check":
+            validation_method = InstrumentMethod(**method, system=system)
+            break
 
-curr_injection.find_peaks("UV_VIS_1")
+    curr_injection = Injection(
+        sample=sample,
+        method=validation_method,
+        processing_method=validation_processing,
+        sequence=sequence,
+        system=system,
+        user=user,
+        injection_time=current_date,
+    )
+
+    curr_injection.find_peaks("UV_VIS_1")
 
 ob.disable()
 sec = io.StringIO()

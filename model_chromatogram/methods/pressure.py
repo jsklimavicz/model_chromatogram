@@ -1,3 +1,17 @@
+import os
+from model_chromatogram.user_parameters import JULIA_PARAMTERS
+
+if JULIA_PARAMTERS["julia"] is not None:
+    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PARAMTERS["julia"]
+
+    from juliacall import Main as jl
+
+    jl.include("./model_chromatogram/methods/pressure.jl")
+    use_julia_fit = True
+else:
+    use_julia_fit = False
+
+
 from model_chromatogram.system import System
 import pandas as pd
 import numpy as np
@@ -100,10 +114,7 @@ class PressureDriver:
         Returns:
             float: The viscosity of the mobile phase (in cP).
         """
-        if meoh_x == 0:
-            meoh_nu = 1
-        else:
-            meoh_nu = self.meoh_viscosity.interpolate_viscosity(pressure, temp, meoh_x)
+        meoh_nu = self.meoh_viscosity.interpolate_viscosity(pressure, temp, meoh_x)
 
         if acn_x == 0:
             acn_nu = 1
@@ -282,8 +293,18 @@ def calculate_pressure(
             raise ValueError(f"Unknown solvent: {solvent["name"]}")
         profile_table_copy.rename(columns={old_name: new_name}, inplace=True)
 
-    pressure_driver = PressureDriver(system, profile_table_copy)
+    col_struct = [
+        system.column.length_mm * 1e-3,
+        system.column.particle_diameter_um * 1e-6,
+        0.95,
+        system.column.porosity,
+        system.column.volume,
+        system.column.id_mm,
+    ]
+    if use_julia_fit:
+        pressure = jl.Pressure.pressure_driver(profile_table_copy, col_struct)
 
-    pressure = pressure_driver.calculate_pressure_finite_difference()
-
+    else:
+        pressure_driver = PressureDriver(system, profile_table_copy)
+        pressure = pressure_driver.calculate_pressure_finite_difference()
     return pressure
