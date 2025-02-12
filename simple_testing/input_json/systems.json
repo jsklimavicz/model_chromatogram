@@ -21,6 +21,14 @@
                 "serial_number": "96014241"
             },
             {
+                "name": "Comp",
+                "manufacturer": "Thermo Fisher Scientific Inc.",
+                "type": "Column Compartment",
+                "detector_type": null,
+                "part_number": "VN-C10-A-01",
+                "serial_number": "228401"
+            },
+            {
                 "name": "UV",
                 "manufacturer": "Thermo Fisher Scientific Inc.",
                 "type": "Detector",
@@ -37,14 +45,14 @@
                 "unit": "mm"
             },
             "length": {
-                "value": 150,
+                "value": 100,
                 "unit": "mm"
             },
             "type": "C18",
             "serial_number": "00386184-P",
-            "injection_count": 843,
+            "injection_count": 67,
             "particle_size": {
-                "value": 5,
+                "value": 3,
                 "unit": "um"
             }
         },

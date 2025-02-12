@@ -411,7 +411,7 @@
     },
     {
         "name": "column_quality_check",
-        "run_time": 820,
+        "run_time": 20,
         "mobile_phases": [
             {
                 "name": "water",
@@ -433,63 +433,33 @@
         "mobile_phase_gradient_steps": [
             {
                 "time": 0.0,
-                "flow": 5.0,
-                "percent_a": 100.0,
-                "percent_b": 0.0,
+                "flow": 1.0,
+                "percent_a": 99.0,
+                "percent_b": 1.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 298
+                "temperature": 30
             },
             {
-                "time": 3.0,
-                "flow": 5.0,
-                "percent_a": 100.0,
-                "percent_b": 0.0,
+                "time": 5.0,
+                "flow": 1.0,
+                "percent_a": 99.0,
+                "percent_b": 1.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 298
-            },
-            {
-                "time": 8.0,
-                "flow": 5.0,
-                "percent_a": 85.0,
-                "percent_b": 15.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5,
-                "temperature": 298
-            },
-            {
-                "time": 10.0,
-                "flow": 5.0,
-                "percent_a": 85.0,
-                "percent_b": 15.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5,
-                "temperature": 318
+                "temperature": 30
             },
             {
                 "time": 15.0,
-                "flow": 5.0,
-                "percent_a": 85.0,
-                "percent_b": 15.0,
+                "flow": 1.0,
+                "percent_a": 0.0,
+                "percent_b": 100.0,
                 "percent_c": 0.0,
                 "percent_d": 0.0,
                 "curve": 5,
-                "temperature": 318
-            },
-            {
-                "time": 15.0,
-                "flow": 5.0,
-                "percent_a": 100.0,
-                "percent_b": 0.0,
-                "percent_c": 0.0,
-                "percent_d": 0.0,
-                "curve": 5,
-                "temperature": 318
+                "temperature": 30
             }
         ],
         "detection": [
@@ -497,13 +467,25 @@
                 "name": "UV_VIS_1",
                 "detector_name": "UV",
                 "wavelength": 250,
-                "bandwidth": 4
+                "bandwidth": 4,
+                "unit": "mAU"
             },
             {
                 "name": "UV_VIS_2",
                 "detector_name": "UV",
                 "wavelength": 270,
-                "bandwidth": 4
+                "bandwidth": 4,
+                "unit": "mAU"
+            },
+            {
+                "name": "Pressure",
+                "detector_name": "PumpModule.Pump",
+                "unit": "bar"
+            },
+            {
+                "name": "Temperature",
+                "detector_name": "Comp",
+                "unit": "C"
             }
         ],
         "creation": {

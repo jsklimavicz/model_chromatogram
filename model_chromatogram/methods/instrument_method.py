@@ -1,3 +1,4 @@
+from model_chromatogram.methods.pressure import calculate_pressure
 from model_chromatogram.compounds import SOLVENT_LIBRARY, Solvent
 from model_chromatogram.system import System
 from pydash import get as _get
@@ -65,6 +66,7 @@ class InstrumentMethod:
         self.run_time: float = run_time
         self.sample_rate: float = sample_rate
         self.detection: dict = detection
+        self.system: System = system
         for channel in self.detection:
             module = system.lookup_module(channel["detector_name"])
             channel["fk_module"] = module.pk if module else None
@@ -200,6 +202,12 @@ class InstrumentMethod:
                     mult / 100 * self.profile_table[name]
                 )
 
+        self.profile_table["pressure"] = calculate_pressure(
+            self.mobile_phases,
+            self.profile_table,
+            self.system,
+        )
+
     def get_uv_background(self, wavelength, set_zero_time=True):
         """
         Calculates the UV background spectrum based on solvent composition.
@@ -225,6 +233,16 @@ class InstrumentMethod:
             background -= background[0]
 
         return self.profile_table["time"], background * BASELINE_MULTIPLIER
+
+    def get_zero_background(self):
+        """
+        Returns a zeroed background signal.
+
+        Returns:
+            time (np.array): Array of time values
+            background (np.array): Array of zeros
+        """
+        return self.profile_table["time"], np.zeros_like(self.profile_table["time"])
 
     def get_times(self):
         """

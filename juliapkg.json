@@ -1,0 +1,13 @@
+{
+    "deps": [
+        "CSV",
+        "DataFrames",
+        "Interpolations"
+    ],
+    "compat": {
+        "julia": "^=1.10",
+        "CSV": "0.8",
+        "DataFrames": "1.2",
+        "LsqFit": "0.15"
+    }
+}

@@ -17,6 +17,21 @@ def random_column_serial_number():
     return random_string
 
 
+def convert_to_mm(value, unit):
+    if unit == "cm":
+        return value * 10
+    elif unit == "in":
+        return value * 25.4
+    elif unit == "m":
+        return value * 1000
+    elif unit == "um":
+        return value / 1000
+    elif unit == "mm":
+        return value
+    else:
+        raise ValueError(f"Unit {unit} for the column is not recognized.")
+
+
 class Parameters:
     def __init__(self, parameter_dict={}):
         self.parameter_dict = parameter_dict
@@ -45,19 +60,30 @@ class Parameters:
 
 
 class Column:
+
     def __init__(
         self,
         inner_diameter,
         length,
+        particle_size,
         serial_number=None,
         injection_count=0,
         failure_risk_count=1000,
+        porosity=0.65,
         **kwargs,
     ) -> None:
         self.inner_diameter = get(inner_diameter, "value")
         self.inner_diameter_unit = get(inner_diameter, "unit")
+        self.id_mm = convert_to_mm(self.inner_diameter, self.inner_diameter_unit)
         self.length = get(length, "value")
         self.length_unit = get(length, "unit")
+        self.length_mm = convert_to_mm(self.length, self.length_unit)
+        self.particle_size = get(particle_size, "value")
+        self.particle_size_unit = get(particle_size, "unit")
+        self.particle_diameter_um = 1000 * convert_to_mm(
+            self.particle_size, self.particle_size_unit
+        )
+        self.porosity = porosity
         self.find_volume()
         if serial_number is None:
             self.serial_number = random_column_serial_number()
@@ -105,7 +131,7 @@ class Column:
     def find_volume(self):
         self.nominal_volume = (self.inner_diameter / 2) ** 2 * np.pi * self.length
         self.nominal_volume /= 1000  # mm^3 to mL conversion
-        self.volume = self.nominal_volume * 0.65  # porosity adjustment
+        self.volume = self.nominal_volume * self.porosity  # porosity adjustment
 
     def inject(self, count=1):
         for _ in range(count):

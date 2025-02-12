@@ -10,6 +10,17 @@ from model_chromatogram.injection import Injection
 from model_chromatogram.sequence import Sequence
 from model_chromatogram.system import System
 
+import matplotlib.pyplot as plt
+
+
+import cProfile
+import pstats
+import io
+from pstats import SortKey
+
+ob = cProfile.Profile()
+ob.enable()
+
 folder = "./test_output"
 
 
@@ -65,7 +76,6 @@ sequence = Sequence(
     name="test_sequence", datavault="JSK", start_time=current_date, url="JSK_test"
 )
 
-
 curr_injection = Injection(
     sample=sample,
     method=validation_method,
@@ -75,8 +85,22 @@ curr_injection = Injection(
     user=user,
     injection_time=current_date,
 )
+
 curr_injection.find_peaks("UV_VIS_1")
 
+ob.disable()
+sec = io.StringIO()
+sortby = SortKey.TIME
+ps = pstats.Stats(ob, stream=sec).sort_stats(sortby)
+ps.print_stats()
+
+with open(f"./{folder}/profile.txt", "w") as f:
+    f.write(sec.getvalue())
+
+curr_injection.plot_chromatogram("Pressure")
+plt.xlabel("Time (min)")
+plt.ylabel("Pressure (bar)")
+plt.show()
 
 inj_dict = curr_injection.to_dict()
 path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
