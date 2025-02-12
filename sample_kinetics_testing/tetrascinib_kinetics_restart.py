@@ -157,7 +157,7 @@ for day in time_points:
         for system, sequence, user, time in zip(systems, sequences, users, times):
             if system.name == "Hayden":
                 # temp = get_temp(time) + 273.15
-                temp = 299 + random.uniform(-1, 1)
+                temp = 288 + random.uniform(-1, 1)
             else:
                 temp = 298 + random.uniform(-1, 1)
             tetrascinib_method.temperature = temp

@@ -2,9 +2,36 @@ from model_chromatogram.compounds import Compound, COMPOUND_LIBRARY
 from random import uniform
 import datetime
 from copy import copy
+from typing import Literal
+
+ALLOWED_TYPES = [
+    "Unknown",
+    "Standard",
+    "Blank",
+    "Check Standard",
+    "QC Sample",
+    "Calibration Standard",
+    "Matrix",
+    "Spiked",
+    "Unspiked",
+    "RF Internal Standard",
+]
+LITERAL_ALLOWED_TYPES = Literal[
+    "Unknown",
+    "Standard",
+    "Blank",
+    "Check Standard",
+    "QC Sample",
+    "Calibration Standard",
+    "Matrix",
+    "Spiked",
+    "Unspiked",
+    "RF Internal Standard",
+]
 
 
 class Sample:
+
     def __init__(
         self,
         name: str,
@@ -18,6 +45,8 @@ class Sample:
         n_unknown_peaks: int = 0,
         unknown_concentration_range: list[float] = [0, 1],
         location=None,
+        type_: LITERAL_ALLOWED_TYPES = "Unknown",
+        **kwargs,
     ) -> None:
         """
         Creates a sample with a list of compounds.
@@ -25,22 +54,36 @@ class Sample:
         Args:
             name (str): The name of the sample.
             compound_id_list (list[str]): A list of compound identifiers for finding compounds in the COMPOUND_LIBRARY
-            compound_concentration_list (list[float]): A list of concentrations in the same order as the `compound_id_list`.
+            compound_concentration_list (list[float]): A list of concentrations in the same order as the
+                `compound_id_list`.
             creation_date (datetime): Date that the sample was created.
-            compound_alias (list[str]): A list of names to label the compounds in the sample as. These are the names that will be used in processing methods to label peaks.
-            concentration_unit (int): An int to signify which units are used for the concentration of the input concentrations.
-                1: mg/ml (part per thousand w/v)
-                2: ug/ml (ppm w/v)
-                3: ng/ml (ppb w/v)
-                4: umol/ml (or mM)
-                5: nmol/ml (or uM)
-            n_random_named_peaks (int): Number of random compounds to add to the sample, where each peak is assigned a code name.
-            random_named_concentration_range (list[float]): 2-element list containing the min and max concentration values for a randomly added named compound.
-            n_unknown_peaks (int): Number of unknown compounds to add to the sample, where each peak is assigned the name "unknown".
-            random_unknown_range (list[float]): 2-element list containing the min and max concentration values for unknown compounds.
+            compound_alias (list[str]): A list of names to label the compounds in the sample as. These are the names
+                that will be used in processing methods to label peaks.
+            concentration_unit (int): An int to signify which units are used for the concentration of the input
+                concentrations.
+                    1: mg/ml (part per thousand w/v)
+                    2: ug/ml (ppm w/v)
+                    3: ng/ml (ppb w/v)
+                    4: umol/ml (or mM)
+                    5: nmol/ml (or uM)
+            n_random_named_peaks (int): Number of random compounds to add to the sample, where each peak is assigned a
+                code name.
+            random_named_concentration_range (list[float]): 2-element list containing the min and max concentration
+                values for a randomly added named compound.
+            n_unknown_peaks (int): Number of unknown compounds to add to the sample, where each peak is assigned the
+                name "unknown".
+            random_unknown_range (list[float]): 2-element list containing the min and max concentration values for
+                unknown compounds.
         """
 
         self.name: str = name
+
+        self.type = kwargs.get("type") or type_
+        if self.type not in ALLOWED_TYPES:
+            raise ValueError(
+                f"Invalid sample type: {self.type}. Must be one of {LITERAL_ALLOWED_TYPES}"
+            )
+
         if isinstance(creation_date, datetime.datetime):
             self.creation_date = creation_date.isoformat()
         else:
@@ -96,6 +139,7 @@ class Sample:
             ),
             "random_peaks": 0,
             "max_random_amount": 0,
+            "type": self.type,
         }
         return self_dict
 
@@ -105,7 +149,9 @@ class Sample:
         )
         for compound in self.compounds:
             print(
-                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.intrinsic_log_p,3):0.2f}\t{round(compound.mw,3):0.3f}  \t{round(compound.concentration,3):0.3f}\t{round(compound.m_molarity,3):0.3f}'
+                f'{compound.id: <20}{" "}{compound.cas:<12}\t{round(compound.intrinsic_log_p, 3):0.2f}\t'
+                + f"{round(compound.mw, 3):0.3f}  \t{round(compound.concentration, 3):0.3f}\t"
+                + f"{round(compound.m_molarity, 3):0.3f}"
             )
 
     def __iter__(self):

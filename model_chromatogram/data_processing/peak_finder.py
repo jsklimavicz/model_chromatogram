@@ -15,7 +15,7 @@ from model_chromatogram.user_parameters import (
     PEAK_LIMIT,
     MINIMUM_HEIGHT_METHOD,
 )
-from pydash import get as _get
+from pydash import get as get_, set_
 from scipy.stats import linregress
 import itertools
 
@@ -30,6 +30,7 @@ class PeakFinder:
         timepoints: np.array,
         signal: np.array,
         processing_method: ProcessingMethod,
+        sample_introduction: dict,
         channel_name: str = None,
     ) -> None:
         """
@@ -51,6 +52,7 @@ class PeakFinder:
         """
         self.processing_method = processing_method
         self.channel_name = channel_name
+        self.sample_introduction = sample_introduction
         self.__parse_processing_method()
         self.timepoints = timepoints
         self.n_points = len(timepoints)
@@ -62,8 +64,8 @@ class PeakFinder:
 
     def __parse_processing_method(self):
         def set_param(mapping, default):
-            fetched_val = _get(self.processing_method.kwargs, mapping)
-            if fetched_val == None:
+            fetched_val = get_(self.processing_method.kwargs, mapping)
+            if fetched_val is None:
                 fetched_val = default
             return fetched_val
 
@@ -178,10 +180,11 @@ class PeakFinder:
 
     def __find_baseline(self):
         """
-        Calculates a baseline approximation using the psalsa asymmetric least squares algorithm, and stores a cubic spline of the baseline.
+        Calculates a baseline approximation using the psalsa asymmetric least squares algorithm, and stores a cubic
+        spline of the baseline.
         """
 
-        baseline_params = _get(
+        baseline_params = get_(
             self.processing_method.kwargs, "detection_parameters.baseline"
         )
         baseline_time, baseline_vals = als_psalsa(
@@ -219,13 +222,16 @@ class PeakFinder:
     def find_peaks(self):
         """
         Works in three steps:
-            1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple of the noise in the second derivative
-            2. expand these regions to where the second derivative goes above positive multiple of the threshold and back down again
+            1. find regions when the second derivative of the smoothed signal drops below a negative threshold multiple
+                of the noise in the second derivative
+            2. expand these regions to where the second derivative goes above positive multiple of the threshold and
+                back down again
             3. contract overlapping regions to a local max or min in the second derivative
         This function populates the `self.peaks` array.
 
         Args:
-            noise_multiplier (float): multiplier for threshold of signal detection. Higher values result in fewer peaks detected.
+            noise_multiplier (float): multiplier for threshold of signal detection. Higher values result in fewer peaks
+                detected.
 
         """
         self.d2_sigma = self.noise_threshold_multiplier * self.d2_ave_noise
@@ -380,7 +386,7 @@ class PeakFinder:
         return self.peaks[index]
 
     def name_peaks(self):
-        peak_names = _get(self.processing_method, "peak_identification")
+        peak_names = get_(self.processing_method, "peak_identification")
 
         for identification in peak_names:
             min_time = identification["min_time"]
@@ -411,10 +417,7 @@ class PeakFinder:
                 # If calibration data is present, calculate the amount
                 if calibration_sets:
                     for calibration in calibration_sets:
-                        if (
-                            calibration["channel"] == self.channel_name
-                            and calibration["type"] == "linear"
-                        ):
+                        if calibration["channel"] == self.channel_name:
                             try:
                                 areas = [
                                     point["area"] for point in calibration["points"]
@@ -422,12 +425,41 @@ class PeakFinder:
                                 amounts = [
                                     point["amount"] for point in calibration["points"]
                                 ]
-
-                                # Perform linear regression to find the relationship
-                                slope, intercept, _, _, _ = linregress(areas, amounts)
-
-                                # Calculate the amount based on the peak area
-                                named_peak.amount = slope * named_peak.area + intercept
-                                named_peak.amount_unit = calibration["amount_unit"]
-                            except:
+                                if areas is None or amounts is None:
+                                    continue
+                            except Exception:
                                 continue
+
+                            calibration_fit(
+                                calibration,
+                                named_peak,
+                                self.sample_introduction,
+                            )
+
+
+def calibration_fit(calibration, peak: Peak, sample_introduction):
+    areas = [point["area"] for point in calibration["points"]]
+    amounts = [point["amount"] for point in calibration["points"]]
+    if calibration["type"] == "linear":
+        fit_dict = lin_fit(areas, amounts, peak)
+    else:
+        fit_dict = {}
+
+    for key, value in fit_dict.items():
+        set_(calibration, key, value)
+    peak.amount *= (
+        sample_introduction["dilution_factor"] / sample_introduction["injection_volume"]
+    )
+    peak.amount_unit = calibration["amount_unit"]
+
+
+def lin_fit(areas, amounts, peak: Peak):
+    slope, intercept, rvalue, _, _ = linregress(areas, amounts)
+    fit_dict = {
+        "coefficient_A": slope,
+        "coefficient_B": intercept,
+        "formula": "Ax+B",
+        "rvalue": rvalue,
+    }
+    peak.amount = slope * peak.area + intercept
+    return fit_dict

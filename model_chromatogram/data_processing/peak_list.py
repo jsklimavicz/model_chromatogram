@@ -1,6 +1,4 @@
 from scipy.interpolate import CubicSpline
-import pandas as pd
-import numpy as np
 from model_chromatogram.data_processing import Peak
 from model_chromatogram.user_parameters import MINIMUM_AREA, MINIMUM_HEIGHT
 
@@ -56,14 +54,19 @@ class PeakList:
         self, globals=True, resolution_reference="prev"
     ) -> None:
         """
-        Drives the calculation of peak properties that are based on the values other peaks, like relative area and resolution.
+        Drives the calculation of peak properties that are based on the values other peaks, like relative area and
+        resolution.
 
         Args:
             globals (bool): If true (default), calculates the relative area and relative height for each peak.
-            resolution_reference (None|int|str): A reference determining which peak to use for calculating the resolution of each peak. Permitted values are:
-                "prev": Resolution for a peak is calculated using the previous peak as a reference. Undefined for the first peak.
-                "next": Resolution for a peak is calculated using the next peak as a reference. Undefined for the last peak.
-                1 < int <= n_peaks: For an `int` value between 1 and the number of peaks, the 1-indexed index of the peak to use as a reference for resolution. Resolution is undefined for that peak.
+            resolution_reference (None|int|str): A reference determining which peak to use for calculating the
+                resolution of each peak. Permitted values are:
+                    "prev": Resolution for a peak is calculated using the previous peak as a reference. Undefined for
+                        the first peak.
+                    "next": Resolution for a peak is calculated using the next peak as a reference. Undefined for the
+                        last peak.
+                    1 < int <= n_peaks: For an `int` value between 1 and the number of peaks, the 1-indexed index of the
+                        peak to use as a reference for resolution. Resolution is undefined for that peak.
         """
         self.peaks.sort(key=lambda peak: peak.retention_time)
 
@@ -83,10 +86,15 @@ class PeakList:
         # calculate relative area and height
         if globals:
             total_area = sum(peak.area for peak in self.peaks)
+            total_amount = sum(peak.amount if peak.amount else 0 for peak in self.peaks)
             total_height = sum(peak.height for peak in self.peaks)
             for peak in self.peaks:
                 peak.relative_area = 100 * peak.area / total_area
                 peak.relative_height = 100 * peak.height / total_height
+                try:
+                    peak.relative_amount = 100 * peak.amount / total_amount
+                except Exception:
+                    pass
 
         # calculate resolution
 
