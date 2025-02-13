@@ -26,10 +26,6 @@ from typing import Union
 class PressureDriver:
     initial_pressure_guess = 200  # in bar
 
-    meoh_viscosity = MethanolViscosity()
-    acn_viscosity = AcetonitrileViscosity()
-    thf_viscosity = TetrahydrofuranViscosity()
-
     def __init__(
         self,
         system: System,
@@ -57,21 +53,25 @@ class PressureDriver:
             / (system.column.id_mm**2 * np.pi / 400)
             / (100 * 60)
         )
-        self.solvent_profile["meoh_x"] = (
-            self.meoh_viscosity.compute_molar_fraction_from_percent(
-                self.solvent_profile["percent_meoh"]
-            )
-        )
-        self.solvent_profile["acn_x"] = (
-            self.thf_viscosity.compute_molar_fraction_from_percent(
-                self.solvent_profile["percent_acn"]
-            )
-        )
-        self.solvent_profile["thf_x"] = (
-            self.thf_viscosity.compute_molar_fraction_from_percent(
-                self.solvent_profile["percent_thf"]
-            )
-        )
+
+        solvent_viscosity_dict = {
+            "meoh": MethanolViscosity,
+            "acn": AcetonitrileViscosity,
+            "thf": TetrahydrofuranViscosity,
+        }
+
+        for solvent, viscosity_class in solvent_viscosity_dict.items():
+            if self.solvent_profile[f"percent_{solvent}"].max() > 0:
+                self.meoh_viscosity = viscosity_class()
+                self.solvent_profile[f"{solvent}_x"] = (
+                    self.meoh_viscosity.compute_molar_fraction_from_percent(
+                        self.solvent_profile[f"percent_{solvent}"]
+                    )
+                )
+            else:
+                self.solvent_profile[f"{solvent}_x"] = np.zeros_like(
+                    self.solvent_profile[f"percent_{solvent}"]
+                )
 
         self.kozeny_carman_multiplier = (
             column_permeability_factor
@@ -290,7 +290,7 @@ def calculate_pressure(
         elif name in ["thf", "tetrahydrofuran"]:
             new_name = "percent_thf"
         else:
-            raise ValueError(f"Unknown solvent: {solvent["name"]}")
+            raise ValueError(f"Unknown solvent: {solvent['name']}")
         profile_table_copy.rename(columns={old_name: new_name}, inplace=True)
 
     col_struct = [

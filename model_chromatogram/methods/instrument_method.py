@@ -202,11 +202,12 @@ class InstrumentMethod:
                     mult / 100 * self.profile_table[name]
                 )
 
-        self.profile_table["pressure"] = calculate_pressure(
-            self.mobile_phases,
-            self.profile_table,
-            self.system,
-        )
+        if "pressure" in [channel["name"].lower() for channel in self.detection]:
+            self.profile_table["pressure"] = calculate_pressure(
+                self.mobile_phases,
+                self.profile_table,
+                self.system,
+            )
 
     def get_uv_background(self, wavelength, set_zero_time=True):
         """
