@@ -6,6 +6,8 @@ import os
 files = [
     "autocorr_data.pyx",
     "exponnorm_functions.pyx",
+    "viscosity.pyx",
+    "pressure.pyx",
 ]
 
 pyx_files = []

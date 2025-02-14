@@ -1,15 +1,14 @@
 import os
-from model_chromatogram.user_parameters import JULIA_PARAMTERS
+from model_chromatogram.user_parameters import PRESSURE_CALCULATION_PROGRAM, JULIA_PATH
+from model_chromatogram.utils import pressure_driver as cython_pd
 
-if JULIA_PARAMTERS["julia"] is not None:
-    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PARAMTERS["julia"]
+if PRESSURE_CALCULATION_PROGRAM == "julia":
+
+    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PATH
 
     from juliacall import Main as jl
 
     jl.include("./model_chromatogram/methods/pressure.jl")
-    use_julia_fit = True
-else:
-    use_julia_fit = False
 
 
 from model_chromatogram.system import System
@@ -25,10 +24,6 @@ from typing import Union
 
 class PressureDriver:
     initial_pressure_guess = 200  # in bar
-
-    meoh_viscosity = MethanolViscosity()
-    acn_viscosity = AcetonitrileViscosity()
-    thf_viscosity = TetrahydrofuranViscosity()
 
     def __init__(
         self,
@@ -57,21 +52,25 @@ class PressureDriver:
             / (system.column.id_mm**2 * np.pi / 400)
             / (100 * 60)
         )
-        self.solvent_profile["meoh_x"] = (
-            self.meoh_viscosity.compute_molar_fraction_from_percent(
-                self.solvent_profile["percent_meoh"]
-            )
-        )
-        self.solvent_profile["acn_x"] = (
-            self.thf_viscosity.compute_molar_fraction_from_percent(
-                self.solvent_profile["percent_acn"]
-            )
-        )
-        self.solvent_profile["thf_x"] = (
-            self.thf_viscosity.compute_molar_fraction_from_percent(
-                self.solvent_profile["percent_thf"]
-            )
-        )
+
+        solvent_viscosity_dict = {
+            "meoh": MethanolViscosity,
+            "acn": AcetonitrileViscosity,
+            "thf": TetrahydrofuranViscosity,
+        }
+
+        for solvent, viscosity_class in solvent_viscosity_dict.items():
+            if self.solvent_profile[f"percent_{solvent}"].max() > 0:
+                self.meoh_viscosity = viscosity_class()
+                self.solvent_profile[f"{solvent}_x"] = (
+                    self.meoh_viscosity.compute_molar_fraction_from_percent(
+                        self.solvent_profile[f"percent_{solvent}"]
+                    )
+                )
+            else:
+                self.solvent_profile[f"{solvent}_x"] = np.zeros_like(
+                    self.solvent_profile[f"percent_{solvent}"]
+                )
 
         self.kozeny_carman_multiplier = (
             column_permeability_factor
@@ -290,7 +289,7 @@ def calculate_pressure(
         elif name in ["thf", "tetrahydrofuran"]:
             new_name = "percent_thf"
         else:
-            raise ValueError(f"Unknown solvent: {solvent["name"]}")
+            raise ValueError(f"Unknown solvent: {solvent['name']}")
         profile_table_copy.rename(columns={old_name: new_name}, inplace=True)
 
     col_struct = [
@@ -301,13 +300,12 @@ def calculate_pressure(
         system.column.volume,
         system.column.id_mm,
     ]
-    if use_julia_fit:
-        pressure = np.array(
-            jl.Pressure.pressure_driver(profile_table_copy, col_struct),
-            dtype=np.float64,
-        )
 
+    if PRESSURE_CALCULATION_PROGRAM == "julia":
+        pressure = jl.Pressure.pressure_driver(profile_table_copy, col_struct)
+        return np.array(pressure)
+    elif PRESSURE_CALCULATION_PROGRAM == "cython":
+        return cython_pd(profile_table_copy, col_struct)
     else:
         pressure_driver = PressureDriver(system, profile_table_copy)
-        pressure = pressure_driver.calculate_pressure_finite_difference()
-    return pressure
+        return pressure_driver.calculate_pressure_finite_difference()

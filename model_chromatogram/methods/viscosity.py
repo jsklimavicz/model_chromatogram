@@ -3,15 +3,16 @@ from scipy.interpolate import RegularGridInterpolator
 import pandas as pd
 from abc import abstractmethod
 
-from model_chromatogram.user_parameters import JULIA_PARAMTERS
+from model_chromatogram.user_parameters import PRESSURE_CALCULATION_PROGRAM, JULIA_PATH
 import os
 
-if JULIA_PARAMTERS["julia"] is not None:
-    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PARAMTERS["julia"]
+if PRESSURE_CALCULATION_PROGRAM == "julia":
+
+    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PATH
 
     from juliacall import Main as jl
 
-    jl.include("./model_chromatogram/methods/viscosity.jl")
+    jl.include("./model_chromatogram/methods/pressure.jl")
     use_julia_fit = False
 else:
     use_julia_fit = False
