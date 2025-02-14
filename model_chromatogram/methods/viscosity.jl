@@ -3,9 +3,7 @@
 module ViscosityModel
 
 export viscosity, model
-
 using CSV, DataFrames, LsqFit, Statistics
-
 
 # std: 0.017101766
 # resid_sum: 3.1432477

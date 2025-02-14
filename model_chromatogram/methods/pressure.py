@@ -1,15 +1,14 @@
 import os
-from model_chromatogram.user_parameters import JULIA_PARAMTERS
+from model_chromatogram.user_parameters import PRESSURE_CALCULATION_PROGRAM, JULIA_PATH
+from model_chromatogram.utils import pressure_driver as cython_pd
 
-if JULIA_PARAMTERS["julia"] is not None:
-    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PARAMTERS["julia"]
+if PRESSURE_CALCULATION_PROGRAM == "julia":
+
+    os.environ["PYTHON_JULIAPKG_EXE"] = JULIA_PATH
 
     from juliacall import Main as jl
 
     jl.include("./model_chromatogram/methods/pressure.jl")
-    use_julia_fit = True
-else:
-    use_julia_fit = False
 
 
 from model_chromatogram.system import System
@@ -301,13 +300,12 @@ def calculate_pressure(
         system.column.volume,
         system.column.id_mm,
     ]
-    if use_julia_fit:
-        pressure = np.array(
-            jl.Pressure.pressure_driver(profile_table_copy, col_struct),
-            dtype=np.float64,
-        )
 
+    if PRESSURE_CALCULATION_PROGRAM == "julia":
+        pressure = jl.Pressure.pressure_driver(profile_table_copy, col_struct)
+        return np.array(pressure)
+    elif PRESSURE_CALCULATION_PROGRAM == "cython":
+        return cython_pd(profile_table_copy, col_struct)
     else:
         pressure_driver = PressureDriver(system, profile_table_copy)
-        pressure = pressure_driver.calculate_pressure_finite_difference()
-    return pressure
+        return pressure_driver.calculate_pressure_finite_difference()
