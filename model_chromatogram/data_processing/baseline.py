@@ -64,13 +64,13 @@ def als_psalsa(
     # define loss function
     def loss_function(weights, residuals, z):
         S = np.sum(weights * residuals**2)
-        S += s * sum((D @ z) ** 2)
+        S += s * np.sum((D @ z) ** 2)
         return S
 
     prev_loss = 0  # intial loss
 
     # iterate z = (W + smoothness * D'D)^-1 W y until solved
-    while not converged and iterations < 20:
+    while not converged and iterations < 100:
         iterations += 1
         W = diags([weights], [0])
         z = spsolve(W + D2_s, (weights * signal))

@@ -76,7 +76,7 @@ sequence = Sequence(
 
 ob = cProfile.Profile()
 ob.enable()
-for i in range(1):
+for i in range(100):
     for method in method_list:
         if get_(method, "name") == "column_quality_check":
             validation_method = InstrumentMethod(**method, system=system)
@@ -92,20 +92,19 @@ for i in range(1):
         injection_time=current_date,
     )
 
-    curr_injection.find_peaks("UV_VIS_1")
+    peak_finder = curr_injection.find_peaks("UV_VIS_1")
 
 ob.disable()
 sec = io.StringIO()
-sortby = SortKey.TIME
+sortby = SortKey.CUMULATIVE
 ps = pstats.Stats(ob, stream=sec).sort_stats(sortby)
 ps.print_stats()
 
 with open(f"./{folder}/profile.txt", "w") as f:
     f.write(sec.getvalue())
 
-curr_injection.plot_chromatogram("Pressure")
-plt.xlabel("Time (min)")
-plt.ylabel("Pressure (bar)")
+# curr_injection.plot_chromatogram("UV_VIS_1", )
+peak_finder.plot_peaks(highlight_peaks=True)
 plt.show()
 
 inj_dict = curr_injection.to_dict()

@@ -1,6 +1,7 @@
 # pressure.pyx
 # cython: boundscheck=False, wraparound=False, language_level=3
 # distutils: language = c
+# distutils: define_macros=NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 import numpy as np
 cimport numpy as np
@@ -20,7 +21,7 @@ cdef dict ACETONITRILE = {"density": 0.786, "mw": 41.05}
 cdef dict THF = {"density": 0.886, "mw": 72.11}
 
 #############################
-# Column class (like Julia's struct)
+# Column class 
 #############################
 cdef class Column:
     cdef public double length, particle_diameter, particle_sphericity, porosity, volume, inner_diameter
@@ -101,10 +102,10 @@ def update_solvent_profile(object sp_df, Column column):
 # total_viscosity (vector version)
 ########################################
 
-def total_viscosity_vector(np.ndarray[double, ndim=1] meoh_x,
-                           np.ndarray[double, ndim=1] acn_x,
-                           np.ndarray[double, ndim=1] thf_x,
-                           np.ndarray[double, ndim=1] t,
+def total_viscosity_vector(double[:] meoh_x,
+                           double[:] acn_x,
+                           double[:] thf_x,
+                           double[:] t,
                            double p):
     """
     Given 1D arrays for methanol, acetonitrile, THF molar fractions (meoh_x, acn_x, thf_x),
@@ -163,16 +164,28 @@ def kozeny_carman_model_vector(double kozeny_carman,
                                double[:] v,
                                double[:] eta,
                                double[:] l):
-    """
-    Compute incremental pressure using the Kozeny–Carman model:
-        pressure = kozeny_carman * v * eta * l * 1e-8.
-    """
+    #
+    #Compute incremental pressure using the Kozeny–Carman model:
+    #    pressure = kozeny_carman * v * eta * l * 1e-8.
+    # 
     cdef Py_ssize_t n = v.shape[0]
     cdef np.ndarray[double, ndim=1] out = np.empty(n, dtype=np.float64)
     cdef double[:] o = out
     cdef Py_ssize_t i
     for i in range(n):
         o[i] = kozeny_carman * v[i] * eta[i] * l[i] * 1e-8
+    return out
+
+cdef np.ndarray[double, ndim=1] kozeny_carman_model_vector_ptr(double kozeny_carman, 
+                                                                double* v, 
+                                                                double* eta, 
+                                                                double* l, 
+                                                                Py_ssize_t n):
+    cdef np.ndarray[double, ndim=1] out = np.empty(n, dtype=np.float64)
+    cdef double* p_out = &out[0]
+    cdef Py_ssize_t i
+    for i in range(n):
+        p_out[i] = kozeny_carman * v[i] * eta[i] * l[i] * 1e-8
     return out
 
 ########################################
@@ -185,6 +198,21 @@ def kozeny_carman_model_scalar(double kozeny_carman, double v, double eta, doubl
 ########################################
 # pressure_driver
 ########################################
+
+# Helper function: binary search on a sorted memoryview.
+# Returns the smallest index in [0, i] such that cumsum[j] > threshold.
+cdef Py_ssize_t binary_search(double[:] cumsum, Py_ssize_t i, double threshold):
+    cdef Py_ssize_t lo = 0
+    cdef Py_ssize_t hi = i  # search in indices [0, i]
+    cdef Py_ssize_t mid
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if cumsum[mid] <= threshold:
+            lo = mid + 1
+        else:
+            hi = mid
+    return lo
+
 
 def pressure_driver(object solvent_profile, column_input,
                     double column_permeability_factor=20.0,
@@ -226,24 +254,57 @@ def pressure_driver(object solvent_profile, column_input,
     cdef np.ndarray[double, ndim=1] current_eta_arr, incr_press_arr
     cdef double[:] current_eta, incr_press
     cdef np.ndarray[double, ndim=1] viscosities = np.zeros(N, dtype=np.float64)
+    
+    # Cache pointers for full arrays.
+    cdef double* p_inc_CV = &inc_CV[0]
+    cdef double* p_sv = &sv[0]
+    cdef double* p_meoh = &meoh_x[0]
+    cdef double* p_acn = &acn_x[0]
+    cdef double* p_thf = &thf_x[0]
+    cdef double* p_temperature = &temperature[0]
+    cdef double* p_viscosities = &viscosities[0]
+    cdef double* p_incr = NULL  # Declare here; will assign later.
+    
+    # Precompute the cumulative sum for inc_CV.
+    cdef np.ndarray[double, ndim=1] cumsum = np.empty(N, dtype=np.float64)
+    cdef double[:] cumsum_view = cumsum
+    cumsum_view[0] = inc_CV[0]
+    for i in range(1, N):
+        cumsum_view[i] = cumsum_view[i-1] + inc_CV[i]
 
 
     for i in range(N):
         delta = 1e12
+
         fraction_accounted = 0.0
-        lower_index = i
+        lower_index = 0
         col_unaccounted = 0.0
         col_overaccounted = 0.0
-        # Find the lower index so that cumulative inc_CV >= 1.
-        while fraction_accounted < 1.0:
-            fraction_accounted += inc_CV[lower_index]
-            if fraction_accounted >= 1.0:
-                col_overaccounted = fraction_accounted - 1.0
-                break
-            if lower_index == 0:
+
+        # For each index i, determine lower_index using binary search.
+        if i == 0:
+            fraction_accounted = inc_CV[0]
+            col_unaccounted = 1.0 - fraction_accounted
+        else:
+            # If the total cumsum at i is less than 1,
+            # then even starting from index 0 we do not reach 1.
+            if cumsum_view[i] < 1.0:
+                fraction_accounted = cumsum_view[i]
                 col_unaccounted = 1.0 - fraction_accounted
-                break
-            lower_index -= 1
+            else:
+                # Otherwise, set threshold = cum[i] - 1.
+                threshold = cumsum_view[i] - 1.0
+                # Binary search in cumsum_view[0:i+1] for first index with cumsum_view[j] > threshold.
+                lower_index = binary_search(cumsum_view, i, threshold)
+                # Compute the sum from lower_index to i.
+                fraction_accounted = cumsum_view[i]
+                if lower_index > 0:
+                    fraction_accounted -= cumsum_view[lower_index - 1]
+                # Determine over-/under-accounted fractions.
+                if fraction_accounted >= 1.0:
+                    col_overaccounted = fraction_accounted - 1.0
+                else:
+                    col_unaccounted = 1.0 - fraction_accounted
         
         pressure_val = 0.0
         # Iterative update loop.
@@ -256,31 +317,32 @@ def pressure_driver(object solvent_profile, column_input,
                                                          initial_pressure_guess)
             else:
                 # Use scalar viscosity for index i.
-                eta = np.array([total_viscosity_scalar(meoh_x[i],
-                                                                    acn_x[i],
-                                                                    thf_x[i],
-                                                                    temperature[i],
-                                                                    initial_pressure_guess)], dtype=np.float64)
-                viscosities[i] = eta[0]
+                pressure_val_temp = total_viscosity_scalar(meoh_x[i],
+                                                           acn_x[i],
+                                                           thf_x[i],
+                                                           temperature[i],
+                                                           initial_pressure_guess)
+                viscosities[i] = pressure_val_temp
                 current_eta_arr = viscosities[lower_index:i+1]
-
-            #current_eta = current_eta_arr  # memoryview of current_eta_arr
-
-            incr_press_arr = kozeny_carman_model_vector(kozeny_carman,
-                                                         sv[lower_index:i+1],
-                                                         current_eta_arr,
-                                                         inc_length[lower_index:i+1])
-            incr_press = incr_press_arr
-            # Manually sum incr_press using a C loop.
+            
+            slice_len = i + 1 - lower_index
+            incr_press_arr = kozeny_carman_model_vector_ptr(kozeny_carman,
+                                                &sv[lower_index],
+                                                &current_eta_arr[0],  # assuming current_eta_arr is contiguous
+                                                &inc_length[lower_index],
+                                                slice_len)
+            # Cache pointer and length for the incr_press_arr slice.
+            
+            p_incr = &incr_press_arr[0]
+            
             local_sum = 0.0
-            slice_len = incr_press_arr.shape[0]
             for j in range(slice_len):
-                local_sum += incr_press[j]
+                local_sum += p_incr[j]
             pressure_val = local_sum
             if col_unaccounted > 0:
-                pressure_val += col_unaccounted / inc_CV[lower_index] * incr_press[0]
+                pressure_val += col_unaccounted / inc_CV[lower_index] * p_incr[0]
             elif col_overaccounted > 0:
-                pressure_val -= col_overaccounted / inc_CV[lower_index] * incr_press[slice_len-1]
+                pressure_val -= col_overaccounted / inc_CV[lower_index] * p_incr[slice_len - 1]
             delta = fabs(pressure_val - initial_pressure_guess)
             initial_pressure_guess = pressure_val
         pressures[i] = pressure_val
