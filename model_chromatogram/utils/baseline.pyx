@@ -1,4 +1,7 @@
-# cython: language_level=3, boundscheck=False, wraparound=False, profile=True
+# cython: profile=True
+# cython: linetrace=True
+# cython: binding=True
+# cython: language_level=3, boundscheck=False, wraparound=False
 
 import numpy as np
 cimport numpy as np
@@ -7,6 +10,12 @@ from scipy.sparse.linalg import spsolve
 
 from libc.math cimport exp, fabs
 cimport cython
+
+try:
+    profile  # This will check if profile is already defined (e.g., by line_profiler)
+except NameError:
+    def profile(func):
+        return func
 
 cdef double loss_function_outside(double[:] weights,
                    double[:] residuals,
@@ -30,6 +39,7 @@ cdef double loss_function_outside(double[:] weights,
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
+@profile
 def als_psalsa(np.ndarray[double, ndim=1] raw_time,
                np.ndarray[double, ndim=1] raw_signal,
                int sr=5, double p=0.001, double s=1, double k=2, double rel_tol=1e-6):
@@ -51,7 +61,7 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
     cdef int interval, size, iterations
     cdef double dt, interval_float, prev_loss, curr_loss, rel_loss, constant_val
     cdef bint converged
-    cdef object D, D2_s, W  # declare W here
+    cdef object D, D2_s, W  
 
     # Determine interval for downsampling
     dt = raw_time[1] - raw_time[0]
@@ -101,6 +111,10 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
         prev_loss = curr_loss
 
         # Update weights using vectorized np.where.
-        weights = np.where(residuals > 0, p * np.exp(-residuals / k), 1 - p)
+        for i in range(size):
+            if residuals[i] > 0:
+                weights[i] = p * exp(-residuals[i] / k)
+            else:
+                weights[i] = 1 - p
     
     return time, z

@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 from scipy.ndimage import uniform_filter1d
 from model_chromatogram.methods import ProcessingMethod
-from model_chromatogram.data_processing import Peak, PeakList
+from model_chromatogram.data_processing import Peak, PeakList  # , als_psalsa
+
 from model_chromatogram.utils import als_psalsa
 from model_chromatogram.user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
@@ -197,7 +198,9 @@ class PeakFinder:
         baseline_time, baseline_vals = als_psalsa(
             self.timepoints, self.smoothed_signal, **baseline_params
         )
-        self.baseline_spline = CubicSpline(baseline_time, baseline_vals)
+        self.baseline_spline = CubicSpline(
+            baseline_time, baseline_vals, bc_type="natural"
+        )
 
     def __apply_baseline(self):
         """

@@ -90,7 +90,8 @@ THF_PARAMS_arr[18] = 292.4245159089498          # F
 #
 # model_type is a string that should be one of "meoh", "acn", or "thf"
 # ===========================================================================
-cpdef np.ndarray[double, ndim=1] model(np.ndarray[double, ndim=2] data, str model_type):
+
+cdef np.ndarray[double, ndim=1] model(np.ndarray[double, ndim=2] data, str model_type):
     cdef Py_ssize_t N = data.shape[1]
     cdef np.ndarray[double, ndim=1] result = np.empty(N, dtype=np.float64)
     cdef double[:] res = result
@@ -159,7 +160,7 @@ cpdef np.ndarray[double, ndim=1] model(np.ndarray[double, ndim=2] data, str mode
     return result
 
 
-cpdef double model_scalar(double temp, double chi, double pres, str model_type):
+cdef double model_scalar(double temp, double chi, double pres, str model_type):
     # Select the appropriate parameter set based on model_type.
     cdef double* pview
     if "meoh" in model_type.lower():

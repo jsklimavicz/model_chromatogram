@@ -12,8 +12,6 @@ from cython.parallel import prange
 cimport cython
 
 # Disable Python interaction and bounds checks for speed
-@cython.boundscheck(False)
-@cython.wraparound(False)
 def create_autocorrelated_data(int length, double sigma, double corr=0.1):
     cdef:
         double eps = sqrt((sigma * sigma) / (1 - corr * corr))
