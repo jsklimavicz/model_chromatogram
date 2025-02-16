@@ -122,8 +122,8 @@ class PeakFinder:
         local_variance = uniform_filter1d(
             (signal - local_mean) ** 2, size=var_window_size
         )
-        # very rarely, round errors produce negative variances, which is bad. Make sure this doesn't happen
-        local_variance = np.abs(local_variance) + 1e-8
+        # # very rarely, round errors produce negative variances, which is bad. Make sure this doesn't happen
+        # local_variance = np.abs(local_variance) + 1e-8
 
         rms_noise = np.sqrt(np.mean(local_variance[self.bg_min : self.bg_max + 1]))
 
@@ -140,12 +140,14 @@ class PeakFinder:
         # Initialize the smoothed signal
         smoothed_signal = np.zeros_like(signal)
 
-        # Adjust window sizes so they only change by 1 at a time
+        # Adjust window sizes so they only change by up to 2 at a time
+        prev_size = window_sizes[0]
         for i in range(1, len(window_sizes)):
-            if window_sizes[i] > window_sizes[i - 1] + 0.5:
-                window_sizes[i] = min(window_sizes[i - 1] + 1, max_window)
-            elif window_sizes[i] < window_sizes[i - 1] - 0.5:
-                window_sizes[i] = max(window_sizes[i - 1] - 1, min_window)
+            if window_sizes[i] > prev_size + 1.5:
+                window_sizes[i] = min(prev_size + 2, max_window)
+            elif window_sizes[i] < prev_size - 1.5:
+                window_sizes[i] = max(prev_size - 2, min_window)
+            prev_size = window_sizes[i]
 
         # Ensure window sizes are odd
         window_sizes = np.int64(np.round(window_sizes))

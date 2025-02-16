@@ -64,12 +64,26 @@ class Injection:
         Returns:
             None
         """
+        time = self.method.profile_table["time"].to_numpy()
+        flow = self.method.profile_table["flow"].to_numpy()
+        polarity = self.method.profile_table["polarity"].to_numpy()
+        hb_acidity = self.method.profile_table["hb_acidity"].to_numpy()
+        hb_basicity = self.method.profile_table["hb_basicity"].to_numpy()
+        dielectric = self.method.profile_table["dielectric"].to_numpy()
+        temperature = self.method.profile_table["temperature"].to_numpy() + 273.15
+
         for compound in self.sample.compounds:
             compound.set_retention_time(
                 column=self.system.column,
-                solvent_profiles=self.method.profile_table,
+                # solvent_profiles=self.method.profile_table,
+                time=time,
+                flow=flow,
+                polarity=polarity,
+                hb_acidity=hb_acidity,
+                hb_basicity=hb_basicity,
+                dielectric=dielectric,
+                temperature=temperature,
                 solvent_ph=self.method.ph,
-                temperature=self.method.temperature,
                 init_setup=self.init_setup,
             )
 

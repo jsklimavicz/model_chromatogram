@@ -1,9 +1,10 @@
 import numpy as np
 from pydash import get as _get
-import pandas as pd
 from model_chromatogram.compounds import UVSpectrum
 from model_chromatogram.system import ColumnParameters, Column
 import itertools
+from rdkit.Chem import rdMolDescriptors as rdmd
+from rdkit.Chem import MolFromSmarts
 
 
 class Compound:
@@ -11,6 +12,12 @@ class Compound:
         self.kwargs = kwargs
         self.name = _get(kwargs, "name").strip()
         self.id = _get(kwargs, "id")
+        try:
+            self.smiles = _get(kwargs, "SMILES").strip()
+            self.mol = MolFromSmarts(self.smiles)
+            self.num_heavy_atoms = rdmd.CalcNumHeavyAtoms(self.mol)
+        except AttributeError:
+            self.smiles = None
         self.cas = _get(kwargs, "cas").strip()
         self.mw = float(kwargs["mw"])
         self.intrinsic_log_p = float(kwargs["logp"])
@@ -150,7 +157,10 @@ class Compound:
 
     def find_retention_factor(
         self,
-        solvent_profiles: pd.DataFrame,
+        hb_acidity: np.array,
+        hb_basicity: np.array,
+        polarity: np.array,
+        dielectric: np.array,
         solvent_ph: float,
         col_param: ColumnParameters,
     ) -> np.array:
@@ -168,75 +178,66 @@ class Compound:
 
         """
 
-        # polarity adjustments for solvent, column, and compound
-        solv_p = solvent_profiles["polarity"].to_numpy()
-        col_p = col_param.h
-        self.calculate_logD(solvent_ph)
-        Rf = (col_param.eb - 1) / 5
-        Rf *= 2 + np.tanh((self.logD / 2 - 3) / (1 + np.exp(col_p * self.logD)))
-        Rf *= np.exp((solv_p / 10) ** 1.5 + (1 + np.arcsinh(self.logD / 2 - 3)) / 2)
+        self.calculate_logD(pH_value=7.0)
+        vol_ratio = self.mw ** (1 / 3)
+        ratio_tpsa = self.tpsa**0.5 / vol_ratio
 
-        def rational_func(x):
-            return 2 / (1 + np.exp(-2 * x)) - 1
-
-        # solvent/column H-bond acidity interaction with compound H-bond acceptors
-        solv_a = solvent_profiles["hb_acidity"].to_numpy()
-        col_a = col_param.a
-        a = solv_a * self.h_acceptors**2 / (10 * col_a)
-        # Rf *= np.tanh(a * np.exp(a) + 1)
-        Rf *= rational_func(a * np.exp(a) + 1)
-
-        # solvent/column H-bond basicity interaction with compound H-bond donors
-        solv_b = solvent_profiles["hb_basicity"].to_numpy()
-        col_b = col_param.b
-        b = solv_b * self.h_donors**2 / (10 * col_b)
-        # Rf *= np.tanh(b * np.exp(b) + 1)
-        Rf *= rational_func(b * np.exp(b) + 1)
-
-        # column interaction with size of compounds
-        # Rf *= 2 + np.tanh(2 * col_param.s_star * self.mw ** (1 / 3))
-        Rf *= 2 + rational_func(2 * col_param.s_star * self.mw ** (1 / 3))
-
-        # solvent/column dielectric interaction with compound ratio of polar surface area
-        solv_d = solvent_profiles["dielectric"].to_numpy()
-        psa_v = self.tpsa**0.5 / self.mw ** (1 / 3)
-        d = solv_d * psa_v / col_p
-        # Rf *= np.tanh(d * np.exp(d) + 1)
-        Rf *= rational_func(d * np.exp(d) + 1)
-
-        Rf += 1  # add minimal retention factor of 1
-
-        # add symmetric deviation depending on stationary phase retention of ions
         c7 = col_param.c7
         c28 = col_param.c28
+        curr_c = c28 + (c7 - c28) / (7 - 2.8) * (solvent_ph - 2.8)
 
-        self.asymmetry_addition = self.average_charge * (
-            c28 + (c7 - c28) / (7 - 2.8) * (solvent_ph - 2.8)
-        )
+        # add symmetric deviation depending on stationary phase retention of ions
+        self.asymmetry_addition = abs(self.average_charge) * (curr_c)
+
+        log_rf = np.log(col_param.eb)
+
+        # HB_Acidity Term
+        a = np.sqrt(self.h_acceptors) * col_param.a / (1 + vol_ratio * hb_acidity)
+
+        # HB_Basicity Term
+        b = np.sqrt(self.h_donors) * col_param.b / (1 + vol_ratio * hb_basicity)
+
+        # Polarity Term
+        p = -self.logD * col_param.h / (10 + polarity)
+
+        # Dielectric Term
+        d = curr_c * ratio_tpsa / (1 + dielectric / 10)
+
+        s = vol_ratio * col_param.s_star / 10
+
+        log_rf -= 4 * (a + b + p + d + s)
+
+        Rf = np.exp(log_rf) + 1
 
         return Rf
 
     def set_retention_time(
         self,
         column: Column,
-        solvent_profiles: pd.DataFrame,
+        time: np.array,
+        flow: np.array,
+        hb_acidity: np.array,
+        hb_basicity: np.array,
+        polarity: np.array,
+        dielectric: np.array,
+        temperature: np.array,
         solvent_ph: float = 7.0,
-        temperature=298,
         init_setup=False,
     ):
         """
         Calculates the retention time of a compound based on column volume, solvent properties, and compound properties.
 
         Args:
-            column_volume (float): volume of column
-            solvent_profiles (pd.DataFrame): dataframe containing corrsponding values for:
-                time
-                hydrogen bond acidity (hb_acidity)
-                hydrogen bond basicity (hb_basicity)
-                polarity
-                dielectric
+            column (Column): Column object containing parameters for the stationary phase.
+            time (np.array): Array of time points for the solvent profile.
+            flow (np.array): Array of flow rates for the solvent profile.
+            hb_acidity (np.array): Array of hydrogen bond acidity values for the solvent profile.
+            hb_basicity (np.array): Array of hydrogen bond basicity values for the solvent profile.
+            polarity (np.array): Array of polarity values for the solvent profile.
+            dielectric (np.array): Array of dielectric values for the solvent profile.
             solvent_ph (float): The pH of the solvent buffer.
             temperature (float): The temperature in Kelvin of the column during the injection.
+
 
         Returns:
             retention_time (float): Value of retention time.
@@ -244,20 +245,24 @@ class Compound:
         """
 
         Rf_0 = self.find_retention_factor(
-            solvent_profiles, solvent_ph, column.parameters
+            hb_acidity,
+            hb_basicity,
+            polarity,
+            dielectric,
+            solvent_ph,
+            column.parameters,
         )
         Rf = Rf_0 * np.exp(
-            (
-                self.logD
-                + np.sqrt(1 + self.h_acceptors**2 + self.h_donors**2)
-                - 2 * self.log_s
-            )
-            * (10 * (1.0 / temperature - 1.0 / 298.0))
+            # (
+            #     self.logD
+            #     # + np.sqrt(1 + self.h_acceptors**2 + self.h_donors**2)
+            #     - 2 * self.log_s
+            # )
+            # *
+            (10 * (1.0 / temperature - 1.0 / 298.0))
         )
-        time = solvent_profiles["time"].to_numpy()
-        flow = solvent_profiles["flow"].to_numpy() / column.volume
 
-        move_ratio = np.cumsum(flow / Rf) * (time[1] - time[0]) - 1
+        move_ratio = np.cumsum(flow / (Rf * column.volume)) * (time[1] - time[0]) - 1
 
         try:
             last_neg_ind = len(move_ratio[move_ratio < 0])

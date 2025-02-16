@@ -45,7 +45,7 @@ class PeakCreator:
             1 - OVERALL_HEIGHT_RANDOM_NOISE, 1 + OVERALL_HEIGHT_RANDOM_NOISE
         )
 
-        self.base_width = DEFAULT_PEAK_WIDTH * self.column.length / 150
+        self.base_width = DEFAULT_PEAK_WIDTH * (self.column.length / 150) ** (2 / 3)
 
     def compound_peak(self, compound: Compound, times: np.array) -> np.array:
         """
