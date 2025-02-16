@@ -62,14 +62,23 @@ user = "John Dalton"
 
 sample_dict = {
     "name": "Calibration Standard",
-    "compound_id_list": ["58-55-9", "83-07-8", "1617-90-9"],
-    "compound_concentration_list": [
-        0.2 * random.uniform(0.997, 1.003),
-        0.28 * random.uniform(0.997, 1.003),
-        0.4 * random.uniform(0.997, 1.003),
+    "compound_id_list": [
+        "58-55-9",
+        "83-07-8",
+        "1617-90-9",
+        "56-89-3",
+        "42617-16-3",
+        "54947-97-6",
     ],
-    "n_unknown_peaks": 3,
-    "unknown_concentration_range": [0.1, 0.2],
+    "compound_concentration_list": [
+        20 * random.uniform(0.997, 1.003),
+        10 * random.uniform(0.997, 1.003),
+        30 * random.uniform(0.997, 1.003),
+        50 * random.uniform(0.997, 1.003),
+        10 * random.uniform(0.997, 1.003),
+        10 * random.uniform(0.997, 1.003),
+    ],
+    "concentration_unit": 2,
 }
 sample = Sample(**sample_dict)
 sequence = Sequence(
@@ -78,7 +87,7 @@ sequence = Sequence(
 
 ob = cProfile.Profile()
 ob.enable()
-for i in range(100):
+for i in range(1):
     for method in method_list:
         if get_(method, "name") == "column_quality_check":
             validation_method = InstrumentMethod(**method, system=system)
@@ -106,14 +115,14 @@ ps.print_stats()
 with open(f"./{folder}/profile.txt", "w") as f:
     f.write(sec.getvalue())
 
-curr_injection.plot_chromatogram(
-    "Pressure",
-)
-# peak_finder.plot_peaks(
-#     highlight_peaks=True,
-#     smoothed=True,
-#     show_spline=True,
+# curr_injection.plot_chromatogram(
+#     "Pressure",
 # )
+peak_finder.plot_peaks(
+    highlight_peaks=True,
+    smoothed=True,
+    show_spline=True,
+)
 plt.show()
 
 # inj_dict = curr_injection.to_dict()
