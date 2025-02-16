@@ -299,6 +299,8 @@ def calculate_pressure(
         system.column.porosity,
         system.column.volume,
         system.column.id_mm,
+        system.column.parameters.a,
+        system.column.parameters.b,
     ]
 
     if PRESSURE_CALCULATION_PROGRAM == "julia":

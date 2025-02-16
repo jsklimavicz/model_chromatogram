@@ -152,15 +152,17 @@ cdef dict THF = {"density": 0.886, "mw": 72.11}
 # Column class 
 #############################
 cdef class Column:
-    cdef public double length, particle_diameter, particle_sphericity, porosity, volume, inner_diameter
+    cdef public double length, particle_diameter, particle_sphericity, porosity, volume, inner_diameter, a, b
     def __init__(self, double length, double particle_diameter, double particle_sphericity,
-                 double porosity, double volume, double inner_diameter):
+                 double porosity, double volume, double inner_diameter, double a, double b):
         self.length = length
         self.particle_diameter = particle_diameter
         self.particle_sphericity = particle_sphericity
         self.porosity = porosity
         self.volume = volume
         self.inner_diameter = inner_diameter
+        self.a = a
+        self.b = b
 
 ########################################
 # calculate_molar_fraction
@@ -342,7 +344,7 @@ cdef Py_ssize_t binary_search(double[:] cumsum, Py_ssize_t i, double threshold):
     return lo
 
 
-def pressure_driver(object solvent_profile, column_input,
+def pressure_driver(object solvent_profile, object column_input,
                     double column_permeability_factor=20.0,
                     double tolerance=1e-5,
                     bint recalculate_viscosities=False,
@@ -352,7 +354,8 @@ def pressure_driver(object solvent_profile, column_input,
     compute and return a 1D NumPy array of pressures.
     """
     cdef Column col = Column(column_input[0], column_input[1], column_input[2],
-                             column_input[3], column_input[4], column_input[5])
+                             column_input[3], column_input[4], column_input[5], 
+                             column_input[6], column_input[7])
     
     if not isinstance(solvent_profile, pd.DataFrame):
         sp_df = pd.DataFrame(solvent_profile)
@@ -363,7 +366,7 @@ def pressure_driver(object solvent_profile, column_input,
         ((col.particle_diameter * col.particle_sphericity)**2)) * ((1.0 - col.porosity)**2) / (col.porosity**3)
     
     update_solvent_profile(sp_df, col)
-    
+
     # Pre-convert DataFrame columns into contiguous arrays and memoryviews.
     cdef np.ndarray[double, ndim=1] time_arr = np.ascontiguousarray(sp_df["time"].to_numpy(np.float64))
     cdef double[:] inc_CV = np.ascontiguousarray(sp_df["incremental_CV"].to_numpy(np.float64))
@@ -373,7 +376,9 @@ def pressure_driver(object solvent_profile, column_input,
     cdef double[:] acn_x = np.ascontiguousarray(sp_df["acn_x"].to_numpy(np.float64))
     cdef double[:] thf_x = np.ascontiguousarray(sp_df["thf_x"].to_numpy(np.float64))
     cdef double[:] temperature = np.ascontiguousarray(sp_df["temperature"].to_numpy(np.float64))
-    
+    sp_df.loc[:, "solv_mod"] = 1.0 + (sp_df.loc[:, "hb_acidity"] * fabs(col.a) + sp_df.loc[:, "hb_basicity"] * fabs(col.b))/10
+    cdef double[:] solv_mod = np.ascontiguousarray(sp_df["solv_mod"].to_numpy(np.float64))
+
     cdef Py_ssize_t N = time_arr.shape[0]
     cdef np.ndarray[double, ndim=1] pressures = np.zeros(N, dtype=np.float64)
     
@@ -384,13 +389,6 @@ def pressure_driver(object solvent_profile, column_input,
     cdef np.ndarray[double, ndim=1] viscosities = np.zeros(N, dtype=np.float64)
     
     # Cache pointers for full arrays.
-    cdef double* p_inc_CV = &inc_CV[0]
-    cdef double* p_sv = &sv[0]
-    cdef double* p_meoh = &meoh_x[0]
-    cdef double* p_acn = &acn_x[0]
-    cdef double* p_thf = &thf_x[0]
-    cdef double* p_temperature = &temperature[0]
-    cdef double* p_viscosities = &viscosities[0]
     cdef double* p_incr = NULL  # Declare here; will assign later.
     
     # Precompute the cumulative sum for inc_CV.
@@ -453,6 +451,7 @@ def pressure_driver(object solvent_profile, column_input,
                 current_eta_arr = viscosities[lower_index:i+1]
             
             slice_len = i + 1 - lower_index
+            
             incr_press_arr = kozeny_carman_model_vector_ptr(kozeny_carman,
                                                 &sv[lower_index],
                                                 &current_eta_arr[0],  # assuming current_eta_arr is contiguous
@@ -471,5 +470,5 @@ def pressure_driver(object solvent_profile, column_input,
                 pressure_val -= col_overaccounted / inc_CV[lower_index] * p_incr[slice_len - 1]
             delta = fabs(pressure_val - initial_pressure_guess)
             initial_pressure_guess = pressure_val
-        pressures[i] = pressure_val
+        pressures[i] = pressure_val * solv_mod[i]
     return pressures
