@@ -11,12 +11,6 @@ from scipy.sparse.linalg import spsolve
 from libc.math cimport exp, fabs
 cimport cython
 
-try:
-    profile  # This will check if profile is already defined (e.g., by line_profiler)
-except NameError:
-    def profile(func):
-        return func
-
 cdef double loss_function_outside(double[:] weights,
                    double[:] residuals,
                    double[:] z,
@@ -37,9 +31,6 @@ cdef double loss_function_outside(double[:] weights,
         S += s * temp * temp
     return S
 
-@cython.boundscheck(False)
-@cython.wraparound(False)
-@profile
 def als_psalsa(np.ndarray[double, ndim=1] raw_time,
                np.ndarray[double, ndim=1] raw_signal,
                int sr=5, double p=0.001, double s=1, double k=2, double rel_tol=1e-6):
