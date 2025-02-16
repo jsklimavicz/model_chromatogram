@@ -376,7 +376,7 @@ def pressure_driver(object solvent_profile, object column_input,
     cdef double[:] acn_x = np.ascontiguousarray(sp_df["acn_x"].to_numpy(np.float64))
     cdef double[:] thf_x = np.ascontiguousarray(sp_df["thf_x"].to_numpy(np.float64))
     cdef double[:] temperature = np.ascontiguousarray(sp_df["temperature"].to_numpy(np.float64))
-    sp_df.loc[:, "solv_mod"] = 1.0 + (sp_df.loc[:, "hb_acidity"] * fabs(col.a) + sp_df.loc[:, "hb_basicity"] * fabs(col.b))/10
+    sp_df.loc[:, "solv_mod"] = 1.0 + (sp_df.loc[:, "hb_acidity"] * fabs(col.a) + sp_df.loc[:, "hb_basicity"] * fabs(col.b))/5.0
     cdef double[:] solv_mod = np.ascontiguousarray(sp_df["solv_mod"].to_numpy(np.float64))
 
     cdef Py_ssize_t N = time_arr.shape[0]

@@ -252,15 +252,7 @@ class Compound:
             solvent_ph,
             column.parameters,
         )
-        Rf = Rf_0 * np.exp(
-            # (
-            #     self.logD
-            #     # + np.sqrt(1 + self.h_acceptors**2 + self.h_donors**2)
-            #     - 2 * self.log_s
-            # )
-            # *
-            (10 * (1.0 / temperature - 1.0 / 298.0))
-        )
+        Rf = Rf_0 * np.exp(10 * (1.0 / temperature - 1.0 / 298.0))
 
         move_ratio = np.cumsum(flow / (Rf * column.volume)) * (time[1] - time[0]) - 1
 

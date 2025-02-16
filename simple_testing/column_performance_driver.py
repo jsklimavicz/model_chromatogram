@@ -87,7 +87,7 @@ sequence = Sequence(
 
 ob = cProfile.Profile()
 ob.enable()
-for i in range(1):
+for i in range(100):
     for method in method_list:
         if get_(method, "name") == "column_quality_check":
             validation_method = InstrumentMethod(**method, system=system)
@@ -107,8 +107,8 @@ for i in range(1):
 
 ob.disable()
 sec = io.StringIO()
-# sortby = SortKey.CUMULATIVE
-sortby = SortKey.TIME
+sortby = SortKey.CUMULATIVE
+# sortby = SortKey.TIME
 ps = pstats.Stats(ob, stream=sec).sort_stats(sortby)
 ps.print_stats()
 
