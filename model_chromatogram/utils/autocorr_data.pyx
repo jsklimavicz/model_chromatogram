@@ -1,3 +1,9 @@
+# autocorr_data.pyx
+# cython: boundscheck=False, wraparound=False, language_level=3
+# distutils: language = c
+# distutils: define_macros=NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
+
 import numpy as np
 cimport numpy as np
 from libc.math cimport sqrt, log, cos, sin, M_PI
@@ -6,8 +12,6 @@ from cython.parallel import prange
 cimport cython
 
 # Disable Python interaction and bounds checks for speed
-@cython.boundscheck(False)
-@cython.wraparound(False)
 def create_autocorrelated_data(int length, double sigma, double corr=0.1):
     cdef:
         double eps = sqrt((sigma * sigma) / (1 - corr * corr))

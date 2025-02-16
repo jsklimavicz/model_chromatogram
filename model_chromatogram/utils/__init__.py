@@ -4,6 +4,7 @@ from .exponnorm_functions import exponnorm_array as exponnorm
 from .exponnorm_functions import scaled_exponnorm_array as scaled_exponnorm
 from .exponnorm_functions import exponnorm_scalar, scaled_exponnorm_scalar
 from .pressure import pressure_driver
+from .baseline import als_psalsa
 
 __all__ = [
     "exponnorm",
@@ -12,4 +13,5 @@ __all__ = [
     "exponnorm_scalar",
     "scaled_exponnorm_scalar",
     "pressure_driver",
+    "als_psalsa",
 ]

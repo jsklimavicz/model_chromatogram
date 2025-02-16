@@ -68,6 +68,8 @@ sample_dict = {
         0.28 * random.uniform(0.997, 1.003),
         0.4 * random.uniform(0.997, 1.003),
     ],
+    "n_unknown_peaks": 3,
+    "unknown_concentration_range": [0.1, 0.2],
 }
 sample = Sample(**sample_dict)
 sequence = Sequence(
@@ -76,7 +78,7 @@ sequence = Sequence(
 
 ob = cProfile.Profile()
 ob.enable()
-for i in range(1):
+for i in range(100):
     for method in method_list:
         if get_(method, "name") == "column_quality_check":
             validation_method = InstrumentMethod(**method, system=system)
@@ -92,10 +94,11 @@ for i in range(1):
         injection_time=current_date,
     )
 
-    curr_injection.find_peaks("UV_VIS_1")
+    peak_finder = curr_injection.find_peaks("UV_VIS_1")
 
 ob.disable()
 sec = io.StringIO()
+# sortby = SortKey.CUMULATIVE
 sortby = SortKey.TIME
 ps = pstats.Stats(ob, stream=sec).sort_stats(sortby)
 ps.print_stats()
@@ -103,14 +106,19 @@ ps.print_stats()
 with open(f"./{folder}/profile.txt", "w") as f:
     f.write(sec.getvalue())
 
-curr_injection.plot_chromatogram("Pressure")
-plt.xlabel("Time (min)")
-plt.ylabel("Pressure (bar)")
+curr_injection.plot_chromatogram(
+    "Pressure",
+)
+# peak_finder.plot_peaks(
+#     highlight_peaks=True,
+#     smoothed=True,
+#     show_spline=True,
+# )
 plt.show()
 
-inj_dict = curr_injection.to_dict()
-path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
-file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
-Path(path).mkdir(parents=True, exist_ok=True)
-with open(file_name, "w") as f:
-    json.dump(inj_dict, f)
+# inj_dict = curr_injection.to_dict()
+# path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
+# file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
+# Path(path).mkdir(parents=True, exist_ok=True)
+# with open(file_name, "w") as f:
+#     json.dump(inj_dict, f)

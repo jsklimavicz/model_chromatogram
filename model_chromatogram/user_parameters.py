@@ -69,7 +69,7 @@ IMP_PEAK_PREFIX = "IMP"
 RANDOM_PEAK_ID_DIGITS = 4  # number of digits to put into to a random peak id
 
 # Analysis Parameters
-BACKGROUND_NOISE_RANGE = [0, 100]  # indices of background noise signal
+BACKGROUND_NOISE_RANGE = [0, 200]  # indices of background noise signal
 
 # sets multiplier to be able to find peaks. Higher values result in fewer peaks being found.
 NOISE_THRESHOLD_MULTIPLIER = 10

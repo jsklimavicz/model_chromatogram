@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 from scipy.ndimage import uniform_filter1d
 from model_chromatogram.methods import ProcessingMethod
-from model_chromatogram.data_processing import Peak, PeakList, als_psalsa
+from model_chromatogram.data_processing import Peak, PeakList  # , als_psalsa
+
+from model_chromatogram.utils import als_psalsa
 from model_chromatogram.user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
     MINIMUM_HEIGHT,
@@ -17,7 +19,6 @@ from model_chromatogram.user_parameters import (
 )
 from pydash import get as get_, set_
 from scipy.stats import linregress
-import itertools
 
 
 class PeakFinder:
@@ -105,19 +106,29 @@ class PeakFinder:
     def __signal_smoothing(
         self, signal, min_window=5, max_window=41, var_window_size=31, k=7.5
     ):
+        """
+        Smooths the signal using a variable window size Savitzky-Golay filter.
+
+        Args:
+            signal (np.array): The raw signal to be smoothed.
+            min_window (int): Minimum window size for the Savitzky-Golay filter.
+            max_window (int): Maximum window size for the Savitzky-Golay filter.
+            var_window_size (int): Window size for calculating local variance.
+            k (float): Scaling factor for the noise threshold.
+        """
         # Calculate local variance using a uniform filter
         signal = savgol_filter(signal, 5, 2, mode="nearest")
         local_mean = uniform_filter1d(signal, size=var_window_size)
         local_variance = uniform_filter1d(
             (signal - local_mean) ** 2, size=var_window_size
         )
-        # very rarely, round errors produce negative variances, which is very bad. Make sure this doesn't happen
+        # very rarely, round errors produce negative variances, which is bad. Make sure this doesn't happen
         local_variance = np.abs(local_variance) + 1e-8
 
-        rms_noise = np.sqrt(np.mean(local_variance[:150]))
+        rms_noise = np.sqrt(np.mean(local_variance[self.bg_min : self.bg_max + 1]))
 
         # Normalize the variance for smoother scaling of window sizes
-        normalized_variance = (np.sqrt(local_variance) / (k * rms_noise)) ** 2
+        normalized_variance = local_variance / ((k * rms_noise) ** 2)
 
         # Apply linear interpolation for smoother window size adjustment
         window_sizes = np.clip(
@@ -149,17 +160,14 @@ class PeakFinder:
                 signal, window_size, 2, mode="nearest"
             )
 
-        # Identify contiguous regions with the same window size
-        for key, group in itertools.groupby(enumerate(window_sizes), lambda x: x[1]):
-            indices, window_size = zip(*group)
-            start = indices[0]
-            end = indices[-1] + 1
-
-            # Retrieve the precomputed filtered signal for the corresponding window size
-            filtered_region = precomputed_filters[window_size[0]]
-
-            # Store the filtered result in the smoothed signal
-            smoothed_signal[start:end] = filtered_region[start:end]
+        diff = np.diff(window_sizes)
+        change_points = (
+            np.where(diff != 0)[0] + 1
+        )  # indices where the window size changes
+        boundaries = np.r_[0, change_points, len(window_sizes)]
+        for start, end in zip(boundaries[:-1], boundaries[1:]):
+            ws = window_sizes[start]
+            smoothed_signal[start:end] = precomputed_filters[ws][start:end]
 
         smoothed_signal = savgol_filter(smoothed_signal, 5, 2, mode="nearest")
         return smoothed_signal
@@ -190,7 +198,9 @@ class PeakFinder:
         baseline_time, baseline_vals = als_psalsa(
             self.timepoints, self.smoothed_signal, **baseline_params
         )
-        self.baseline_spline = CubicSpline(baseline_time, baseline_vals)
+        self.baseline_spline = CubicSpline(
+            baseline_time, baseline_vals, bc_type="natural"
+        )
 
     def __apply_baseline(self):
         """
