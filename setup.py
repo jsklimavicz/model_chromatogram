@@ -9,6 +9,10 @@ files = [
     "viscosity.pyx",
     "pressure.pyx",
     "baseline.pyx",
+    "pentadiagonal.pyx",
+    "signal_smoothing.pyx",
+    "savgol_poly2.pyx",
+    "find_peaks.pyx",
 ]
 
 pyx_files = []
