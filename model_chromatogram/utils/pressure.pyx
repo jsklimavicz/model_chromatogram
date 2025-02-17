@@ -135,8 +135,6 @@ cdef inline double viscosity_scalar(str model_type, double temp, double chi, dou
     den = 1.0 + (k_1 + kt_1 * tau_inv + kp_1 * pres) * chi + k_2 * chi2 + k_3 * chi3
 
     return comp * num / den
-    
-    return model_scalar(T, chi, p, solvent_model)
 
 
 
@@ -168,7 +166,7 @@ cdef class Column:
 # calculate_molar_fraction
 ########################################
 
-def calculate_molar_fraction(str org_type, np.ndarray[double, ndim=1] org_percent):
+cdef np.ndarray[double, ndim=1] calculate_molar_fraction(str org_type, np.ndarray[double, ndim=1] org_percent):
     """
     Given a 1D NumPy array of organic percentages (org_percent) and an organic type,
     compute the molar fraction as:
@@ -203,7 +201,7 @@ def calculate_molar_fraction(str org_type, np.ndarray[double, ndim=1] org_percen
 # update_solvent_profile!
 ########################################
 
-def update_solvent_profile(object sp_df, Column column):
+cdef update_solvent_profile(object sp_df, Column column):
     """
     Update the solvent profile DataFrame (sp_df) in-place.
     Assumes sp_df has columns:
@@ -232,7 +230,7 @@ def update_solvent_profile(object sp_df, Column column):
 # total_viscosity (vector version)
 ########################################
 
-def total_viscosity_vector(double[:] meoh_x,
+cdef np.ndarray[double, ndim=1] total_viscosity_vector(double[:] meoh_x,
                            double[:] acn_x,
                            double[:] thf_x,
                            double[:] t,
@@ -268,7 +266,7 @@ def total_viscosity_vector(double[:] meoh_x,
 # total_viscosity (scalar version)
 ########################################
 
-def total_viscosity_scalar(double meoh_x, double acn_x, double thf_x, double t, double p):
+cdef inline double total_viscosity_scalar(double meoh_x, double acn_x, double thf_x, double t, double p):
     cdef double threshold = 1e-6, sum_mix, water_meoh_x, meoh_visc, acn_visc, thf_visc
     sum_mix = meoh_x + acn_x + thf_x
     if sum_mix < threshold:
@@ -290,7 +288,7 @@ def total_viscosity_scalar(double meoh_x, double acn_x, double thf_x, double t, 
 # kozeny_carman_model (vector version)
 ########################################
 
-def kozeny_carman_model_vector(double kozeny_carman, 
+cdef kozeny_carman_model_vector(double kozeny_carman, 
                                double[:] v,
                                double[:] eta,
                                double[:] l):
@@ -344,7 +342,7 @@ cdef Py_ssize_t binary_search(double[:] cumsum, Py_ssize_t i, double threshold):
     return lo
 
 
-def pressure_driver(object solvent_profile, object column_input,
+def pressure_driver(object sp_df, object column_input,
                     double column_permeability_factor=20.0,
                     double tolerance=1e-5,
                     bint recalculate_viscosities=False,
@@ -356,11 +354,7 @@ def pressure_driver(object solvent_profile, object column_input,
     cdef Column col = Column(column_input[0], column_input[1], column_input[2],
                              column_input[3], column_input[4], column_input[5], 
                              column_input[6], column_input[7])
-    
-    if not isinstance(solvent_profile, pd.DataFrame):
-        sp_df = pd.DataFrame(solvent_profile)
-    else:
-        sp_df = solvent_profile.copy()
+
     
     cdef double kozeny_carman = (column_permeability_factor * 150.0 /
         ((col.particle_diameter * col.particle_sphericity)**2)) * ((1.0 - col.porosity)**2) / (col.porosity**3)
