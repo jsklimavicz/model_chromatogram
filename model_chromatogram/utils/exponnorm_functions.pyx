@@ -10,8 +10,6 @@ from libc.math cimport sqrt, log, exp, erfc
 cimport cython
 
 # Define the exponnorm function in Cython for scalar inputs
-@cython.boundscheck(False)
-@cython.wraparound(False)
 def exponnorm_scalar(double x, double K, double loc=0, double scale=1):
     cdef double y = (x - loc) / scale
     cdef double vals = 1 / (2 * K**2) - y / K
@@ -19,14 +17,10 @@ def exponnorm_scalar(double x, double K, double loc=0, double scale=1):
     return exp(vals) / (2 * K * scale)
 
 # Define the scaled_exponnorm function in Cython for scalar inputs
-@cython.boundscheck(False)
-@cython.wraparound(False)
 def scaled_exponnorm_scalar(double x, double h, double K, double loc=0, double scale=1):
     return h * exponnorm_scalar(x, K=K, loc=loc, scale=scale)
 
 # Expose the functions to Python using memoryviews
-@cython.boundscheck(False)
-@cython.wraparound(False)
 def exponnorm_array(double[::1] x, double K, double loc=0, double scale=1):
     cdef:
         int n = x.shape[0]
@@ -46,8 +40,6 @@ def exponnorm_array(double[::1] x, double K, double loc=0, double scale=1):
 
     return result
 
-@cython.boundscheck(False)
-@cython.wraparound(False)
 def scaled_exponnorm_array(double[::1] x, double h, double K, double loc=0, double scale=1):
     cdef:
         int n = x.shape[0]

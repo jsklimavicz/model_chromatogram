@@ -1,21 +1,27 @@
-# cython: profile=True
-# cython: linetrace=True
 # cython: binding=True
 # cython: language_level=3, boundscheck=False, wraparound=False
 
+################################################################
+# Calculates the baseline of a chromatogram with peaks using the asymmetric least
+# squares algorithm defined in the reference. 
+#
+# Reference:    S. Oller-Moreno, A. Pardo, J. M. Jiménez-Soto, J. Samitier and S. Marco, 
+#               "Adaptive Asymmetric Least Squares baseline estimation for analytical instruments," 
+#               2014 IEEE 11th International Multi-Conference on Systems, Signals & Devices (SSD14), 
+#               Barcelona, Spain, 2014, pp. 1-5, doi: 10.1109/SSD.2014.6808837.
+#               https://diposit.ub.edu/dspace/bitstream/2445/188026/1/2014_IEEE_Adaptive_MarcoS_postprint.pdf
+#
+# Written by James Klimavicz 2025
+################################################################
+
+
 import numpy as np
 cimport numpy as np
-from scipy.sparse import diags
-from scipy.sparse.linalg import spsolve
-
-from libc.math cimport exp, fabs
+from scipy.linalg import solve_banded
+from libc.math cimport exp, fabs, isnan
 cimport cython
 
-try:
-    profile  # This will check if profile is already defined (e.g., by line_profiler)
-except NameError:
-    def profile(func):
-        return func
+from .pentadiagonal cimport sym_pent_solve
 
 cdef double loss_function_outside(double[:] weights,
                    double[:] residuals,
@@ -37,9 +43,13 @@ cdef double loss_function_outside(double[:] weights,
         S += s * temp * temp
     return S
 
-@cython.boundscheck(False)
-@cython.wraparound(False)
-@profile
+cdef inline bint has_nan(double[::1] arr):
+    cdef Py_ssize_t i, n = arr.shape[0]
+    for i in range(n):
+        if isnan(arr[i]):
+            return True
+    return False
+
 def als_psalsa(np.ndarray[double, ndim=1] raw_time,
                np.ndarray[double, ndim=1] raw_signal,
                int sr=5, double p=0.001, double s=1, double k=2, double rel_tol=1e-6):
@@ -84,30 +94,35 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
     converged = False
     iterations = 0
 
-    # Build the sparse matrix D and its smoothness penalized version D2_s.
-    cdef np.ndarray[double, ndim=1] a = -1.0 * np.ones(size - 1, dtype=np.double)
-    cdef np.ndarray[double, ndim=1] b = 2.0 * np.ones(size, dtype=np.double)
-    b[0] = 1.0
-    b[size] = 1.0
-    D = diags([a, b, a], [-1, 0, 1])
-    D2_s = s * (D @ D)
 
-    prev_loss = 0.0
+    d2_2up = np.array([*[s] * (size - 2)])
+    d2_1up = np.array([-3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s])
+    d2_0 = np.array([2.0 * s, *[6.0 * s] * (size - 2), 2.0 * s])
 
-    # Main iteration loop
-    while (not converged) and (iterations < 100):
+    prev_loss = 1e12
+
+    '''
+    Main iteration loop using the pentadiagonal solver.
+    This solver requires the matrix to be symmetric and strongly nonsingular. 
+    Note that the matrix (W + D2_s) is symmetric, but is not diagonally dominant, and
+    therefore may not be strongly nonsingular. This manifests as the presense of nan values
+    in the solution z. If this occurs, we fall back to the scipy banded solver, which takes
+    a little longer to solve the system, but is more robust.
+    '''
+    while (not converged) and (iterations < 200):
         iterations += 1
-        # Build the diagonal weight matrix W (assignment only; W was declared earlier)
-        W = diags([weights], [0])
         # Solve for z: (W + D2_s) z = weights * signal
-        z = spsolve(W + D2_s, weights * signal)
+        z = sym_pent_solve(d2_0 + weights, d2_1up, d2_2up, weights * signal)
+
+        if iterations == 1 and has_nan(z):
+            break
         # Update residuals
         residuals = signal - z
         curr_loss = loss_function_outside(weights, residuals, z, s)
         rel_loss = fabs(curr_loss - prev_loss) / curr_loss
         if rel_loss < rel_tol:
             converged = True
-            break
+            return time, z
         prev_loss = curr_loss
 
         # Update weights using vectorized np.where.
@@ -117,4 +132,36 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
             else:
                 weights[i] = 1 - p
     
+    if not converged:
+
+        d2_2u = np.array([0.0, 0.0, *[s] * (size - 2)])
+        d2_1u = np.array([0.0, -3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s])
+        d2_0 = np.array([2.0 * s, *[6.0 * s] * (size - 2), 2.0 * s])
+        d2_1l = np.array([-3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s, 0.0])
+        d2_2l = np.array([*[s] * (size - 2), 0.0, 0.0])
+
+        D2_diag = np.vstack([d2_2u, d2_1u, d2_0, d2_1l, d2_2l])
+
+        while (not converged) and (iterations < 200):
+            iterations += 1
+            # Solve for z: (W + D2_s) z = weights * signal
+            D2_diag[2, :] = weights + d2_0
+            z = solve_banded((2, 2), D2_diag, weights * signal)
+            # Update residuals
+            residuals = signal - z
+            curr_loss = loss_function_outside(weights, residuals, z, s)
+            rel_loss = fabs(curr_loss - prev_loss) / curr_loss
+            if rel_loss < rel_tol:
+                converged = True
+                return time, z
+            prev_loss = curr_loss
+
+            # Update weights using vectorized np.where.
+            for i in range(size):
+                if residuals[i] > 0:
+                    weights[i] = p * exp(-residuals[i] / k)
+                else:
+                    weights[i] = 1 - p
+
+
     return time, z

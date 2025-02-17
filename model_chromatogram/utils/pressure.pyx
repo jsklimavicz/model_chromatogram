@@ -135,8 +135,6 @@ cdef inline double viscosity_scalar(str model_type, double temp, double chi, dou
     den = 1.0 + (k_1 + kt_1 * tau_inv + kp_1 * pres) * chi + k_2 * chi2 + k_3 * chi3
 
     return comp * num / den
-    
-    return model_scalar(T, chi, p, solvent_model)
 
 
 
@@ -152,21 +150,23 @@ cdef dict THF = {"density": 0.886, "mw": 72.11}
 # Column class 
 #############################
 cdef class Column:
-    cdef public double length, particle_diameter, particle_sphericity, porosity, volume, inner_diameter
+    cdef public double length, particle_diameter, particle_sphericity, porosity, volume, inner_diameter, a, b
     def __init__(self, double length, double particle_diameter, double particle_sphericity,
-                 double porosity, double volume, double inner_diameter):
+                 double porosity, double volume, double inner_diameter, double a, double b):
         self.length = length
         self.particle_diameter = particle_diameter
         self.particle_sphericity = particle_sphericity
         self.porosity = porosity
         self.volume = volume
         self.inner_diameter = inner_diameter
+        self.a = a
+        self.b = b
 
 ########################################
 # calculate_molar_fraction
 ########################################
 
-def calculate_molar_fraction(str org_type, np.ndarray[double, ndim=1] org_percent):
+cdef np.ndarray[double, ndim=1] calculate_molar_fraction(str org_type, np.ndarray[double, ndim=1] org_percent):
     """
     Given a 1D NumPy array of organic percentages (org_percent) and an organic type,
     compute the molar fraction as:
@@ -201,7 +201,7 @@ def calculate_molar_fraction(str org_type, np.ndarray[double, ndim=1] org_percen
 # update_solvent_profile!
 ########################################
 
-def update_solvent_profile(object sp_df, Column column):
+cdef update_solvent_profile(object sp_df, Column column):
     """
     Update the solvent profile DataFrame (sp_df) in-place.
     Assumes sp_df has columns:
@@ -230,7 +230,7 @@ def update_solvent_profile(object sp_df, Column column):
 # total_viscosity (vector version)
 ########################################
 
-def total_viscosity_vector(double[:] meoh_x,
+cdef np.ndarray[double, ndim=1] total_viscosity_vector(double[:] meoh_x,
                            double[:] acn_x,
                            double[:] thf_x,
                            double[:] t,
@@ -266,7 +266,7 @@ def total_viscosity_vector(double[:] meoh_x,
 # total_viscosity (scalar version)
 ########################################
 
-def total_viscosity_scalar(double meoh_x, double acn_x, double thf_x, double t, double p):
+cdef inline double total_viscosity_scalar(double meoh_x, double acn_x, double thf_x, double t, double p):
     cdef double threshold = 1e-6, sum_mix, water_meoh_x, meoh_visc, acn_visc, thf_visc
     sum_mix = meoh_x + acn_x + thf_x
     if sum_mix < threshold:
@@ -288,7 +288,7 @@ def total_viscosity_scalar(double meoh_x, double acn_x, double thf_x, double t, 
 # kozeny_carman_model (vector version)
 ########################################
 
-def kozeny_carman_model_vector(double kozeny_carman, 
+cdef kozeny_carman_model_vector(double kozeny_carman, 
                                double[:] v,
                                double[:] eta,
                                double[:] l):
@@ -342,7 +342,7 @@ cdef Py_ssize_t binary_search(double[:] cumsum, Py_ssize_t i, double threshold):
     return lo
 
 
-def pressure_driver(object solvent_profile, column_input,
+def pressure_driver(object sp_df, object column_input,
                     double column_permeability_factor=20.0,
                     double tolerance=1e-5,
                     bint recalculate_viscosities=False,
@@ -352,18 +352,15 @@ def pressure_driver(object solvent_profile, column_input,
     compute and return a 1D NumPy array of pressures.
     """
     cdef Column col = Column(column_input[0], column_input[1], column_input[2],
-                             column_input[3], column_input[4], column_input[5])
-    
-    if not isinstance(solvent_profile, pd.DataFrame):
-        sp_df = pd.DataFrame(solvent_profile)
-    else:
-        sp_df = solvent_profile.copy()
+                             column_input[3], column_input[4], column_input[5], 
+                             column_input[6], column_input[7])
+
     
     cdef double kozeny_carman = (column_permeability_factor * 150.0 /
         ((col.particle_diameter * col.particle_sphericity)**2)) * ((1.0 - col.porosity)**2) / (col.porosity**3)
     
     update_solvent_profile(sp_df, col)
-    
+
     # Pre-convert DataFrame columns into contiguous arrays and memoryviews.
     cdef np.ndarray[double, ndim=1] time_arr = np.ascontiguousarray(sp_df["time"].to_numpy(np.float64))
     cdef double[:] inc_CV = np.ascontiguousarray(sp_df["incremental_CV"].to_numpy(np.float64))
@@ -373,7 +370,9 @@ def pressure_driver(object solvent_profile, column_input,
     cdef double[:] acn_x = np.ascontiguousarray(sp_df["acn_x"].to_numpy(np.float64))
     cdef double[:] thf_x = np.ascontiguousarray(sp_df["thf_x"].to_numpy(np.float64))
     cdef double[:] temperature = np.ascontiguousarray(sp_df["temperature"].to_numpy(np.float64))
-    
+    sp_df.loc[:, "solv_mod"] = 1.0 + (sp_df.loc[:, "hb_acidity"] * fabs(col.a) + sp_df.loc[:, "hb_basicity"] * fabs(col.b))/5.0
+    cdef double[:] solv_mod = np.ascontiguousarray(sp_df["solv_mod"].to_numpy(np.float64))
+
     cdef Py_ssize_t N = time_arr.shape[0]
     cdef np.ndarray[double, ndim=1] pressures = np.zeros(N, dtype=np.float64)
     
@@ -384,13 +383,6 @@ def pressure_driver(object solvent_profile, column_input,
     cdef np.ndarray[double, ndim=1] viscosities = np.zeros(N, dtype=np.float64)
     
     # Cache pointers for full arrays.
-    cdef double* p_inc_CV = &inc_CV[0]
-    cdef double* p_sv = &sv[0]
-    cdef double* p_meoh = &meoh_x[0]
-    cdef double* p_acn = &acn_x[0]
-    cdef double* p_thf = &thf_x[0]
-    cdef double* p_temperature = &temperature[0]
-    cdef double* p_viscosities = &viscosities[0]
     cdef double* p_incr = NULL  # Declare here; will assign later.
     
     # Precompute the cumulative sum for inc_CV.
@@ -453,6 +445,7 @@ def pressure_driver(object solvent_profile, column_input,
                 current_eta_arr = viscosities[lower_index:i+1]
             
             slice_len = i + 1 - lower_index
+            
             incr_press_arr = kozeny_carman_model_vector_ptr(kozeny_carman,
                                                 &sv[lower_index],
                                                 &current_eta_arr[0],  # assuming current_eta_arr is contiguous
@@ -471,5 +464,5 @@ def pressure_driver(object solvent_profile, column_input,
                 pressure_val -= col_overaccounted / inc_CV[lower_index] * p_incr[slice_len - 1]
             delta = fabs(pressure_val - initial_pressure_guess)
             initial_pressure_guess = pressure_val
-        pressures[i] = pressure_val
+        pressures[i] = pressure_val * solv_mod[i]
     return pressures

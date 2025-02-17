@@ -10,6 +10,7 @@ from model_chromatogram.sequence import Sequence
 from model_chromatogram.data_processing import PeakFinder
 import uuid
 from model_chromatogram.user_parameters import BASELINE_NOISE
+from model_chromatogram.utils import create_autocorrelated_data
 
 
 class Injection:
@@ -64,12 +65,26 @@ class Injection:
         Returns:
             None
         """
+        time = self.method.profile_table["time"].to_numpy()
+        flow = self.method.profile_table["flow"].to_numpy()
+        polarity = self.method.profile_table["polarity"].to_numpy()
+        hb_acidity = self.method.profile_table["hb_acidity"].to_numpy()
+        hb_basicity = self.method.profile_table["hb_basicity"].to_numpy()
+        dielectric = self.method.profile_table["dielectric"].to_numpy()
+        temperature = self.method.profile_table["temperature"].to_numpy() + 273.15
+
         for compound in self.sample.compounds:
             compound.set_retention_time(
                 column=self.system.column,
-                solvent_profiles=self.method.profile_table,
+                # solvent_profiles=self.method.profile_table,
+                time=time,
+                flow=flow,
+                polarity=polarity,
+                hb_acidity=hb_acidity,
+                hb_basicity=hb_basicity,
+                dielectric=dielectric,
+                temperature=temperature,
                 solvent_ph=self.method.ph,
-                temperature=self.method.temperature,
                 init_setup=self.init_setup,
             )
 
@@ -89,7 +104,7 @@ class Injection:
                 noise_level = BASELINE_NOISE
             else:
                 times, signals = self.method.get_zero_background()
-                noise_level = BASELINE_NOISE / 2
+                noise_level = BASELINE_NOISE / 5
             baseline = Baseline(
                 np.array(times),
                 np.array(signals),
@@ -123,6 +138,7 @@ class Injection:
                     )
 
         chromatograms = []
+        times_list = None
         for name, chromatogram in self.chromatograms.items():
             diagnostic = False
             if name.lower() in ["temp", "temperature"]:
@@ -132,6 +148,10 @@ class Injection:
 
             if name.lower() in ["pressure"]:
                 chromatogram.signal += self.method.profile_table["pressure"].values
+                noise = create_autocorrelated_data(
+                    len(chromatogram.signal), BASELINE_NOISE / 3, 0.95
+                )
+                chromatogram.signal += noise
                 if chromatogram.detection_settings["unit"].lower() == "psi":
                     chromatogram.signal *= 14.7
                     chromatogram.signal = np.round(chromatogram.signal, 2)
@@ -159,6 +179,9 @@ class Injection:
                 }
                 self.dict["results"].append(results_dict)
 
+            signal = chromatogram.signal.tolist()
+            if times_list is None or (len(times_list) != len(signal)):
+                times_list = chromatogram.times.tolist()
             datacube_dict = {
                 "channel": name,
                 "fk_chromatogram": chromatogram.uuid,
@@ -166,7 +189,7 @@ class Injection:
                 "wavelength": get_(
                     chromatogram.detection_settings, "wavelength", default=None
                 ),
-                "times": chromatogram.times.tolist(),
+                "times": times_list,
                 "times_unit": "MinuteTime",
                 "signal": chromatogram.signal.tolist(),
                 "signal_unit": get_(

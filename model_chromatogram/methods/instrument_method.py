@@ -72,7 +72,7 @@ class InstrumentMethod:
             channel["fk_module"] = module.pk if module else None
         self.sample_introduction: dict = sample_introduction
         self.__extract_sample_introduction_values()
-        self.mobile_phases: list = mobile_phases
+        self.mobile_phases: list = sorted(mobile_phases, key=lambda x: x["id"])
         self.mobile_phase_gradient_steps: list = mobile_phase_gradient_steps
         self.__update_mobile_phase_dictionary()
         self.gradient_steps: pd.DataFrame = pd.DataFrame.from_dict(
