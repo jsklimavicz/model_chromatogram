@@ -7,7 +7,7 @@ from scipy.ndimage import uniform_filter1d
 from model_chromatogram.methods import ProcessingMethod
 from model_chromatogram.data_processing import Peak, PeakList  # , als_psalsa
 
-from model_chromatogram.utils import als_psalsa
+from model_chromatogram.utils import als_psalsa, signal_smoothing, find_peaks
 from model_chromatogram.user_parameters import (
     NOISE_THRESHOLD_MULTIPLIER,
     MINIMUM_HEIGHT,
@@ -116,63 +116,16 @@ class PeakFinder:
             var_window_size (int): Window size for calculating local variance.
             k (float): Scaling factor for the noise threshold.
         """
-        # Calculate local variance using a uniform filter
-        signal = savgol_filter(signal, 5, 2, mode="nearest")
-        local_mean = uniform_filter1d(signal, size=var_window_size)
-        local_variance = uniform_filter1d(
-            (signal - local_mean) ** 2, size=var_window_size
+
+        return signal_smoothing(
+            signal,
+            bg_min=self.bg_min,
+            bg_max=self.bg_max,
+            min_window=min_window,
+            max_window=max_window,
+            var_window_size=var_window_size,
+            k=k,
         )
-        # # very rarely, round errors produce negative variances, which is bad. Make sure this doesn't happen
-        # local_variance = np.abs(local_variance) + 1e-8
-
-        rms_noise = np.sqrt(np.mean(local_variance[self.bg_min : self.bg_max + 1]))
-
-        # Normalize the variance for smoother scaling of window sizes
-        normalized_variance = local_variance / ((k * rms_noise) ** 2)
-
-        # Apply linear interpolation for smoother window size adjustment
-        window_sizes = np.clip(
-            max_window - (max_window - min_window) * normalized_variance,
-            min_window,
-            max_window,
-        )
-
-        # Initialize the smoothed signal
-        smoothed_signal = np.zeros_like(signal)
-
-        # Adjust window sizes so they only change by up to 2 at a time
-        prev_size = window_sizes[0]
-        for i in range(1, len(window_sizes)):
-            if window_sizes[i] > prev_size + 1.5:
-                window_sizes[i] = min(prev_size + 2, max_window)
-            elif window_sizes[i] < prev_size - 1.5:
-                window_sizes[i] = max(prev_size - 2, min_window)
-            prev_size = window_sizes[i]
-
-        # Ensure window sizes are odd
-        window_sizes = np.int64(np.round(window_sizes))
-        window_sizes = np.where(
-            window_sizes % 2 == 0, window_sizes + 1, window_sizes
-        ).astype(int)
-
-        # precompute windows
-        precomputed_filters = {}
-        for window_size in range(min_window, max_window + 1, 2):
-            precomputed_filters[window_size] = savgol_filter(
-                signal, window_size, 2, mode="nearest"
-            )
-
-        diff = np.diff(window_sizes)
-        change_points = (
-            np.where(diff != 0)[0] + 1
-        )  # indices where the window size changes
-        boundaries = np.r_[0, change_points, len(window_sizes)]
-        for start, end in zip(boundaries[:-1], boundaries[1:]):
-            ws = window_sizes[start]
-            smoothed_signal[start:end] = precomputed_filters[ws][start:end]
-
-        smoothed_signal = savgol_filter(smoothed_signal, 5, 2, mode="nearest")
-        return smoothed_signal
 
     def __smoothing_driver(self, signal, min_window=5, max_window=41, deriv=0):
         if deriv == 0:
@@ -246,66 +199,18 @@ class PeakFinder:
                 detected.
 
         """
-        self.d2_sigma = self.noise_threshold_multiplier * self.d2_ave_noise
-        self.signal_sigma = 2 * self.signal_noise
-        low_cutoff = -self.peak_limit
-        n = len(self.d2_signal)
 
-        # Step 1: Find all contiguous regions where self.d2_signal < -3.5 * self.d2_sigma
-        initial_regions = []
-        i = 3
-
-        while i < n - 3:
-            if (
-                self.d2_signal[i] < low_cutoff * self.d2_sigma
-                or self.processed_signal[i] > LINEAR_LIMIT
-            ):
-                start = i
-                while i < n and (
-                    self.d2_signal[i] < 0 or self.processed_signal[i] > LINEAR_LIMIT
-                ):
-                    i += 1
-                initial_regions.append((start, i - 1))
-            i += 1
-
-        regions = []
-        for start, end in initial_regions:
-            if end - start <= 5:
-                continue
-            else:
-                regions.append([start, end])
-
-        initial_regions = regions
-
-        def expand_regions(regions):
-
-            expanded_regions = []
-            for start, end in regions:
-                while start > 0 and (
-                    self.d1_signal[start] > 0
-                    and self.processed_signal[start] > self.signal_noise
-                ):
-                    start -= 1
-
-                while end < len(self.raw_signal) and (
-                    self.d1_signal[end] < 0
-                    and self.processed_signal[end] > self.signal_noise
-                ):
-                    end += 1
-                end -= 1
-
-                expanded_regions.append([start, end])
-
-            return expanded_regions
-
-        expanded_regions = expand_regions(initial_regions)
-
-        final_regions = []
-        for start, end in expanded_regions:
-            if end - start <= 15:
-                continue
-            else:
-                final_regions.append([start, end])
+        final_regions = find_peaks(
+            self.d2_signal,
+            self.processed_signal,
+            self.d1_signal,
+            self.raw_signal,
+            self.noise_threshold_multiplier,
+            self.d2_ave_noise,
+            self.signal_noise,
+            self.peak_limit,
+            LINEAR_LIMIT,
+        )
 
         self.peaks: PeakList = PeakList(
             self.timepoints,
