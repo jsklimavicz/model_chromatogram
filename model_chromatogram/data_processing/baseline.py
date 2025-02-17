@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.sparse import diags
 
-from scipy.sparse.linalg import spsolve
+from scipy.linalg import solve_banded
 
 
 def als_psalsa(
@@ -59,7 +59,14 @@ def als_psalsa(
     b = 2 * np.ones(size)  # diagonal
     b[0] = b[-1] = 1  # Perturb matrix for dealing with endpoints
     D = diags([a, b, a], [-1, 0, 1])
-    D2_s = s * D @ D
+
+    d2_2u = np.array([0.0, 0.0, *[s] * (size - 2)])
+    d2_1u = np.array([0.0, -3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s])
+    d2_0 = np.array([2.0 * s, *[6.0 * s] * (size - 2), 2.0 * s])
+    d2_1l = np.array([-3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s, 0.0])
+    d2_2l = np.array([*[s] * (size - 2), 0.0, 0.0])
+
+    D2_diag = np.vstack([d2_2u, d2_1u, d2_0, d2_1l, d2_2l])
 
     # define loss function
     def loss_function(weights, residuals, z):
@@ -72,8 +79,12 @@ def als_psalsa(
     # iterate z = (W + smoothness * D'D)^-1 W y until solved
     while not converged and iterations < 100:
         iterations += 1
-        W = diags([weights], [0])
-        z = spsolve(W + D2_s, (weights * signal))
+
+        D2_diag[2, :] = weights + d2_0
+        z = solve_banded((2, 2), D2_diag, weights * signal)
+
+        # W = diags([weights], [0])
+        # z = spsolve(W + D2_s, (weights * signal))
         residuals = signal - z
         curr_loss = loss_function(weights, residuals, z)
         rel_loss = abs(curr_loss - prev_loss) / curr_loss
