@@ -10,6 +10,7 @@ import math
 from libc.math cimport exp, log, fabs, pi
 cimport cython
 import pandas as pd
+from .utils cimport binary_search
 
 # from .viscosity import viscosity_scalar
 
@@ -326,21 +327,6 @@ def kozeny_carman_model_scalar(double kozeny_carman, double v, double eta, doubl
 ########################################
 # pressure_driver
 ########################################
-
-# Helper function: binary search on a sorted memoryview.
-# Returns the smallest index in [0, i] such that cumsum[j] > threshold.
-cdef Py_ssize_t binary_search(double[:] cumsum, Py_ssize_t i, double threshold):
-    cdef Py_ssize_t lo = 0
-    cdef Py_ssize_t hi = i  # search in indices [0, i]
-    cdef Py_ssize_t mid
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if cumsum[mid] <= threshold:
-            lo = mid + 1
-        else:
-            hi = mid
-    return lo
-
 
 def pressure_driver(object sp_df, object column_input,
                     double column_permeability_factor=20.0,

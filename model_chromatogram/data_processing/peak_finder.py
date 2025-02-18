@@ -3,7 +3,6 @@ from scipy.interpolate import CubicSpline
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
-from scipy.ndimage import uniform_filter1d
 from model_chromatogram.methods import ProcessingMethod
 from model_chromatogram.data_processing import Peak, PeakList  # , als_psalsa
 

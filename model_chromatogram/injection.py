@@ -65,13 +65,23 @@ class Injection:
         Returns:
             None
         """
-        time = self.method.profile_table["time"].to_numpy()
-        flow = self.method.profile_table["flow"].to_numpy()
-        polarity = self.method.profile_table["polarity"].to_numpy()
-        hb_acidity = self.method.profile_table["hb_acidity"].to_numpy()
-        hb_basicity = self.method.profile_table["hb_basicity"].to_numpy()
-        dielectric = self.method.profile_table["dielectric"].to_numpy()
-        temperature = self.method.profile_table["temperature"].to_numpy() + 273.15
+        time = np.ascontiguousarray(self.method.profile_table["time"].to_numpy())
+        flow = np.ascontiguousarray(self.method.profile_table["flow"].to_numpy())
+        polarity = np.ascontiguousarray(
+            self.method.profile_table["polarity"].to_numpy()
+        )
+        hb_acidity = np.ascontiguousarray(
+            self.method.profile_table["hb_acidity"].to_numpy()
+        )
+        hb_basicity = np.ascontiguousarray(
+            self.method.profile_table["hb_basicity"].to_numpy()
+        )
+        dielectric = np.ascontiguousarray(
+            self.method.profile_table["dielectric"].to_numpy()
+        )
+        temperature = np.ascontiguousarray(
+            self.method.profile_table["temperature"].to_numpy() + 273.15
+        )
 
         for compound in self.sample.compounds:
             compound.set_retention_time(

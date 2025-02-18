@@ -5,6 +5,7 @@ from model_chromatogram.system import ColumnParameters, Column
 import itertools
 from rdkit.Chem import rdMolDescriptors as rdmd
 from rdkit.Chem import MolFromSmarts
+from model_chromatogram.utils import set_retention_time
 
 
 class Compound:
@@ -28,14 +29,14 @@ class Compound:
         self.refractivity: float = self.__set_initial_float("refractivity")
         self.log_s: float = self.__set_initial_float("log_s")
         self.tpsa: float = self.__set_initial_float("tpsa")
-        self.pka_list: list[float] = self.__set_pK_list(_get(kwargs, "pka_list"))
-        self.pkb_list: list[float] = self.__set_pK_list(_get(kwargs, "pkb_list"))
+        self.pka_list: np.array = self.__set_pK_list(_get(kwargs, "pka_list"))
+        self.pkb_list: np.array = self.__set_pK_list(_get(kwargs, "pkb_list"))
         if find_UV_spectrum:
             self.set_uv_spectrum()
 
-    def __set_pK_list(self, vals: str) -> list[float]:
+    def __set_pK_list(self, vals: str) -> np.array:
         if vals is None or vals == "":
-            return []
+            return np.array([])
         else:
             float_vals = []
             for val in vals.split(","):
@@ -43,7 +44,7 @@ class Compound:
                     continue
                 else:
                     float_vals.append(float(val))
-            return float_vals
+            return np.array(float_vals)
 
     def __copy__(self):
         cmpd_dict = self.kwargs.copy()
@@ -243,34 +244,63 @@ class Compound:
             retention_time (float): Value of retention time.
 
         """
-
-        Rf_0 = self.find_retention_factor(
-            hb_acidity,
-            hb_basicity,
-            polarity,
-            dielectric,
-            solvent_ph,
-            column.parameters,
+        self.retention_time, self.average_charge, self.broadening_factor, self.logD = (
+            set_retention_time(
+                time,
+                flow,
+                hb_acidity,
+                hb_basicity,
+                polarity,
+                dielectric,
+                temperature,
+                solvent_ph,
+                column,
+                self.mw,
+                self.tpsa,
+                self.pka_list,
+                self.pkb_list,
+                self.intrinsic_log_p,
+                self.h_acceptors,
+                self.h_donors,
+            )
         )
-        Rf = Rf_0 * np.exp(10 * (1.0 / temperature - 1.0 / 298.0))
 
-        move_ratio = np.cumsum(flow / (Rf * column.volume)) * (time[1] - time[0]) - 1
+        c7 = column.parameters.c7
+        c28 = column.parameters.c28
+        curr_c = c28 + (c7 - c28) / (4.2) * (solvent_ph - 2.8)
 
-        try:
-            last_neg_ind = len(move_ratio[move_ratio < 0])
-            end_index = last_neg_ind + 2
-            switch_vals = move_ratio[last_neg_ind:end_index]
-            switch_times = time[last_neg_ind:end_index]
+        # add symmetric deviation depending on stationary phase retention of ions
+        self.asymmetry_addition = abs(self.average_charge) * (curr_c)
 
-            retention_time = switch_times[0] + (-switch_vals[0]) * (
-                switch_times[1] - switch_times[0]
-            ) / (switch_vals[1] - switch_vals[0])
-        except IndexError:
-            retention_time = time[-1] + 5
+        return self.retention_time
 
-        self.retention_time = retention_time
+        # Rf_0 = self.find_retention_factor(
+        #     hb_acidity,
+        #     hb_basicity,
+        #     polarity,
+        #     dielectric,
+        #     solvent_ph,
+        #     column.parameters,
+        # )
+        # Rf = Rf_0 * np.exp(10 * (1.0 / temperature - 1.0 / 298.0))
 
-        if init_setup:
-            print(f"{self.cas}: \t {self.retention_time}")
+        # move_ratio = np.cumsum(flow / (Rf * column.volume)) * (time[1] - time[0]) - 1
 
-        return retention_time
+        # try:
+        #     last_neg_ind = len(move_ratio[move_ratio < 0])
+        #     end_index = last_neg_ind + 2
+        #     switch_vals = move_ratio[last_neg_ind:end_index]
+        #     switch_times = time[last_neg_ind:end_index]
+
+        #     retention_time = switch_times[0] + (-switch_vals[0]) * (
+        #         switch_times[1] - switch_times[0]
+        #     ) / (switch_vals[1] - switch_vals[0])
+        # except IndexError:
+        #     retention_time = time[-1] + 5
+
+        # self.retention_time = retention_time
+
+        # if init_setup:
+        #     print(f"{self.cas}: \t {self.retention_time}")
+
+        # return retention_time

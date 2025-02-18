@@ -7,6 +7,7 @@ from .pressure import pressure_driver
 from .baseline import als_psalsa
 from .signal_smoothing import signal_smoothing
 from .find_peaks import find_peaks
+from .compound_calculations import set_retention_time
 
 __all__ = [
     "exponnorm",
@@ -18,4 +19,5 @@ __all__ = [
     "als_psalsa",
     "signal_smoothing",
     "find_peaks",
+    "set_retention_time",
 ]

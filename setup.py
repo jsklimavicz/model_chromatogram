@@ -4,6 +4,7 @@ import numpy
 import os
 
 files = [
+    "utils.pyx",
     "autocorr_data.pyx",
     "exponnorm_functions.pyx",
     "viscosity.pyx",
@@ -13,6 +14,7 @@ files = [
     "signal_smoothing.pyx",
     "savgol_poly2.pyx",
     "find_peaks.pyx",
+    "compound_calculations.pyx",
 ]
 
 pyx_files = []

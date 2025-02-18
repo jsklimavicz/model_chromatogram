@@ -64,17 +64,19 @@ sample_dict = {
     "name": "Calibration Standard",
     "compound_id_list": [
         "58-55-9",
-        "83-07-8",
+        # "83-07-8",
         "1617-90-9",
         "56-89-3",
         "42617-16-3",
         "54947-97-6",
+        "121-87-9",
     ],
     "compound_concentration_list": [
         20 * random.uniform(0.997, 1.003),
-        10 * random.uniform(0.997, 1.003),
+        # 10 * random.uniform(0.997, 1.003),
         30 * random.uniform(0.997, 1.003),
         50 * random.uniform(0.997, 1.003),
+        10 * random.uniform(0.997, 1.003),
         10 * random.uniform(0.997, 1.003),
         10 * random.uniform(0.997, 1.003),
     ],
@@ -87,11 +89,11 @@ sequence = Sequence(
 
 ob = cProfile.Profile()
 ob.enable()
-for i in range(100):
-    for method in method_list:
-        if get_(method, "name") == "column_quality_check":
-            validation_method = InstrumentMethod(**method, system=system)
-            break
+for i in range(1000):
+    # for method in method_list:
+    #     if get_(method, "name") == "column_quality_check":
+    #         validation_method = InstrumentMethod(**method, system=system)
+    #         break
 
     curr_injection = Injection(
         sample=sample,
@@ -107,8 +109,8 @@ for i in range(100):
 
 ob.disable()
 sec = io.StringIO()
-sortby = SortKey.CUMULATIVE
-# sortby = SortKey.TIME
+# sortby = SortKey.CUMULATIVE
+sortby = SortKey.TIME
 ps = pstats.Stats(ob, stream=sec).sort_stats(sortby)
 ps.print_stats()
 
@@ -125,9 +127,9 @@ peak_finder.plot_peaks(
 )
 plt.show()
 
-# inj_dict = curr_injection.to_dict()
-# path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
-# file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
-# Path(path).mkdir(parents=True, exist_ok=True)
-# with open(file_name, "w") as f:
-#     json.dump(inj_dict, f)
+inj_dict = curr_injection.to_dict()
+path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
+file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
+Path(path).mkdir(parents=True, exist_ok=True)
+with open(file_name, "w") as f:
+    json.dump(inj_dict, f)
