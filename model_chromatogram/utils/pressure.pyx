@@ -4,6 +4,12 @@
 # distutils: define_macros=NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 
+################################################################
+# Pressure driver for chromatography column modeling.
+#
+# Written by James Klimavicz 2025
+################################################################
+
 import numpy as np
 cimport numpy as np
 import math

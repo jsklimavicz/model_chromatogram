@@ -4,6 +4,13 @@
 # distutils: define_macros=NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 
+################################################################
+# Exponential Normal (exponnorm) functions for chromatogram peak modeling.
+# Performs much faster than the SciPy implementation; type checking is not included.
+#
+# Written by James Klimavicz 2024
+################################################################
+
 import numpy as np
 cimport numpy as np
 from libc.math cimport sqrt, log, exp, erfc

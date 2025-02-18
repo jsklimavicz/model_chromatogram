@@ -1,6 +1,15 @@
 # compound_calculations.pyx
 # cython: boundscheck=False, wraparound=False, cdivision=True, language_level=3, noexceptioncheck=True
 
+
+################################################################
+# Calculates compound retention time and related parameters for compounds based on 
+# compound and column properties.
+#
+# Written by James Klimavicz 2025
+################################################################
+
+
 import numpy as np
 cimport numpy as np
 cimport cython

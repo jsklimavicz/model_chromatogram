@@ -1,14 +1,23 @@
 # savgol_poly2.pyx
 # cython: boundscheck=False, wraparound=False, cdivision=True, language_level=3
 
+################################################################
+# Savitzky-Golay filter implementation for 1D signals.
+# This version uses precomputed coefficients and pointer arithmetic
+# to speed up the convolution process.
+# This module only performs polynomial order 2 filtering.
+#
+# Written by James Klimavicz 2025
+################################################################
+
 import numpy as np
 cimport numpy as np
 from libc.math cimport fabs
 cimport cython
 
-#----------------------------------------------------------------------
+################################################################
 # Module-level static arrays for recommended window sizes.
-#----------------------------------------------------------------------
+################################################################
 cdef double coeffs_5[5]
 cdef double coeffs_7[7]
 
@@ -18,9 +27,9 @@ cdef bint _static_coeffs_initialized = False
 # Module-level cache for fallback coefficient arrays.
 cdef dict fallback_cache = {}
 
-#----------------------------------------------------------------------
+################################################################
 # Initialization function for static coefficient arrays.
-#----------------------------------------------------------------------
+################################################################
 cdef void init_static_coeffs():
     global _static_coeffs_initialized
     if _static_coeffs_initialized:
@@ -43,11 +52,11 @@ cdef void init_static_coeffs():
 
     _static_coeffs_initialized = True
 
-#----------------------------------------------------------------------
+################################################################
 # Compute the two constants Q0 and Q2 for poly_order=2.
 # For a given odd window_size, the convolution coefficients are:
 #   c_j = Q0 + Q2 * j^2,  for j = -m,...,m  where m = (window_size-1)//2.
-#----------------------------------------------------------------------
+################################################################
 cdef inline void compute_poly2_coeffs(int window_size, double *Q0, double *Q2):
     cdef int m = (window_size - 1) // 2
     cdef double S0, S2, S4, D, m2_1
@@ -63,12 +72,12 @@ cdef inline void compute_poly2_coeffs(int window_size, double *Q0, double *Q2):
     Q0[0] = -S4 / D
     Q2[0] = S2 / D
 
-#----------------------------------------------------------------------
+################################################################
 # Helper function to retrieve a pointer to the precomputed coefficients.
 # If window_size is one of the recommended values (5 or 7), the corresponding
 # static array is returned. Otherwise, the coefficients are computed on the fly,
 # cached, and a pointer to the cached array is returned.
-#----------------------------------------------------------------------
+################################################################
 cdef inline double* get_precomputed_coeffs(int window_size):
     cdef int m, j
     cdef double Q0, Q2
@@ -95,11 +104,11 @@ cdef inline double* get_precomputed_coeffs(int window_size):
             fallback_cache[window_size] = coeff_arr
             return <double*> coeff_arr.data
 
-#----------------------------------------------------------------------
+################################################################
 # The Savitzky-Golay filter (poly_order=2) implementation.
 # This version precomputes coefficients and uses pointer arithmetic and
 # splits the convolution into regions for speed.
-#----------------------------------------------------------------------
+################################################################
 cdef  double[::1] savgol_filter_poly2(double[::1] s, int window_size):
     """
     Apply a Savitzky-Golay filter (poly_order=2) to the 1D memoryview 's'

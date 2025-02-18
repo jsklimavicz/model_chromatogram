@@ -1,6 +1,14 @@
 # signal_smoothing.pyx
 # cython: boundscheck=False, wraparound=False, cdivision=True, linetrace=True, language_level=3
 
+
+################################################################
+# Signal smoothing algorithm using an adaptive Savitzky-Golay filter.
+# This version uses a variable window size based on local variance.
+#
+# Written by James Klimavicz 2025
+################################################################
+
 import numpy as np
 cimport numpy as np
 cimport cython

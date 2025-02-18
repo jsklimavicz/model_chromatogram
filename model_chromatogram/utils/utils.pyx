@@ -1,6 +1,11 @@
 # utils.pyx
 # cython: boundscheck=False, wraparound=False, cdivision=True, language_level=3, noexceptioncheck=True
 
+################################################################
+# Binary search functions for rapidly finding indices in a monotonic array.
+#
+# Written by James Klimavicz 2025
+################################################################
 
 cdef Py_ssize_t binary_search(double[:] cumsum, Py_ssize_t i, double threshold):
     cdef Py_ssize_t lo = 0

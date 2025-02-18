@@ -2,7 +2,7 @@ from pydash import get as get_, set_
 
 from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
 from model_chromatogram.samples import Sample
-from model_chromatogram.chromatogram import Baseline, PeakCreator
+from model_chromatogram.chromatogram import Baseline, PeakCreator, Chromatogram
 from model_chromatogram.system import System
 import numpy as np
 import datetime
@@ -11,6 +11,7 @@ from model_chromatogram.data_processing import PeakFinder
 import uuid
 from model_chromatogram.user_parameters import BASELINE_NOISE
 from model_chromatogram.utils import create_autocorrelated_data
+from typing import Dict
 
 
 class Injection:
@@ -26,6 +27,7 @@ class Injection:
         init_setup=False,
     ) -> None:
         self.sample: Sample = sample
+        self.chromatograms: Dict[Chromatogram] = {}
         self.user = user
         self.injection_uuid = str(uuid.uuid4())
         self.injection_time = (
@@ -104,7 +106,6 @@ class Injection:
         Returns:
             None
         """
-        self.chromatograms: dict = {}
 
         for channel in self.method.detection:
             if channel["detector_name"].lower() in ["uv", "pda", "fld", "mwd", "vwd"]:

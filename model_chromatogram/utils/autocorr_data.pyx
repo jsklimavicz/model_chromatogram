@@ -4,6 +4,12 @@
 # distutils: define_macros=NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 
+################################################################
+# Calculates autocorrelated (AR1) signal noise for chromatogram baselines.
+#
+# Written by James Klimavicz 2024
+################################################################
+
 import numpy as np
 cimport numpy as np
 from libc.math cimport sqrt, log, cos, sin, M_PI
