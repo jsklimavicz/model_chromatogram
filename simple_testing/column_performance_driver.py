@@ -64,7 +64,6 @@ sample_dict = {
     "name": "Calibration Standard",
     "compound_id_list": [
         "58-55-9",
-        # "83-07-8",
         "1617-90-9",
         "56-89-3",
         "42617-16-3",
@@ -73,7 +72,6 @@ sample_dict = {
     ],
     "compound_concentration_list": [
         20 * random.uniform(0.997, 1.003),
-        # 10 * random.uniform(0.997, 1.003),
         30 * random.uniform(0.997, 1.003),
         50 * random.uniform(0.997, 1.003),
         10 * random.uniform(0.997, 1.003),

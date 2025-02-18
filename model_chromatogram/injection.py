@@ -138,8 +138,9 @@ class Injection:
         """
         for compound in self.sample.compounds:
             compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
-            compound_peak_signal /= self.method.dilution_factor
-            compound_peak_signal *= self.method.injection_volume
+            compound_peak_signal *= (
+                self.method.injection_volume / self.method.dilution_factor
+            )
             max_absorbance = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absorbance):
                 if absorbance is not None and str(absorbance) != "nan":
@@ -201,7 +202,7 @@ class Injection:
                 ),
                 "times": times_list,
                 "times_unit": "MinuteTime",
-                "signal": chromatogram.signal.tolist(),
+                "signal": signal,
                 "signal_unit": get_(
                     chromatogram.detection_settings, "unit", default=None
                 ),
