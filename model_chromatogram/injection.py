@@ -2,7 +2,7 @@ from pydash import get as get_, set_
 
 from model_chromatogram.methods import InstrumentMethod, ProcessingMethod
 from model_chromatogram.samples import Sample
-from model_chromatogram.chromatogram import Baseline, PeakCreator
+from model_chromatogram.chromatogram import Baseline, PeakCreator, Chromatogram
 from model_chromatogram.system import System
 import numpy as np
 import datetime
@@ -11,6 +11,7 @@ from model_chromatogram.data_processing import PeakFinder
 import uuid
 from model_chromatogram.user_parameters import BASELINE_NOISE
 from model_chromatogram.utils import create_autocorrelated_data
+from typing import Dict
 
 
 class Injection:
@@ -26,6 +27,7 @@ class Injection:
         init_setup=False,
     ) -> None:
         self.sample: Sample = sample
+        self.chromatograms: Dict[Chromatogram] = {}
         self.user = user
         self.injection_uuid = str(uuid.uuid4())
         self.injection_time = (
@@ -48,6 +50,7 @@ class Injection:
         self.__calculate_compound_retention()
         self.__create_chromatograms()
         self.__add_compounds()
+        self.__update_injection_dicts()
 
     def __add_to_sequence(self):
         self.sequence.add_injection(
@@ -65,13 +68,23 @@ class Injection:
         Returns:
             None
         """
-        time = self.method.profile_table["time"].to_numpy()
-        flow = self.method.profile_table["flow"].to_numpy()
-        polarity = self.method.profile_table["polarity"].to_numpy()
-        hb_acidity = self.method.profile_table["hb_acidity"].to_numpy()
-        hb_basicity = self.method.profile_table["hb_basicity"].to_numpy()
-        dielectric = self.method.profile_table["dielectric"].to_numpy()
-        temperature = self.method.profile_table["temperature"].to_numpy() + 273.15
+        time = np.ascontiguousarray(self.method.profile_table["time"].to_numpy())
+        flow = np.ascontiguousarray(self.method.profile_table["flow"].to_numpy())
+        polarity = np.ascontiguousarray(
+            self.method.profile_table["polarity"].to_numpy()
+        )
+        hb_acidity = np.ascontiguousarray(
+            self.method.profile_table["hb_acidity"].to_numpy()
+        )
+        hb_basicity = np.ascontiguousarray(
+            self.method.profile_table["hb_basicity"].to_numpy()
+        )
+        dielectric = np.ascontiguousarray(
+            self.method.profile_table["dielectric"].to_numpy()
+        )
+        temperature = np.ascontiguousarray(
+            self.method.profile_table["temperature"].to_numpy() + 273.15
+        )
 
         for compound in self.sample.compounds:
             compound.set_retention_time(
@@ -94,7 +107,6 @@ class Injection:
         Returns:
             None
         """
-        self.chromatograms: dict = {}
 
         for channel in self.method.detection:
             if channel["detector_name"].lower() in ["uv", "pda", "fld", "mwd", "vwd"]:
@@ -128,8 +140,9 @@ class Injection:
         """
         for compound in self.sample.compounds:
             compound_peak_signal = self.peak_creator.compound_peak(compound, self.times)
-            compound_peak_signal /= self.method.dilution_factor
-            compound_peak_signal *= self.method.injection_volume
+            compound_peak_signal *= (
+                self.method.injection_volume / self.method.dilution_factor
+            )
             max_absorbance = compound.get_absorbance(self.uv_wavelengths)
             for name, absorbance in zip(self.uv_channel_names, max_absorbance):
                 if absorbance is not None and str(absorbance) != "nan":
@@ -137,6 +150,7 @@ class Injection:
                         absorbance=absorbance, signal=compound_peak_signal
                     )
 
+    def __update_injection_dicts(self):
         chromatograms = []
         times_list = None
         for name, chromatogram in self.chromatograms.items():
@@ -191,7 +205,7 @@ class Injection:
                 ),
                 "times": times_list,
                 "times_unit": "MinuteTime",
-                "signal": chromatogram.signal.tolist(),
+                "signal": signal,
                 "signal_unit": get_(
                     chromatogram.detection_settings, "unit", default=None
                 ),

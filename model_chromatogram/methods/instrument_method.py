@@ -225,15 +225,33 @@ class InstrumentMethod:
         solvents: list[Solvent] = [
             _get(solvent, "solvent") for solvent in self.mobile_phases
         ]
-        comp_values = [s.get_absorbance(wavelength) for s in solvents]
+        comp_values = np.array([s.get_absorbance(wavelength) for s in solvents])
         background = np.zeros_like(self.profile_table["time"])
         for mult, name in zip(comp_values, self.__solvent_percents):
-            background += mult * self.profile_table[name]
+            background += mult * self.profile_table[name].to_numpy()
 
         if set_zero_time:
             background -= background[0]
 
         return self.profile_table["time"], background * BASELINE_MULTIPLIER
+
+        # # Get the solvent percent values.
+        # percents = np.array(self.__solvent_percents, dtype=np.float64)
+        # # Compute the overall weight per solvent.
+        # weights = comp_values * percents  # shape: (n_solvents,)
+
+        # # Stack the background profiles from the profile table.
+        # # Assume that each self.profile_table[name] is a 1D array of length N.
+        # profiles = np.vstack(
+        #     [self.profile_table[name] for name in self.__solvent_percents]
+        # )
+        # # Now profiles has shape (n_solvents, N). A weighted sum along axis 0 is done as:
+        # background = np.dot(weights, profiles)  # resulting shape: (N,)
+
+        # if set_zero_time:
+        #     background = background - background[0]
+
+        # return self.profile_table["time"], background * BASELINE_MULTIPLIER
 
     def get_zero_background(self):
         """

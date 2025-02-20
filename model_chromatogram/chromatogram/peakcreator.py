@@ -47,7 +47,9 @@ class PeakCreator:
 
         self.base_width = DEFAULT_PEAK_WIDTH * (self.column.length / 150) ** (2 / 3)
 
-    def compound_peak(self, compound: Compound, times: np.array) -> np.array:
+    def compound_peak(
+        self, compound: Compound, times: np.array, cutoff=1e-8
+    ) -> np.array:
         """
         Creates the signal for a compound peak.
 
@@ -74,10 +76,8 @@ class PeakCreator:
             K=peak_dict["asymmetry"],
             loc=peak_dict["time"],
             scale=peak_dict["width"],
+            cutoff=cutoff,
         )
-
-        # Set elements less than 1e-8 to 0
-        raw_signal[raw_signal < 1e-8] = 0
         return raw_signal
 
     def peak(

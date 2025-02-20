@@ -1,14 +1,25 @@
 # find_peaks.pyx
 # cython: boundscheck=False, wraparound=False, cdivision=True, language_level=3
 
+
+################################################################
+# Find peaks in a chromatogram using a three-step process:
+#   1. Find contiguous regions where d2_signal falls below a threshold or processed_signal is high.
+#   2. Expand these regions based on d1_signal and processed_signal.
+#   3. Filter out regions that are too small.
+# 
+#
+# Written by James Klimavicz 2024
+################################################################
+
 import numpy as np
 cimport numpy as np
 cimport cython
 
-#----------------------------------------------------------------------
+################################################################
 # cdef function to find initial regions.
 # Returns a Python list of (start, end) tuples.
-#----------------------------------------------------------------------
+################################################################
 cdef list _find_initial_regions(double[::1] d2_signal,
                                 double[::1] processed_signal,
                                 double low_cutoff,
@@ -29,10 +40,10 @@ cdef list _find_initial_regions(double[::1] d2_signal,
         i += 1
     return regions
 
-#----------------------------------------------------------------------
+################################################################
 # cdef function to expand regions.
 # Returns a Python list of (start, end) tuples.
-#----------------------------------------------------------------------
+################################################################
 cdef list _expand_regions(list regions,
                           double[::1] d1_signal,
                           double[::1] processed_signal,
@@ -49,9 +60,9 @@ cdef list _expand_regions(list regions,
         expanded.append((start, end - 1))
     return expanded
 
-#----------------------------------------------------------------------
+################################################################
 # cdef function to filter regions by minimum length.
-#----------------------------------------------------------------------
+################################################################
 cdef list _filter_regions(list regions, int min_length):
     cdef list filtered = []
     cdef int start, end
@@ -60,9 +71,9 @@ cdef list _filter_regions(list regions, int min_length):
             filtered.append((start, end))
     return filtered
 
-#----------------------------------------------------------------------
+################################################################
 # The main find_peaks function that accepts memoryviews and scalars.
-#----------------------------------------------------------------------
+################################################################
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def find_peaks(double[::1] d2_signal,

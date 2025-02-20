@@ -3,7 +3,6 @@ from model_chromatogram.utils import (
     scaled_exponnorm,
     scaled_exponnorm_scalar,
 )
-from scipy.stats import norm
 from scipy.optimize import curve_fit, brentq
 
 
@@ -257,8 +256,12 @@ class Peak:
 
         std = np.sqrt(self.moment_2)
         slack = 10 * std
-        left = brentq(y_shifted_emg, self.retention_time - slack, self.retention_time)
-        right = brentq(y_shifted_emg, self.retention_time, self.retention_time + slack)
+        left = brentq(
+            y_shifted_emg, self.retention_time - slack, self.retention_time, rtol=1e-8
+        )
+        right = brentq(
+            y_shifted_emg, self.retention_time, self.retention_time + slack, rtol=1e-8
+        )
         lw = self.retention_time - left
         rw = right - self.retention_time
         fw = right - left
@@ -340,14 +343,22 @@ class Peak:
         fw = right_time - left_time
         return lw, rw, fw
 
-    def __calculate_width(self, method, height, use_EGM_fit=False):
+    def __calculate_width(self, method, height_, use_EGM_fit=False):
+        def denormalized_norm_pdf(x):
+            return np.exp(-(x**2) / 2.0)
+
         if method == "sigma":
-            zero_h = norm.pdf(0)
-            height = 100 * norm.pdf(height / 2) / zero_h
+            if height_ == 4:
+                height = 13.53352832366127
+            elif height_ == 5:
+                height = 4.393693362340742
+            else:
+                height = 100 * denormalized_norm_pdf(height_ / 2)
+
         if use_EGM_fit:
             return self.__calculate_width_with_curve_fit(height=height)
         else:
-            return self.__calculate_width_with_datapoints(height=height)
+            return self.__calculate_width_with_datapoints(height=height_)
 
     def __calculate_standard_widths(self):
 

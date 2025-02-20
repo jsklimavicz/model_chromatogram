@@ -20,7 +20,6 @@ cimport numpy as np
 from scipy.linalg import solve_banded
 from libc.math cimport exp, fabs, isnan
 cimport cython
-
 from .pentadiagonal cimport sym_pent_solve
 
 cdef double loss_function_outside(double[:] weights,
@@ -68,7 +67,7 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
     Returns:
         tuple: (time, z) where both are NumPy arrays.
     """
-    cdef int interval, size, iterations
+    cdef int interval, iterations, i
     cdef double dt, interval_float, prev_loss, curr_loss, rel_loss, constant_val
     cdef bint converged
     cdef object D, D2_s, W  
@@ -81,23 +80,26 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
     # Downsample the raw arrays (make copies so we have contiguous data)
     cdef np.ndarray[double, ndim=1] time = np.array(raw_time[::interval], dtype=np.double)
     cdef np.ndarray[double, ndim=1] signal = np.array(raw_signal[::interval], dtype=np.double)
-    size = time.shape[0]
+    cdef int n = time.shape[0]
     
     # Initialize z to a constant value computed from the first and last signal entries.
-    constant_val = signal[0] * signal[size]
-    cdef np.ndarray[double, ndim=1] z = np.empty(size, dtype=np.double)
+    constant_val = signal[0] * signal[n]
+    cdef np.ndarray[double, ndim=1] z = np.empty(n, dtype=np.double)
     z.fill(constant_val)
     cdef np.ndarray[double, ndim=1] residuals = signal - z
 
     # Initialize weights
-    cdef np.ndarray[double, ndim=1] weights = np.ones(size, dtype=np.double)
+    cdef np.ndarray[double, ndim=1] weights_arr = np.ones(n, dtype=np.double)
+    cdef double[:] weights_mv = weights_arr
+        # Convert to typed memoryviews.
+    cdef double[:] residuals_mv = residuals
     converged = False
     iterations = 0
 
 
-    d2_2up = np.array([*[s] * (size - 2)])
-    d2_1up = np.array([-3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s])
-    d2_0 = np.array([2.0 * s, *[6.0 * s] * (size - 2), 2.0 * s])
+    d2_2up = np.array([*[s] * (n - 2)])
+    d2_1up = np.array([-3.0 * s, *[-4.0 * s] * (n - 3), -3.0 * s])
+    d2_0 = np.array([2.0 * s, *[6.0 * s] * (n - 2), 2.0 * s])
 
     prev_loss = 1e12
 
@@ -112,56 +114,57 @@ def als_psalsa(np.ndarray[double, ndim=1] raw_time,
     while (not converged) and (iterations < 200):
         iterations += 1
         # Solve for z: (W + D2_s) z = weights * signal
-        z = sym_pent_solve(d2_0 + weights, d2_1up, d2_2up, weights * signal)
+        z = sym_pent_solve(d2_0 + weights_mv, d2_1up, d2_2up, weights_mv * signal)
 
         if iterations == 1 and has_nan(z):
             break
         # Update residuals
-        residuals = signal - z
-        curr_loss = loss_function_outside(weights, residuals, z, s)
+        residuals_mv = signal - z
+        curr_loss = loss_function_outside(weights_mv, residuals_mv, z, s)
         rel_loss = fabs(curr_loss - prev_loss) / curr_loss
         if rel_loss < rel_tol:
             converged = True
             return time, z
         prev_loss = curr_loss
 
-        # Update weights using vectorized np.where.
-        for i in range(size):
-            if residuals[i] > 0:
-                weights[i] = p * exp(-residuals[i] / k)
+        # Update weights in a parallel loop.
+        for i in range(n):
+            if residuals_mv[i] > 0:
+                weights_mv[i] = p * exp(-residuals_mv[i] / k)
             else:
-                weights[i] = 1 - p
+                weights_mv[i] = 1 - p
     
     if not converged:
 
-        d2_2u = np.array([0.0, 0.0, *[s] * (size - 2)])
-        d2_1u = np.array([0.0, -3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s])
-        d2_0 = np.array([2.0 * s, *[6.0 * s] * (size - 2), 2.0 * s])
-        d2_1l = np.array([-3.0 * s, *[-4.0 * s] * (size - 3), -3.0 * s, 0.0])
-        d2_2l = np.array([*[s] * (size - 2), 0.0, 0.0])
+        d2_2u = np.array([0.0, 0.0, *[s] * (n - 2)])
+        d2_1u = np.array([0.0, -3.0 * s, *[-4.0 * s] * (n - 3), -3.0 * s])
+        d2_0 = np.array([2.0 * s, *[6.0 * s] * (n - 2), 2.0 * s])
+        d2_1l = np.array([-3.0 * s, *[-4.0 * s] * (n - 3), -3.0 * s, 0.0])
+        d2_2l = np.array([*[s] * (n - 2), 0.0, 0.0])
 
         D2_diag = np.vstack([d2_2u, d2_1u, d2_0, d2_1l, d2_2l])
 
         while (not converged) and (iterations < 200):
             iterations += 1
             # Solve for z: (W + D2_s) z = weights * signal
-            D2_diag[2, :] = weights + d2_0
-            z = solve_banded((2, 2), D2_diag, weights * signal)
+            D2_diag[2, :] = weights_mv + d2_0
+            z = solve_banded((2, 2), D2_diag, weights_mv * signal)
             # Update residuals
-            residuals = signal - z
-            curr_loss = loss_function_outside(weights, residuals, z, s)
+            residuals_mv = signal - z
+            curr_loss = loss_function_outside(weights_mv, residuals_mv, z, s)
             rel_loss = fabs(curr_loss - prev_loss) / curr_loss
             if rel_loss < rel_tol:
                 converged = True
                 return time, z
             prev_loss = curr_loss
 
-            # Update weights using vectorized np.where.
-            for i in range(size):
-                if residuals[i] > 0:
-                    weights[i] = p * exp(-residuals[i] / k)
+
+            # Update weights in a parallel loop.
+            for i in range(n):
+                if residuals_mv[i] > 0:
+                    weights_mv[i] = p * exp(-residuals_mv[i] / k)
                 else:
-                    weights[i] = 1 - p
+                    weights_mv[i] = 1 - p
 
 
     return time, z
