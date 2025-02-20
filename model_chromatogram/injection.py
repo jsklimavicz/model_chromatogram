@@ -50,6 +50,7 @@ class Injection:
         self.__calculate_compound_retention()
         self.__create_chromatograms()
         self.__add_compounds()
+        self.__update_injection_dicts()
 
     def __add_to_sequence(self):
         self.sequence.add_injection(
@@ -149,6 +150,7 @@ class Injection:
                         absorbance=absorbance, signal=compound_peak_signal
                     )
 
+    def __update_injection_dicts(self):
         chromatograms = []
         times_list = None
         for name, chromatogram in self.chromatograms.items():

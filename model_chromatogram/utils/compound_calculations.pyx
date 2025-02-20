@@ -1,14 +1,12 @@
 # compound_calculations.pyx
 # cython: boundscheck=False, wraparound=False, cdivision=True, language_level=3, noexceptioncheck=True
 
-
 ################################################################
-# Calculates compound retention time and related parameters for compounds based on 
-# compound and column properties.
+# Calculates compound retention time and related parameters for compounds 
+# based on compound and column properties.
 #
 # Written by James Klimavicz 2025
 ################################################################
-
 
 import numpy as np
 cimport numpy as np
@@ -26,13 +24,16 @@ cdef void _calculate_logD_inner(double pH_value,
                                 double intrinsic_log_p,
                                 double* out_avg_charge, 
                                 double* out_broadening, 
-                                double* out_logD) except * nogil:
+                                double* out_logD) noexcept nogil:
     cdef int n_groups = npka + npkb
     cdef Py_ssize_t total_states = 1 << n_groups  # 2^(n_groups)
     cdef Py_ssize_t s, i
     cdef double state_prob, weight
     cdef int state_charge, bit, state_value
     cdef double logD_sum = 0.0, avg_charge = 0.0, sum_sq = 0.0
+    # Precompute constant: log10 conversion factor.
+    cdef double log10_const = log(10.0)
+    # If n_groups is known to be small, you might allocate fixed arrays on the stack.
     cdef double* all_pka = <double*> malloc(n_groups * sizeof(double))
     cdef double* frac = <double*> malloc(n_groups * sizeof(double))
     if not all_pka or not frac:
@@ -41,15 +42,18 @@ cdef void _calculate_logD_inner(double pH_value,
         if frac:
             free(frac)
         out_avg_charge[0] = 0.0
-        out_logD[0] = 0.0
+        out_logD[0] = intrinsic_log_p
         out_broadening[0] = 0.0
         return
+    # Copy pka and pkb into one contiguous array.
     for i in range(npka):
         all_pka[i] = pka[i]
     for i in range(npkb):
         all_pka[npka + i] = pkb[i]
+    # Compute fractions; instead of pow(10, x) we compute exp(x*log(10))
     for i in range(n_groups):
-        frac[i] = 1.0 / (1.0 + pow(10.0, pH_value - all_pka[i]))
+        frac[i] = 1.0 / (1.0 + exp((pH_value - all_pka[i]) * log10_const))
+    # Enumerate states.
     for s in range(total_states):
         state_prob = 1.0
         state_charge = 0
@@ -88,7 +92,7 @@ cdef void _calculate_logD_inner(double pH_value,
 ###############################################################################
 cdef void _apply_temperature_correction_nogil(double* Rf_in,
                                               double* t, Py_ssize_t n,
-                                              double* Rf_out) except * nogil:
+                                              double* Rf_out) noexcept nogil:
     cdef Py_ssize_t i
     cdef double dt_temp
     for i in range(n):
@@ -121,7 +125,7 @@ cdef void _find_retention_factor_nogil(double* Rf_out,
                                        double* hb_basicity,
                                        double* polarity,
                                        double* dielectric,
-                                       Py_ssize_t n,
+                                       int n,
                                        double solvent_ph,
                                        double mw,
                                        double tpsa,
@@ -135,26 +139,31 @@ cdef void _find_retention_factor_nogil(double* Rf_out,
                                        double col_c28,
                                        double col_eb,
                                        double col_h,
-                                       double col_s_star) except * nogil:
-    cdef Py_ssize_t i
+                                       double col_s_star) noexcept nogil:
+    cdef int i
     cdef double vol_ratio = pow(mw, 1.0/3.0)
     cdef double ratio_tpsa = sqrt(tpsa) / vol_ratio
     cdef double curr_c = col_c28 + (col_c7 - col_c28) / 4.2 * (solvent_ph - 2.8)
     cdef double base = log(col_eb)
+    cdef double ha, hb_val, pol, diel, temp
+    cdef double sqrt_ha_cola = sqrt(h_acceptors) * col_a
+    cdef double sqrt_hd_colb = sqrt(h_donors) * col_b
+    cdef double logd_colh = - logD * col_h
+    cdef double curr_c_ratio_tpsa = curr_c * ratio_tpsa
+    cdef double col_s_star_div_10 = col_s_star / 10.0
+
     for i in range(n):
         Rf_out[i] = base
-    cdef double ha, hb_val, pol, diel, temp
-    for i in range(n):
         ha = hb_acidity[i]
         hb_val = hb_basicity[i]
         pol = polarity[i]
         diel = dielectric[i]
-        temp = (sqrt(h_acceptors) * col_a) / (1.0 + vol_ratio * ha)
-        temp += (sqrt(h_donors) * col_b) / (1.0 + vol_ratio * hb_val)
-        temp -= logD * col_h / (10.0 + pol)
-        temp += curr_c * ratio_tpsa / (1.0 + diel / 10.0)
-        temp += vol_ratio * col_s_star / 10.0
-        Rf_out[i] -= 4.0 * temp
+        temp = sqrt_ha_cola / (1.0 + vol_ratio * ha)
+        temp += sqrt_hd_colb / (1.0 + vol_ratio * hb_val)
+        temp += logd_colh / (10.0 + pol)
+        temp += curr_c_ratio_tpsa / (1.0 + diel / 10.0)
+        temp += col_s_star_div_10
+        Rf_out[i] += - 4.0 * temp
         Rf_out[i] = exp(Rf_out[i]) + 1.0
 
 ###############################################################################
@@ -178,9 +187,8 @@ cdef double[::1] find_retention_factor(double[::1] hb_acidity,
                                        double column_eb,
                                        double column_h,
                                        double column_s_star):
-    cdef Py_ssize_t n = hb_acidity.shape[0]
+    cdef int n = hb_acidity.shape[0]
     cdef np.ndarray[double, ndim=1] Rf_arr = np.empty(n, dtype=np.float64)
-    # Convert the NumPy array to a memoryview.
     cdef double[::1] Rf_mv = Rf_arr
     cdef double* Rf_ptr = &Rf_mv[0]
     cdef double* ha_ptr = &hb_acidity[0]
@@ -193,7 +201,7 @@ cdef double[::1] find_retention_factor(double[::1] hb_acidity,
             n, solvent_ph, mw, tpsa, logD, average_charge,
             h_acceptors, h_donors,
             column_a, column_b, column_c7, column_c28, column_eb, column_h, column_s_star)
-    return Rf_mv  # Returning the memoryview
+    return Rf_mv
 
 ###############################################################################
 # cpdef function: set_retention_time
@@ -239,8 +247,7 @@ cpdef tuple set_retention_time(double[::1] time,
     cdef np.ndarray[double, ndim=1] Rf_corr_arr = np.empty(n, dtype=np.float64)
     cdef double[::1] Rf_corr_mv = Rf_corr_arr
     cdef double* Rf_corr_ptr = &Rf_corr_mv[0]
-    cdef double* temp_ptr = &temperature[0]  # temperature is already a memoryview
-    # Obtain a pointer for Rf from our previously acquired memoryview.
+    cdef double* temp_ptr = &temperature[0]
     cdef double* Rf_ptr = &Rf[0]
     with nogil:
         _apply_temperature_correction_nogil(Rf_ptr, temp_ptr, n, Rf_corr_ptr)
@@ -258,7 +265,7 @@ cpdef tuple set_retention_time(double[::1] time,
         move_ptr[i] = prev + (flow_ptr[i] / (Rf_corr_ptr[i] * col_volume)) * dt_temp
         prev = move_ptr[i]
     
-    # Call binary_search. (Assume binary_search accepts a pointer to double and returns an int.)
+    # Call binary_search. (Assume binary_search_ptr accepts a pointer to double and returns an int.)
     cdef int last_neg_ind = binary_search_ptr(move_ptr, n//2, 1.0)
     
     if last_neg_ind < n - 1:

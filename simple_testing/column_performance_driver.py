@@ -125,9 +125,9 @@ peak_finder.plot_peaks(
 )
 plt.show()
 
-inj_dict = curr_injection.to_dict()
-path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
-file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
-Path(path).mkdir(parents=True, exist_ok=True)
-with open(file_name, "w") as f:
-    json.dump(inj_dict, f)
+# inj_dict = curr_injection.to_dict()
+# path = f'./{folder}/{get_(inj_dict, "runs.0.sequence.url")}'
+# file_name = f'./{folder}/{get_(inj_dict, "runs.0.injection_url")}'
+# Path(path).mkdir(parents=True, exist_ok=True)
+# with open(file_name, "w") as f:
+#     json.dump(inj_dict, f)

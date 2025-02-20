@@ -13,8 +13,9 @@
 import numpy as np
 cimport numpy as np
 from libc.math cimport sqrt, log, cos, sin, M_PI
-from libc.stdlib cimport rand, RAND_MAX
+from libc.stdlib cimport rand, RAND_MAX, srand
 from cython.parallel import prange
+from libc.time cimport time
 cimport cython
 
 # Disable Python interaction and bounds checks for speed
@@ -26,6 +27,8 @@ def create_autocorrelated_data(int length, double sigma, double corr=0.1):
         double u1, u2, R, arg
         double rho = 2.0 * M_PI
         double adj_var = eps * sigma
+
+    srand(time(NULL))
 
     for i in prange(0, length, 2, nogil=True):
     # generate normally distributed noise with box-mueller transform

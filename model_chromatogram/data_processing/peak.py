@@ -343,16 +343,22 @@ class Peak:
         fw = right_time - left_time
         return lw, rw, fw
 
-    def __calculate_width(self, method, height, use_EGM_fit=False):
+    def __calculate_width(self, method, height_, use_EGM_fit=False):
         def denormalized_norm_pdf(x):
             return np.exp(-(x**2) / 2.0)
 
         if method == "sigma":
-            height = 100 * denormalized_norm_pdf(height / 2)
+            if height_ == 4:
+                height = 13.53352832366127
+            elif height_ == 5:
+                height = 4.393693362340742
+            else:
+                height = 100 * denormalized_norm_pdf(height_ / 2)
+
         if use_EGM_fit:
             return self.__calculate_width_with_curve_fit(height=height)
         else:
-            return self.__calculate_width_with_datapoints(height=height)
+            return self.__calculate_width_with_datapoints(height=height_)
 
     def __calculate_standard_widths(self):
 
